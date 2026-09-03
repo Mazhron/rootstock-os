@@ -19,7 +19,10 @@ Run after EVERY completed batch of work; the user should never have to ask.
 5. Builds (projects that ship binaries): run the build script
    (`python tools/make_builds.py` in Everwood). NEVER delete older build
    zips - old versions are the "before" side of dev-log comparisons.
-6. Tick the checkpoint counter (`python tools/checkpoint.py --tick`) and
+6. Kit sync (projects that publish a kit): if the batch touched any
+   future-project-kit file, run the kit sync script (in Everwood:
+   `python tools/sync_kit_repo.py` pushes the public Rootstock repo).
+7. Tick the checkpoint counter (`python tools/checkpoint.py --tick`) and
    relay any warning.
 
 Changelog EXPORT (publishing) stays a user-triggered step
