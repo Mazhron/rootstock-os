@@ -6,10 +6,12 @@ description: Open a session - print the standup digest and hand back the last ex
 # /standup - the session opener
 
 1. Run `python tools/standup.py` from the repo root.
-2. Relay the WHERE WE LEFT OFF block FIRST and faithfully: the user's last
-   prompt AND the manager's last response (both sides of the final exchange),
-   then state and next-likely. After a /clear the user has nothing - give it
-   back unprompted.
+2. Relay the WHERE WE LEFT OFF block FIRST and VERBATIM: the user's last
+   prompt AND the manager's last response exactly as the day file stores
+   them, word for word in quote blocks - never summarized, condensed, or
+   paraphrased (the user must recognize their own words) - then state and
+   next-likely. After a /clear the user has nothing - give it back
+   unprompted.
 3. Then summarize the rest of the digest briefly: version, open roadmap
    items, ledger tails worth noting, anything blocked.
 4. End by asking what to work on, or naming the next-likely step.

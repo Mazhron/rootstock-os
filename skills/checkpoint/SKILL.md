@@ -14,8 +14,13 @@ SEQUENCE
 2. Refresh the NEWEST day file's `## WHERE WE LEFT OFF` section
    (docs/history/days/YYYY-MM-DD-WS#.md; create today's file + a
    days_index.txt line if it does not exist). The section carries:
-   - USER'S LAST PROMPT (condensed)
-   - MANAGER'S LAST RESPONSE (condensed) - BOTH sides, always
+   - USER'S LAST PROMPT (VERBATIM - copied word for word, unabridged,
+     in a fenced quote block; NEVER condensed or paraphrased)
+   - MANAGER'S LAST RESPONSE (VERBATIM) - BOTH sides, always. MECHANICS:
+     the response stored is the checkpoint reply itself, so write this
+     section containing the reply you are ABOUT to send, then send
+     exactly that text. The user must recognize their own words at the
+     next standup - a paraphrase is a failed checkpoint.
    - STATE (version, tree, what shipped this arc)
    - OPEN QUEUE / NEXT LIKELY
 3. Run `python tools/checkpoint.py --reset`.

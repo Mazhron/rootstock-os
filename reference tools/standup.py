@@ -32,8 +32,10 @@ def main():
 
     # WHERE WE LEFT OFF comes FIRST (Mazhron's ask 2026-09-02: after /clear
     # THEY have nothing - the manager must hand back the last prompt AND the
-    # manager's last response (both sides, per Mazhron 2026-09-03) plus the
-    # state summary before anything else). Pulled from the newest day file's
+    # manager's last response, BOTH sides and VERBATIM (Mazhron 2026-09-03,
+    # tightened same day: exact words, never condensed/paraphrased - the
+    # checkpoint writes them into the day file word for word) plus the
+    # state summary before anything else. Pulled from the newest day file's
     # "## WHERE WE LEFT OFF" section, refreshed at every checkpoint.
     days = sorted(glob.glob(os.path.join(ROOT, "docs", "history", "days", "*.md")))
     if days:

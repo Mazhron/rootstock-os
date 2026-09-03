@@ -45,8 +45,10 @@ Reference copies of both scripts are in "reference tools/" - they WORK but
 carry the origin project's ledger names and paths; adapt, don't rewrite.
 The protocol they serve: tick after every task; at arc end push, refresh
 the day file's WHERE WE LEFT OFF with BOTH sides of the final exchange
-(CEO's last prompt + manager's last response, condensed), reset, and emit
-the safe-to-clear marker. Day one: record a baseline run in a ledger.
+(CEO's last prompt + manager's last response, VERBATIM - exact words in
+quote blocks, never condensed; write the reply into the file, then send
+that exact text), reset, and emit the safe-to-clear marker. Day one:
+record a baseline run in a ledger.
 
 ## STEP 3 - the delegation company (SUBAGENT_METHOD.md, bootstrap section)
 
