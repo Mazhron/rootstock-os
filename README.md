@@ -199,6 +199,16 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   the project's stamp, applies each concept to the project's OWN files in
   its own names and voice, and bumps the stamp. Anything that would
   contradict a choice you made on purpose gets flagged, never overwritten.
+- You don't have to remember any of this: the install wires
+  `rootstock_update_check.py` into your project's standup, which checks
+  this repo weekly (offline-safe, one ledger line per check) and reports
+  newer grafts by itself.
+- **You choose the noise level.** The stamp carries your update policy -
+  `ask` (default: present the grafts, you pick), `auto` (apply everything,
+  report after), `relevant` (only offer grafts that benefit your project;
+  skipped ones are never re-offered), or `never` (quiet unless you ask).
+  Change it any time by telling Claude "update automatically", "stop
+  asking about updates", or "only show me relevant updates".
 
 ## What is in the box
 
@@ -210,7 +220,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, five laws, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
 | `skills/` | The four skills, ready to drop into `.claude/skills/` |
-| `reference tools/` | Working standup, checkpoint, lint, and usage-sheet scripts to adapt, not rewrite |
+| `reference tools/` | Working standup, checkpoint, lint, usage-sheet, and update-check scripts to adapt, not rewrite |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `GODOT_FIELD_NOTES.md` | Domain example: hard-won Godot engine lessons (skip if not Godot) |
 | `CLICKER_DESIGN_NOTES.md` | Domain example: idle/clicker genre lessons (skip if not that genre) |
