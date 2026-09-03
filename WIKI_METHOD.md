@@ -82,6 +82,18 @@ of thousands.
   line, plus See also lines linking it into the web both ways.
 - **RESOLVED/HISTORICAL notes move to a history file** so live files stay
   current; superseded sections say so where they stand.
+- **TAGS + THE KNOWLEDGE INDEX (Mazhron approved 2026-09-03).** A section
+  whose content is hard-won (a lesson, a trap, a doctrine) carries, directly
+  under its heading: `Tags: tag1, tag2 | one-line brief of the takeaway`.
+  Starter tags: lessons, gotchas, architecture, performance, process,
+  design, economy - invent a new one only when none fits. A script compiles
+  every Tags line into a GENERATED index file (one section per tag, one
+  clickable line per entry linking to the fact's TRUE home - no
+  duplication), so a HUMAN browsing the wiki gets every pitfall and lesson
+  at their fingertips, and new files/tags grow the index automatically
+  (reference implementation: Everwood's tools/export_tag_index.py ->
+  KNOWLEDGE_INDEX.md). Tag new hard-won sections as they are written -
+  same incremental law as headings.
 
 ## Bootstrapping a NEW project (what Claude does on request)
 

@@ -8,6 +8,7 @@ live HERE, game-specific detail lives in that game's own docs.
 ---
 
 ## Cost curves (the shapes, and when each feels right)
+Tags: design, economy | Pick curve shapes deliberately, and always compare cumulative costs across currencies
 
 The full toolkit, all worth exposing as data on every upgrade:
 
@@ -44,6 +45,7 @@ cost systems into resources so tools could edit them. Starting data-driven
 is free; migrating later costs a day each time.
 
 ## Clicking and auto-clicking
+Tags: design | Teach clicking first, batch auto-click rate but keep per-target feedback intact
 
 - **The taught verb is CLICK.** Holding/auto-fire is an UPGRADE the player
   earns - never teach "hold" first, or the upgrade means nothing.
@@ -60,6 +62,7 @@ is free; migrating later costs a day each time.
   the target - a click that visibly banked is never a wasted click.
 
 ## Progression, gating, and discovery
+Tags: design | Pace discovery with mystery slots and inline unlock hints, never silent walls
 
 - **Mystery rows** ("??? - unlocks after N Rebirths") pace discovery across
   prestiges; never show the name or effect early. In-shop chains
@@ -74,6 +77,7 @@ is free; migrating later costs a day each time.
   run numbers at run start, so nothing balance-relevant is inlined in logic.
 
 ## The prestige economy
+Tags: design, economy | Reward two different sources, snapshot on disaster, weight value at earn time
 
 - **Two currencies from two DIFFERENT sources** keeps prestige interesting:
   one from lifetime accumulation (a % of everything earned - note: ALL
@@ -102,6 +106,7 @@ is free; migrating later costs a day each time.
   and the balance passes both want it.
 
 ## Offline progress
+Tags: design, economy | Pace-based offline earn, capped hours, is cheap and exploit-resistant
 
 The shape that worked: while away, earn a FRACTION of the run's recent
 income PACE - a slow EMA sampled during play and saved with the campaign -
@@ -112,6 +117,7 @@ were away" report card on return. Pace-based (not state-simulated) offline
 is cheap, exploit-resistant, and reads fair.
 
 ## Feedback economics (numbers the player can trust)
+Tags: design | Ship full number suffixes and per-source breakdowns so players trust the numbers
 
 - **Ship the whole suffix ladder** (k, M, B, T, Qa, Qi, Sx, Sp, Oc, No,
   Dc...) from the start - idle games reach big numbers faster than you
@@ -130,6 +136,7 @@ is cheap, exploit-resistant, and reads fair.
   where it comes from."
 
 ## Balance instrumentation (the telemetry that answers "where do they stall")
+Tags: process, economy | Log per-event progression telemetry locally to find stalls playtesting misses
 
 Build a local, opt-in, per-event progression log:
 
@@ -148,6 +155,7 @@ each era. Pair it with a frame-time tracer (see GODOT_FIELD_NOTES.md) so
 balance sessions double as performance sessions.
 
 ## The tooling workflow ("nothing lives only in code")
+Tags: process, architecture | If a designer cannot edit a number in the tool, that is a bug
 
 The single highest-leverage decision of the project:
 
@@ -171,6 +179,7 @@ The single highest-leverage decision of the project:
   captures need them.
 
 ## Living-ecosystem idle (the sub-genre lessons)
+Tags: design | Gate population by food supply and match sense and eat thresholds exactly
 
 If the idle economy is an ECOSYSTEM (creatures, food chains) rather than
 pure numbers:

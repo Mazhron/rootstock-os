@@ -8,6 +8,7 @@ by design: nothing below depends on Everwood's code.
 ---
 
 ## Rendering and the 2D performance model
+Tags: performance, gotchas | Renderer choice and per-item costs matter more than texture packing alone
 
 - **GL Compatibility barely batches across canvas items.** Measured
   directly: forcing ONE texture onto ~5,700 sprites still produced ~2,400
@@ -54,6 +55,7 @@ by design: nothing below depends on Everwood's code.
   adjacently into the same sheet, never split a category across sheets.
 
 ## Simulation architecture (the patterns that scaled)
+Tags: architecture, performance | Pool objects, tick centrally in buckets, and let the grid be the spatial hash
 
 - **Pool everything; never instantiate/queue_free during gameplay.** Pooled
   scenes implement pool_activate()/pool_reset(). Corollary trap:
@@ -102,6 +104,7 @@ by design: nothing below depends on Everwood's code.
   rate; the monitor apparently misattributes frame-pacing time.
 
 ## GDScript and API gotchas
+Tags: gotchas | Godot 4 language and API traps that silently break code or drop behavior
 
 - `-1 << 30` is a PARSE ERROR (negative shift operand). Use a plain literal
   sentinel.
@@ -128,6 +131,7 @@ by design: nothing below depends on Everwood's code.
   as `Op.ADD`, not a number. Write explicit values in generated tres files.
 
 ## Files, editor, and project plumbing
+Tags: gotchas, process | Editor, export, and tooling traps that cause silent failures
 
 - **Hand-written .tscn typed node exports need the header attribute** or the
   export silently stays null:
@@ -146,6 +150,7 @@ by design: nothing below depends on Everwood's code.
   time can pass in seconds (or a "25 minute" mistake).
 
 ## Debugging and measurement (the toolkit that cracked the case)
+Tags: process, performance | Instrument every frame and measure windowed, not just headless, to find real costs
 
 - **Read stderr.** `2>$null` hid SCRIPT ERRORs for days: a totally silent
   test run almost always means a parse error upstream, not a hung test.
@@ -179,6 +184,7 @@ by design: nothing below depends on Everwood's code.
   atlas and the Forward+ switch render identically).
 
 ## Process habits that repeatedly paid off
+Tags: process, lessons | Self-test everything, data-drive every number, and trust player reports
 
 - Self-test everything behind env vars with one PASS/FAIL line; run tests
   headless before every commit. A parse error that reaches main costs more
