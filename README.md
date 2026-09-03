@@ -27,6 +27,42 @@ Everything in Rootstock is a variation on one insight:
 > Keep the manager's context small, and let cheap, disposable contexts do
 > the reading.
 
+### The receipts: 44 metered days of the origin project
+
+None of the above is a guess. The harness writes a full transcript of every
+session, and every request in it carries the real API meter; Rootstock's
+usage sheet ("reference tools/usage_report.py") totals those meters per
+model and per tool by day, week, and month. From Everwood, the origin
+project - one machine, 2026-07-22 to 2026-09-03, 7,573 metered requests:
+
+- The model GENERATED ~7.6M tokens. To generate them it RE-READ ~3.8
+  BILLION tokens of context - 498 tokens re-read for every token written.
+  Cached re-reads are billed at a tenth of the input price and context is
+  STILL roughly 93% of the weighted token bill. The bill is the context.
+- The most expensive tool by far is reading files: ~22.6M tokens of file
+  content injected across 955 Reads - nearly 8x all Edits and Writes
+  combined - and every injected token is then re-read by every later turn.
+  Whatever teaches the model to read less, wins.
+
+And the before/after, same model, same project, from the sheet:
+
+- **The wiki diet** (adopted Aug 24: grep a file's headings, read only the
+  section you need). Average file content injected per Read: ~35k tokens
+  before (Aug 1-23), ~21k after (Aug 24 - Sep 1), ~10k once the habits
+  compounded (Sep 2-3). Same codebase, 71% less paid per read.
+- **The checkpoint protocol** (adopted Sep 2: day files make /clear
+  lossless, so sessions actually end). In the last days of the
+  endless-session era, context had accreted until the model was re-reading
+  810-898k tokens PER REQUEST (Aug 26-27). The first two cleared-session
+  days averaged ~267k per request - a 69% cut against that peak - while
+  Sep 3 did three times the requests of an Aug 26-27 day.
+
+Different days do different work, so read the percentages as one project's
+honest metering, not a controlled benchmark. But the mechanism is
+arithmetic, not anecdote: a session that clears re-reads a small context
+many times instead of a huge one, and a model that reads sections stops
+paying for whole files on every turn that follows.
+
 ## The four pillars
 
 ### 1. The Knowledge Wiki (WIKI_METHOD.md)
