@@ -35,5 +35,12 @@ if problems:
     for p in problems:
         print(" - " + p)
     sys.exit(1)
-print("CLAUDE.md CHECK: OK (%d lines, %d library files indexed)"
-      % (len(lines), len(on_disk)))
+
+# The expansion-doctrine count (Mazhron 2026-09-03): knowledge files are
+# cheap and MEANT to multiply - this is informational, never a failure.
+# At a round-1000 milestone, the manager mentions it to the user once.
+kcount = len([n for n in os.listdir(ROOT) if n.endswith(".md")]) + len(on_disk)
+note = "  <- crossed a 1000-file milestone: mention it to the user (informational; growth is good)" \
+    if kcount >= 1000 else ""
+print("CLAUDE.md CHECK: OK (%d lines, %d library files indexed, %d knowledge files%s)"
+      % (len(lines), len(on_disk), kcount, note))

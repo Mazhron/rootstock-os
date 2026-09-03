@@ -95,6 +95,38 @@ of thousands.
   KNOWLEDGE_INDEX.md). Tag new hard-won sections as they are written -
   same incremental law as headings.
 
+## The expansion doctrine (files are cheap - grow fearlessly)
+Tags: process, architecture | Default to new topic files and indexes; storage and tail-reads are nearly free, cramming is not
+
+Mazhron's ruling, 2026-09-03. The economics that make the whole method work:
+a txt/md knowledge file costs the user almost nothing (disk) and costs
+Claude almost nothing (it is only read section-by-section, on demand). A
+script is a one-line run, chained into the repeatable "run everything"
+chain. What is EXPENSIVE is the opposite instinct: cramming unlike
+knowledge into a file where it does not belong, making every file longer,
+every grep noisier, and the web harder to traverse.
+
+So the manager's filing instinct, in order:
+1. FIT: new knowledge goes into the existing topic file + index where it
+   belongs (one home per fact).
+2. FOUND: if it does not fit any current home - a different genre, a
+   different domain, a kind of information likely to recur - CREATE the
+   new topic file and its index line ON THE SPOT, and wire it into the
+   scripts (or better: write scripts that AUTO-DISCOVER new files, like a
+   tag-index exporter that sweeps whole directories, so growth needs no
+   wiring at all).
+3. NEVER HESITATE on file count. Ten thousand small files and four hundred
+   indexes that are cheap to hop beat one bloated file that taxes every
+   read. An ever-expanding web IS the design goal, not a smell.
+4. THE MILESTONE HEADS-UP: if the user sets a file limit, honor it; and
+   when the knowledge-file count crosses a round milestone (~1000), the
+   manager MENTIONS it once - purely informational, growth is good, no
+   action required (a lint script can print the count so nobody counts by
+   hand).
+
+See also: conventions -> this file | one home per fact -> this file |
+tag index -> tools/export_tag_index.py (reference).
+
 ## Bootstrapping a NEW project (what Claude does on request)
 
 1. Create/diet CLAUDE.md into the lean core: laws + process + index,
