@@ -181,6 +181,25 @@ session cost. Structure is where the money is.)
 That is the whole handoff. The front-door file exists precisely so that a
 stranger's Claude needs no other instructions.
 
+## Updating an installed project
+
+Rootstock keeps growing, but an installed project must NEVER be updated by
+copying newer kit files over it. An install is an adaptation: Claude
+renamed paths, tailored the core file, and your project has since grown its
+own knowledge into those files - overwriting them would destroy the very
+thing the system protects. So the kit updates CONCEPTS, not files:
+
+- The kit is versioned, and `UPGRADES.md` is its **graft log**: one entry
+  per concept added, each with WHAT it is, which kit files CARRY it, and
+  how to GRAFT it onto an existing install.
+- Installing stamps a "Rootstock vX.Y installed" line into the project's
+  CLAUDE.md.
+- To update: pull this repo (or hand Claude the new folder) and say
+  **update rootstock**. Claude reads the graft log's entries newer than
+  the project's stamp, applies each concept to the project's OWN files in
+  its own names and voice, and bumps the stamp. Anything that would
+  contradict a choice you made on purpose gets flagged, never overwritten.
+
 ## What is in the box
 
 | File | What it is |
@@ -191,7 +210,8 @@ stranger's Claude needs no other instructions.
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, five laws, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
 | `skills/` | The four skills, ready to drop into `.claude/skills/` |
-| `reference tools/` | Working standup, checkpoint, and lint scripts to adapt, not rewrite |
+| `reference tools/` | Working standup, checkpoint, lint, and usage-sheet scripts to adapt, not rewrite |
+| `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `GODOT_FIELD_NOTES.md` | Domain example: hard-won Godot engine lessons (skip if not Godot) |
 | `CLICKER_DESIGN_NOTES.md` | Domain example: idle/clicker genre lessons (skip if not that genre) |
 
