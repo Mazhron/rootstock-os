@@ -43,6 +43,11 @@ thing exists. Then build the session loop:
 - docs/history/days/ + days_index.txt - the daily log.
 Reference copies of both scripts are in "reference tools/" - they WORK but
 carry the origin project's ledger names and paths; adapt, don't rewrite.
+Same folder: usage_report.py, the usage sheet (REPORTING_METHOD.md section
+"mine the harness meter") - it mines ~/.claude/projects/ transcripts for
+real per-model/per-tool token totals by day/week/month; adapt its output
+paths + the project-name filter in transcript_dirs() and it works in any
+Claude Code project unchanged.
 The protocol they serve: tick after every task; at arc end push, refresh
 the day file's WHERE WE LEFT OFF with BOTH sides of the final exchange
 (CEO's last prompt + manager's last response, VERBATIM - exact words in

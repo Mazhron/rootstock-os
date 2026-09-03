@@ -58,6 +58,25 @@ across optimizations), build/export runs, data-regeneration passes. One
 ledger file per kind, same line discipline. When a number matters enough to
 mention in a conversation, it matters enough to append.
 
+## The usage sheet: mine the harness meter, never self-estimate
+
+A model cannot see its own token meter - but the HARNESS can, and it writes
+it down. Claude Code keeps full session transcripts under
+~/.claude/projects/<project>/*.jsonl (sub-agent runs in
+<session>/subagents/agent-*.jsonl): every assistant message carries the real
+API usage (model, input/output/thinking tokens, cache reads/writes) and
+every tool call is named. A miner script aggregates that into ONE derived
+sheet - totals per day / week / month for each model and each tool, CSV for
+humans + a TXT twin - replacing all self-estimated token figures with
+metered truth. Dollars stay estimates (price tokens from a table in the
+script); the billing dashboard is the only dollar truth. Two laws learned
+building it: (a) the transcripts ARE the ledger, so the sheet REGENERATES
+whole instead of appending; (b) key rows by machine/workstation - each
+machine only sees its own transcripts, so a run must only rewrite its own
+rows. Reference implementation: Everwood's tools/usage_report.py
+(incremental byte-offset cache; a 274MB transcript parses once, reruns
+read only new bytes).
+
 ## Evidence this pays (Everwood, the origin project, day one of the method)
 
 The FIRST full baseline through the new runner caught, in one afternoon:
