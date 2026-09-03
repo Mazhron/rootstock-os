@@ -164,6 +164,7 @@ manages rather than assume.
 
 Built by **Mazhron (Travis Rhoda)** with Claude.
 Watch the game it grew from: Everwood, on [YouTube @Mazhron](https://www.youtube.com/@Mazhron).
+Play it before it launches: [Everwood on itch.io](https://mazhron.itch.io/everwood).
 
 ## License
 
