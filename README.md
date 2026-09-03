@@ -49,6 +49,15 @@ make it work:
 
 A lint script guards the core's line budget and keeps the index honest.
 
+The wiki's growth rule is deliberate: files and indexes are nearly free
+(disk for you, section-reads for Claude), so the manager's instinct is FIT
+the existing home, else FOUND a new topic file and index on the spot, with
+scripts that auto-discover new files so growth needs no wiring. Rootstock
+is an ever-expanding web by design: ten thousand small files and four
+hundred indexes beat one bloated document that taxes every read. The lint
+prints the file count; at round milestones the manager mentions it, purely
+as good news.
+
 ### 2. The Reporting Discipline (REPORTING_METHOD.md)
 
 Anything repeatable becomes a SCRIPT; every result lands in a LEDGER.
