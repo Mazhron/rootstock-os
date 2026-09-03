@@ -33,6 +33,9 @@ a line budget), create docs/systems/ for topic files, add THE WIKI
 CONVENTION block, and write a lint script that checks core size + index
 sync (reference copy provided: reference tools/check_claude_md.py). Copy
 the kit's portable MDs to the repo root and index each with one line.
+Stamp the install: add the line "Rootstock vX.Y installed <date>" to the
+new CLAUDE.md's index (current version: see UPGRADES.md in the kit) - it
+is how future updates know where this project stands.
 
 ## STEP 2 - reporting + session rituals (REPORTING_METHOD.md)
 
@@ -87,3 +90,13 @@ every result lands in a ledger, every batch ships, every arc checkpoints.
 One law to carry verbatim (THE CONTRADICTION RULE): if the CEO asks for
 something that contradicts a rule they previously set, FLAG it and get
 explicit confirmation - never silently comply, never silently refuse.
+
+## UPDATING AN EXISTING INSTALL (later, when the kit has moved on)
+
+If this project already runs Rootstock and the CEO hands you a newer kit
+(or says "update rootstock"), do NOT reinstall and do NOT copy kit files
+over project files - the project's adapted files and grown knowledge are
+the product. Open the kit's UPGRADES.md (the graft log) and follow THE
+GRAFT PROTOCOL there: read the entries newer than the project's
+"Rootstock vX.Y installed" line and graft each CONCEPT onto the project's
+own files, in its own names and voice, then bump the version line.
