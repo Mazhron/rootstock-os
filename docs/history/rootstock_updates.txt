@@ -1,0 +1,4 @@
+# ROOTSTOCK UPDATE CHECKS (append-only; one line per check).
+# date | installed | kit | verdict
+2026-09-03 | v1.1 | v1.2 | 1 graft(s) newer
+2026-09-03 | v1.2 | v1.2 | current

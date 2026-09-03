@@ -24,6 +24,11 @@ Search keys: bootstrap, new project setup, kit install, read me first.
    CLICKER_DESIGN_NOTES.md is idle/clicker-genre-specific. If the project
    is neither, leave them in a "reference/" folder unindexed - they are
    examples of what an engine-notes / genre-notes file should become.
+5. UPDATE POLICY: when the kit itself gains new concepts, should I ask
+   which to graft (ask), apply them all (auto), offer only ones that
+   benefit this project (relevant), or stay quiet unless asked (never)?
+   Default is ask; the answer lives in the install stamp and changes any
+   time the CEO says so.
 
 ## STEP 1 - the wiki (WIKI_METHOD.md, bootstrap section)
 
@@ -33,9 +38,12 @@ a line budget), create docs/systems/ for topic files, add THE WIKI
 CONVENTION block, and write a lint script that checks core size + index
 sync (reference copy provided: reference tools/check_claude_md.py). Copy
 the kit's portable MDs to the repo root and index each with one line.
-Stamp the install: add the line "Rootstock vX.Y installed <date>" to the
-new CLAUDE.md's index (current version: see UPGRADES.md in the kit) - it
-is how future updates know where this project stands.
+Stamp the install: add the line "Rootstock vX.Y installed <date> |
+updates: ask" to the new CLAUDE.md's index (current version: see
+UPGRADES.md in the kit) - it is how future updates know where this
+project stands, and the last word is the CEO's UPDATE POLICY
+(ask/auto/relevant/never; ask the CEO once at STEP 0, changeable any
+time by just saying so).
 
 ## STEP 2 - reporting + session rituals (REPORTING_METHOD.md)
 
@@ -50,7 +58,11 @@ Same folder: usage_report.py, the usage sheet (REPORTING_METHOD.md section
 "mine the harness meter") - it mines ~/.claude/projects/ transcripts for
 real per-model/per-tool token totals by day/week/month; adapt its output
 paths + the project-name filter in transcript_dirs() and it works in any
-Claude Code project unchanged.
+Claude Code project unchanged. Also rootstock_update_check.py - adapt its
+config lines and WIRE IT INTO YOUR STANDUP script (it is weekly
+rate-limited, offline-safe, and one ledger line per check), so "is there
+a newer Rootstock?" answers itself per the CEO's update policy instead of
+depending on anyone remembering to ask.
 The protocol they serve: tick after every task; at arc end push, refresh
 the day file's WHERE WE LEFT OFF with BOTH sides of the final exchange
 (CEO's last prompt + manager's last response, VERBATIM - exact words in
@@ -94,9 +106,11 @@ explicit confirmation - never silently comply, never silently refuse.
 ## UPDATING AN EXISTING INSTALL (later, when the kit has moved on)
 
 If this project already runs Rootstock and the CEO hands you a newer kit
-(or says "update rootstock"), do NOT reinstall and do NOT copy kit files
-over project files - the project's adapted files and grown knowledge are
-the product. Open the kit's UPGRADES.md (the graft log) and follow THE
-GRAFT PROTOCOL there: read the entries newer than the project's
-"Rootstock vX.Y installed" line and graft each CONCEPT onto the project's
-own files, in its own names and voice, then bump the version line.
+(or says "update rootstock", or the standup update check reports newer
+grafts), do NOT reinstall and do NOT copy kit files over project files -
+the project's adapted files and grown knowledge are the product. Open the
+kit's UPGRADES.md (the graft log) and follow THE GRAFT PROTOCOL there:
+read the entries newer than the project's "Rootstock vX.Y installed"
+line, act per the CEO's update policy (ask/auto/relevant/never - stored
+in that same line), graft each chosen CONCEPT onto the project's own
+files in its own names and voice, then bump the version line.

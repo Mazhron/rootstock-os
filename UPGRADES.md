@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.2** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.3** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -18,8 +18,15 @@ to graft it onto a project's own files, whatever they are named there.
 ## THE GRAFT PROTOCOL (for the Claude performing an update)
 
 1. Find the installed version: the project's CLAUDE.md carries a line
-   "Rootstock vX.Y installed ..." (an install that predates version marks
-   counts as v1.0 - add the line while you are there).
+   "Rootstock vX.Y installed <date> | updates: <policy>" (an install that
+   predates version marks counts as v1.0 - add the line while you are
+   there). The POLICY word is the CEO's standing answer to "should I
+   update?": **ask** (default - present newer grafts, CEO picks), **auto**
+   (graft everything newer, report after), **relevant** (offer only grafts
+   that benefit THIS project; record skips so they are never re-offered),
+   **never** (check only when the CEO explicitly asks). The CEO changes it
+   any time by saying so ("update automatically", "stop asking about
+   updates", "only show me relevant updates").
 2. Get the current kit (the CEO hands you the folder, or pull
    github.com/Mazhron/rootstock-os) and read THIS file's entries NEWER
    than the installed version.
@@ -73,3 +80,19 @@ the UPDATING section.
 GRAFT: add the "Rootstock v1.2 installed" line to the project's CLAUDE.md
 index. Do NOT copy this file into projects - the graft log lives in the
 KIT only, where it stays current; a project needs just its version line.
+
+### v1.3 - 2026-09-03 - The update check + the update policy
+WHAT: projects stop discovering updates by luck. A small script reads the
+project's install stamp, fetches the kit's UPGRADES.md (local clone or
+the public repo over HTTPS), compares versions, prints any newer grafts,
+and states what the CEO's update POLICY (ask/auto/relevant/never, kept in
+the stamp line) tells the manager to do. Checks are rate-limited to
+weekly, never fail offline, and ledger one line per check; wired into
+standup, the reminder rides an existing habit instead of being one more
+thing to remember.
+CARRIES: reference tools/rootstock_update_check.py; the protocol's stamp
++ policy wording above; front door STEP 1 stamp + UPDATING section.
+GRAFT: copy rootstock_update_check.py fresh into the project's tools/,
+adapt STAMP_FILE/KIT_CLONE at its top, add it to the project's standup
+script or runner group, and extend the project's stamp line with
+"| updates: ask" (or the CEO's chosen policy - ask them once).
