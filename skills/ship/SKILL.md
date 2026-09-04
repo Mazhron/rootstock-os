@@ -25,8 +25,12 @@ Run after EVERY completed batch of work; the user should never have to ask.
 7. Tick the checkpoint counter (`python tools/checkpoint.py --tick`) and
    relay any warning.
 
-Changelog EXPORT (publishing) stays a user-triggered step
-(`python tools/export_changelog.py`) - do not run it unprompted.
+Changelog EXPORT ships with the batch, unprompted (user ruling
+2026-09-04: "Without my asking the changelog should be updated").
+In Everwood, make_builds.py runs the export itself; a batch that
+ships WITHOUT a build runs `python tools/export_changelog.py` by
+hand before the batch counts as done. (This reverses the old
+"user-triggered" line - 0.99.2..0.99.9 piled up under it.)
 
 Search keys: ship, commit ritual, batch end, build zips, changelog voice.
 See also: checkpoint skill (arc-level close); REPORTING_METHOD.md (ledgers).

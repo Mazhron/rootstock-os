@@ -50,11 +50,14 @@ CACHE_VERSION = 1
 # $ per MILLION tokens: model -> (input, output). None = unknown; fill from
 # the billing page / claude.com/pricing and the cost column comes alive.
 # Cache pricing law: read = 0.1x input; 5-min write = 1.25x; 1-hour write = 2x.
+# Rates confirmed 2026-09-04 against Anthropic's published first-party API
+# pricing (haiku 4.5 / sonnet 5 / opus 5 / fable 5). The old opus row was
+# the Opus 4.1-era 15/75 - Opus 5-tier is 5/25.
 PRICING = {
     "haiku": (1.0, 5.0),
     "sonnet": (3.0, 15.0),
-    "opus": (15.0, 75.0),
-    "fable": None,   # fill from the billing dashboard when published
+    "opus": (5.0, 25.0),
+    "fable": (10.0, 50.0),
 }
 
 FIELDS = ["period_type", "period", "ws", "scope", "name", "role", "count",
