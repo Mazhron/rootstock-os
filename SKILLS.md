@@ -16,8 +16,10 @@ the skills operationalize).
 
 - **/standup** - session opener. Runs the standup digest and hands back the
   last exchange (user's prompt + manager's response, both sides, VERBATIM -
-  exact words, never paraphrased) and the project state before anything
-  else. Use at every session start and after /clear.
+  exact words, never paraphrased; mined from the HARNESS TRANSCRIPT, the
+  ground-truth record on disk, so it survives a mid-arc /clear) and the
+  project state before anything else. Use at every session start and after
+  /clear.
 - **/checkpoint** - arc closer. Push, refresh the day file's WHERE WE LEFT
   OFF (both sides of the final exchange VERBATIM + state + next-likely;
   write the reply into the file, then send that exact text), reset the

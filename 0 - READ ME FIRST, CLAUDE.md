@@ -49,7 +49,8 @@ time by just saying so).
 
 Create docs/history/ and the runner script the day the first repeatable
 thing exists. Then build the session loop:
-- tools/standup.py - the session opener (digest + WHERE WE LEFT OFF).
+- tools/standup.py - the session opener (digest + THE LAST EXCHANGE mined
+  verbatim from the harness transcripts + WHERE WE LEFT OFF).
 - tools/checkpoint.py - the task counter + checkpoint protocol.
 - docs/history/days/ + days_index.txt - the daily log.
 Reference copies of both scripts are in "reference tools/" - they WORK but
@@ -67,7 +68,11 @@ The protocol they serve: tick after every task; at arc end push, refresh
 the day file's WHERE WE LEFT OFF with BOTH sides of the final exchange
 (CEO's last prompt + manager's last response, VERBATIM - exact words in
 quote blocks, never condensed; write the reply into the file, then send
-that exact text), reset, and emit the safe-to-clear marker. Day one:
+that exact text), reset, and emit the safe-to-clear marker. The verbatim
+replay itself is MECHANICAL: standup mines the final exchange from the
+harness transcripts (~/.claude/projects/<slug>/*.jsonl), so a mid-arc
+/clear cannot lose it and no one's discipline is load-bearing; the
+day-file copy is the committed, searchable record. Day one:
 record a baseline run in a ledger.
 
 ## STEP 3 - the delegation company (SUBAGENT_METHOD.md, bootstrap section)

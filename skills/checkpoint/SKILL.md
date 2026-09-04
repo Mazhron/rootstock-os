@@ -21,6 +21,10 @@ SEQUENCE
      section containing the reply you are ABOUT to send, then send
      exactly that text. The user must recognize their own words at the
      next standup - a paraphrase is a failed checkpoint.
+     (SAFETY NET: standup independently mines the true final exchange
+     from the harness transcript, so a mid-arc /clear no longer loses
+     post-checkpoint work - but this section remains the committed,
+     searchable record; keep writing it faithfully.)
    - STATE (version, tree, what shipped this arc)
    - OPEN QUEUE / NEXT LIKELY
 3. Run `python tools/checkpoint.py --reset`.

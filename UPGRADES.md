@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.3** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.4** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -96,3 +96,22 @@ GRAFT: copy rootstock_update_check.py fresh into the project's tools/,
 adapt STAMP_FILE/KIT_CLONE at its top, add it to the project's standup
 script or runner group, and extend the project's stamp line with
 "| updates: ask" (or the CEO's chosen policy - ask them once).
+
+### v1.4 - 2026-09-03 - The last exchange from ground truth
+WHAT: standup's verbatim replay of the final exchange (CEO's last prompt +
+manager's last response) no longer depends on the day file, which is only
+as fresh as the last checkpoint - a mid-arc /clear used to replay a STALE
+or condensed exchange (it failed three times in one day before this).
+Standup now mines THE LAST EXCHANGE directly from the harness transcripts
+(~/.claude/projects/<slug>/*.jsonl, the same ground truth the usage sheet
+meters): newest assistant text reply + the user prompt before it, skipping
+tool results, command wrappers, and the standup trigger itself. Word for
+word, image attachments counted, immune to manager discipline. The
+day-file WHERE WE LEFT OFF remains the committed, searchable record.
+CARRIES: reference tools/standup.py (print_last_exchange + the transcript
+helpers); skills/standup + skills/checkpoint SKILL.md wording; front door
+STEP 2 (both the script bullet and the protocol paragraph).
+GRAFT: copy the _slug/_transcript_files/_mine_exchange/print_last_exchange
+block from reference tools/standup.py into the project's standup script
+and call it first; refresh the project's standup + checkpoint skills from
+the kit's skills/ copies. Nothing else changes.
