@@ -22,8 +22,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def sh(args):
-    return subprocess.run(args, cwd=ROOT, capture_output=True, text=True,
-                          timeout=60).stdout.strip()
+    try:
+        return subprocess.run(args, cwd=ROOT, capture_output=True, text=True,
+                              timeout=60).stdout.strip()
+    except OSError:
+        return ""  # tool missing (e.g. no git) - sections degrade, not crash
 
 
 def _slug(path):
@@ -201,17 +204,31 @@ def main():
                   "COMPLETED list)")
 
     print("== VERSION + RECENT COMMITS")
-    with open(os.path.join(ROOT, "project.godot"), encoding="utf-8") as fh:
-        m = re.search(r'config/version="([^"]+)"', fh.read())
-    print("  version: %s" % (m.group(1) if m else "?"))
-    for ln in sh(["git", "log", "--oneline", "-%d" % args.commits]).splitlines():
-        print("  " + ln)
+    # Version source is per-project: Everwood reads project.godot. In a
+    # non-Godot install, adapt this block (package.json, pyproject.toml,
+    # a VERSION file...) - a missing source degrades to "?", never crashes.
+    try:
+        with open(os.path.join(ROOT, "project.godot"), encoding="utf-8") as fh:
+            m = re.search(r'config/version="([^"]+)"', fh.read())
+        print("  version: %s" % (m.group(1) if m else "?"))
+    except OSError:
+        print("  version: ? (no project.godot - adapt the version block)")
+    log = sh(["git", "log", "--oneline", "-%d" % args.commits])
+    if log:
+        for ln in log.splitlines():
+            print("  " + ln)
+    else:
+        print("  (no git history - not a git repo, or git unavailable)")
 
     print("== NEWEST WS NOTES (headlines only - open CLAUDE.md for a body)")
-    with open(os.path.join(ROOT, "CLAUDE.md"), encoding="utf-8") as fh:
-        heads = re.findall(r"^- \*\*(→ WS[^:]{0,110})", fh.read(), flags=re.M)
-    for h in heads[:6]:
-        print("  " + h.strip())
+    try:
+        with open(os.path.join(ROOT, "CLAUDE.md"), encoding="utf-8") as fh:
+            heads = re.findall(r"^- \*\*(→ WS[^:]{0,110})", fh.read(),
+                               flags=re.M)
+        for h in heads[:6]:
+            print("  " + h.strip())
+    except OSError:
+        print("  (no CLAUDE.md)")
 
     print("== LEDGER TAILS (docs/history/)")
     for path in sorted(glob.glob(os.path.join(ROOT, "docs", "history", "*.txt"))):
@@ -224,10 +241,13 @@ def main():
                 print("    " + ln)
 
     print("== OPEN ROADMAP (NEXT_STEPS index)")
-    with open(os.path.join(ROOT, "NEXT_STEPS.md"), encoding="utf-8") as fh:
-        for ln in fh:
-            if ln.startswith("- [NS-"):
-                print("  " + ln.strip())
+    try:
+        with open(os.path.join(ROOT, "NEXT_STEPS.md"), encoding="utf-8") as fh:
+            for ln in fh:
+                if ln.startswith("- [NS-"):
+                    print("  " + ln.strip())
+    except OSError:
+        print("  (no NEXT_STEPS.md)")
 
     days_index = os.path.join(ROOT, "docs", "history", "days_index.txt")
     if os.path.isfile(days_index):

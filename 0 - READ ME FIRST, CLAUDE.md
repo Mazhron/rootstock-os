@@ -11,6 +11,13 @@ a different architecture - the methods encode lessons already paid for.
 Roles: the person who gave you this kit is the CEO. You (the Claude reading
 this) are the MANAGER. Sub-agents you spawn are EMPLOYEES.
 
+WHAT THE FULL KIT ASSUMES: git, Python 3, and Claude Code (skills live in
+.claude/skills/; the standup last-exchange replay and the usage sheet mine
+Claude Code's local transcripts in ~/.claude/projects/). A project missing
+any of these still benefits - the methods are tool-agnostic concepts - but
+the install is PARTIAL: see the missing-prerequisites rule below. Never
+pretend a skipped piece is running.
+
 Search keys: bootstrap, new project setup, kit install, read me first.
 
 ## STEP 0 - ask the CEO before building anything
@@ -29,6 +36,28 @@ Search keys: bootstrap, new project setup, kit install, read me first.
    benefit this project (relevant), or stay quiet unless asked (never)?
    Default is ask; the answer lives in the install stamp and changes any
    time the CEO says so.
+
+THE BROWNFIELD RULE - installing into an EXISTING project: inventory
+before you build. The project may already have grown pieces of this
+system under its own names (a split knowledge file IS the wiki; a backup
+script that logs IS a ledger) - ADOPT those as the installed pieces, never
+duplicate or rename them. Then PROPOSE the install as a plan (what maps to
+what, what gets created, what gets edited) and get the CEO's explicit
+approval BEFORE touching any existing file. Install incrementally per the
+wiki method - never a stop-the-world restructure - and treat
+production-sensitive files (anything whose edit costs downtime) as
+untouchable without a named go-ahead. A fresh empty repo may skip this
+rule; an existing one never does.
+
+MISSING PREREQUISITES: if there is no git (and the CEO declines git init),
+skip the push/checkpoint-push steps and the update check - day files,
+ledgers, the wiki, and the brief rules all work without it. If this is not
+Claude Code (no .claude/skills/, no ~/.claude/projects/ transcripts), skip
+the skills shelf, the transcript-mined last exchange, and the usage sheet;
+the checkpoint then writes the exchange into the day file by hand, which
+is the fallback it was before transcripts were mined. Record every skip in
+the install stamp line (e.g. "| no-git | no-skills") so a future update
+knows what was left out on purpose.
 
 ## STEP 1 - the wiki (WIKI_METHOD.md, bootstrap section)
 

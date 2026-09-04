@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.4** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.5** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -115,3 +115,25 @@ GRAFT: copy the _slug/_transcript_files/_mine_exchange/print_last_exchange
 block from reference tools/standup.py into the project's standup script
 and call it first; refresh the project's standup + checkpoint skills from
 the kit's skills/ copies. Nothing else changes.
+
+### v1.5 - 2026-09-04 - Honest prerequisites + the brownfield rule
+WHAT: the first outside review (a stranger's Claude, fed the repo) found
+two assumptions the kit never stated - it expects git and Claude Code -
+and a real hazard: "install the kit" pointed at a live production repo
+invited an unapproved restructure. Now written down: the front door opens
+with WHAT THE FULL KIT ASSUMES; STEP 0 gains THE BROWNFIELD RULE
+(inventory first, adopt what already exists under other names, propose
+the mapping, get explicit CEO approval before editing anything existing,
+never a stop-the-world restructure, production-sensitive files
+untouchable without a named go-ahead) and MISSING PREREQUISITES (no git
+or no Claude Code = a PARTIAL install of the pieces that stand alone,
+skips recorded in the install stamp). reference tools/standup.py now
+degrades instead of crashing when project.godot, git, CLAUDE.md, or
+NEXT_STEPS.md are absent. README gains "What you need (and what still
+works without it)".
+CARRIES: front door (assumes block + the two STEP 0 rules); reference
+tools/standup.py; the kit repo's README.
+GRAFT: nothing to apply to healthy installed projects - this entry
+protects FUTURE installs. If a project was installed partially, add the
+skip markers to its stamp line (e.g. "| no-git") so update checks stop
+offering machinery it cannot run.
