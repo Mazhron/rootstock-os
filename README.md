@@ -169,6 +169,31 @@ origin project evaluated the viral "let the AI invent its own compressed
 language" idea and declined it with receipts; prompts are under 1% of
 session cost. Structure is where the money is.)
 
+## What you need (and what still works without it)
+
+The FULL kit assumes three things: **git**, **Python 3**, and **Claude
+Code** (the skills install into `.claude/skills/`; the standup
+last-exchange replay and the usage sheet mine Claude Code's local
+transcripts in `~/.claude/projects/`). The reference scripts come from the
+origin project and degrade gracefully rather than crash, but they are
+meant to be adapted - version strings, ledger names, and paths are
+per-project.
+
+Missing a prerequisite is fine, and the front door knows what to do about
+it: no git means the push/update machinery is skipped while day files,
+ledgers, the wiki, and the sub-agent brief rules all still work; no Claude
+Code means the skills and transcript miners are skipped and the checkpoint
+writes the session record by hand. And the methods are worth taking a la
+carte - the day-file ritual, the append-only ledgers, and the brief rules
+(stamped, self-contained, budgeted, claims-must-match-the-diff) each stand
+alone. An honest partial install beats a pretend full one.
+
+**Installing into an existing project?** The front door's BROWNFIELD RULE
+applies: Claude inventories what you already have (your own split
+knowledge files and logging scripts count as installed pieces), proposes a
+mapping, and gets your approval before touching any existing file. It
+never restructures a live repo unasked.
+
 ## Quick start
 
 1. Give this repo's contents to Claude (Claude Code, any capable model).
