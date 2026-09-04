@@ -116,7 +116,7 @@ block from reference tools/standup.py into the project's standup script
 and call it first; refresh the project's standup + checkpoint skills from
 the kit's skills/ copies. Nothing else changes.
 
-### v1.5 - 2026-09-04 - Honest prerequisites + the brownfield rule
+### v1.5 - 2026-09-03 - Honest prerequisites + the brownfield rule
 WHAT: the first outside review (a stranger's Claude, fed the repo) found
 two assumptions the kit never stated - it expects git and Claude Code -
 and a real hazard: "install the kit" pointed at a live production repo
