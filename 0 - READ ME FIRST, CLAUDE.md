@@ -67,6 +67,11 @@ a line budget), create docs/systems/ for topic files, add THE WIKI
 CONVENTION block, and write a lint script that checks core size + index
 sync (reference copy provided: reference tools/check_claude_md.py). Copy
 the kit's portable MDs to the repo root and index each with one line.
+Create WORKFLOWS.md, the process registry, per WORKFLOW_METHOD.md the day
+the project has its first two-step process - every repeatable multi-step
+process gets a WHEN/STEPS/VERIFY runbook entry there, and a performed
+process with no entry gets one captured in the same batch (the capture
+rule). It is the one place "how is this done here?" is answered.
 Stamp the install: add the line "Rootstock vX.Y installed <date> |
 updates: ask" to the new CLAUDE.md's index (current version: see
 UPGRADES.md in the kit) - it is how future updates know where this
@@ -109,7 +114,11 @@ record a baseline run in a ledger.
 Using the CEO's STEP-0 answers: create SUBAGENTS.md (org chart, the five
 laws, a first-draft assignments table for THIS project's task types, an
 empty performance ledger), index it, and delegate something small the same
-day to prove the stamp/brief/verify/ledger loop end to end.
+day to prove the stamp/brief/verify/ledger loop end to end. Include the
+WORKFLOW line in the stamp template (WORKFLOW_METHOD.md): employees report
+"matched <registry entry> | GAP: <uncovered process>", and the manager
+files gaps or delegates the write-up to the cheapest model - a workflow
+write-up is transcription of the performer's own report.
 
 ## STEP 4 - the skills shelf (SKILLS.md)
 

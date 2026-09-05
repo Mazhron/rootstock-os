@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.5** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.6** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -137,3 +137,30 @@ GRAFT: nothing to apply to healthy installed projects - this entry
 protects FUTURE installs. If a project was installed partially, add the
 skip markers to its stamp line (e.g. "| no-git") so update checks stop
 offering machinery it cannot run.
+
+### v1.6 - 2026-09-05 - The workflow registry (process amnesia killed)
+WHAT: the kit remembered commands (the Script Rule) and results (ledgers)
+but not CHOREOGRAPHY - the ORDER of a multi-step process. The origin
+project ran an art pipeline for weeks with no written recipe and let seven
+versions pile up unexported before noticing; after a /clear, order of
+operations was re-derived from chat that no longer existed. Now:
+WORKFLOWS.md at the repo root is THE PROCESS REGISTRY - one WHEN/STEPS/
+VERIFY runbook entry per repeatable multi-step process, pointing at deep
+docs rather than duplicating them. THE CAPTURE RULE: whoever performs a
+process checks the registry first; a stale entry is a bug fixed in the
+same batch; a missing entry is a WORKFLOW GAP captured in the same batch.
+Employees never edit the registry - their stamp gains a WORKFLOW line
+("matched <entry> | GAP: <uncovered process>") and the manager files the
+gap or delegates the write-up to the cheapest model (a write-up is
+transcription of the performer's own report, not discovery).
+CARRIES: WORKFLOW_METHOD.md (the portable method + entry template +
+bootstrap); front door STEP 1 (create the registry) and STEP 3 (the
+WORKFLOW stamp line); skills/brief SKILL.md (compose item 5 + the
+after-return gap step).
+GRAFT: copy WORKFLOW_METHOD.md fresh to the project's repo root and index
+it; create the project's WORKFLOWS.md seeded by transcribing its existing
+processes (cheap-model work from existing docs and scripts); add the
+WORKFLOW line to the stamp template in the project's SUBAGENTS.md
+equivalent plus a cheap-tier "workflow write-up" row to its assignments
+table; refresh the project's brief skill from the kit copy; add the
+capture rule to the project's standing laws in its own voice.

@@ -17,12 +17,19 @@ appending/auditing). Then compose the brief with ALL of:
    same step twice, STOP and report what you have."
 4. REPORT FORMAT: write files directly; report `git diff --stat` + changed
    hunks + a short summary. NEVER paste whole file bodies back.
+5. THE WORKFLOW LINE (rule 11): for a repeatable multi-step task, NAME the
+   WORKFLOWS.md entry and paste its STEPS into the brief; the employee's
+   stamp ends with "WORKFLOW: matched <entry> | GAP: <uncovered process> |
+   n/a".
 
 AFTER THE EMPLOYEE RETURNS
 - Verify cheap, in order: tests/probes first, spot-read the diff second,
   full read only on smell.
 - Watch for fabrication (it has happened): claims must match the diff.
 - LEDGER the outcome in SUBAGENTS.md (append-only, with correction tally).
+- A reported WORKFLOW GAP gets captured in the same batch: write the
+  WORKFLOWS.md entry, or brief a haiku with the employee's report + the
+  entry template (WORKFLOW_METHOD.md).
 
 The manager keeps: design, laws, architecture, verification, pushes.
 
