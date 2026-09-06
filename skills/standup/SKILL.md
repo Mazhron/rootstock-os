@@ -5,7 +5,9 @@ description: Open a session - print the standup digest and hand back the last ex
 
 # /standup - the session opener
 
-1. Run `python tools/standup.py` from the repo root.
+1. If a [HOOK session_start] block is already in context, the digest
+   was injected automatically - do NOT run the script again. Otherwise
+   run `python tools/standup.py` from the repo root.
 2. Relay THE LAST EXCHANGE block FIRST and VERBATIM: the user's last
    prompt AND the manager's last response exactly as the script prints
    them, word for word in quote blocks - never summarized, condensed, or

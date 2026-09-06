@@ -31,6 +31,11 @@ the skills operationalize).
 - **/brief** - delegation composer. Builds a sub-agent brief per the
   delegation laws (stamp, self-contained context, token budget line,
   diff-only reporting), then verifies cheap and ledgers the outcome.
+- **hooks** are the shelf's involuntary twin (HOOKS_METHOD.md, 2026-09-06):
+  a skill runs when invoked; a hook runs when the harness reaches a moment.
+  /standup now fires itself at session start, the checkpoint tick fires
+  itself at every reply, and shell guards refuse what the laws forbid. A
+  ritual that CAN be mechanical becomes a hook, not a longer skill.
 
 ## THE SKILLS RULE (standing, Mazhron 2026-09-03)
 
@@ -53,3 +58,6 @@ Everwood-specific except named examples (marked "in Everwood").
 
 - 2026-09-03 WS1: shelf founded with /standup, /checkpoint, /ship, /brief;
   THE SKILLS RULE established; kit copies created.
+- 2026-09-06 WS1: hooks founded as the involuntary twin; /standup,
+  /checkpoint and /ship reworded hook-aware (no manual tick; reset last;
+  standup not re-run when the SessionStart hook already injected it).

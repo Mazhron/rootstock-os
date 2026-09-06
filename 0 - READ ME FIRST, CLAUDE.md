@@ -128,6 +128,16 @@ SKILLS.md to the repo root; index it. The skills (/standup /checkpoint
 Adopt THE SKILLS RULE: a ritual born or amended updates its skill in the
 same batch.
 
+THE HOOKS (kit v1.7, HOOKS_METHOD.md - install right after the skills):
+copy the kit's hooks/ folder to tools/hooks/ and its settings.json to
+.claude/settings.json (merge if one exists; validate with json.tool);
+gitignore .claude/hooks_state.json; make sure the checkpoint script has
+work_fingerprint + hook state (the reference copy does) and that the
+checkpoint ritual runs --reset LAST; fill the bash guard's PROJECT RULES
+block from the CEO's STEP-0 laws; pipe-test every hook. From then on the
+standup digest injects itself, the counter ticks itself, and shell guards
+refuse what the laws forbid - nothing here depends on memory.
+
 ## STEP 5 - optional boards (adopt when the CEO wants them)
 
 - TOKEN_IDEAS.md style savings board (any token-saving idea, recorded).

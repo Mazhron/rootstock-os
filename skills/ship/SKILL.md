@@ -22,8 +22,9 @@ Run after EVERY completed batch of work; the user should never have to ask.
 6. Kit sync (projects that publish a kit): if the batch touched any
    future-project-kit file, run the kit sync script (in Everwood:
    `python tools/sync_kit_repo.py` pushes the public Rootstock repo).
-7. Tick the checkpoint counter (`python tools/checkpoint.py --tick`) and
-   relay any warning.
+7. The checkpoint counter ticks itself (Stop hook) - relay any warning
+   the hook prints; never tick by hand (it double-counts). Hookless
+   machines only: `python tools/checkpoint.py --tick`.
 
 Changelog EXPORT ships with the batch, unprompted (user ruling
 2026-09-04: "Without my asking the changelog should be updated").

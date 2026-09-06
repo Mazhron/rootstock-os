@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.6** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.7** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -164,3 +164,37 @@ WORKFLOW line to the stamp template in the project's SUBAGENTS.md
 equivalent plus a cheap-tier "workflow write-up" row to its assignments
 table; refresh the project's brief skill from the kit copy; add the
 capture rule to the project's standing laws in its own voice.
+
+### v1.7 - 2026-09-06 - The hooks (laws the harness enforces itself)
+WHAT: every ritual ran from the manager's memory and every law was prose;
+after a /clear the CEO had nothing until someone typed "standup", the
+checkpoint counter ticked only when remembered, "never delete a build
+zip" was a sentence. Claude Code HOOKS - scripts the harness runs at fixed
+moments - fix the class. Five ship: SessionStart injects the standup
+digest (startup/resume/clear/compact); Stop ticks the checkpoint counter
+only when work happened (HEAD or tree-status fingerprint) and REFUSES to
+end the turn once at DIRE; UserPromptSubmit prints the context gauge only
+when a threshold is crossed; PreCompact ledgers every compaction;
+PreToolUse on the shell tools denies what the laws forbid (generic:
+--no-verify, plain force push; project block: the origin's build-zip,
+runner-only, commit-dash and resource-file rules as templates). THE HOOKS
+RULE: a law the harness can enforce mechanically gets a hook, not a
+reminder. Manual --tick is retired (double-counts). Tier 3/4 ideas
+(wiki/kit hygiene on Write|Edit, subagent stamp check, OS toasts) are
+recorded in HOOKS_METHOD.md and the origin project's pin board.
+CARRIES: HOOKS_METHOD.md (contract, the five hooks, tiers, bootstrap);
+hooks/ (five scripts + _hooklib.py + settings.json template); reference
+tools/checkpoint.py (work_fingerprint + hook state, reset stores the
+fingerprint); skills/standup, checkpoint, ship (hook-aware wording); front
+door STEP 4 (hooks install with the skills).
+GRAFT: copy hooks/ into the project's tools/hooks/ (or its scripts folder;
+the scripts find the repo root from their own path and import the
+checkpoint script from the folder above); adapt bash_guard.py's PROJECT
+RULES block to the CEO's laws; install hooks/settings.json as
+.claude/settings.json (MERGE into an existing one, never replace arrays);
+gitignore .claude/hooks_state.json; add work_fingerprint /
+load_hook_state / save_hook_state to the project's checkpoint script (or
+copy the reference one); reorder its checkpoint ritual so --reset runs
+LAST; strike every "tick by hand" instruction from laws and skills;
+pipe-test each hook; add the registry entry "Add or change a harness
+hook" and a "The hooks" section to the tooling doc; index HOOKS_METHOD.md.

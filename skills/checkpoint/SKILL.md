@@ -27,13 +27,26 @@ SEQUENCE
      searchable record; keep writing it faithfully.)
    - STATE (version, tree, what shipped this arc)
    - OPEN QUEUE / NEXT LIKELY
-3. Run `python tools/checkpoint.py --reset`.
-4. Commit + push the day-file refresh.
+3. Commit + push the day-file refresh.
+4. Run `python tools/checkpoint.py --reset` LAST - it also stores the
+   Stop hook's work fingerprint, so the checkpoint commit itself is not
+   counted as a task.
 5. End the reply with the marker, verbatim:
    "CHECKPOINT - safe to /clear. Nothing in this chat exists only in this chat."
 
-Also: run `python tools/checkpoint.py --tick` after EVERY completed task in
-normal work; relay its warnings (advised at 8, dire at 15) verbatim.
+The counter TICKS ITSELF (Stop hook, 2026-09-06) whenever a reply changed
+the tree or HEAD - never tick by hand, it double-counts. Relay its warnings
+(advised at 8, dire at 15 - at dire the Stop hook refuses to end the turn
+once and the prompt hook repeats the line) verbatim.
+
+THE CONTEXT GAUGE (Mazhron's 80% rule, 2026-09-04): every tick/status
+also prints the live context load, probed from the harness transcript.
+REGARDLESS of the task count, once less than 80% of the auto-compact
+budget remains, suggest checkpoint + /clear at the next arc boundary;
+under 30% remaining, treat it as URGENT and checkpoint before taking
+new work. Auto-compact is a lossy summary - the day file + standup are
+lossless, so clearing early is always the cheaper path. Relay the
+gauge line and its warnings verbatim, like the task warnings.
 
 IF THE SCRIPTS/DAY FILES ARE MISSING (new project): bootstrap them per
 REPORTING_METHOD.md, or ask the user for their future-project kit.
