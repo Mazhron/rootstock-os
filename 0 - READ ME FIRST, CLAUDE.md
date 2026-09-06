@@ -109,6 +109,18 @@ harness transcripts (~/.claude/projects/<slug>/*.jsonl), so a mid-arc
 day-file copy is the committed, searchable record. Day one:
 record a baseline run in a ledger.
 
+THE WORKSTATION DOC (kit v1.8, WORKSTATION_METHOD.md - build it in this
+step): survey the machine you are on (scripting language + packages,
+engine/runtime + export templates, git, editor + the Claude Code
+extension, art tools, harness settings) and write the project's
+WORKSTATION.md: requirement tables with the WHY and the install move per
+row, the non-needs, one section per machine, the on-disk layout. Copy
+"reference tools/workstation_survey.py", rewrite its CHECKS table to
+match, put it in the parent loop's check group. Ask the CEO for what you
+cannot see (other drives, accounts, cloud tools). From then on every new
+dependency is written back in the same batch, and a second machine is
+set up FROM the document until the survey says up to par.
+
 ## STEP 3 - the delegation company (SUBAGENT_METHOD.md, bootstrap section)
 
 Using the CEO's STEP-0 answers: create SUBAGENTS.md (org chart, the five

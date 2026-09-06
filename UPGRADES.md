@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.7** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.8** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -198,3 +198,30 @@ copy the reference one); reorder its checkpoint ritual so --reset runs
 LAST; strike every "tick by hand" instruction from laws and skills;
 pipe-test each hook; add the registry entry "Add or change a harness
 hook" and a "The hooks" section to the tooling doc; index HOOKS_METHOD.md.
+
+### v1.8 - 2026-09-06 - The workstation inventory (a machine that installs itself)
+WHAT: the whole kit assumes tools already run - Python for scripts and
+hooks, the engine for tests and builds, the art programs - and nothing
+recorded what they were. A second machine, a reinstall or a
+collaborator's laptop meant rediscovering the setup from error messages.
+THE WORKSTATION RULE: the project keeps ONE workstation document
+(requirement tables with the WHY per row + the install move, split
+REQUIRED/OPTIONAL, the non-needs too, one section per known machine with
+its deltas, the on-disk layout, and the harness's own settings); every
+new dependency is written back to it in the same batch; a survey script
+mirrors the tables and prints HAVE/MISSING, exits non-zero on a missing
+required item, and ledgers one line; a new machine installs from the
+document and is "up to par" when the survey says so. Machine paths go
+through candidates + env override, never a lone hardcoded string.
+CARRIES: WORKSTATION_METHOD.md (the rule, the table columns, per-machine
+sections, bootstrap - including THE ASK: the receiving Claude surveys the
+CEO's current machine and writes the first inventory from what it finds);
+reference tools/workstation_survey.py (a working CHECKS-table probe with
+ledger line; rewrite its rows); front door STEP 2 (the survey installs
+with the reporting scripts).
+GRAFT: create the project's workstation document from a survey of the
+machine you are on (versions, paths, extensions, harness settings) plus
+the CEO's answers for what you cannot see; copy the reference survey and
+rewrite CHECKS to match; wire it into the parent loop's check group; add
+the registry entry "Bring a new workstation up to par"; index the doc in
+CLAUDE.md and add the write-back rule to the standing rules.
