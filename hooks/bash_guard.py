@@ -27,8 +27,13 @@ low = cmd.lower()
 # ---- GENERIC RULES -------------------------------------------------------
 if re.search(r"\bgit\s+commit\b", low) and "--no-verify" in low:
     deny("Never skip hooks (--no-verify); fix the failing hook instead.")
-if re.search(r"\bgit\s+push\b", low) and re.search(r"\s(--force|-f)\b", low) \
-        and "--force-with-lease" not in low:
+# Scoped to the push invocation (up to the next |, & or ;) and case-
+# sensitive: a `git commit -F -` earlier in the same command must not read
+# as a force push (misfire 2026-09-06).
+for _m in re.finditer(r"\bgit\s+push\b([^|&;\n]*)", cmd):
+    _seg = _m.group(1)
+    if not (re.search(r"\s(--force|-f)\b", _seg) and "--force-with-lease" not in _seg):
+        continue
     deny("No plain force pushes on a shared branch. Use --force-with-lease, "
          "and only with the CEO's explicit go-ahead.")
 
