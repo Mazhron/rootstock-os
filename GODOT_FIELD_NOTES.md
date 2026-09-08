@@ -218,3 +218,22 @@ self-test (the value 10% maps to), because nothing else catches it: the
 bus exists, the stream plays, mute works, and it is still wrong.
 See also: CLICKER_DESIGN_NOTES.md (feedback economics: sound is part of
 the click feel); Everwood docs/systems/ui.md "Music and the Audio section".
+
+## Window mode toggles: keep the mode as state, never derive it from Window.mode
+Tags: gotchas, lessons | A fullscreen toggle that reads Window.mode back to decide its next step can stick; hold the chosen mode in your settings and flip that
+
+An F11 handler written as "if window.mode == MODE_FULLSCREEN then windowed
+else fullscreen" worked once and then stuck after going borderless. What
+the OS reports back through Window.mode is not guaranteed to be the enum
+you set (Windows distinguishes multiwindow fullscreen from exclusive, and
+transitional states exist), so a read-back-driven toggle can keep
+choosing the same branch. Hold the DESIRED mode in your settings object,
+persist it, have every entry point (menu row, hotkey) flip that state and
+then apply it to the window; the hotkey goes in an autoload's _input so
+no Control swallows it and it works on menus and while paused. Names
+players expect: Borderless fullscreen = MODE_FULLSCREEN, Exclusive =
+MODE_EXCLUSIVE_FULLSCREEN, Windowed = MODE_WINDOWED. When dropping to
+windowed from fullscreen, refit the window to the usable screen rect or
+the title bar lands off-screen. Headless and web: apply is a no-op, so
+the state machine stays testable.
+See also: Everwood docs/systems/ui.md "Window mode: the Graphics row and F11".
