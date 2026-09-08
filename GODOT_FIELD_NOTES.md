@@ -219,21 +219,34 @@ bus exists, the stream plays, mute works, and it is still wrong.
 See also: CLICKER_DESIGN_NOTES.md (feedback economics: sound is part of
 the click feel); Everwood docs/systems/ui.md "Music and the Audio section".
 
-## Window mode toggles: keep the mode as state, never derive it from Window.mode
-Tags: gotchas, lessons | A fullscreen toggle that reads Window.mode back to decide its next step can stick; hold the chosen mode in your settings and flip that
+## Window mode toggles: a screen-sized windowed window IS fullscreen to Godot on Windows
+Tags: gotchas, lessons | If the OS window exactly covers the screen, Godot/Windows gives it the frameless popup style and reads the mode back as fullscreen; set a window-size override smaller than the screen, and keep the chosen mode as your own state
 
-An F11 handler written as "if window.mode == MODE_FULLSCREEN then windowed
-else fullscreen" worked once and then stuck after going borderless. What
-the OS reports back through Window.mode is not guaranteed to be the enum
-you set (Windows distinguishes multiwindow fullscreen from exclusive, and
-transitional states exist), so a read-back-driven toggle can keep
-choosing the same branch. Hold the DESIRED mode in your settings object,
+Two bugs, one cause, found by measuring the real Win32 style word from
+outside the game (a probe script reading GetWindowLong GWL_STYLE while
+the game walks the modes on a timer - the only honest way to test window
+chrome; headless has no window). A windowed window whose rect exactly
+covers the screen gets WS_POPUP|WS_BORDER (no caption, no frame, no X or
+minimize) and `Window.mode` reads back MODE_FULLSCREEN even though you
+set MODE_WINDOWED. A project whose viewport size equals the dev screen
+(1920x1080) hits this on every drop to windowed. Consequences: (1) an F11
+toggle written as "if mode == FULLSCREEN then windowed else fullscreen"
+sticks - the read-back says fullscreen forever; (2) "windowed" has no
+title bar. What does NOT fix it (all measured): resizing the window after
+the mode change, deferred or not; flipping `borderless` on and off. What
+does: `display/window/size/window_width_override` / `height_override`
+smaller than the screen (1600x900 for a 1920x1080 design viewport) - the
+viewport keeps its design size under the stretch mode, only the OS window
+shrinks. Plus the state rule: hold the DESIRED mode in your settings,
 persist it, have every entry point (menu row, hotkey) flip that state and
-then apply it to the window; the hotkey goes in an autoload's _input so
-no Control swallows it and it works on menus and while paused. Names
-players expect: Borderless fullscreen = MODE_FULLSCREEN, Exclusive =
-MODE_EXCLUSIVE_FULLSCREEN, Windowed = MODE_WINDOWED. When dropping to
-windowed from fullscreen, refit the window to the usable screen rect or
-the title bar lands off-screen. Headless and web: apply is a no-op, so
-the state machine stays testable.
+apply it; the hotkey goes in an autoload's _input so no Control swallows
+it and it works on menus and while paused. Names players expect:
+Borderless fullscreen = MODE_FULLSCREEN, Exclusive = MODE_EXCLUSIVE_
+FULLSCREEN, Windowed = MODE_WINDOWED. Remaining limit: screens no larger
+than the override still hit the popup case.
+Probe gotchas: the console exe is a WRAPPER (the game is a child process,
+its pid never matches); with stdout PIPED the wrapper never shows the game
+window at all (log to a file instead); a from-source run titles its window
+"<name> (DEBUG)"; sample after the game's own log marker, never by wall
+clock (boot time varies 2-4 s).
 See also: Everwood docs/systems/ui.md "Window mode: the Graphics row and F11".
