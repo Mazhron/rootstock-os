@@ -201,3 +201,20 @@ Tags: process, lessons | Self-test everything, data-drive every number, and trus
 - When a player reports something impossible ("hidden animals are not
   behind the brush"), believe them: the per-frame row sort was clobbering
   the z shift every frame. The report was exactly right.
+
+## Volume sliders: never feed a raw 0-1 slider into linear_to_db
+Tags: gotchas, lessons, design | A linear slider through linear_to_db is far too loud at the bottom; square it first (10% = -40 dB) or players hear 10% as 40%
+
+`AudioServer.set_bus_volume_db(bus, linear_to_db(slider))` looks right and
+is wrong: linear_to_db maps AMPLITUDE, and the ear hears loudness, which
+halves roughly every -10 dB. So 10% = -20 dB = about a quarter of full
+volume, 50% = -6 dB = barely quieter than max. Players who set every game
+to 5-15% find the bottom of the slider useless. The fix is one line: raise
+the slider fraction to a power before linear_to_db. Exponent 2 gives
+10% = -40 dB, 50% = -12 dB, 70% = -6 dB, 100% = 0 dB, which is the range
+most games live in; 3 is stronger still. Put the exponent on a const and
+route EVERY bus through the same function, then assert the curve in a
+self-test (the value 10% maps to), because nothing else catches it: the
+bus exists, the stream plays, mute works, and it is still wrong.
+See also: CLICKER_DESIGN_NOTES.md (feedback economics: sound is part of
+the click feel); Everwood docs/systems/ui.md "Music and the Audio section".
