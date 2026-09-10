@@ -73,8 +73,11 @@ thinking.
    real work produces (a self-clearing cooldown) - and otherwise only
    warns. No unlock commands; nothing fires on real work. A refusal from
    the guard is the CEO's standing decision: the manager stops, reports
-   what it was fanning out and why, and never resumes the same loop;
-   the guard's limits change only at the CEO's word.
+   what it was fanning out and why, and never resumes the same loop.
+   The guard's numbers are the CEO's to tune, through the /runaway skill
+   (shows every limit current vs default, writes the CEO's changes to a
+   committed .claude/fanout_limits.json over the script's defaults);
+   the manager never raises one on its own.
 
 ## The assignments table (build one per project)
 

@@ -114,10 +114,19 @@ than a cooldown.
   reminder when the bulk-orchestration tool runs.
 - No unlock file, no --allow commands, no self-edit lock: `--status`
   shows the meter, `--resume` clears it early, `--selftest` runs the
-  eighteen pipe tests in-process. All numbers live in LIMITS and change
-  only at the CEO's word. The manager-side rule is the delegation
-  method's law 6 (THE FAN-OUT LAW); the guard is what makes it true on a
-  bad day.
+  twenty-four pipe tests in-process (always at DEFAULTS, so tuning can
+  never fail them). The manager-side rule is the delegation method's
+  law 6 (THE FAN-OUT LAW); the guard is what makes it true on a bad day.
+- THE NUMBERS ARE THE CEO'S (kit v1.10, the origin CEO's ask
+  2026-09-10): the script carries DEFAULTS; the CEO's tuned numbers live
+  in `.claude/fanout_limits.json` (COMMITTED - they travel with the repo
+  and survive a kit graft; a missing or junk file falls back per key).
+  `--limits` prints every number current vs default with its meaning,
+  `--set key=value ...` writes (refusing a warn threshold above its halt),
+  `--defaults` forgets. The /runaway skill (SKILLS.md) is the
+  conversational front: show, ask, set, selftest, commit. The manager
+  never raises a limit on its own - a refusal still means stop and
+  report.
 
 State: `.claude/hooks_state.json` (gitignored - the fingerprint is per
 machine); `.claude/fanout_state.json` (gitignored, the guard's meter). The checkpoint script's `--reset` stores the fingerprint LAST so
@@ -171,3 +180,9 @@ the manager waits on permission or idles after a long employee run.
   warnings for the rest; no unlock machinery). Lesson: a guard rail is
   for the cliff edge, not the path - if a normal day ever needs a
   command to get past it, the rail is in the wrong place.
+- 2026-09-10 WS1 (later): the numbers become the CEO's (kit v1.10) -
+  `--limits` / `--set` / `--defaults` on the guard, a committed
+  .claude/fanout_limits.json over the script's DEFAULTS, and the /runaway
+  skill as the front. Rule of thumb that fell out: a guard's defaults
+  belong to the kit, its tuning to the project - keep them in separate
+  files so a graft never overwrites what the CEO chose.

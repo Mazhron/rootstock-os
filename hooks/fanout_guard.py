@@ -1,6 +1,6 @@
 """PreToolUse guard on EVERY tool: THE FAN-OUT LAW's circuit breaker (Tier 2b).
 
-KIT COPY (Rootstock v1.9). Born in Everwood on 2026-09-10 after a public report of a Claude that spun up
+KIT COPY (Rootstock v1.10). Born in Everwood on 2026-09-10 after a public report of a Claude that spun up
 821 sub-agents and burned 50M+ tokens in 30 seconds on "check my markdown
 files for consistency": "I want Rootstock to prevent this type of
 catastrophe at the harness level." Loosened the same day at the CEO's
@@ -36,13 +36,23 @@ never locked out of its own tools for more than a cooldown.
   python tools/hooks/fanout_guard.py --status     # what the meter sees
   python tools/hooks/fanout_guard.py --resume     # clear a halt/burst now
   python tools/hooks/fanout_guard.py --selftest   # the pipe tests, in-process
+  python tools/hooks/fanout_guard.py --limits     # every number, current vs default
+  python tools/hooks/fanout_guard.py --set burst_cap=12 flood_cap=40   # tune
+  python tools/hooks/fanout_guard.py --defaults   # forget the tuning
 
-All numbers live in LIMITS (edit them, then --selftest). The manager-side
-rule (never fan out past a handful; a refusal = stop and report) is
+THE NUMBERS (the origin CEO's ask 2026-09-10, the /runaway skill): DEFAULTS
+below are the script's; the owner's TUNED numbers live in
+.claude/fanout_limits.json (COMMITTED - they travel with the repo and
+survive a kit graft), written by `--set`, read fresh on every call. The
+/runaway skill is the conversational front: it shows `--limits`, takes
+the changes, runs `--set`, then `--selftest`. Only the owner tunes; the
+manager never raises a limit on its own. The manager-side rule (never
+fan out past a handful; a refusal = stop and report) is
 SUBAGENT_METHOD.md law 6; this hook is what makes it true on a bad day.
 
 Search keys: fan-out, sub-agent cap, agent limit, token budget, spend
-meter, runaway agents, circuit breaker, halt, cooldown.
+meter, runaway agents, runaway numbers, tune limits, circuit breaker,
+halt, cooldown.
 See also: _hooklib.py; SUBAGENT_METHOD.md law 6 (THE FAN-OUT
 LAW); HOOKS_METHOD.md Tier 2b (portable); HOOKS_METHOD.md (the contract + bootstrap; The
 hooks).
@@ -54,7 +64,7 @@ import time
 
 from _hooklib import ROOT, deny, emit, read_input
 
-LIMITS = dict(
+DEFAULTS = dict(
     burst_cap=8,                    # spawns machine-wide inside burst_window -> refused
     burst_window=60,                # seconds
     flood_cap=25,                   # spawns per session inside flood_window -> refused
@@ -65,6 +75,92 @@ LIMITS = dict(
     velocity_warn=3_000_000,        # weighted inside the window -> warning (once per window)
     velocity_halt=10_000_000,       # weighted inside the window -> refuse until it drains
 )
+MEANING = {  # one line each, in the owner's words (the /runaway skill prints these)
+    "burst_cap": "spawns on this MACHINE inside burst_window -> REFUSED (the 821-agents shape)",
+    "burst_window": "seconds the burst counter looks back",
+    "flood_cap": "spawns in one SESSION inside flood_window -> REFUSED (a loop, not a plan)",
+    "flood_window": "seconds the flood counter looks back",
+    "agents_warn_every": "spawns per session between AGENTS warnings (warn only)",
+    "tokens_warn_every": "weighted tokens per session between SPEND warnings (warn only)",
+    "velocity_window": "seconds the velocity meter looks back",
+    "velocity_warn": "weighted tokens inside velocity_window -> VELOCITY warning (warn only)",
+    "velocity_halt": "weighted tokens inside velocity_window -> EVERY tool call REFUSED until it drains",
+}
+CONFIG = os.path.join(ROOT, ".claude", "fanout_limits.json")  # COMMITTED: the owner's tuned numbers
+
+
+def load_limits(path=CONFIG):
+    """DEFAULTS overlaid with the owner's tuned numbers. A missing or broken
+    file, an unknown key or a non-positive value falls back silently - the
+    guard must never crash the turn over its own config."""
+    limits = dict(DEFAULTS)
+    try:
+        with open(path, encoding="utf-8") as fh:
+            raw = json.load(fh)
+        for k, v in (raw or {}).items():
+            if k in DEFAULTS and isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0:
+                limits[k] = int(v)
+    except Exception:
+        pass
+    return limits
+
+
+def set_limits(pairs, path=CONFIG):
+    """Apply `key=value` strings to the config file. Returns (limits, errors);
+    on any error nothing is written. Warn thresholds must stay below halt
+    thresholds; everything else is the owner's call."""
+    current = load_limits(path)
+    errors = []
+    for pair in pairs:
+        if "=" not in pair:
+            errors.append("expected key=value, got %r" % pair)
+            continue
+        k, v = pair.split("=", 1)
+        k = k.strip()
+        v = v.strip().replace("_", "").replace(",", "")
+        if k not in DEFAULTS:
+            errors.append("unknown key %r (see --limits)" % k)
+            continue
+        try:
+            n = int(float(v))
+        except ValueError:
+            errors.append("%s: %r is not a number" % (k, v))
+            continue
+        if n <= 0:
+            errors.append("%s: must be a positive integer" % k)
+            continue
+        current[k] = n
+    if current["velocity_warn"] >= current["velocity_halt"]:
+        errors.append("velocity_warn (%d) must stay below velocity_halt (%d)"
+                      % (current["velocity_warn"], current["velocity_halt"]))
+    if errors:
+        return load_limits(path), errors
+    tuned = {k: v for k, v in current.items() if v != DEFAULTS[k]}
+    if tuned:
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(tuned, fh, indent=2, sort_keys=True)
+            fh.write("\n")
+    elif os.path.exists(path):
+        os.remove(path)
+    return current, []
+
+
+def limits_table(limits=None):
+    """The --limits printout: key, current, default, meaning."""
+    limits = limits or load_limits()
+    tuned = [k for k in DEFAULTS if limits[k] != DEFAULTS[k]]
+    lines = ["fanout_guard limits (%s)" % (
+        "TUNED in .claude/fanout_limits.json: " + ", ".join(tuned) if tuned
+        else "all defaults; no .claude/fanout_limits.json")]
+    lines.append("  %-18s %12s %12s  %s" % ("key", "current", "default", "meaning"))
+    for k in DEFAULTS:
+        mark = "*" if limits[k] != DEFAULTS[k] else " "
+        lines.append("%s %-18s %12s %12s  %s" % (mark, k, "{:,}".format(limits[k]), "{:,}".format(DEFAULTS[k]), MEANING[k]))
+    lines.append("  (* = tuned) weighted tokens ~ cost: input 1, cache write 1.25, cache read 0.1, output 5")
+    return "\n".join(lines)
+
+
+LIMITS = load_limits()
 WEIGHTS = {"input_tokens": 1.0, "cache_creation_input_tokens": 1.25,
            "cache_read_input_tokens": 0.1, "output_tokens": 5.0}
 STATE = os.path.join(ROOT, ".claude", "fanout_state.json")  # gitignored
@@ -266,6 +362,26 @@ def _cli(argv):
         return 0
     if "--selftest" in argv:
         return _selftest()
+    if "--limits" in argv:
+        print(limits_table())
+        return 0
+    if "--set" in argv:
+        pairs = [a for a in argv if a != "--set"]
+        limits, errors = set_limits(pairs)
+        if errors:
+            print("not changed:\n  " + "\n  ".join(errors))
+            return 1
+        print(limits_table(limits))
+        print("written; run --selftest to prove the guard still stands")
+        return 0
+    if "--defaults" in argv:
+        if os.path.exists(CONFIG):
+            os.remove(CONFIG)
+            print("tuning forgotten (%s removed)" % os.path.relpath(CONFIG, ROOT))
+        else:
+            print("already at defaults")
+        print(limits_table(load_limits()))
+        return 0
     if "--resume" in argv:
         st = _load(STATE)
         for s in (st.get("sessions") or {}).values():
@@ -280,7 +396,18 @@ def _cli(argv):
 
 
 def _selftest():
-    """The pipe tests, in-process against a scratch transcript. PASS/FAIL."""
+    """The pipe tests, in-process against a scratch transcript, ALWAYS at
+    DEFAULTS (the owner's tuned numbers must never make them fail). PASS/FAIL."""
+    global LIMITS
+    tuned = LIMITS
+    LIMITS = dict(DEFAULTS)
+    try:
+        return _selftest_body()
+    finally:
+        LIMITS = tuned
+
+
+def _selftest_body():
     import tempfile
     tmp = tempfile.mkdtemp(prefix="fanout_")
     sid = "selftest-session"
@@ -381,6 +508,25 @@ def _selftest():
     check("spend warning at the first step", v == "warn" and "SPEND" in m)
     v, m, st6 = call("Read", st6, now=t0 + 18001, sess="spend", path=tp6)
     check("spend warning fires once per step", v == "ok")
+    # the owner's tuning: a config file overlays DEFAULTS; junk is ignored;
+    # --set refuses a warn threshold above its halt and writes nothing
+    cfg = os.path.join(tmp, "limits.json")
+    lim, errs = set_limits(["burst_cap=12", "flood_cap=40"], path=cfg)
+    check("--set writes the tuned keys", not errs and load_limits(cfg)["burst_cap"] == 12
+          and load_limits(cfg)["flood_cap"] == 40 and load_limits(cfg)["burst_window"] == 60)
+    lim, errs = set_limits(["velocity_warn=20000000"], path=cfg)
+    check("--set refuses warn above halt", bool(errs)
+          and load_limits(cfg)["velocity_warn"] == DEFAULTS["velocity_warn"])
+    lim, errs = set_limits(["nonsense=5"], path=cfg)
+    check("--set refuses an unknown key", bool(errs))
+    with open(cfg, "w", encoding="utf-8") as fh:
+        fh.write('{"burst_cap": -3, "flood_cap": "ten", "burst_window": 90, "made_up": 1}')
+    lim = load_limits(cfg)
+    check("junk config falls back per key", lim["burst_cap"] == 8 and lim["flood_cap"] == 25
+          and lim["burst_window"] == 90 and "made_up" not in lim)
+    lim, errs = set_limits(["burst_window=60"], path=cfg)
+    check("--set back to defaults removes the file", not errs and not os.path.exists(cfg))
+    check("selftest ran at DEFAULTS", LIMITS == DEFAULTS)
     print("fanout_guard selftest: %s" % ("PASS" if not fails else "FAIL " + ", ".join(fails)))
     return 0 if not fails else 1
 

@@ -31,6 +31,13 @@ the skills operationalize).
 - **/brief** - delegation composer. Builds a sub-agent brief per the
   delegation laws (stamp, self-contained context, token budget line,
   diff-only reporting), then verifies cheap and ledgers the outcome.
+- **/runaway** - the fan-out guard's numbers, in the owner's hands
+  (Mazhron's ask 2026-09-10). Prints every limit current vs default with
+  its meaning (`--limits`), takes the owner's changes (`--set`, refusing
+  a warn step above its halt), proves the guard still stands
+  (`--selftest`), and commits `.claude/fanout_limits.json` - the tuned
+  numbers travel with the repo and survive a kit graft. Only the owner
+  invokes it to raise a limit; the manager never does on its own.
 - **hooks** are the shelf's involuntary twin (HOOKS_METHOD.md, 2026-09-06):
   a skill runs when invoked; a hook runs when the harness reaches a moment.
   /standup now fires itself at session start, the checkpoint tick fires
@@ -61,3 +68,6 @@ Everwood-specific except named examples (marked "in Everwood").
 - 2026-09-06 WS1: hooks founded as the involuntary twin; /standup,
   /checkpoint and /ship reworded hook-aware (no manual tick; reset last;
   standup not re-run when the SessionStart hook already injected it).
+- 2026-09-10 WS1: /runaway added (kit v1.10) - the fan-out guard's
+  limits shown and tuned at the owner's word, stored in a committed
+  .claude/fanout_limits.json over the script's defaults.

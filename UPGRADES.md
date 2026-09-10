@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.9** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.10** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -262,3 +262,32 @@ every-tool PreToolUse entry, pipe one real tool call through it; add the
 standing rule to the core instructions file and the row to the tooling
 doc's hooks table. Nothing for the CEO to type afterwards - that is the
 point.
+
+### v1.10 - 2026-09-10 - The runaway numbers belong to the CEO
+WHAT: the fan-out guard's limits stop being constants the manager edits
+and become the CEO's setting. The origin CEO's ask, hours after the
+catastrophe-only ruling: a skill "that allows the user to tune their
+own runaway numbers. Calling the skill will give the current numbers
+and then allow for changes." The script keeps DEFAULTS; the CEO's tuned
+numbers live in a committed `.claude/fanout_limits.json` that overlays
+them per key (junk falls back, a missing file means defaults), so a
+kit graft never overwrites what the CEO chose. The guard grows
+`--limits` (every number current vs default with its one-line meaning),
+`--set key=value ...` (refusing a warn step above its halt, writing
+nothing on any error) and `--defaults`; its self-test always runs at
+DEFAULTS so tuning cannot fail it. The /runaway skill is the
+conversational front: show, ask, set, selftest, commit. Only the CEO
+tunes; the manager never raises a limit to get past a refusal.
+CARRIES: hooks/fanout_guard.py (DEFAULTS + MEANING + load_limits /
+set_limits / limits_table, the three flags, six new self-tests);
+skills/runaway/SKILL.md; SKILLS.md shelf entry; HOOKS_METHOD.md Tier 2b
+("THE NUMBERS ARE THE CEO'S") + change log; SUBAGENT_METHOD.md law 6
+(the numbers clause); skills/brief step 6 (never raise a limit to get
+past a refusal); hooks/README.txt; front door STEP 4 + THE FAN-OUT
+GUARD paragraph.
+GRAFT: replace the project's fanout_guard.py with the kit's (keep any
+project wording; if the project had edited LIMITS by hand, move those
+values into .claude/fanout_limits.json with `--set` and let the script
+return to DEFAULTS); copy skills/runaway; add the shelf entry and the
+law 6 clause; commit the JSON file (it is NOT gitignored - that is the
+point); run `--selftest` and `--limits` once.

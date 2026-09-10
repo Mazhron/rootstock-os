@@ -136,7 +136,7 @@ write-up is transcription of the performer's own report.
 
 Copy the kit's skills/ folder into the repo as .claude/skills/ and
 SKILLS.md to the repo root; index it. The skills (/standup /checkpoint
-/ship /brief) call the tools built in steps 1-3, so they go live last.
+/ship /brief /runaway) call the tools built in steps 1-3, so they go live last.
 Adopt THE SKILLS RULE: a ritual born or amended updates its skill in the
 same batch.
 
@@ -150,8 +150,10 @@ block from the CEO's STEP-0 laws; pipe-test every hook. From then on the
 standup digest injects itself, the counter ticks itself, and shell guards
 refuse what the laws forbid - nothing here depends on memory.
 THE FAN-OUT GUARD (kit v1.9, hooks/fanout_guard.py + HOOKS_METHOD.md
-Tier 2b): copy the script, set LIMITS with the CEO (the defaults never
-fire on real work), run `--selftest`, gitignore
+Tier 2b): copy the script, keep its DEFAULTS (they never fire on real
+work) and let the CEO tune later through the /runaway skill (kit v1.10:
+`--limits` / `--set`, the numbers land in a COMMITTED
+.claude/fanout_limits.json that a graft never touches), run `--selftest`, gitignore
 .claude/fanout_state.json, wire its every-tool PreToolUse entry, and
 pipe one real tool call through it. It is CATASTROPHE-ONLY: it refuses
 a burst of spawns, a flood of spawns, or runaway token velocity - each
