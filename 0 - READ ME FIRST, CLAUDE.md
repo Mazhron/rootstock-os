@@ -91,9 +91,13 @@ Reference copies of both scripts are in "reference tools/" - they WORK but
 carry the origin project's ledger names and paths; adapt, don't rewrite.
 Same folder: usage_report.py, the usage sheet (REPORTING_METHOD.md section
 "mine the harness meter") - it mines ~/.claude/projects/ transcripts for
-real per-model/per-tool token totals by day/week/month; adapt its output
-paths + the project-name filter in transcript_dirs() and it works in any
-Claude Code project unchanged. Also rootstock_update_check.py - adapt its
+real per-model/per-tool token totals by day/week/month, the breakdowns
+(per request, per tool call, per employee run, the context-window "box")
+and the .xlsx the CEO opens (THE SPREADSHEET RULE, kit v1.11: frozen
+header, separators, bold ruled totals - needs `pip install openpyxl`,
+recorded in the workstation inventory); adapt its output paths + the
+project-name filter in transcript_dirs() and it works in any Claude Code
+project unchanged. Also rootstock_update_check.py - adapt its
 config lines and WIRE IT INTO YOUR STANDUP script (it is weekly
 rate-limited, offline-safe, and one ledger line per check), so "is there
 a newer Rootstock?" answers itself per the CEO's update policy instead of

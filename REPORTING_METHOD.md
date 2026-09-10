@@ -77,6 +77,35 @@ rows. Reference implementation: Everwood's tools/usage_report.py
 (incremental byte-offset cache; a 274MB transcript parses once, reruns
 read only new bytes).
 
+## THE SPREADSHEET RULE (Mazhron's ask 2026-09-10 - any sheet a human opens)
+Tags: process, lessons | A CSV cannot carry formatting; a sheet meant for human eyes ships as .xlsx with frozen header, separators, bold ruled totals
+
+The origin CEO opened the usage CSV in Excel and asked for four things that
+no CSV can carry: the header row FROZEN so labels stay in view while
+scrolling; every token/count column formatted as a Number with the
+thousands separator (Format Cells > Number, 1000 separator); a TOTAL row
+in line UNDER the last record of each period (day, week, month, all) with
+the averages beside it in their own columns, the totals BOLD; and a THICK
+bottom border under each total so the eye finds the split into the next
+period. "I want future Rootstock users to have their Claude automatically
+do this when their Claude builds it." So it is a rule: when a script
+produces a sheet a person will open (usage, metrics, progression, any
+ledger export), it ALSO writes an .xlsx twin with exactly that shape - the
+CSV/TXT stay for grep and git diffs, the .xlsx is what the human opens.
+Mechanics that worked (openpyxl, pip): `ws.freeze_panes = "A2"`;
+`cell.number_format = "#,##0"` on every count column ("#,##0.00" for
+money); the TOTAL row appended LAST in its period block, `Font(bold=True)`
+on every cell of it and `Border(bottom=Side(style="thick"))`; per-row
+totals + averages in the last two columns (total_tok / avg_tok) so a
+model's or tool's average sits on its own line, not only in the totals;
+an auto-filter on the header; the dependency recorded in the workstation
+inventory + survey the same batch (THE WORKSTATION RULE). When the
+library is missing the run must still write the CSV/TXT and SAY the
+.xlsx was skipped - never crash a ledger run over formatting.
+Reference: Everwood's tools/usage_report.py (write_xlsx / _xlsx_sheet).
+See also: the usage sheet (section above); WORKSTATION_METHOD.md (the
+dependency write-back); REPORTING_METHOD.md bootstrap step for the sheet.
+
 ## Evidence this pays (Everwood, the origin project, day one of the method)
 
 The FIRST full baseline through the new runner caught, in one afternoon:

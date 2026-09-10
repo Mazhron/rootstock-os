@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.10** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.11** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -291,3 +291,29 @@ values into .claude/fanout_limits.json with `--set` and let the script
 return to DEFAULTS); copy skills/runaway; add the shelf entry and the
 law 6 clause; commit the JSON file (it is NOT gitignored - that is the
 point); run `--selftest` and `--limits` once.
+
+### v1.11 - 2026-09-10 - The spreadsheet rule (a sheet a human opens is an .xlsx)
+WHAT: the origin CEO opened the usage CSV in Excel and asked for what no
+CSV can carry - a frozen header row, thousands separators on every token
+column, bold TOTAL rows in line under each period's last record with the
+averages beside them, and a thick border under each total so the periods
+read apart - "I want future Rootstock users to have their Claude
+automatically do this when their Claude builds it." So THE SPREADSHEET
+RULE joins the reporting method: any script producing a sheet a person
+will open also writes an .xlsx twin in that shape (CSV/TXT stay for grep
+and diffs), degrading to CSV-only with a printed note when the library is
+missing. The reference usage sheet also grew THE BREAKDOWNS the same day:
+averages per request, the context-window "box" (input + cache read +
+cache written per request, average and biggest, by month), averages per
+tool call, and per-employee runs (one sub-agent transcript = one run,
+with its brief's first line) in their own CSV.
+CARRIES: REPORTING_METHOD.md "THE SPREADSHEET RULE" section; reference
+tools/usage_report.py (write_xlsx / _xlsx_sheet, the breakdowns, cache
+v2, TOTAL rows last in their period, total_tok / avg_tok columns); front
+door STEP 2 reference-tools paragraph; the openpyxl row for the
+workstation inventory + survey.
+GRAFT: add the rule section to the project's reporting doc; give every
+human-opened sheet an .xlsx writer per the section's mechanics (or adapt
+the reference script's two functions); add openpyxl to the workstation
+inventory + survey CHECKS; run the sheet once and open the .xlsx to see
+the frozen header and the ruled totals.
