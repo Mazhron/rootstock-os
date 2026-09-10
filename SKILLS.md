@@ -75,3 +75,6 @@ Everwood-specific except named examples (marked "in Everwood").
   .claude/fanout_limits.json over the script's defaults.
 - 2026-09-10 WS1 (evening): /standup relays THE BUDGET block (kit v1.12)
   - the usage sheet's daily line, each day vs the previous seven.
+- 2026-09-10 WS1 (night): /checkpoint gains ADVISED MEANS DO IT (kit
+  v1.13) - an advisory from the gauge or the counter is acted on at the
+  end of that reply, unprompted; the owner simply /clears.

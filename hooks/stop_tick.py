@@ -75,7 +75,7 @@ if ticked and level == "dire":
                          "The Stop hook refused to end this turn once (THE "
                          "CHECKPOINT PROTOCOL, mechanical since 2026-09-06). "
                          "Manager: relay this warning to the CEO verbatim and "
-                         "recommend /checkpoint then /clear before new work; "
+                         "checkpoint NOW (ADVISED MEANS DO IT) so the CEO can simply /clear; "
                          "if an employee is running or the arc is mid-flight, "
                          "say so and finish the arc first. Auto-compact is "
                          "lossy; the day file + standup are lossless."

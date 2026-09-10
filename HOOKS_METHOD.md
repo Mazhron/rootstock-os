@@ -73,6 +73,18 @@ TIER 1 - the resumption + checkpoint loop:
    end the turn once (re-blocks every 5 tasks; `stop_hook_active` guards
    the loop) and the reason tells the manager to relay and checkpoint.
    Manual `--tick` is retired (it double-counts next to the hook).
+   ADVISED MEANS DO IT (kit v1.13, the origin CEO's ruling 2026-09-10:
+   "If a checkpoint is advised, you should do it. That way a user
+   doesn't need to ask you to checkpoint, they can simply clear"): an
+   ADVISED line from either hook is an instruction, not a suggestion -
+   the manager runs the checkpoint ritual at the end of that reply if
+   the arc is closed and the tree is committed, and the CEO just
+   /clears. Mid-arc: finish the step, ship, then checkpoint. Why the
+   whole thing is not one script: the day file stores both sides of the
+   final exchange word for word, and the manager's side is the reply
+   being written at that moment - no script can see it before it is
+   sent. The script does the mechanics (push, fingerprint, reset); the
+   manager writes the two paragraphs.
 3. `prompt_gauge.py` (UserPromptSubmit): silent unless a threshold is
    crossed; then one line the manager relays verbatim. Zero tokens on a
    normal turn.
@@ -230,3 +242,9 @@ the manager waits on permission or idles after a long employee run.
   sometimes needs the whole file (an edit), and a refusal there would
   breed workarounds; a one-line cost at the cliff edge changes the habit
   without a fight.
+- 2026-09-10 WS1 (night): ADVISED MEANS DO IT (kit v1.13) - the CEO:
+  "If the checkpoint is a script, there is no reason not to just run it
+  at the time a checkpoint is advised." Both hooks' ADVISED lines now
+  say "checkpoint at the end of this reply if the arc is closed"; the
+  checkpoint skill carries the rule at its top. An advisory the manager
+  merely relays is a nag; an advisory the manager acts on is a law.

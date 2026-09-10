@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.12** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.13** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -360,3 +360,28 @@ PreToolUse entry, run --selftest, gitignore .claude/diet_state.json;
 add the two diet sections to the project's wiki method and the 10k line
 to its delegation method; if the project's fan-out guard predates this,
 add READ_MULT so its meter agrees with the sheet.
+
+### v1.13 - 2026-09-10 - Advised means do it (the checkpoint advisory becomes the act)
+WHAT: the origin CEO, seeing a CHECKPOINT ADVISED line relayed for the
+second prompt running: "If a checkpoint is advised, you should do it.
+That way if you advise a checkpoint a user doesn't need to ask you to
+checkpoint, they can simply clear. If the checkpoint is a script, there
+is no reason not to just run it at the time a checkpoint is advised."
+So an ADVISED line from the prompt gauge or the Stop hook is an
+instruction: the manager runs the checkpoint ritual at the end of that
+reply, unprompted, provided the arc is closed and the tree is committed;
+the CEO then simply /clears. Mid-arc, the manager finishes the current
+step, ships it, and checkpoints before taking new work. The hooks' own
+wording changed to match ("checkpoint at the end of this reply if the
+arc is closed" instead of "suggest ... at the next arc boundary"). The
+honest limit stays: the day file stores the manager's final reply word
+for word, which no script can see before it is sent, so the script does
+the mechanics and the manager writes the two paragraphs.
+CARRIES: skills/checkpoint/SKILL.md (the rule at the top + the gauge
+paragraph); hooks/prompt_gauge.py + hooks/stop_tick.py (ADVISED
+wording); HOOKS_METHOD.md Tier 1 item 2 + change log; SKILLS.md change
+log; the origin's core-file checkpoint protocol.
+GRAFT: add the ADVISED MEANS DO IT paragraph to the project's checkpoint
+skill and its checkpoint law; reword the project's gauge/stop hook
+ADVISED strings so they say "checkpoint at the end of this reply if the
+arc is closed" (keep the project's own owner name); nothing else moves.

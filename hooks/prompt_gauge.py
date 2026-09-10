@@ -19,7 +19,8 @@ if n >= 15:
                  "checkpoint before taking new work !!!!!" % n)
 elif n >= 8:
     lines.append("~~ CHECKPOINT ADVISED (%d tasks since last checkpoint) - "
-                 "finish the arc, then checkpoint ~~" % n)
+                 "ADVISED MEANS DO IT: checkpoint at the end of this reply if "
+                 "the arc is closed ~~" % n)
 load_ = cp.context_load()
 if load_ is not None:
     remaining = max(0.0, 1.0 - load_ / float(cp.COMPACT_BUDGET))
@@ -30,8 +31,9 @@ if load_ is not None:
                      "!!!!!" % (pct, load_ // 1000))
     elif remaining < 0.80:
         lines.append("~~ CHECKPOINT ADVISED (CONTEXT: %d%% remaining, ~%dk "
-                     "used; the CEO's 80%% rule) - suggest checkpoint + /clear "
-                     "at the next arc boundary ~~" % (pct, load_ // 1000))
+                     "used; the CEO's 80%% rule) - ADVISED MEANS DO IT: checkpoint "
+                     "at the end of this reply if the arc is closed, so the CEO "
+                     "can simply /clear ~~" % (pct, load_ // 1000))
 if lines:
     print("[HOOK prompt_gauge] " + " | ".join(lines)
           + " (relay to the CEO verbatim)")

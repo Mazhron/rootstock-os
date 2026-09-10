@@ -5,6 +5,12 @@ description: Close an arc safely - push, refresh the day file's WHERE WE LEFT OF
 
 # /checkpoint - close the arc so the chat can be cleared losslessly
 
+ADVISED MEANS DO IT (the owner's ruling 2026-09-10): when the prompt
+gauge or the Stop hook says CHECKPOINT ADVISED, run this sequence at the
+END OF THAT REPLY, unprompted - the owner never has to ask, they simply
+/clear afterwards. Mid-arc: finish the current step, ship it, then
+checkpoint before taking new work.
+
 PRECONDITIONS (refuse and say why if any fail):
 - No employee (sub-agent) running.
 - No uncommitted work; never checkpoint mid-arc.
@@ -42,9 +48,9 @@ once and the prompt hook repeats the line) verbatim.
 THE CONTEXT GAUGE (Mazhron's 80% rule, 2026-09-04): every tick/status
 also prints the live context load, probed from the harness transcript.
 REGARDLESS of the task count, once less than 80% of the auto-compact
-budget remains, suggest checkpoint + /clear at the next arc boundary;
-under 30% remaining, treat it as URGENT and checkpoint before taking
-new work. Auto-compact is a lossy summary - the day file + standup are
+budget remains, CHECKPOINT at the end of the current reply if the arc
+is closed (ADVISED MEANS DO IT); under 30% remaining, treat it as
+URGENT and checkpoint before taking new work. Auto-compact is a lossy summary - the day file + standup are
 lossless, so clearing early is always the cheaper path. Relay the
 gauge line and its warnings verbatim, like the task warnings.
 
