@@ -1,57 +1,51 @@
-"""PreToolUse guard on EVERY tool: THE FAN-OUT LAW + the spend meter (Tier 2b).
+"""PreToolUse guard on EVERY tool: THE FAN-OUT LAW's circuit breaker (Tier 2b).
 
-KIT COPY (Rootstock v1.9). Born in Everwood on 2026-09-10 after a public
-report of a Claude that spun up 821 sub-agents and burned 50M+ tokens in
-30 seconds on "check my markdown files for consistency". The CEO's ask:
-"prevent this type of catastrophe at the harness level." The harness
-hands us every tool call BEFORE it runs, so this hook is the circuit
-breaker:
+KIT COPY (Rootstock v1.9). Born in Everwood on 2026-09-10 after a public report of a Claude that spun up
+821 sub-agents and burned 50M+ tokens in 30 seconds on "check my markdown
+files for consistency": "I want Rootstock to prevent this type of
+catastrophe at the harness level." Loosened the same day at the CEO's
+word ("this might be too restrictive... I just wanted to prevent complete
+runaway agents and gigantic token spend"): CATASTROPHE-ONLY. Nothing here
+fires on real work, nothing needs a command to lift, and the manager is
+never locked out of its own tools for more than a cooldown.
 
-  1. THE SPEND METER (every call): reads the session transcript + its
-     employee transcripts INCREMENTALLY (byte offsets in the state file,
-     so a call costs a few KB of IO) and keeps raw + WEIGHTED tokens
-     (weighted ~ cost: input 1, cache write 1.25, cache read 0.1, output 5).
-     A systemMessage to the CEO at every `tokens_warn_every` weighted
-     tokens; a velocity warning when `velocity_warn` weighted tokens land
-     inside `velocity_window` seconds.
-  2. THE HALT: `velocity_halt` weighted tokens inside the window = a
-     runaway. EVERY tool call is refused until the CEO runs --resume in
-     their own terminal. The manager can still talk, so it reports.
-  3. THE AGENT CAPS (Agent / Task tools): a warning at `agents_warn`
-     spawns per session, a refusal past `agents_cap`; a refusal when more
-     than `burst_cap` spawns land inside `burst_window` seconds MACHINE-
-     WIDE (that is the 821-agents shape); a refusal once the session's
-     weighted spend passes `tokens_agents_cap`.
-  4. THE WORKFLOW LOCK: the Workflow tool (dozens of agents from one
-     call) is refused unless the CEO unlocked it.
-  5. THE SELF-EDIT LOCK: Edit/Write on this file, its state or its unlock
-     file is refused - the guard rail is not the manager's to move.
+  REFUSES (the runaway shapes only):
+  1. A BURST of spawns: more than `burst_cap` Agent/Task calls inside
+     `burst_window` seconds, MACHINE-WIDE (821 agents in 30 s).
+  2. A FLOOD of spawns: more than `flood_cap` inside `flood_window`
+     seconds, per session (a slower runaway; 25 in ten minutes is not a
+     delegation batch, it is a loop).
+  3. RUNAWAY VELOCITY: `velocity_halt` WEIGHTED tokens inside
+     `velocity_window` seconds -> every tool call is refused UNTIL THE
+     WINDOW DRAINS (a cooldown, self-clearing; `--resume` clears it now).
+     Weighted ~ cost: input 1, cache write 1.25, cache read 0.1, output 5;
+     a normal turn re-reads ~100-200k of cache = ~20k weighted, nothing.
 
-ONLY THE CEO LIFTS A CAP, in a terminal the manager does not drive:
-  python tools/hooks/fanout_guard.py --allow-agents N     # N more spawns this window
-  python tools/hooks/fanout_guard.py --allow-workflow     # the Workflow tool, once
-  python tools/hooks/fanout_guard.py --allow-tokens M     # +M weighted tokens for spawns
-  python tools/hooks/fanout_guard.py --allow-edit         # editing this guard, 2 h
-  python tools/hooks/fanout_guard.py --resume             # clear a HALT
-  python tools/hooks/fanout_guard.py --status             # what the meter sees
-  python tools/hooks/fanout_guard.py --selftest           # the pipe tests, in-process
-The bash guard refuses the manager running anything but --status and
---selftest here. Unlocks expire after `unlock_hours`.
+  WARNS (a systemMessage to the CEO + a context line to the manager,
+  once per step, never a refusal):
+  - spawn count every `agents_warn_every` per session;
+  - session spend every `tokens_warn_every` weighted tokens;
+  - velocity past `velocity_warn` inside the window;
+  - the Workflow tool (bulk orchestration) - a reminder that it fans out.
 
-INSTALL ORDER MATTERS: copy this file UNWIRED, set LIMITS with the CEO,
-run --selftest, add the unlock refusal to the bash guard, gitignore the
-two state files, THEN wire the every-tool PreToolUse entry - it locks
-its own files the moment the settings watcher sees it.
+  THE SPEND METER behind it reads the session transcript + its employee
+  transcripts INCREMENTALLY (byte offsets in the state file; a warm call
+  costs ~0.06 s). The first sight of a file backfills totals without
+  feeding velocity, so a mid-session install never halts on catch-up.
 
-All numbers live in LIMITS (edit them, then --selftest). Weighted, not
-raw, because cache reads dominate raw counts at a tenth of the price; a
-normal turn re-reads ~100-200k of cache and must never trip anything.
+  python tools/hooks/fanout_guard.py --status     # what the meter sees
+  python tools/hooks/fanout_guard.py --resume     # clear a halt/burst now
+  python tools/hooks/fanout_guard.py --selftest   # the pipe tests, in-process
+
+All numbers live in LIMITS (edit them, then --selftest). The manager-side
+rule (never fan out past a handful; a refusal = stop and report) is
+SUBAGENT_METHOD.md law 6; this hook is what makes it true on a bad day.
 
 Search keys: fan-out, sub-agent cap, agent limit, token budget, spend
-meter, runaway agents, circuit breaker, halt, workflow lock, unlock.
-See also: _hooklib.py; bash_guard.py (refuses the manager unlocking
-itself); SUBAGENT_METHOD.md law 6 (THE FAN-OUT LAW, the manager-side
-rule); HOOKS_METHOD.md Tier 2b (the contract + bootstrap).
+meter, runaway agents, circuit breaker, halt, cooldown.
+See also: _hooklib.py; SUBAGENT_METHOD.md law 6 (THE FAN-OUT
+LAW); HOOKS_METHOD.md Tier 2b (portable); HOOKS_METHOD.md (the contract + bootstrap; The
+hooks).
 """
 import json
 import os
@@ -61,25 +55,21 @@ import time
 from _hooklib import ROOT, deny, emit, read_input
 
 LIMITS = dict(
-    agents_warn=6,                  # spawns per session -> a warning line
-    agents_cap=12,                  # spawns per session -> refused past this
-    burst_cap=6,                    # spawns machine-wide inside burst_window -> refused
+    burst_cap=8,                    # spawns machine-wide inside burst_window -> refused
     burst_window=60,                # seconds
-    tokens_warn_every=10_000_000,   # weighted tokens per session -> warn at each multiple
-    tokens_agents_cap=30_000_000,   # weighted per session -> no more spawns past this
+    flood_cap=25,                   # spawns per session inside flood_window -> refused
+    flood_window=600,               # seconds
+    agents_warn_every=10,           # spawns per session -> a warning at each multiple
+    tokens_warn_every=10_000_000,   # weighted tokens per session -> a warning at each multiple
     velocity_window=120,            # seconds the velocity meter looks back
-    velocity_warn=2_000_000,        # weighted inside the window -> warning (once per window)
-    velocity_halt=6_000_000,        # weighted inside the window -> HALT every tool call
-    unlock_hours=2,                 # every --allow expires after this
+    velocity_warn=3_000_000,        # weighted inside the window -> warning (once per window)
+    velocity_halt=10_000_000,       # weighted inside the window -> refuse until it drains
 )
 WEIGHTS = {"input_tokens": 1.0, "cache_creation_input_tokens": 1.25,
            "cache_read_input_tokens": 0.1, "output_tokens": 5.0}
-STATE = os.path.join(ROOT, ".claude", "fanout_state.json")    # gitignored
-UNLOCK = os.path.join(ROOT, ".claude", "fanout_unlock.json")  # gitignored, CEO-written
+STATE = os.path.join(ROOT, ".claude", "fanout_state.json")  # gitignored
 SPAWN_TOOLS = ("Agent", "Task")
 WORKFLOW_TOOLS = ("Workflow",)
-EDIT_TOOLS = ("Edit", "Write", "MultiEdit", "NotebookEdit")
-GUARDED_FILES = ("fanout_guard.py", "fanout_state.json", "fanout_unlock.json")
 KEEP_SESSIONS = 20
 
 
@@ -109,20 +99,13 @@ def _session(state, sid):
     if s is None:
         s = sessions[sid] = {"files": {}, "raw": 0, "weighted": 0.0,
                              "samples": [], "agents": [], "warned_level": 0,
-                             "warned_velocity": 0, "warned_agents": False,
-                             "halted": None, "seen": 0}
+                             "warned_velocity": 0, "warned_agents": 0,
+                             "warned_workflow": False, "seen": 0}
     s["seen"] = time.time()
     if len(sessions) > KEEP_SESSIONS:
         for old in sorted(sessions, key=lambda k: sessions[k].get("seen", 0))[:-KEEP_SESSIONS]:
             del sessions[old]
     return s
-
-
-def _unlock(path=None):
-    u = _load(path or UNLOCK)
-    if u and u.get("expires", 0) < time.time():
-        return {}
-    return u
 
 
 # ---------------------------------------------------------------- meter --
@@ -203,88 +186,65 @@ def _fmt(n):
 
 
 # ------------------------------------------------------------- evaluate --
-def evaluate(data, state, unlock, now=None):
+def evaluate(data, state, now=None):
     """The decision for one tool call. Returns (verdict, message, state):
     verdict 'deny' | 'warn' | 'ok'. Pure apart from the clock."""
     now = now or time.time()
     tool = data.get("tool_name") or ""
-    tin = data.get("tool_input") or {}
     sid = data.get("session_id") or "unknown"
     s = _session(state, sid)
     warnings = []
 
-    # 1. The spend meter.
+    # 1. The spend meter + velocity.
     _meter(s, data.get("transcript_path"), sid, now)
     level = int(s["weighted"] // LIMITS["tokens_warn_every"])
     if level > s["warned_level"]:
         s["warned_level"] = level
         warnings.append("SPEND: this session has metered ~%s weighted tokens "
-                        "(%s raw) - %d x the %s warning step"
+                        "(%s raw) - %d x the %s step"
                         % (_fmt(s["weighted"]), _fmt(s["raw"]), level,
                            _fmt(LIMITS["tokens_warn_every"])))
     vel = _velocity(s)
-    if s["halted"]:
-        return ("deny", s["halted"], state)
     if vel >= LIMITS["velocity_halt"]:
-        s["halted"] = ("HALT (fanout_guard): ~%s weighted tokens in the last %d s "
-                       "- that is a runaway, not work. Every tool call is refused "
-                       "until the CEO runs `python tools/hooks/fanout_guard.py "
-                       "--resume` in their own terminal. Report what was running "
-                       "and stop." % (_fmt(vel), LIMITS["velocity_window"]))
-        return ("deny", s["halted"], state)
+        return ("deny", "RUNAWAY (fanout_guard): ~%s weighted tokens in the last %d s "
+                "- no real work spends like that. Tool calls are refused until the "
+                "window drains (about %d s of quiet). Stop, tell the CEO what was "
+                "running, and do not resume the same loop."
+                % (_fmt(vel), LIMITS["velocity_window"], LIMITS["velocity_window"]), state)
     if vel >= LIMITS["velocity_warn"] and now - s["warned_velocity"] > LIMITS["velocity_window"]:
         s["warned_velocity"] = now
-        warnings.append("VELOCITY: ~%s weighted tokens in the last %d s (halt at %s)"
+        warnings.append("VELOCITY: ~%s weighted tokens in the last %d s (refusal at %s)"
                         % (_fmt(vel), LIMITS["velocity_window"], _fmt(LIMITS["velocity_halt"])))
 
-    # 2. Spawns.
+    # 2. Spawns: refuse the runaway shapes, warn on the count.
     if tool in SPAWN_TOOLS:
         spawns = state.setdefault("spawns", [])
         spawns[:] = [t for t in spawns if t >= now - LIMITS["burst_window"]]
-        extra = int(unlock.get("agents_extra") or 0)
-        n = len(s["agents"])
-        if len(spawns) >= LIMITS["burst_cap"] + extra:
+        if len(spawns) >= LIMITS["burst_cap"]:
             return ("deny", "THE FAN-OUT LAW (fanout_guard): %d sub-agents were spawned "
-                    "on this machine in the last %d s - that is the 821-agents shape. "
-                    "Refused. Do not retry or work around it: stop, tell the CEO what "
-                    "you were fanning out and why. Only they can lift it "
-                    "(`python tools/hooks/fanout_guard.py --allow-agents N`)."
-                    % (len(spawns), LIMITS["burst_window"]), state)
-        if n >= LIMITS["agents_cap"] + extra:
-            return ("deny", "THE FAN-OUT LAW (fanout_guard): %d sub-agents already this "
-                    "session (cap %d). Refused. A task that needs more employees than "
-                    "that is a design question for the CEO, not a fan-out - stop and "
-                    "ask. They lift it with `python tools/hooks/fanout_guard.py "
-                    "--allow-agents N`." % (n, LIMITS["agents_cap"] + extra), state)
-        tok_cap = LIMITS["tokens_agents_cap"] + float(unlock.get("tokens_extra") or 0)
-        if s["weighted"] >= tok_cap:
-            return ("deny", "THE FAN-OUT LAW (fanout_guard): this session has metered "
-                    "~%s weighted tokens (cap for new spawns %s). No more sub-agents "
-                    "until the CEO says so (`python tools/hooks/fanout_guard.py "
-                    "--allow-tokens M`). Stop and report." % (_fmt(s["weighted"]), _fmt(tok_cap)), state)
+                    "on this machine in the last %d s - that is the 821-agents shape, "
+                    "not a delegation batch. Refused. Stop, tell the CEO what you were "
+                    "fanning out and why; the window clears itself in a minute, but do "
+                    "not resume the same fan-out." % (len(spawns), LIMITS["burst_window"]), state)
+        recent = [t for t in s["agents"] if t >= now - LIMITS["flood_window"]]
+        if len(recent) >= LIMITS["flood_cap"]:
+            return ("deny", "THE FAN-OUT LAW (fanout_guard): %d sub-agents in the last %d "
+                    "minutes - a loop, not a plan. Refused. A task that needs that many "
+                    "employees is a design problem: split it, script it, or ask the CEO."
+                    % (len(recent), LIMITS["flood_window"] // 60), state)
         s["agents"].append(now)
         spawns.append(now)
-        if n + 1 >= LIMITS["agents_warn"] and not s["warned_agents"]:
-            s["warned_agents"] = True
-            warnings.append("AGENTS: %d sub-agents spawned this session (refusal at %d)"
-                            % (n + 1, LIMITS["agents_cap"] + extra))
+        n = len(s["agents"])
+        lvl = n // LIMITS["agents_warn_every"]
+        if lvl > s["warned_agents"]:
+            s["warned_agents"] = lvl
+            warnings.append("AGENTS: %d sub-agents spawned this session" % n)
 
-    # 3. Workflows.
-    if tool in WORKFLOW_TOOLS and not unlock.get("workflow"):
-        return ("deny", "THE FAN-OUT LAW (fanout_guard): the Workflow tool can spawn "
-                "dozens of agents from one call and is locked. The CEO unlocks it per "
-                "use with `python tools/hooks/fanout_guard.py --allow-workflow` in "
-                "their own terminal. Ask them; do not use the Agent tool to imitate "
-                "the workflow.", state)
-
-    # 4. The guard's own files.
-    if tool in EDIT_TOOLS and not unlock.get("edit"):
-        target = str(tin.get("file_path") or tin.get("notebook_path") or "").replace("\\", "/")
-        if any(target.endswith(g) for g in GUARDED_FILES):
-            return ("deny", "THE FAN-OUT LAW (fanout_guard): the guard rail, its state "
-                    "and its unlock file are not the manager's to edit. If the CEO "
-                    "asked for a change, they run `python tools/hooks/fanout_guard.py "
-                    "--allow-edit` first (2 h window); then edit and --selftest.", state)
+    # 3. Workflows: a reminder, never a refusal.
+    if tool in WORKFLOW_TOOLS and not s["warned_workflow"]:
+        s["warned_workflow"] = True
+        warnings.append("WORKFLOW: a workflow fans out many agents from one call - "
+                        "the burst/flood/velocity breakers still apply")
 
     if warnings:
         return ("warn", "[HOOK fanout_guard] " + " | ".join(warnings)
@@ -294,44 +254,28 @@ def evaluate(data, state, unlock, now=None):
 
 # ------------------------------------------------------------------ CLI --
 def _cli(argv):
-    u = _unlock() or {}
-    exp = time.time() + LIMITS["unlock_hours"] * 3600
     if "--status" in argv:
         st = _load(STATE)
         for sid, s in sorted((st.get("sessions") or {}).items(), key=lambda kv: -kv[1].get("seen", 0))[:5]:
-            print("%s  weighted ~%s  raw ~%s  agents %d  velocity ~%s  %s"
+            print("%s  weighted ~%s  raw ~%s  agents %d  velocity ~%s"
                   % (sid[:8], _fmt(s["weighted"]), _fmt(s["raw"]), len(s["agents"]),
-                     _fmt(_velocity(s)), "HALTED" if s.get("halted") else "ok"))
+                     _fmt(_velocity(s))))
         print("machine-wide spawns in last %ds: %d" % (
             LIMITS["burst_window"],
             len([t for t in st.get("spawns", []) if t >= time.time() - LIMITS["burst_window"]])))
-        print("unlock: %s" % (json.dumps(u) if u else "none"))
         return 0
     if "--selftest" in argv:
         return _selftest()
-    changed = False
-    if "--allow-agents" in argv:
-        u["agents_extra"] = int(argv[argv.index("--allow-agents") + 1]); changed = True
-    if "--allow-tokens" in argv:
-        u["tokens_extra"] = float(argv[argv.index("--allow-tokens") + 1]); changed = True
-    if "--allow-workflow" in argv:
-        u["workflow"] = True; changed = True
-    if "--allow-edit" in argv:
-        u["edit"] = True; changed = True
     if "--resume" in argv:
         st = _load(STATE)
         for s in (st.get("sessions") or {}).values():
-            s["halted"] = None
             s["samples"] = []
+            s["agents"] = []
         st["spawns"] = []
         _save(STATE, st)
-        print("resumed: halts cleared, velocity meters reset")
-    if changed:
-        u["expires"] = exp
-        _save(UNLOCK, u)
-        print("unlock written (expires in %dh): %s" % (LIMITS["unlock_hours"], json.dumps(u)))
-    if not changed and "--resume" not in argv:
-        print(__doc__.split("ONLY THE CEO LIFTS A CAP")[1].split("The bash guard")[0])
+        print("resumed: velocity meters and spawn windows cleared")
+        return 0
+    print(__doc__.split("  python tools/hooks")[0].split("THE SPEND METER")[0])
     return 0
 
 
@@ -350,9 +294,10 @@ def _selftest():
                 "input_tokens": inp, "output_tokens": out,
                 "cache_read_input_tokens": cr, "cache_creation_input_tokens": cw}}}) + "\n")
 
-    def call(tool, state, unlock=None, now=None, **tin):
-        d = {"tool_name": tool, "tool_input": tin, "session_id": sid, "transcript_path": tp}
-        return evaluate(d, state, unlock or {}, now)
+    def call(tool, state, now=None, sess=sid, path=None, **tin):
+        d = {"tool_name": tool, "tool_input": tin, "session_id": sess,
+             "transcript_path": path or tp}
+        return evaluate(d, state, now)
 
     fails = []
 
@@ -363,76 +308,78 @@ def _selftest():
 
     t0 = 1_000_000.0
     st = {}
-    # a normal turn: ~150k cache read = 15k weighted, nothing fires
     usage(tp, "m1", 400, cr=150_000)
     v, m, st = call("Read", st, now=t0, file_path="x.gd")
     check("normal turn is silent", v == "ok")
     check("meter counts raw", st["sessions"][sid]["raw"] == 150_400)
-    # the same message id re-emitted is not double counted
     usage(tp, "m1", 400, cr=150_000)
     v, m, st = call("Read", st, now=t0 + 1, file_path="x.gd")
     check("streamed duplicate ignored", st["sessions"][sid]["raw"] == 150_400)
-    # employee transcripts are metered too
     usage(os.path.join(sub, "agent-1.jsonl"), "a1", 1000, inp=50_000)
     v, m, st = call("Read", st, now=t0 + 2, file_path="x.gd")
     check("employee transcript metered", st["sessions"][sid]["raw"] == 201_400)
-    # spawns: warn at agents_warn, deny at agents_cap
-    verdicts = []
-    for i in range(LIMITS["agents_cap"] + 1):
-        v, m, st = call("Agent", st, now=t0 + 100 + i * 30, prompt="x")
-        verdicts.append(v)
-    check("spawn warning at agents_warn", verdicts[LIMITS["agents_warn"] - 1] == "warn")
-    check("spawn refused past agents_cap", verdicts[-1] == "deny" and verdicts[-2] != "deny")
-    # --allow-agents lifts the cap
-    v, m, st = call("Agent", st, unlock={"agents_extra": 5, "expires": 9e12}, now=t0 + 2000, prompt="x")
-    check("unlock lifts the session cap", v != "deny")
-    # burst: a fresh session, many spawns inside the window
+    # a real delegation batch: 4 parallel spawns, then 4 more a few minutes later
+    vs = []
+    for i in range(4):
+        v, m, st = call("Agent", st, now=t0 + 100 + i, prompt="x")
+        vs.append(v)
+    check("a batch of 4 is silent", all(v == "ok" for v in vs))
+    vs = []
+    for i in range(4):
+        v, m, st = call("Agent", st, now=t0 + 400 + i, prompt="x")
+        vs.append(v)
+    check("a second batch of 4 is silent", all(v == "ok" for v in vs))
+    # spawn-count warning at the first multiple (10th spawn)
+    v, m, st = call("Agent", st, now=t0 + 700, prompt="x")
+    v, m, st = call("Agent", st, now=t0 + 701, prompt="x")
+    check("warning at 10 spawns", v == "warn" and "AGENTS: 10" in m)
+    # burst: a fresh session firing spawns back to back
     st2 = {}
-    sid2 = sid
     burst = []
     for i in range(LIMITS["burst_cap"] + 1):
-        d = {"tool_name": "Agent", "tool_input": {"prompt": "x"}, "session_id": sid2,
-             "transcript_path": tp}
-        v, m, st2 = evaluate(d, st2, {}, t0 + 5000 + i)
+        v, m, st2 = call("Agent", st2, now=t0 + 5000 + i, sess="burst", prompt="x")
         burst.append(v)
-    check("burst refused inside burst_window", burst[-1] == "deny" and "821" in m)
-    # workflow locked / unlocked
-    v, m, st = call("Workflow", st, now=t0 + 6000, script="x")
-    check("workflow locked", v == "deny")
-    v, m, st = call("Workflow", st, unlock={"workflow": True, "expires": 9e12}, now=t0 + 6001, script="x")
-    check("workflow unlocked by the CEO", v != "deny")
-    # self-edit lock
-    v, m, st = call("Edit", st, now=t0 + 6002, file_path=os.path.join(ROOT, "tools", "hooks", "fanout_guard.py"))
-    check("self-edit refused", v == "deny")
-    v, m, st = call("Edit", st, now=t0 + 6003, file_path=os.path.join(ROOT, "tools", "hooks", "bash_guard.py"))
-    check("other hooks editable", v != "deny")
-    # velocity halt: a burst of output tokens inside the window
+    check("burst refused inside burst_window", burst[-1] == "deny" and "821" in m
+          and all(x != "deny" for x in burst[:-1]))
+    v, m, st2 = call("Agent", st2, now=t0 + 5000 + LIMITS["burst_window"] + 5, sess="burst", prompt="x")
+    check("burst window drains on its own", v != "deny")
+    # flood: spaced past the burst window but many inside flood_window
     st3 = {}
-    tp3 = os.path.join(tmp, "runaway.jsonl")
-    usage(tp3, "r1", int(LIMITS["velocity_halt"] / WEIGHTS["output_tokens"]) + 1)
-    d = {"tool_name": "Read", "tool_input": {}, "session_id": "runaway", "transcript_path": tp3}
-    v, m, st3 = evaluate(d, st3, {}, t0 + 6999)  # first sight = backfill, no velocity
-    check("first sight of a big transcript never halts", v == "ok")
-    usage(tp3, "r2", int(LIMITS["velocity_halt"] / WEIGHTS["output_tokens"]) + 1)
-    v, m, st3 = evaluate(d, st3, {}, t0 + 7000)
-    check("runaway velocity halts", v == "deny" and "HALT" in m)
-    v, m, st3 = evaluate(d, st3, {}, t0 + 7001)
-    check("halt is sticky", v == "deny")
-    st3["sessions"]["runaway"]["halted"] = None
-    st3["sessions"]["runaway"]["samples"] = []
-    v, m, st3 = evaluate(d, st3, {}, t0 + 7002)
-    check("resume clears the halt", v == "ok")
-    # spend warning at the first multiple (a long session creeping over
-    # the step; one message that big would be a velocity halt instead)
+    flood = []
+    for i in range(LIMITS["flood_cap"] + 1):
+        v, m, st3 = call("Agent", st3, now=t0 + 9000 + i * 15, sess="flood", prompt="x")
+        flood.append(v)
+    check("flood refused inside flood_window", flood[-1] == "deny" and "loop" in m
+          and all(x != "deny" for x in flood[:-1]))
+    # workflow: a reminder, not a refusal
     st4 = {}
-    tp4 = os.path.join(tmp, "spend.jsonl")
-    d = {"tool_name": "Read", "tool_input": {}, "session_id": "spend", "transcript_path": tp4}
-    v, m, st4 = evaluate(d, st4, {}, t0 + 7900)
-    st4["sessions"]["spend"]["weighted"] = LIMITS["tokens_warn_every"] - 1000
-    usage(tp4, "s1", 0, cr=20_000)
-    v, m, st4 = evaluate(d, st4, {}, t0 + 8000)
+    v, m, st4 = call("Workflow", st4, now=t0 + 12000, sess="wf", script="x")
+    check("workflow warns, never refuses", v == "warn" and "WORKFLOW" in m)
+    v, m, st4 = call("Workflow", st4, now=t0 + 12001, sess="wf", script="x")
+    check("workflow reminder fires once", v == "ok")
+    # velocity: first sight backfills; a runaway then refuses; the window drains
+    st5 = {}
+    tp5 = os.path.join(tmp, "runaway.jsonl")
+    big = int(LIMITS["velocity_halt"] / WEIGHTS["output_tokens"]) + 1
+    usage(tp5, "r1", big)
+    v, m, st5 = call("Read", st5, now=t0 + 15000, sess="run", path=tp5)
+    check("first sight of a big transcript never halts", v != "deny")
+    usage(tp5, "r2", big)
+    v, m, st5 = call("Read", st5, now=t0 + 15001, sess="run", path=tp5)
+    check("runaway velocity refuses", v == "deny" and "RUNAWAY" in m)
+    v, m, st5 = call("Read", st5, now=t0 + 15002, sess="run", path=tp5)
+    check("still refused inside the window", v == "deny")
+    v, m, st5 = call("Read", st5, now=t0 + 15001 + LIMITS["velocity_window"] + 1, sess="run", path=tp5)
+    check("halt clears itself after the cooldown", v == "ok")
+    # spend warning at the first multiple (a long session creeping over)
+    st6 = {}
+    tp6 = os.path.join(tmp, "spend.jsonl")
+    v, m, st6 = call("Read", st6, now=t0 + 17900, sess="spend", path=tp6)
+    st6["sessions"]["spend"]["weighted"] = LIMITS["tokens_warn_every"] - 1000
+    usage(tp6, "s1", 0, cr=20_000)
+    v, m, st6 = call("Read", st6, now=t0 + 18000, sess="spend", path=tp6)
     check("spend warning at the first step", v == "warn" and "SPEND" in m)
-    v, m, st4 = evaluate(d, st4, {}, t0 + 8001)
+    v, m, st6 = call("Read", st6, now=t0 + 18001, sess="spend", path=tp6)
     check("spend warning fires once per step", v == "ok")
     print("fanout_guard selftest: %s" % ("PASS" if not fails else "FAIL " + ", ".join(fails)))
     return 0 if not fails else 1
@@ -446,7 +393,7 @@ def main():
         return
     state = _load(STATE)
     try:
-        verdict, msg, state = evaluate(data, state, _unlock())
+        verdict, msg, state = evaluate(data, state)
     except Exception as e:  # a guard must never crash the turn
         verdict, msg = "ok", ""
         state.setdefault("errors", []).append(str(e)[:200])

@@ -92,36 +92,35 @@ public changelog), no shell writes/redirects into engine resource files
 TIER 2b - THE FAN-OUT GUARD (`fanout_guard.py`, PreToolUse on EVERY
 tool; kit v1.9, the CEO's ask 2026-09-10 after a public report of a
 manager spawning 821 sub-agents and burning 50M+ tokens in thirty
-seconds). The circuit breaker the manager cannot switch off:
+seconds). CATASTROPHE-ONLY by the CEO's ruling the same day ("this
+might be too restrictive... I just wanted to prevent complete runaway
+agents and gigantic token spend"): nothing fires on real work, nothing
+needs a command to lift, and the manager is never locked out for more
+than a cooldown.
 - THE SPEND METER: every call folds the NEW bytes of the session
   transcript and its employee transcripts into raw + WEIGHTED tokens
   (weighted ~ cost: input 1, cache write 1.25, cache read 0.1, output 5;
-  byte offsets in the state file, so a warm call costs ~0.06 s). A
-  system message to the CEO at every 10M weighted tokens and on velocity
-  (2M weighted inside 120 s). The first sight of a file backfills totals
-  without feeding the velocity meter, so installing mid-session never
-  halts on catch-up.
-- THE HALT: 6M weighted tokens inside 120 s = a runaway; EVERY tool call
-  is refused until the CEO runs `--resume`. The manager can still talk.
-- THE AGENT CAPS (Agent/Task): warning at 6 spawns per session, refusal
-  past 12; refusal when 6 spawns land inside 60 s MACHINE-WIDE (the
-  821-agents shape); refusal once the session passes 30M weighted.
-- THE WORKFLOW LOCK: the bulk-orchestration tool is refused unless the
-  CEO unlocked it (`--allow-workflow`, per use).
-- THE SELF-EDIT LOCK: Edit/Write on the guard, its state or its unlock
-  file is refused; the bash guard refuses any shell mention of them
-  except `--status` and `--selftest`. So the manager cannot raise a
-  limit, clear a halt, or rewrite the rule - ONLY THE CEO can, from a
-  terminal the manager does not drive: `--allow-agents N`,
-  `--allow-workflow`, `--allow-tokens M`, `--allow-edit`, `--resume`
-  (unlocks expire after 2 h). All numbers live in LIMITS; `--selftest`
-  runs the nineteen pipe tests in-process. The manager-side rule is the
-  delegation method's law 6 (THE FAN-OUT LAW); the guard is what makes
-  it true when the manager forgets.
+  byte offsets in the state file, so a warm call costs ~0.06 s). The
+  first sight of a file backfills totals without feeding the velocity
+  meter, so installing mid-session never trips on catch-up.
+- REFUSES only the runaway shapes: a BURST (8 spawns inside 60 s,
+  machine-wide - the 821 shape), a FLOOD (25 spawns inside 10 min per
+  session - a loop, not a plan), and RUNAWAY VELOCITY (10M weighted
+  tokens inside 120 s: every tool call refused until the window drains,
+  a self-clearing cooldown; the manager can still talk and report).
+- WARNS, never refuses, on everything else: a systemMessage the CEO sees
+  plus a context line the manager relays - every 10 spawns, every 10M
+  weighted tokens, velocity past 3M inside the window, and a one-time
+  reminder when the bulk-orchestration tool runs.
+- No unlock file, no --allow commands, no self-edit lock: `--status`
+  shows the meter, `--resume` clears it early, `--selftest` runs the
+  eighteen pipe tests in-process. All numbers live in LIMITS and change
+  only at the CEO's word. The manager-side rule is the delegation
+  method's law 6 (THE FAN-OUT LAW); the guard is what makes it true on a
+  bad day.
 
 State: `.claude/hooks_state.json` (gitignored - the fingerprint is per
-machine); `.claude/fanout_state.json` + `.claude/fanout_unlock.json`
-(gitignored, the guard's meter and the CEO's unlocks). The checkpoint script's `--reset` stores the fingerprint LAST so
+machine); `.claude/fanout_state.json` (gitignored, the guard's meter). The checkpoint script's `--reset` stores the fingerprint LAST so
 the checkpoint commit itself is not counted; the checkpoint ritual's step
 order is commit + push, THEN reset, THEN the marker.
 
@@ -161,7 +160,14 @@ the manager waits on permission or idles after a long employee run.
 - 2026-09-06 WS1: founded. Tier 1 + 2 built and pipe-tested in Everwood
   (kit v1.7); Tier 3/4 pinned on the origin project's FUTURE_FEATURES.md.
 - 2026-09-10 WS1: Tier 2b, the fan-out guard (kit v1.9) - the CEO's ask
-  after the 821-agents report. Lesson while building it: the guard locked
-  its own author out the moment settings.json was saved (the watcher is
-  live), so the kit copy of the script waits on the CEO's `--allow-edit`.
-  Build order for a self-locking guard: write every copy FIRST, wire LAST.
+  after the 821-agents report. The first cut was STRICT (session caps,
+  a workflow lock, a self-edit lock, CEO-only unlock commands, a bash
+  rule refusing the manager); it locked its own author out mid-batch
+  and, within the hour, the CEO ruled it too restrictive: "I don't want
+  to have to type these commands all the time and neither will any
+  users who use Rootstock-os. I just wanted to prevent complete runaway
+  agents and gigantic token spend." Loosened to CATASTROPHE-ONLY the
+  same day (burst/flood/velocity refusals that clear themselves;
+  warnings for the rest; no unlock machinery). Lesson: a guard rail is
+  for the cliff edge, not the path - if a normal day ever needs a
+  command to get past it, the rail is in the wrong place.

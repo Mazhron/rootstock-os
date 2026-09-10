@@ -59,20 +59,22 @@ thinking.
 6. THE FAN-OUT LAW (added 2026-09-10 after a public catastrophe: a
    manager asked to "check my markdown files for consistency" spawned
    821 sub-agents and burned 50M+ tokens in thirty seconds). Employees
-   are spent money. A delegation batch is at most a handful of parallel
-   employees (the origin project: 4), a session at most a dozen, never a
-   burst, never an employee that spawns employees (fan-out is one level
-   deep and the manager's decision), and any bulk-orchestration tool
-   only at the CEO's explicit per-use word. A task that seems to need
-   more is a DESIGN problem - split it, script it, or ask the CEO - never
-   a bigger fan-out. THE HARNESS ENFORCES IT (HOOKS_METHOD.md, the
-   fan-out guard): spend metered from the transcript with warnings,
-   spawn caps, burst refusal, a lock on orchestration tools, a HALT of
-   every tool call on runaway velocity, and a lock on the guard's own
-   files. ONLY THE CEO LIFTS A CAP, from a terminal the manager does not
-   drive. A refusal from the guard is the CEO's standing decision: the
-   manager stops, reports what it was fanning out and why, and waits -
-   never retries, never routes around it, never edits the guard.
+   are spent money. A delegation batch is a handful of parallel
+   employees (the origin project's habit: 4), never a burst, never an
+   employee that spawns employees (fan-out is one level deep and the
+   manager's decision), and any bulk-orchestration tool only when the
+   CEO asks for it. A task that seems to need dozens is a DESIGN problem
+   - split it, script it, or ask the CEO - never a bigger fan-out. THE
+   HARNESS BACKS IT, CATASTROPHE-ONLY (HOOKS_METHOD.md Tier 2b, the
+   fan-out guard; the origin CEO loosened it from a strict first cut the
+   same day: "I just wanted to prevent complete runaway agents and
+   gigantic token spend"): it refuses only the runaway shapes - a burst
+   of spawns inside a minute, a flood inside ten, or token velocity no
+   real work produces (a self-clearing cooldown) - and otherwise only
+   warns. No unlock commands; nothing fires on real work. A refusal from
+   the guard is the CEO's standing decision: the manager stops, reports
+   what it was fanning out and why, and never resumes the same loop;
+   the guard's limits change only at the CEO's word.
 
 ## The assignments table (build one per project)
 
