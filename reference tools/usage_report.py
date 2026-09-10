@@ -75,15 +75,20 @@ CACHE_VERSION = 2  # v2: per-file timestamps + label + biggest prompt
 
 # $ per MILLION tokens: model -> (input, output). None = unknown; fill from
 # the billing page / claude.com/pricing and the cost column comes alive.
-# Cache pricing law: read = 0.1x input; 5-min write = 1.25x; 1-hour write = 2x.
+# Cache pricing law: read = 0.1x input (0.025x on Fable 5.1); 5-min write =
+# 1.25x; 1-hour write = 2x.
 # Rates confirmed 2026-09-04 against Anthropic's published first-party API
 # pricing (haiku 4.5 / sonnet 5 / opus 5 / fable 5). The old opus row was
 # the Opus 4.1-era 15/75 - Opus 5-tier is 5/25.
+# Third value = the CACHE READ multiplier on the input price: 0.1x on most
+# models, 0.025x on Claude Fable 5.1 ($0.25/MTok - every "fable" message in
+# these transcripts is claude-fable-5-1; corrected 2026-09-10 after Mazhron
+# asked whether cache reads count: they do, at this discount).
 PRICING = {
-    "haiku": (1.0, 5.0),
-    "sonnet": (3.0, 15.0),
-    "opus": (5.0, 25.0),
-    "fable": (10.0, 50.0),
+    "haiku": (1.0, 5.0, 0.1),
+    "sonnet": (3.0, 15.0, 0.1),
+    "opus": (5.0, 25.0, 0.1),
+    "fable": (10.0, 50.0, 0.025),
 }
 
 FIELDS = ["period_type", "period", "ws", "scope", "name", "role", "count",
@@ -277,7 +282,7 @@ def cost_usd(model, m):
     p = PRICING.get(model)
     if not p:
         return None
-    return (m["in"] * p[0] + m["out"] * p[1] + m["read"] * 0.1 * p[0]
+    return (m["in"] * p[0] + m["out"] * p[1] + m["read"] * p[2] * p[0]
             + m["c5"] * 1.25 * p[0] + m["c1"] * 2.0 * p[0]) / 1e6
 
 
@@ -654,7 +659,11 @@ def write_xlsx(rows, emp_rows):
     _xlsx_sheet(wb, "usage", FIELDS, main, total_scope_col=3)
     _xlsx_sheet(wb, "per_request", FIELDS, per_req)
     _xlsx_sheet(wb, "employees", EMP_FIELDS, emp_rows)
-    wb.save(XLSX_OUT)
+    try:
+        wb.save(XLSX_OUT)
+    except PermissionError:
+        return ("%s NOT rewritten - it is open in Excel; close it and rerun "
+                "(CSV/TXT are current)" % os.path.relpath(XLSX_OUT, ROOT))
     return os.path.relpath(XLSX_OUT, ROOT)
 
 
