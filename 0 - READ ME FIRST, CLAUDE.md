@@ -95,7 +95,11 @@ real per-model/per-tool token totals by day/week/month, the breakdowns
 (per request, per tool call, per employee run, the context-window "box")
 and the .xlsx the CEO opens (THE SPREADSHEET RULE, kit v1.11: frozen
 header, separators, bold ruled totals - needs `pip install openpyxl`,
-recorded in the workstation inventory); adapt its output paths + the
+recorded in the workstation inventory) and, kit v1.12, THE WEIGHTED
+COLUMN + THE DAILY LINE (REPORTING_METHOD.md "THE WEIGHTED COLUMN + THE
+COMPARISON RULE": budget-weighted tokens as the headline, cache misses
+counted, every day judged against the previous seven with a verdict;
+standup.py prints its tail as THE BUDGET block); adapt its output paths + the
 project-name filter in transcript_dirs() and it works in any Claude Code
 project unchanged. Also rootstock_update_check.py - adapt its
 config lines and WIRE IT INTO YOUR STANDUP script (it is weekly
@@ -165,6 +169,14 @@ clearing itself after a cooldown - and only warns on the rest. Nothing
 for the CEO to type, ever. It exists because a manager once spawned 821
 sub-agents on "check my markdown files"; the delegation method's law 6
 is the rule, this is what makes it true on a bad day.
+THE DIET GUARD (kit v1.12, hooks/diet_guard.py + HOOKS_METHOD.md Tier
+2c): copy it fresh (nothing project-specific inside), wire its
+Read|Bash|PowerShell PreToolUse entry (the template settings.json has
+it), run `--selftest`, gitignore .claude/diet_state.json. Warn-only: it
+says a file's size and section count before a whole read past ~10k
+tokens (WIKI_METHOD.md "The read diet") and the missing limiter on a
+chatty shell shape (WIKI_METHOD.md "The output diet"). It never refuses
+- an edit that needs the whole file is a fair reason to proceed.
 
 ## STEP 5 - optional boards (adopt when the CEO wants them)
 

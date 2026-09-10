@@ -142,6 +142,65 @@ tag index -> tools/export_tag_index.py (reference).
    headings, See also lines, incremental growth, one home per fact).
 5. From then on, follow the standing practice: every write expands the web.
 
+## The read diet: size before you read (the 10k rule)
+Tags: lessons, economy, process | A whole-file read past ~10k tokens is section-read or delegated; the harness knows the size before the read, so a warn-only hook says it at the cliff edge
+
+Born 2026-09-10 from the origin CEO's weighted-usage insight: only the
+tokens that count against the plan matter, and under those weights (input
+1, cache write 1.25-2, cache read 0.1 or 0.025, output 5) everything the
+manager reads is WRITTEN into the context at 1.25x and re-read every later
+turn. A 24k-token file read inline costs ~30k weighted up front and rides
+in every request for the rest of the session; the same file section-read
+costs 2-4k; the same file understood by an employee in a throwaway
+context comes back as a 2k summary at the employee's price.
+
+THE RULE: know the size before you read. The signals are free - the byte
+size on disk (divide by four), the heading index from a grep, the line
+count. A whole-file read past ~10k tokens is either SECTION-READ (grep the
+headings, read one section by offset/limit or `sed -n A,Bp`) or DELEGATED
+(an "understand this file/system" step goes to an employee; the manager
+takes the summary). The one fair exception: an EDIT that needs the exact
+text - say so and proceed.
+
+WHY NOT A COUNT IN EVERY HEADING (the CEO's first idea): a hand-typed
+token count goes stale the moment the section grows and costs output at
+5x to maintain. The count is GENERATED instead, at the cliff edge: the
+kit's diet guard hook (HOOKS_METHOD.md Tier 2c) reads the file size before
+the Read or the cat runs and says "this is ~24k tokens, 12 sections -
+section-read or delegate" as a warning, never a refusal. The usage sheet's
+daily line then grades the day (heavy whole-file reads, section-read
+share) against the previous seven, so a slip is named the next morning.
+
+See also: The output diet (below) | HOOKS_METHOD.md Tier 2c (the diet guard) | SUBAGENT_METHOD.md "Why this saves money" (the 10k delegation line) | REPORTING_METHOD.md (THE WEIGHTED COLUMN + THE COMPARISON RULE)
+
+## The output diet (every emitted token costs 5x)
+Tags: lessons, economy, process | Output is weighted 5x and every tool result is written at 1.25x; the manager's emit habits are a budget lever, not a style choice
+
+Same origin, same day (the CEO: "a permanent rule not only for this
+machine but for Rootstock-os as a whole"). Under the budget weights the
+manager's OUTPUT - prose, edits, briefs, thinking - is a fifth of the bill
+at five times the price of input, and every TOOL RESULT is context written
+at 1.25x and re-read forever. So the emit habits are law:
+
+- EDIT over WRITE: a Write re-emits the whole file; an Edit emits the
+  change. (A NEW file is one Write, never incremental appends.)
+- SCRIPTS GENERATE DOCUMENTS: tables, indexes, ledgers, changelogs, sheets
+  are produced by scripts (the Script Rule); the manager never types what
+  a script can render.
+- NEVER RESTATE: a result the table, the ledger or the diff already
+  carries is pointed at, not repeated in prose. A reply leads with the
+  outcome and stops when the content stops.
+- LIMITERS ON CHATTY COMMANDS: git log with a count, git diff with a path
+  or --stat, listings with a depth or a filter, installs with -q, test
+  runs through the runner that prints one verdict. The diet guard hook
+  says the limiter when one is missing (warn-only, capped per session).
+- BRIEFS ARE SELF-CONTAINED, NOT PADDED: an employee's brief is output too.
+- EFFORT MATCHES THE TASK: thinking is output; routine doc and ledger
+  sessions run at lower effort, the high setting is for design and
+  debugging (where the platform exposes the knob).
+
+See also: The read diet (above) | HOOKS_METHOD.md Tier 2c | REPORTING_METHOD.md "The Script Rule" | SUBAGENT_METHOD.md law 1 (the brief)
+
 ## Maintenance honesty
 
 - When MOVING a section between files, update the See also lines that

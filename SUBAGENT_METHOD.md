@@ -34,6 +34,15 @@ even a same-priced employee saves manager tokens, and a cheaper employee
 multiplies the saving. Delegate the reading and the grinding; keep the
 thinking.
 
+THE 10k LINE (2026-09-10, from the weighted-usage insight): under budget
+weights a file the manager reads inline is written at 1.25x and re-read
+every later turn - ~90k weighted over a session for one 24k-token file
+at the manager's price. Any "understand this file/system" step past ~10k
+tokens is delegated; the manager reads sections or summaries. The kit's
+diet guard hook says the size at the moment of the read (warn-only), and
+the usage sheet's daily line grades the habit. The exception is an edit
+that needs the exact text. Full rule: WIKI_METHOD.md "The read diet".
+
 ## The six laws
 
 1. THE BRIEF IS EVERYTHING. Employees know NOTHING - no chat history, no

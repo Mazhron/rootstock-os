@@ -40,8 +40,35 @@ is the derived sheet, so no append-only file here):
   docs/history/usage_employees.csv - one row per sub-agent run (day, model,
                                     minutes, tokens, tool calls, est$, the
                                     brief's first line)
+  docs/history/usage_daily.txt    - THE DAILY LINE (Mazhron 2026-09-10, ideas
+                                    17 + 20): one line per active day - the
+                                    weighted total, its top pillar, cache
+                                    misses, the read diet - each judged
+                                    against the previous 7 active days
+                                    (HIGH / normal / LOW). standup prints its
+                                    tail; "a number without comparison means
+                                    nothing".
   docs/history/usage_cache.json   - incremental parse cache (transcripts are
                                     append-only; reruns only read new bytes)
+
+THE WEIGHTED COLUMN (Mazhron's insight 2026-09-10, idea 13): only the tokens
+that count against the plan matter. weighted_tok prices every token relative
+to fresh input: input 1, cache write 1.25 (2.0 on the 1-hour TTL), cache
+read 0.1 (0.025 on Fable 5.1), output 5. It is THE headline; the raw count
+is trivia beside it. The same weights drive the fan-out guard.
+
+CACHE MISSES (idea 14): a request whose cache WRITE is most of its box is a
+prefix rewrite - the cache expired, or an early byte of the prefix (the
+core instructions file, a memory file) changed mid-session. The first
+request of a session is a COLD start (expected, counted apart); every later
+one is a MISS. The sheet counts both and prices the miss tokens, because
+cache writes are the biggest weighted pillar and misses are the only waste
+nobody chose.
+
+THE READ DIET (idea 17): every Read call carries its parameters, so the
+sheet grades the wiki convention - section reads (offset/limit, sed -n,
+head/tail) vs whole-file reads (bare Read, cat, type, Get-Content) - and the
+context each injected. Shell reads count too.
 
 WHAT "THE CONTEXT WINDOW" MEANS HERE: the harness never records what sits
 in the window, but every request's prompt size is input + cache_read +
@@ -53,9 +80,12 @@ Usage:  python tools/usage_report.py            # in run_all's metrics group
 Needs:  openpyxl (pip) for the .xlsx; without it the CSV/TXT still write
         and the run says so (WORKSTATION.md carries the row).
 
+Usage:  python tools/usage_report.py --quiet   # standup's silent refresh
+
 Search keys: usage, token costs, tool costs, metrics sheet, daily totals,
 weekly totals, monthly totals, harness meter, transcript mining, average
-tokens per request, per tool call, per employee, context window size.
+tokens per request, per tool call, per employee, context window size,
+weighted tokens, budget, cache misses, read diet, daily line, comparison.
 See also: tools/metrics_report.py (task outcomes from SUBAGENTS.md);
 REPORTING_METHOD.md; TOKEN_IDEAS.md.
 """
@@ -63,6 +93,8 @@ import csv
 import datetime
 import json
 import os
+import re
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HIST = os.path.join(ROOT, "docs", "history")
@@ -71,7 +103,8 @@ TXT_OUT = os.path.join(HIST, "usage_metrics.txt")
 EMP_OUT = os.path.join(HIST, "usage_employees.csv")
 XLSX_OUT = os.path.join(HIST, "usage_metrics.xlsx")
 CACHE = os.path.join(HIST, "usage_cache.json")
-CACHE_VERSION = 2  # v2: per-file timestamps + label + biggest prompt
+DAILY_OUT = os.path.join(HIST, "usage_daily.txt")
+CACHE_VERSION = 3  # v3: weighted, cache misses, read-diet classes
 
 # $ per MILLION tokens: model -> (input, output). None = unknown; fill from
 # the billing page / claude.com/pricing and the cost column comes alive.
@@ -91,13 +124,27 @@ PRICING = {
     "fable": (10.0, 50.0, 0.025),
 }
 
+# THE WEIGHTS (idea 13): what a token costs relative to fresh input. Cache
+# reads take the model's multiplier from PRICING (third value).
+W_INPUT, W_WRITE_5M, W_WRITE_1H, W_OUTPUT = 1.0, 1.25, 2.0, 5.0
+DEFAULT_READ_MULT = 0.1
+MISS_SHARE = 0.5       # a request whose cache write is >= this share of its
+MISS_MIN_BOX = 20000   # box (and the box is at least this big) is a MISS
+BIG_READ_TOK = 10000   # idea 15: a whole-file read past this is "heavy"
+COMPARE_DAYS = 7       # the daily line compares against this many prior active days
+HIGH_RATIO, LOW_RATIO = 1.30, 0.70
+
 FIELDS = ["period_type", "period", "ws", "scope", "name", "role", "count",
           "input_tok", "output_tok", "think_tok", "cache_read_tok",
           "cache_create_tok", "context_est_tok", "est_cost_usd",
-          "total_tok", "avg_tok"]
+          "total_tok", "avg_tok", "weighted_tok", "cache_miss_n",
+          "cache_miss_tok"]
 # total_tok: a model row = every token metered (in + out + cache_rd +
 # cache_wr); a tool row = the context its results injected; a TOTAL row =
 # the period's model tokens. avg_tok = total_tok per request / per call.
+# weighted_tok = the budget-weighted count (THE headline). cache_miss_n /
+# cache_miss_tok = prefix rewrites after the session's first request and
+# the cache-write tokens they cost.
 EMP_FIELDS = ["ws", "day", "started", "minutes", "parent_session", "model",
               "msgs", "input_tok", "output_tok", "think_tok",
               "cache_read_tok", "cache_create_tok", "tool_calls",
@@ -134,7 +181,48 @@ def local_day(ts):
 
 def blank_model():
     return {"count": 0, "in": 0, "out": 0, "think": 0, "read": 0,
-            "c5": 0, "c1": 0, "maxp": 0}
+            "c5": 0, "c1": 0, "maxp": 0, "miss_n": 0, "miss_tok": 0,
+            "cold_n": 0, "cold_tok": 0}
+
+
+def read_mult(model):
+    p = PRICING.get(model)
+    return p[2] if p else DEFAULT_READ_MULT
+
+
+def weighted(model, m):
+    """Budget-weighted tokens for a bucket (idea 13)."""
+    return (m["in"] * W_INPUT + m["out"] * W_OUTPUT
+            + m["read"] * read_mult(model)
+            + m["c5"] * W_WRITE_5M + m["c1"] * W_WRITE_1H)
+
+
+def blank_reads():
+    return {"whole": {"n": 0, "ctx": 0, "big": 0},
+            "section": {"n": 0, "ctx": 0}, "grep": 0}
+
+
+# The read-diet classifier (idea 17). Read: sectioned iff offset/limit.
+# Shell: a bare cat/type/Get-Content is a whole-file read; sed -n, head,
+# tail, -TotalCount/-Tail/Select -First are section reads.
+_SHELL_READ = re.compile(r"(^|[\s;|&(])(cat|type|get-content|gc)\s+\S")
+_SHELL_SECTION = re.compile(r"(^|[\s;|&(])(sed\s+-n|head\b|tail\b|awk\b)|-totalcount|-tail\b|select-object\s+-(first|last)|select\s+-(first|last)")
+
+
+def classify_read(tool, tin):
+    """-> 'whole' | 'section' | 'grep' | None for one tool_use block."""
+    tin = tin or {}
+    if tool == "Read":
+        return "section" if (tin.get("offset") or tin.get("limit")) else "whole"
+    if tool == "Grep":
+        return "grep"
+    if tool in ("Bash", "PowerShell"):
+        cmd = (tin.get("command") or "").lower()
+        if _SHELL_READ.search(cmd):
+            return "section" if _SHELL_SECTION.search(cmd) else "whole"
+        if _SHELL_SECTION.search(cmd):
+            return "section"
+    return None
 
 
 def box(m):
@@ -168,7 +256,7 @@ def parse_file(path, state, force_agent=False):
         return  # unchanged since last run
     if size < state.get("size", 0) or state.get("days") is None:
         state.update({"offset": 0, "last_id": "", "pending": {}, "days": {},
-                      "t_first": "", "t_last": "", "label": ""})
+                      "t_first": "", "t_last": "", "label": "", "nreq": 0})
     days, pending = state["days"], state["pending"]
     with open(path, "rb") as fh:
         fh.seek(state.get("offset", 0))
@@ -191,13 +279,19 @@ def parse_file(path, state, force_agent=False):
                 day = local_day(rec.get("timestamp", ""))
                 if not day:
                     continue
-                d = days.setdefault(day, {"models": {}, "tools": {}})
+                d = days.setdefault(day, {"models": {}, "tools": {}, "reads": blank_reads()})
+                d.setdefault("reads", blank_reads())
                 for blk in msg.get("content") or []:
                     if isinstance(blk, dict) and blk.get("type") == "tool_use":
                         tool = blk.get("name") or "?"
-                        pending[blk.get("id") or ""] = tool
+                        cls = classify_read(tool, blk.get("input"))
+                        pending[blk.get("id") or ""] = [tool, cls]
                         t = d["tools"].setdefault(tool, {"calls": 0, "ctx": 0})
                         t["calls"] += 1
+                        if cls == "grep":
+                            d["reads"]["grep"] += 1
+                        elif cls:
+                            d["reads"][cls]["n"] += 1
                 # A message split across records repeats its meter; count once.
                 mid = msg.get("id") or rec.get("requestId") or ""
                 usage = msg.get("usage")
@@ -223,9 +317,20 @@ def parse_file(path, state, force_agent=False):
                     c5 = usage.get("cache_creation_input_tokens", 0) or 0
                 m["c5"] += c5 or 0
                 m["c1"] += c1 or 0
-                m["maxp"] = max(m["maxp"], (usage.get("input_tokens", 0) or 0)
-                                + (usage.get("cache_read_input_tokens", 0) or 0)
-                                + (c5 or 0) + (c1 or 0))
+                bx = ((usage.get("input_tokens", 0) or 0)
+                      + (usage.get("cache_read_input_tokens", 0) or 0)
+                      + (c5 or 0) + (c1 or 0))
+                m["maxp"] = max(m["maxp"], bx)
+                # Cache misses (idea 14): a big write on a not-first request.
+                wr = (c5 or 0) + (c1 or 0)
+                state["nreq"] = state.get("nreq", 0) + 1
+                if bx >= MISS_MIN_BOX and wr >= MISS_SHARE * bx:
+                    if state["nreq"] == 1:
+                        m["cold_n"] += 1
+                        m["cold_tok"] += wr
+                    else:
+                        m["miss_n"] += 1
+                        m["miss_tok"] += wr
             elif rtype == "user":
                 # Tool results: size them - that is what enters context.
                 msg = rec.get("message") or {}
@@ -239,9 +344,10 @@ def parse_file(path, state, force_agent=False):
                     if not (isinstance(blk, dict)
                             and blk.get("type") == "tool_result"):
                         continue
-                    tool = pending.pop(blk.get("tool_use_id") or "", None)
-                    if not tool:
+                    ent = pending.pop(blk.get("tool_use_id") or "", None)
+                    if not ent:
                         continue
+                    tool, cls = (ent if isinstance(ent, list) else [ent, None])
                     payload = rec.get("toolUseResult")
                     if payload is None:
                         payload = blk.get("content")
@@ -249,9 +355,14 @@ def parse_file(path, state, force_agent=False):
                         est = len(json.dumps(payload, default=str)) // 4
                     except (TypeError, ValueError):
                         est = len(str(payload)) // 4
-                    d = days.setdefault(day, {"models": {}, "tools": {}})
+                    d = days.setdefault(day, {"models": {}, "tools": {}, "reads": blank_reads()})
+                    d.setdefault("reads", blank_reads())
                     t = d["tools"].setdefault(tool, {"calls": 0, "ctx": 0})
                     t["ctx"] += est
+                    if cls in ("whole", "section"):
+                        d["reads"][cls]["ctx"] += est
+                        if cls == "whole" and est >= BIG_READ_TOK:
+                            d["reads"]["whole"]["big"] += 1
         state["offset"] = fh.tell()
     state["size"] = size
     if len(pending) > 400:  # orphaned tool_use ids (interrupted calls)
@@ -271,11 +382,17 @@ def merge_bucket(tgt, d):
         t = tgt["tools"].setdefault(tool, {"calls": 0, "ctx": 0})
         t["calls"] += v["calls"]
         t["ctx"] += v["ctx"]
+    r = tgt.setdefault("reads", blank_reads())
+    src = d.get("reads") or blank_reads()
+    for cls in ("whole", "section"):
+        for k, v in src[cls].items():
+            r[cls][k] = r[cls].get(k, 0) + v
+    r["grep"] += src.get("grep", 0)
 
 
 def merge_days(all_days, days):
     for day, d in days.items():
-        merge_bucket(all_days.setdefault(day, {"models": {}, "tools": {}}), d)
+        merge_bucket(all_days.setdefault(day, {"models": {}, "tools": {}, "reads": blank_reads()}), d)
 
 
 def cost_usd(model, m):
@@ -299,13 +416,14 @@ def build_rows(all_days, ws):
     for day, d in all_days.items():
         for ptype, period in period_keys(day):
             merge_bucket(agg.setdefault(
-                (ptype, period), {"models": {}, "tools": {}}), d)
+                (ptype, period), {"models": {}, "tools": {}, "reads": blank_reads()}), d)
     rows = []
     order = {"day": 0, "week": 1, "month": 2, "all": 3}
     for (ptype, period) in sorted(agg, key=lambda k: (order[k[0]], k[1])):
         d = agg[(ptype, period)]
         total = blank_model()
         total_cost, cost_known = 0.0, True
+        total_w = 0.0
         for key in sorted(d["models"]):
             model, role = key.split("|")
             m = d["models"][key]
@@ -316,12 +434,15 @@ def build_rows(all_days, ws):
                 total_cost += c
             for k in total:
                 total[k] += m[k]
+            w = weighted(model, m)
+            total_w += w
             tot = m["in"] + m["out"] + m["read"] + m["c5"] + m["c1"]
             rows.append([ptype, period, ws, "model", model, role, m["count"],
                          m["in"], m["out"], m["think"], m["read"],
                          m["c5"] + m["c1"], "",
                          "%.2f" % c if c is not None else "",
-                         tot, tot // (m["count"] or 1)])
+                         tot, tot // (m["count"] or 1), int(w),
+                         m["miss_n"], m["miss_tok"]])
             if ptype == "all":
                 MAXP[(ws, model, role)] = m["maxp"]
             elif ptype == "month":
@@ -339,14 +460,14 @@ def build_rows(all_days, ws):
                              m["think"] // n, m["read"] // n,
                              (m["c5"] + m["c1"]) // n, box(m) // n,
                              "%.4f" % (c / n) if c is not None else "",
-                             "", ""])
+                             "", "", int(weighted(model, m) // n), "", ""])
         tool_ctx = 0
         for tool in sorted(d["tools"], key=lambda t: -d["tools"][t]["ctx"]):
             v = d["tools"][tool]
             tool_ctx += v["ctx"]
             rows.append([ptype, period, ws, "tool", tool, "-", v["calls"],
                          "", "", "", "", "", v["ctx"], "",
-                         v["ctx"], v["ctx"] // (v["calls"] or 1)])
+                         v["ctx"], v["ctx"] // (v["calls"] or 1), "", "", ""])
         # THE TOTAL ROW sits LAST in its period (Mazhron 2026-09-10: "in
         # line under their final record"); the .xlsx bolds it and rules a
         # thick border under it.
@@ -355,7 +476,8 @@ def build_rows(all_days, ws):
                      total["in"], total["out"], total["think"], total["read"],
                      total["c5"] + total["c1"], tool_ctx,
                      "%.2f" % total_cost if cost_known else "",
-                     tot, tot // (total["count"] or 1)])
+                     tot, tot // (total["count"] or 1), int(total_w),
+                     total["miss_n"], total["miss_tok"]])
     return rows
 
 
@@ -435,17 +557,20 @@ def write_txt(rows, emp_rows, ws):
         "regenerated %s by tools/usage_report.py (CSV twin: usage_metrics.csv)"
         % datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
         "",
-        "READING IT: input/output = fresh tokens each API call; think = the",
-        "output share spent reasoning; cache_read = context re-read each turn",
-        "(cheap, 0.1x); cache_create = new context written (1.25-2x input",
-        "price). A tool's cost is the context its results inject (ctx_est,",
-        "chars/4) times every later re-read - calls alone do not price it.",
-        "est$ prices known models only (fill PRICING in the script); the",
-        "billing dashboard is the only dollar truth.",
+        "READING IT: WEIGHTED is the headline - the tokens that count against",
+        "the plan (input x1, cache write x1.25 or x2 on the 1h TTL, cache read",
+        "x0.1 or x0.025 on Fable, output x5); every other column is raw trivia",
+        "beside it. misses = prefix rewrites after a session's first request",
+        "(the cache expired or an early byte changed) and the write tokens they",
+        "cost. A tool's cost is the context its results inject (ctx_est,",
+        "chars/4) times every later re-read. est$ prices known models only;",
+        "the billing dashboard is the only dollar truth.",
         "",
         "SECTIONS: totals (all-time / month / week / day), then THE",
-        "BREAKDOWNS at the bottom - averages per request, the context window",
-        "by month, averages per tool call, employee runs, averages per day.",
+        "BREAKDOWNS at the bottom - the weighted pillars, cache misses, the",
+        "read diet, averages per request, the context window by month,",
+        "averages per tool call, employee runs, averages per day. THE DAILY",
+        "LINE with day-vs-previous-days verdicts is usage_daily.txt.",
         ""]
     order = {"all": 0, "month": 1, "week": 2, "day": 3}
     titles = {"all": "ALL-TIME", "month": "BY MONTH", "week": "BY WEEK",
@@ -458,19 +583,19 @@ def write_txt(rows, emp_rows, ws):
             lines += ["=" * 66, titles[ptype], "=" * 66]
             last_ptype = ptype
         lines.append("-- %s %s" % (period, ws))
-        lines.append("   %-8s %-6s %6s %9s %9s %8s %10s %10s %8s" % (
-            "model", "role", "msgs", "input", "output", "think",
-            "cache_rd", "cache_wr", "est$"))
+        lines.append("   %-8s %-6s %6s %10s %9s %9s %8s %10s %10s %6s %8s" % (
+            "model", "role", "msgs", "WEIGHTED", "input", "output", "think",
+            "cache_rd", "cache_wr", "misses", "est$"))
         for r in by[(ptype, period, ws)]:
             if r[3] == "model":
-                lines.append("   %-8s %-6s %6s %9s %9s %8s %10s %10s %8s" % (
-                    r[4], r[5], r[6], ktok(r[7]), ktok(r[8]), ktok(r[9]),
-                    ktok(r[10]), ktok(r[11]), r[13] or "-"))
+                lines.append("   %-8s %-6s %6s %10s %9s %9s %8s %10s %10s %6s %8s" % (
+                    r[4], r[5], r[6], ktok(r[16]), ktok(r[7]), ktok(r[8]), ktok(r[9]),
+                    ktok(r[10]), ktok(r[11]), r[17] or "0", r[13] or "-"))
         for r in by[(ptype, period, ws)]:
             if r[3] == "total":
-                lines.append("   %-8s %-6s %6s %9s %9s %8s %10s %10s %8s" % (
-                    "TOTAL", "", r[6], ktok(r[7]), ktok(r[8]), ktok(r[9]),
-                    ktok(r[10]), ktok(r[11]), r[13] or "-"))
+                lines.append("   %-8s %-6s %6s %10s %9s %9s %8s %10s %10s %6s %8s" % (
+                    "TOTAL", "", r[6], ktok(r[16]), ktok(r[7]), ktok(r[8]), ktok(r[9]),
+                    ktok(r[10]), ktok(r[11]), r[17] or "0", r[13] or "-"))
                 if ptype == "day":
                     day_count[ws] = day_count.get(ws, 0) + 1
         tools = [r for r in by[(ptype, period, ws)] if r[3] == "tool"]
@@ -481,6 +606,8 @@ def write_txt(rows, emp_rows, ws):
             lines.append("   top tools: " + ", ".join(
                 "%s x%s %s" % (r[4], r[6], ktok(r[12])) for r in tools[:5]))
         lines.append("")
+    lines += pillar_lines(by)
+    lines += diet_lines(ALL_DAYS, ws)
     lines += breakdown_lines(by, emp_rows)
     lines += ["=" * 66, "AVERAGES (per active day)", "=" * 66]
     for (ptype, period, ws) in sorted(by):
@@ -490,13 +617,181 @@ def write_txt(rows, emp_rows, ws):
         for r in by[(ptype, period, ws)]:
             if r[3] == "total":
                 lines.append(
-                    "%s: %d active days | avg/day: %s msgs, %s in, %s out,"
-                    " %s cache_rd, %s cache_wr" % (
-                        ws, n, int(r[6]) // n, ktok(int(r[7]) // n),
+                    "%s: %d active days | avg/day: %s WEIGHTED | %s msgs, %s in, %s out,"
+                    " %s cache_rd, %s cache_wr, %.1f misses" % (
+                        ws, n, ktok(int(r[16]) // n), int(r[6]) // n, ktok(int(r[7]) // n),
                         ktok(int(r[8]) // n), ktok(int(r[10]) // n),
-                        ktok(int(r[11]) // n)))
+                        ktok(int(r[11]) // n), int(r[17] or 0) / float(n)))
     with open(TXT_OUT, "w", encoding="utf-8") as fh:
         fh.write("\n".join(lines) + "\n")
+
+
+def pillars(model, m):
+    """The four weighted pillars of a bucket -> {name: weighted tokens}."""
+    return {"cache writes": m["c5"] * W_WRITE_5M + m["c1"] * W_WRITE_1H,
+            "cache reads": m["read"] * read_mult(model),
+            "output": m["out"] * W_OUTPUT,
+            "input": m["in"] * W_INPUT}
+
+
+def pillar_lines(by):
+    """THE WEIGHTED PILLARS + CACHE MISSES (ideas 13 + 14), all-time and by
+    month, from the CSV rows (weighted per model row; pillars need the
+    raw columns, so they are recomputed here)."""
+    L = []
+    H = "=" * 66
+    L += [H, "THE WEIGHTED PILLARS (what actually hits the budget, by month)", H,
+          "   misses = prefix rewrites after the first request; their write tokens are the waste nobody chose"]
+    for (ptype, period, ws) in sorted(by, key=lambda k: (k[2], k[0] != "all", k[1])):
+        if ptype not in ("all", "month"):
+            continue
+        agg = {"cache writes": 0.0, "cache reads": 0.0, "output": 0.0, "input": 0.0}
+        raw = w = 0
+        miss_n = miss_tok = 0
+        for r in by[(ptype, period, ws)]:
+            if r[3] != "model":
+                continue
+            m = {"in": int(r[7]), "out": int(r[8]), "read": int(r[10]),
+                 "c5": int(r[11]), "c1": 0}
+            for k, v in pillars(r[4], m).items():
+                agg[k] += v
+            raw += int(r[14])
+            w += int(r[16])
+            miss_n += int(r[17] or 0)
+            miss_tok += int(r[18] or 0)
+        if not w:
+            continue
+        top = sorted(agg.items(), key=lambda kv: -kv[1])
+        L.append("-- %s %s: %s weighted (raw %s, %.0f%%) | %s | misses %d (%s written, %s weighted)" % (
+            period if ptype == "month" else "ALL-TIME", ws, ktok(w), ktok(raw),
+            100.0 * w / (raw or 1),
+            ", ".join("%s %.0f%%" % (k, 100.0 * v / w) for k, v in top),
+            miss_n, ktok(miss_tok), ktok(int(miss_tok * W_WRITE_5M))))
+    L.append("   (pillars approximate the 5-minute write rate; a 1-hour-TTL session writes at 2x)")
+    L.append("")
+    return L
+
+
+def read_diet(d):
+    """One day's reads -> (whole_n, whole_ctx, big_n, section_n, section_ctx, grep_n)."""
+    r = d.get("reads") or blank_reads()
+    return (r["whole"]["n"], r["whole"]["ctx"], r["whole"].get("big", 0),
+            r["section"]["n"], r["section"]["ctx"], r.get("grep", 0))
+
+
+def day_summary(day, d):
+    """The numbers the daily line judges: weighted, raw, pillars, misses, reads."""
+    agg = {"cache writes": 0.0, "cache reads": 0.0, "output": 0.0, "input": 0.0}
+    raw = w = miss_n = miss_tok = msgs = 0
+    for key, m in d["models"].items():
+        model = key.split("|")[0]
+        for k, v in pillars(model, m).items():
+            agg[k] += v
+        w += weighted(model, m)
+        raw += m["in"] + m["out"] + m["read"] + m["c5"] + m["c1"]
+        miss_n += m["miss_n"]
+        miss_tok += m["miss_tok"]
+        msgs += m["count"]
+    wn, wctx, big, sn, sctx, grep = read_diet(d)
+    return {"day": day, "weighted": w, "raw": raw, "pillars": agg, "msgs": msgs,
+            "miss_n": miss_n, "miss_tok": miss_tok, "whole_n": wn,
+            "whole_ctx": wctx, "big_n": big, "section_n": sn,
+            "section_ctx": sctx, "grep_n": grep,
+            "section_share": (100.0 * sn / (sn + wn)) if (sn + wn) else None,
+            "whole_avg": (wctx // wn) if wn else 0}
+
+
+def _verdict(value, baseline, higher_is_bad=True):
+    """-> (label, pct) comparing a day's value to the prior-days average."""
+    if not baseline:
+        return ("n/a", 0)
+    ratio = value / float(baseline)
+    pct = int(round((ratio - 1.0) * 100))
+    if ratio >= HIGH_RATIO:
+        return ("HIGH" if higher_is_bad else "GOOD", pct)
+    if ratio <= LOW_RATIO:
+        return ("LOW" if higher_is_bad else "POOR", pct)
+    return ("normal", pct)
+
+
+def daily_lines(all_days, ws):
+    """THE DAILY LINE (Mazhron 2026-09-10: "a number without comparison means
+    nothing"): every active day judged against the previous COMPARE_DAYS
+    active days - weighted total, cache misses, whole-file reads - with a
+    HIGH / normal / LOW verdict and the reason. Oldest first; the tail is
+    what standup shows."""
+    days = sorted(all_days)
+    sums = [day_summary(d, all_days[d]) for d in days]
+    today = datetime.date.today().isoformat()
+    L = ["# THE DAILY LINE - one line per active day, judged against the previous "
+         "%d active days (regenerated by tools/usage_report.py; read the TAIL)" % COMPARE_DAYS,
+         "# date | WS | weighted (raw) | vs prev days | top pillar | misses | reads: whole (big) / section, share | verdict"]
+    for i, s in enumerate(sums):
+        prev = sums[max(0, i - COMPARE_DAYS):i]
+        base_w = sum(p["weighted"] for p in prev) / len(prev) if prev else 0
+        base_miss = sum(p["miss_n"] for p in prev) / float(len(prev)) if prev else 0
+        base_big = sum(p["big_n"] for p in prev) / float(len(prev)) if prev else 0
+        base_share = [p["section_share"] for p in prev if p["section_share"] is not None]
+        base_share = sum(base_share) / len(base_share) if base_share else None
+        wl, wp = _verdict(s["weighted"], base_w)
+        top = max(s["pillars"].items(), key=lambda kv: kv[1])
+        top_txt = "%s %.0f%%" % (top[0], 100.0 * top[1] / (s["weighted"] or 1))
+        reasons = []
+        if wl == "HIGH":
+            reasons.append("spend +%d%% vs prev %d days" % (wp, len(prev)))
+        elif wl == "LOW":
+            reasons.append("spend %d%% vs prev %d days (good)" % (wp, len(prev)))
+        if prev and s["miss_n"] >= max(3, 2 * base_miss):
+            reasons.append("cache misses %d vs avg %.1f (%s wasted)" % (
+                s["miss_n"], base_miss, ktok(int(s["miss_tok"] * W_WRITE_5M))))
+        if prev and s["big_n"] >= max(3, 2 * base_big):
+            reasons.append("heavy whole-file reads %d vs avg %.1f" % (s["big_n"], base_big))
+        if base_share is not None and s["section_share"] is not None \
+                and s["section_share"] < base_share - 20:
+            reasons.append("section-read share %.0f%% vs avg %.0f%%" % (s["section_share"], base_share))
+        if not prev:
+            verdict = "first day - no baseline"
+        elif wl == "HIGH" or (reasons and wl != "LOW"):
+            verdict = "CHECK: " + "; ".join(reasons)
+        elif wl == "LOW":
+            verdict = "LOW spend - " + "; ".join(reasons)
+        else:
+            verdict = "normal"
+        partial = " (today, partial)" if s["day"] == today else ""
+        vs = ("%+d%%" % wp) if prev else "-"
+        L.append("%s | %s | %s (%s) | %s | %s | %d | %d (%d) / %d, %s | %s%s" % (
+            s["day"], ws, ktok(int(s["weighted"])), ktok(s["raw"]), vs, top_txt,
+            s["miss_n"], s["whole_n"], s["big_n"], s["section_n"],
+            ("%.0f%% sectioned" % s["section_share"]) if s["section_share"] is not None else "no reads",
+            verdict, partial))
+    return L
+
+
+def diet_lines(all_days, ws):
+    """THE READ DIET by month (idea 17): section vs whole-file reads and the
+    context each injected; the daily comparison lives in usage_daily.txt."""
+    L = []
+    H = "=" * 66
+    L += [H, "THE READ DIET BY MONTH (section reads vs whole-file reads; big = a whole read past %s tokens)" % ktok(BIG_READ_TOK), H,
+          "   %-8s %8s %9s %6s %10s %8s %9s %8s %8s" % (
+              "month", "whole", "whole_ctx", "big", "whole_avg", "section", "sect_ctx", "greps", "share")]
+    months = {}
+    for day, d in all_days.items():
+        mo = months.setdefault(day[:7], blank_reads())
+        src = d.get("reads") or blank_reads()
+        for cls in ("whole", "section"):
+            for k, v in src[cls].items():
+                mo[cls][k] = mo[cls].get(k, 0) + v
+        mo["grep"] += src.get("grep", 0)
+    for mo in sorted(months):
+        r = months[mo]
+        wn, sn = r["whole"]["n"], r["section"]["n"]
+        L.append("   %-8s %8d %9s %6d %10s %8d %9s %8d %7s" % (
+            mo, wn, ktok(r["whole"]["ctx"]), r["whole"].get("big", 0),
+            ktok(r["whole"]["ctx"] // wn) if wn else "-", sn, ktok(r["section"]["ctx"]),
+            r["grep"], ("%.0f%%" % (100.0 * sn / (sn + wn))) if (sn + wn) else "-"))
+    L.append("")
+    return L
 
 
 def breakdown_lines(by, emp_rows):
@@ -584,6 +879,7 @@ def breakdown_lines(by, emp_rows):
     return L
 
 
+ALL_DAYS = {}  # day -> bucket, set by main() for the diet section
 MAXP = {}     # (ws, model, role) -> biggest prompt all-time
 MAXP_M = {}   # (ws, month, model, role) -> biggest prompt that month
 
@@ -593,7 +889,7 @@ XLSX_MONEY = "#,##0.00"
 NUMERIC_COLS = {"count", "input_tok", "output_tok", "think_tok",
                 "cache_read_tok", "cache_create_tok", "context_est_tok",
                 "total_tok", "avg_tok", "msgs", "tool_calls", "ctx_est_tok",
-                "avg_box_tok"}
+                "avg_box_tok", "weighted_tok", "cache_miss_n", "cache_miss_tok"}
 MONEY_COLS = {"est_cost_usd"}
 
 
@@ -668,6 +964,7 @@ def write_xlsx(rows, emp_rows):
 
 
 def main():
+    quiet = "--quiet" in sys.argv[1:]
     ws = workstation()
     cache = {"version": CACHE_VERSION, "files": {}}
     if os.path.isfile(CACHE):
@@ -695,6 +992,7 @@ def main():
         return
     os.makedirs(HIST, exist_ok=True)
     json.dump(cache, open(CACHE, "w", encoding="utf-8"))
+    ALL_DAYS.update(all_days)
     rows = build_rows(all_days, ws) + keep_other_ws(ws)
     with open(CSV_OUT, "w", encoding="utf-8", newline="") as fh:
         w = csv.writer(fh)
@@ -706,18 +1004,30 @@ def main():
         w.writerow(EMP_FIELDS)
         w.writerows(emp)
     write_txt(rows, emp, ws)
+    daily = daily_lines(all_days, ws)
+    with open(DAILY_OUT, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(daily) + "\n")
     xlsx_note = write_xlsx(rows, emp)
+    if quiet:
+        return
     days = sorted(all_days)
     total = blank_model()
+    total_w = 0.0
     for d in all_days.values():
-        for m in d["models"].values():
+        for key, m in d["models"].items():
+            total_w += weighted(key.split("|")[0], m)
             for k in total:
                 total[k] += m[k]
     print("USAGE SHEET: %d transcripts, %d active days (%s .. %s) on %s" % (
         n_files, len(days), days[0], days[-1], ws))
-    print("  metered: %s msgs | in %s out %s | cache_rd %s cache_wr %s" % (
+    print("  WEIGHTED %s (raw %s, %.0f%%) | %s msgs | in %s out %s | cache_rd %s cache_wr %s | misses %d" % (
+        ktok(int(total_w)), ktok(total["in"] + total["out"] + total["read"] + total["c5"] + total["c1"]),
+        100.0 * total_w / ((total["in"] + total["out"] + total["read"] + total["c5"] + total["c1"]) or 1),
         total["count"], ktok(total["in"]), ktok(total["out"]),
-        ktok(total["read"]), ktok(total["c5"] + total["c1"])))
+        ktok(total["read"]), ktok(total["c5"] + total["c1"]), total["miss_n"]))
+    print("  THE DAILY LINE (last 2 of %s):" % os.path.relpath(DAILY_OUT, ROOT))
+    for ln in daily[-2:]:
+        print("    " + ln)
     print("  -> OPEN %s (the spreadsheet: usage / per_request / employees)" % xlsx_note)
     print("     %s (totals + the breakdowns, plain text)" % os.path.relpath(TXT_OUT, ROOT))
     print("     csv twins: %s, %s (%d employee runs)" % (

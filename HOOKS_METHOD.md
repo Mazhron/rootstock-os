@@ -58,7 +58,7 @@ and an UPGRADES entry.
   prompt, stop, compact and shell-command hooks; a PostToolUse hook on
   every Write/Edit must stay a pattern match with no heavy imports.
 
-## The kit hooks (hooks/ - six scripts + _hooklib + settings.json)
+## The kit hooks (hooks/ - seven scripts + _hooklib + settings.json)
 
 TIER 1 - the resumption + checkpoint loop:
 1. `session_start.py` (SessionStart, all sources): runs the standup
@@ -128,8 +128,35 @@ than a cooldown.
   never raises a limit on its own - a refusal still means stop and
   report.
 
+TIER 2c - THE DIET GUARD (`diet_guard.py`, PreToolUse on Read|Bash|
+PowerShell; kit v1.12, the origin CEO's ruling 2026-09-10 after the
+weighted-usage insight: only the tokens that count against the plan
+matter, and under those weights the manager's context is written at
+1.25x and every tool result rides in it forever). WARN-ONLY, never a
+refusal, nothing to type:
+- THE READ DIET (the 10k rule): a whole-file Read (no offset/limit) or a
+  bare cat/type/Get-Content of a file past ~10k tokens gets one line at
+  the moment of the decision - the size, the line count, how many `## `
+  sections it has, and the cheaper move (grep the headings and read one
+  section; or, for an understand-this step, delegate the reading to an
+  employee and take back a summary). The CEO's own idea was a token count
+  in every heading; that went stale by design and cost output to
+  maintain, so the count is GENERATED at the cliff edge instead - the
+  harness knows the file size before the read happens. Editing that
+  needs the exact text is a fair reason to proceed; the guard says so.
+- THE OUTPUT DIET: a chatty shell shape with no limiter - git log
+  without a count, a bare git diff, a recursive listing, a noisy
+  install - gets the limiter to add, at most three times per session
+  per shape so a deliberate choice is not nagged.
+- `--selftest` runs the in-process checks; state in
+  `.claude/diet_state.json` (gitignored). The outcome is graded by the
+  usage sheet's daily line (REPORTING_METHOD.md, THE COMPARISON RULE):
+  heavy whole-file reads and section-read share, each day against the
+  previous seven, so a bad day is named the next morning.
+
 State: `.claude/hooks_state.json` (gitignored - the fingerprint is per
-machine); `.claude/fanout_state.json` (gitignored, the guard's meter). The checkpoint script's `--reset` stores the fingerprint LAST so
+machine); `.claude/fanout_state.json` (gitignored, the guard's meter);
+`.claude/diet_state.json` (gitignored, the diet guard's per-session caps). The checkpoint script's `--reset` stores the fingerprint LAST so
 the checkpoint commit itself is not counted; the checkpoint ritual's step
 order is commit + push, THEN reset, THEN the marker.
 
@@ -163,6 +190,12 @@ the manager waits on permission or idles after a long employee run.
    shell guard live once. Add the WORKFLOW entry "Add or change a harness
    hook" to the process registry and a "The hooks" section to the tooling
    doc (the table of event/script/does + the gotchas above).
+7. The diet guard needs nothing project-specific: wire its
+   Read|Bash|PowerShell PreToolUse entry (the template settings.json has
+   it), run `python tools/hooks/diet_guard.py --selftest`, gitignore
+   `.claude/diet_state.json`. If the project's checkpoint script
+   fingerprints the tree, exclude the usage sheet's outputs (the
+   reference copy does) so standup's silent refresh never counts as work.
 
 ## Change log
 
@@ -186,3 +219,14 @@ the manager waits on permission or idles after a long employee run.
   skill as the front. Rule of thumb that fell out: a guard's defaults
   belong to the kit, its tuning to the project - keep them in separate
   files so a graft never overwrites what the CEO chose.
+- 2026-09-10 WS1 (evening): Tier 2c, the diet guard (kit v1.12) - born
+  from the CEO's weighted-usage insight ("the most important token counts
+  are the ones that actually count against a user's usage amount"). The
+  usage sheet had shown that under budget weights cache WRITES are the
+  top pillar and output is a fifth; the two leaks are whole-file reads
+  and chatty tool results, and both are visible BEFORE the call. Hence a
+  warn-only PreToolUse guard that says the number at the decision point.
+  Lesson: a hook can enforce a diet only if it never blocks - the manager
+  sometimes needs the whole file (an edit), and a refusal there would
+  breed workarounds; a one-line cost at the cliff edge changes the habit
+  without a fight.

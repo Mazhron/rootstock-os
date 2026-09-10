@@ -18,8 +18,10 @@ the skills operationalize).
   last exchange (user's prompt + manager's response, both sides, VERBATIM -
   exact words, never paraphrased; mined from the HARNESS TRANSCRIPT, the
   ground-truth record on disk, so it survives a mid-arc /clear) and the
-  project state before anything else. Use at every session start and after
-  /clear.
+  project state before anything else, then THE BUDGET block (2026-09-10:
+  yesterday's and today's weighted spend judged against the previous 7
+  active days - a CHECK verdict is relayed verbatim, it names what went
+  wrong). Use at every session start and after /clear.
 - **/checkpoint** - arc closer. Push, refresh the day file's WHERE WE LEFT
   OFF (both sides of the final exchange VERBATIM + state + next-likely;
   write the reply into the file, then send that exact text), reset the
@@ -71,3 +73,5 @@ Everwood-specific except named examples (marked "in Everwood").
 - 2026-09-10 WS1: /runaway added (kit v1.10) - the fan-out guard's
   limits shown and tuned at the owner's word, stored in a committed
   .claude/fanout_limits.json over the script's defaults.
+- 2026-09-10 WS1 (evening): /standup relays THE BUDGET block (kit v1.12)
+  - the usage sheet's daily line, each day vs the previous seven.

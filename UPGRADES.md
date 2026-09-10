@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.11** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.12** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -317,3 +317,46 @@ human-opened sheet an .xlsx writer per the section's mechanics (or adapt
 the reference script's two functions); add openpyxl to the workstation
 inventory + survey CHECKS; run the sheet once and open the .xlsx to see
 the frozen header and the ruled totals.
+
+### v1.12 - 2026-09-10 - The weighted column, the comparison rule, and the diet guard
+WHAT: the origin CEO's insight that only BUDGET-WEIGHTED tokens matter
+("It's cool to see I used 200 million tokens, but my budget is only being
+hit by 5 million. That should be the concept for any of the pillars"),
+built end to end the same day. (1) THE WEIGHTED COLUMN: the usage sheet
+prices every token by the API's own ratios (input 1, cache write 1.25 /
+2 on the 1-hour cache, cache read 0.1 or 0.025, output 5) and makes that
+the headline; raw is trivia beside it; the fan-out guard meters with the
+same read weight per model. (2) CACHE MISSES counted and priced: a
+request after a session's first whose cache write is most of its prompt
+is a prefix rewrite - the origin's all-time waste was 24% of its budget.
+(3) THE COMPARISON RULE ("a number without comparison means nothing"):
+a daily line file, one line per active day judged against the previous
+seven - weighted spend, misses, heavy whole-file reads, section-read
+share - with a CHECK / normal / LOW verdict and the reason named; standup
+prints its tail as THE BUDGET block and a CHECK is relayed verbatim.
+(4) THE READ DIET (the 10k rule) and THE OUTPUT DIET (every emitted token
+costs 5x) become law in the wiki method; the delegation method gains the
+10k delegation line. (5) THE DIET GUARD (hooks/diet_guard.py, Tier 2c):
+warn-only PreToolUse on Read|Bash|PowerShell - says a file's size and
+sections before a whole read past 10k tokens, and the missing limiter on
+a chatty shell shape (git log without a count, bare git diff, recursive
+listings, noisy installs), capped per session. Never a refusal.
+CARRIES: reference tools/usage_report.py (weighted, misses, read-diet
+classes, pillar/diet sections, usage_daily.txt, --quiet, cache v3);
+reference tools/standup.py (print_budget, --no-usage); reference
+tools/checkpoint.py (usage outputs in FP_IGNORE); hooks/diet_guard.py +
+settings.json entry + hooks/README.txt; hooks/fanout_guard.py
+(READ_MULT); WIKI_METHOD.md "The read diet" + "The output diet";
+REPORTING_METHOD.md "THE WEIGHTED COLUMN + THE COMPARISON RULE";
+SUBAGENT_METHOD.md "THE 10k LINE"; HOOKS_METHOD.md Tier 2c + bootstrap
+step 7 + change log; SKILLS.md + skills/standup (THE BUDGET block); front
+door STEP 2 + THE DIET GUARD paragraph.
+GRAFT: add weighted_tok (and the miss columns) to the project's usage
+sheet per the reporting section, or adapt the reference script's
+weighted() / daily_lines(); have standup print the daily line's tail;
+exclude the sheet's outputs from the checkpoint fingerprint; copy
+hooks/diet_guard.py fresh (nothing project-specific in it), wire its
+PreToolUse entry, run --selftest, gitignore .claude/diet_state.json;
+add the two diet sections to the project's wiki method and the 10k line
+to its delegation method; if the project's fan-out guard predates this,
+add READ_MULT so its meter agrees with the sheet.

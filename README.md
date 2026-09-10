@@ -57,6 +57,28 @@ And the before/after, same model, same project, from the sheet:
   days averaged ~267k per request - a 69% cut against that peak - while
   Sep 3 did three times the requests of an Aug 26-27 day.
 
+### The weighted receipts (50 days, 2026-09-10)
+
+Raw token counts flatter the wrong column. What counts against a plan is
+WEIGHTED: input x1, cache write x1.25 (x2 on a one-hour cache), cache read
+x0.1 (x0.025 on the model that discounts it), output x5 - the API's own
+price ratios. Re-run on those weights, the same machine's 4.2 billion raw
+tokens over 50 days were about 366 million weighted, and the split is not
+what the raw column suggests:
+
+- Cache READS, the giant raw number, were 41% of the weighted bill. Cache
+  WRITES - new context entering the prefix - were 29%, and the model's own
+  OUTPUT (prose, edits, thinking) 13%. Fresh input rounds to zero.
+- Prefix REWRITES nobody chose - a cache that expired, a core file edited
+  mid-session - were 24% of the all-time budget. They are now counted per
+  day, because a waste with a name gets fixed.
+
+The kit's usage sheet leads with the weighted number and keeps the raw one
+as trivia beside it; the fan-out guard meters with the same weights; and
+every day is judged against the previous seven (spend, cache misses,
+whole-file reads) with a verdict the standup digest relays the next
+morning. A number without a comparison means nothing.
+
 Different days do different work, so read the percentages as one project's
 honest metering, not a controlled benchmark. But the mechanism is
 arithmetic, not anecdote: a session that clears re-reads a small context
@@ -82,6 +104,14 @@ make it work:
   each live in exactly one layer, so nothing is read twice.
 - **Incremental growth.** Every file touched during normal work gains
   proper headings and links then and there. No stop-the-world passes.
+- **Size before you read (the 10k rule).** A whole-file read past ~10k
+  tokens is section-read or handed to an employee; a warn-only hook says
+  the file's size and section count at the moment of the read. Editing
+  that needs the exact text is the one fair exception.
+- **The output diet.** Every emitted token costs five; every tool result
+  is written into context at 1.25x and re-read forever. Edit over Write,
+  scripts generate documents, nothing restated that a table already says,
+  limiters on chatty commands.
 
 A lint script guards the core's line budget and keeps the index honest.
 
@@ -145,12 +175,36 @@ because context lives in files, not in the conversation.
   refreshes the day file, and emits the marker: "CHECKPOINT - safe to
   /clear. Nothing in this chat exists only in this chat."
 - **Standup.** Every fresh session opens with one script that prints the
-  last exchange, the state, ledger tails, and the open roadmap. A cleared
+  last exchange, the state, ledger tails, the open roadmap, and THE BUDGET:
+  yesterday's and today's weighted spend judged against the previous seven
+  active days, with the reason when something went wrong. A cleared
   session re-arms in about 15-20k tokens instead of dragging hundreds of
   thousands.
 
-Four rituals ship as Claude Code skills, invocable as slash commands:
-`/standup`, `/checkpoint`, `/ship`, `/brief`.
+Five rituals ship as Claude Code skills, invocable as slash commands:
+`/standup`, `/checkpoint`, `/ship`, `/brief`, `/runaway`.
+
+### The hooks: laws the harness enforces itself (HOOKS_METHOD.md)
+
+A skill runs when invoked; a hook runs when the harness reaches a moment.
+Anything a law can enforce mechanically becomes a hook, not a longer
+reminder. Seven ship in `hooks/`, wired by one settings file:
+
+- **Session start** injects the standup digest by itself - after a /clear
+  the manager has everything back before anyone types a word.
+- **Every prompt** carries a silent context gauge that speaks only when a
+  threshold is crossed; **every reply** ticks the checkpoint counter when
+  work actually happened, and refuses to end the turn once it is dire.
+- **Before compaction** a ledger line records what was at stake.
+- **The shell guard** refuses what the CEO's laws forbid (no force push, no
+  skipped hooks, plus the project's own rules).
+- **The fan-out guard** is catastrophe-only: it refuses a burst or flood of
+  sub-agent spawns or runaway token velocity - each self-clearing - and
+  warns on the rest. It exists because a manager once spawned 821 agents
+  on "check my markdown files". The CEO tunes its numbers with `/runaway`.
+- **The diet guard** is warn-only: it says a file's size before a whole
+  read past ~10k tokens and the missing limiter on a chatty command,
+  at the moment of the decision. It never refuses.
 
 ## What it saves, concretely
 
@@ -161,7 +215,9 @@ Four rituals ship as Claude Code skills, invocable as slash commands:
 | Marathon sessions that get pricier every turn | Checkpoint + /clear, losslessly | Later turns cost a fraction |
 | The manager reading big files | Employee distills in a throwaway context | ~50k permanent becomes ~1k |
 | Re-running green tests "to be sure" | Trust the ledger (runner enforces it) | Whole probe runs, skipped |
-| Runaway agent loops | Budget line in every brief | Partial report instead of a bill |
+| Runaway agent loops | Budget line in every brief, plus the fan-out guard | Partial report instead of a bill |
+| Reading a 24k-token file inline | The diet guard says the size first; section-read or delegate | ~30k weighted becomes ~3k, and it stops riding every later turn |
+| Cost numbers with no baseline | The daily line judges each day against the previous seven | Waste gets a name the next morning |
 
 The unglamorous truth this kit encodes: there is no magic compression
 trick. The savings come from structure, scripts, and discipline. (The kit's
@@ -201,7 +257,7 @@ never restructures a live repo unasked.
 3. Answer its STEP 0 questions (project name, who manages, which employee
    models are available, how many workstations).
 4. Claude builds the operating system in order: wiki, reporting, delegation,
-   skills, and finishes with a definition of done you can verify.
+   skills, hooks, and finishes with a definition of done you can verify.
 
 That is the whole handoff. The front-door file exists precisely so that a
 stranger's Claude needs no other instructions.
@@ -242,10 +298,14 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `0 - READ ME FIRST, CLAUDE.md` | The front door: install order, STEP 0 questions, definition of done |
 | `WIKI_METHOD.md` | The knowledge wiki: token mechanics, conventions, bootstrap |
 | `REPORTING_METHOD.md` | Scripts + ledgers: the three rules, runner spec, bootstrap |
-| `SUBAGENT_METHOD.md` | The delegation company: org chart, five laws, scorecard, bootstrap |
+| `SUBAGENT_METHOD.md` | The delegation company: org chart, six laws, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
-| `skills/` | The four skills, ready to drop into `.claude/skills/` |
-| `reference tools/` | Working standup, checkpoint, lint, usage-sheet, and update-check scripts to adapt, not rewrite |
+| `skills/` | The five skills, ready to drop into `.claude/skills/` |
+| `HOOKS_METHOD.md` | The hooks: the contract, the seven kit hooks, tiers, bootstrap |
+| `hooks/` | The seven hook scripts plus the settings template, ready to drop into `tools/hooks/` |
+| `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
+| `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
+| `reference tools/` | Working standup, checkpoint, lint, usage-sheet (weighted, with the daily line), tag-index, workstation-survey and update-check scripts to adapt, not rewrite |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `GODOT_FIELD_NOTES.md` | Domain example: hard-won Godot engine lessons (skip if not Godot) |
 | `CLICKER_DESIGN_NOTES.md` | Domain example: idle/clicker genre lessons (skip if not that genre) |

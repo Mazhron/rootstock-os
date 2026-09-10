@@ -17,9 +17,14 @@ description: Open a session - print the standup digest and hand back the last ex
    block over the day file's checkpoint-time copy. Then relay state and
    next-likely from WHERE WE LEFT OFF. After a /clear the user has nothing -
    give it back unprompted.
-3. Then summarize the rest of the digest briefly: version, open roadmap
+3. Then THE BUDGET block: relay its last line or two (yesterday and
+   today so far: weighted spend vs the previous 7 active days, top
+   pillar, cache misses, reads). A CHECK verdict is relayed VERBATIM -
+   it names what went wrong (spend, misses, heavy whole-file reads); a
+   LOW spend line is good news worth one sentence.
+4. Then summarize the rest of the digest briefly: version, open roadmap
    items, ledger tails worth noting, anything blocked.
-4. End by asking what to work on, or naming the next-likely step.
+5. End by asking what to work on, or naming the next-likely step.
 
 RULES
 - Never re-read notes/day files wholesale when the digest covers them;

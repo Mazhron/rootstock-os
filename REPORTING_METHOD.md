@@ -77,6 +77,45 @@ rows. Reference implementation: Everwood's tools/usage_report.py
 (incremental byte-offset cache; a 274MB transcript parses once, reruns
 read only new bytes).
 
+## THE WEIGHTED COLUMN + THE COMPARISON RULE (the CEO's rulings 2026-09-10)
+Tags: economy, lessons, process | Only budget-weighted tokens are the headline; a number without a comparison means nothing - every daily figure is judged against the previous seven days with the reason named
+
+THE WEIGHTED COLUMN. The origin CEO, on seeing 200M cache-read tokens:
+"The most important token counts are the ones that actually count against
+a user's usage amount... my budget is only being hit by 5 million. That
+should be the concept for any of the pillars." So every usage sheet
+carries a WEIGHTED column beside the raw one and makes it the headline:
+input x1, cache write x1.25 (x2 on a 1-hour cache), cache read x0.1 (x0.025
+on the model that discounts it), output x5 - the API's own price ratios,
+the best public model of an unpublished budget. The raw count stays as
+trivia. The same weights drive every other meter in the project (the
+fan-out guard's spend), so all numbers agree. Under those weights the
+origin project's split was cache WRITES 43%, cache reads 40%, output 17%,
+fresh input ~0 - which is why the sheet also counts CACHE MISSES (a
+request after a session's first whose cache write is most of its prompt:
+the cache expired or an early prefix byte changed) - 24% of the origin's
+all-time budget was prefix rewrites nobody chose.
+
+THE COMPARISON RULE. The CEO, on the read-diet metric: "there should be a
+comparison between the previous several days' averages... A number
+without comparison means nothing. Then you can also compare and let the
+user know that something didn't work right, or you messed up in one way
+or another and somehow token usage was high, or maybe it was low (which
+is good)." So the sheet writes a DAILY LINE file - one line per active
+day: weighted (raw) | vs the previous 7 active days | top pillar | cache
+misses | reads whole (big) / section, share | VERDICT - and the verdict
+names the reason: CHECK when spend is 30% over the prior average, or
+misses / heavy whole-file reads run at twice it, or the section-read
+share drops 20 points; LOW spend when 30% under (good); normal otherwise;
+today's line marked partial. The standup digest prints the tail as THE
+BUDGET block so the cost of a day is seen the next morning, and a CHECK
+verdict is relayed to the CEO verbatim - it is the manager's own report
+card. Reference: the kit's usage_report.py (weighted(), daily_lines(),
+--quiet) and standup.py (print_budget); the checkpoint fingerprint
+ignores the sheet's outputs so the refresh never counts as work.
+
+See also: The usage sheet (above) | THE SPREADSHEET RULE (below) | WIKI_METHOD.md (the read diet + the output diet) | HOOKS_METHOD.md Tier 2c (the diet guard)
+
 ## THE SPREADSHEET RULE (Mazhron's ask 2026-09-10 - any sheet a human opens)
 Tags: process, lessons | A CSV cannot carry formatting; a sheet meant for human eyes ships as .xlsx with frozen header, separators, bold ruled totals
 

@@ -156,13 +156,24 @@ def limits_table(limits=None):
     for k in DEFAULTS:
         mark = "*" if limits[k] != DEFAULTS[k] else " "
         lines.append("%s %-18s %12s %12s  %s" % (mark, k, "{:,}".format(limits[k]), "{:,}".format(DEFAULTS[k]), MEANING[k]))
-    lines.append("  (* = tuned) weighted tokens ~ cost: input 1, cache write 1.25, cache read 0.1, output 5")
+    lines.append("  (* = tuned) weighted tokens ~ cost: input 1, cache write 1.25, cache read 0.1 (0.025 on Fable), output 5")
     return "\n".join(lines)
 
 
 LIMITS = load_limits()
 WEIGHTS = {"input_tokens": 1.0, "cache_creation_input_tokens": 1.25,
            "cache_read_input_tokens": 0.1, "output_tokens": 5.0}
+# THE WEIGHTED COLUMN (the CEO's insight 2026-09-10, TOKEN_IDEAS 13): cache
+# reads cost 0.025x on Claude Fable 5.1, 0.1x elsewhere - the same weights
+# the usage sheet prices with, so the guard's meter and the sheet agree.
+READ_MULT = {"fable": 0.025}
+
+
+def read_weight(model):
+    for key, mult in READ_MULT.items():
+        if key in (model or ""):
+            return mult
+    return WEIGHTS["cache_read_input_tokens"]
 STATE = os.path.join(ROOT, ".claude", "fanout_state.json")  # gitignored
 SPAWN_TOOLS = ("Agent", "Task")
 WORKFLOW_TOOLS = ("Workflow",)
@@ -258,10 +269,11 @@ def _meter(s, transcript_path, sid, now):
             rec["last_id"] = mid
             raw = 0
             w = 0.0
+            rmult = read_weight(msg.get("model"))
             for k, mult in WEIGHTS.items():
                 n = int(u.get(k) or 0)
                 raw += n
-                w += n * mult
+                w += n * (rmult if k == "cache_read_input_tokens" else mult)
             s["raw"] += raw
             s["weighted"] += w
             if not backfill:

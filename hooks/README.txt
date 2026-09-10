@@ -1,8 +1,8 @@
-Rootstock hooks (kit v1.10). Install per HOOKS_METHOD.md 'Bootstrap':
+Rootstock hooks (kit v1.12). Install per HOOKS_METHOD.md 'Bootstrap':
   tools/hooks/  <- these .py files (bash_guard.py: fill PROJECT RULES)
   .claude/settings.json  <- settings.json (merge if one exists)
   .gitignore  <- .claude/hooks_state.json, .claude/settings.local.json,
-                 .claude/fanout_state.json
+                 .claude/fanout_state.json, .claude/diet_state.json
 The scripts import the checkpoint script from the folder above them
 (reference tools/checkpoint.py carries work_fingerprint + hook state).
 fanout_guard.py (Tier 2b, the catastrophe-only circuit breaker): keep
@@ -13,3 +13,8 @@ warns on the rest; nothing for the CEO to type. The CEO tunes the
 numbers through the /runaway skill (skills/runaway): `--limits` shows,
 `--set key=value` writes .claude/fanout_limits.json - COMMIT that file,
 it is the CEO's setting and travels with the repo.
+diet_guard.py (Tier 2c, kit v1.12, warn-only): nothing to fill in.
+Wire its Read|Bash|PowerShell PreToolUse entry (settings.json has it) and
+run `python tools/hooks/diet_guard.py --selftest`. It says a file's size
+before a whole read past ~10k tokens and the missing limiter on a chatty
+shell command; it never refuses.

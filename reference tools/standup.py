@@ -6,10 +6,17 @@ a pull: prints a ~20-line digest - recent commits, the newest WS-note
 headlines, the tail of every history ledger, and the open roadmap index. The
 manager reads THIS, then opens full notes only where the digest points.
 
-Usage:  python tools/standup.py [--commits N]   (default 12)
+Usage:  python tools/standup.py [--commits N] [--no-usage]   (default 12)
 
-Search keys: standup, pull digest, session start, catch-up. See also:
-TOKEN_IDEAS.md idea 7; docs/history/ ledgers; NEXT_STEPS.md.
+THE BUDGET (Mazhron 2026-09-10, TOKEN_IDEAS 20): the digest refreshes the
+usage sheet silently (tools/usage_report.py --quiet, incremental, ~2 s)
+and prints the tail of docs/history/usage_daily.txt - yesterday's and
+today's weighted spend judged against the previous 7 active days, with
+the verdict. --no-usage skips the refresh (no transcripts, no time).
+
+Search keys: standup, pull digest, session start, catch-up, the budget,
+weighted spend. See also: TOKEN_IDEAS.md ideas 7 + 20; docs/history/
+ledgers; NEXT_STEPS.md; tools/usage_report.py (the daily line).
 """
 import argparse
 import glob
@@ -163,9 +170,43 @@ def print_last_exchange():
         print("  > " + ln)
 
 
+def print_budget():
+    """THE BUDGET: refresh the usage sheet quietly, then the daily line's
+    tail - each day's weighted spend vs the previous 7 active days. A
+    missing script or transcript set degrades to one line, never a crash."""
+    script = os.path.join(ROOT, "tools", "usage_report.py")
+    daily = os.path.join(ROOT, "docs", "history", "usage_daily.txt")
+    if not os.path.isfile(script):
+        return
+    import sys as _sys
+    try:
+        subprocess.run([_sys.executable, script, "--quiet"], cwd=ROOT,
+                       capture_output=True, text=True, timeout=90)
+    except (OSError, subprocess.TimeoutExpired):
+        pass
+    print("== THE BUDGET (weighted tokens = what counts against the plan; "
+          "each day vs the previous 7 active days - usage_daily.txt tail)")
+    try:
+        with open(daily, encoding="utf-8") as fh:
+            lines = [ln.rstrip() for ln in fh if ln.strip()]
+    except OSError:
+        print("  (no usage_daily.txt yet - run tools/usage_report.py)")
+        return
+    header = [ln for ln in lines if ln.startswith("#")]
+    body = [ln for ln in lines if not ln.startswith("#")]
+    if header:
+        print("  " + header[-1].lstrip("# "))
+    for ln in body[-2:]:
+        print("  " + ln)
+    if any("CHECK:" in ln for ln in body[-2:]):
+        print("  manager: a CHECK verdict names what went wrong - relay it verbatim.")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Post-pull standup digest")
     ap.add_argument("--commits", type=int, default=12)
+    ap.add_argument("--no-usage", action="store_true",
+                    help="skip the usage-sheet refresh + THE BUDGET block")
     args = ap.parse_args()
 
     # THE LAST EXCHANGE prints FIRST and comes from the harness transcript
@@ -202,6 +243,9 @@ def main():
         else:
             print("  (no WHERE WE LEFT OFF section yet - see the file's "
                   "COMPLETED list)")
+
+    if not args.no_usage:
+        print_budget()
 
     print("== VERSION + RECENT COMMITS")
     # Version source is per-project: Everwood reads project.godot. In a

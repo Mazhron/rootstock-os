@@ -57,6 +57,16 @@
         ]
       },
       {
+        "matcher": "Read|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/diet_guard.py\"",
+            "timeout": 15
+          }
+        ]
+      },
+      {
         "hooks": [
           {
             "type": "command",

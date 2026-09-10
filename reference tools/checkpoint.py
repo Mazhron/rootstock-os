@@ -76,7 +76,9 @@ COMPACT_BUDGET = int(os.environ.get("PROJECT_CTX_COMPACT", "925000"))
 
 # THE WORK FINGERPRINT (the Stop hook's "did anything change?" test).
 HOOK_STATE = os.path.join(ROOT, ".claude", "hooks_state.json")  # gitignored
-FP_IGNORE = ("checkpoint_state.txt", "hooks_state.json", "compact_runs.txt")
+FP_IGNORE = ("checkpoint_state.txt", "hooks_state.json", "compact_runs.txt",
+             "usage_metrics.", "usage_daily.txt", "usage_employees.csv",
+             "usage_cache.json")  # standup regenerates the usage sheet: derived, not work
 
 
 def work_fingerprint():
