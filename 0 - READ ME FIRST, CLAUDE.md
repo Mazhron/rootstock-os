@@ -149,6 +149,17 @@ checkpoint ritual runs --reset LAST; fill the bash guard's PROJECT RULES
 block from the CEO's STEP-0 laws; pipe-test every hook. From then on the
 standup digest injects itself, the counter ticks itself, and shell guards
 refuse what the laws forbid - nothing here depends on memory.
+THE FAN-OUT GUARD (kit v1.9, hooks/fanout_guard.py + HOOKS_METHOD.md
+Tier 2b): install it UNWIRED first - copy the script, set LIMITS with
+the CEO, run `--selftest`, add the unlock refusal to the bash guard,
+gitignore .claude/fanout_state.json and fanout_unlock.json - and wire
+its every-tool PreToolUse entry LAST, because it locks its own files the
+moment the settings watcher sees it. Then tell the CEO the unlock
+commands (--allow-agents N, --allow-workflow, --allow-tokens M,
+--allow-edit, --resume): only they can move the rail, and only from a
+terminal you do not drive. It exists because a manager once spawned 821
+sub-agents on "check my markdown files"; the delegation method's law 6
+is the rule, this is what makes it true.
 
 ## STEP 5 - optional boards (adopt when the CEO wants them)
 

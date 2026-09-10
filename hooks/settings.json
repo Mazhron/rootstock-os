@@ -55,6 +55,15 @@
             "timeout": 15
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/fanout_guard.py\"",
+            "timeout": 15
+          }
+        ]
       }
     ]
   }

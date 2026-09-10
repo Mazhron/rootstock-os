@@ -27,6 +27,19 @@ low = cmd.lower()
 # ---- GENERIC RULES -------------------------------------------------------
 if re.search(r"\bgit\s+commit\b", low) and "--no-verify" in low:
     deny("Never skip hooks (--no-verify); fix the failing hook instead.")
+# THE FAN-OUT LAW (kit v1.9): only the CEO lifts a cap on the fan-out
+# guard. The manager may run its --status and --selftest; any other shell
+# mention of the guard, its unlock or its state is refused (that covers
+# --allow-*, --resume, and every cp/sed/python -c rewrite).
+if re.search(r"fanout_(guard|unlock|state)", low):
+    _ok = re.search(r"fanout_guard\.py\"?\s+--(status|selftest)\b", low)
+    if not (_ok and not re.search(r"--(allow|resume)", low)
+            and not re.search(r"(^|[\s;|&(])(cp|copy|mv|move|rm|del|sed|tee|echo|printf|cat)\b", low)):
+        deny("THE FAN-OUT LAW (bash guard): the fan-out guard, its unlock and its "
+             "state belong to the CEO. From a shell the manager may only run "
+             "`python tools/hooks/fanout_guard.py --status` or `--selftest`. "
+             "To lift a cap, resume a halt or edit the guard, the CEO runs the "
+             "--allow-*/--resume flag in their OWN terminal.")
 # Scoped to the push invocation (up to the next |, & or ;) and case-
 # sensitive: a `git commit -F -` earlier in the same command must not read
 # as a force push (misfire 2026-09-06).

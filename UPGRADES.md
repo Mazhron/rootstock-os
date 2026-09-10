@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.8** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.9** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -225,3 +225,37 @@ the CEO's answers for what you cannot see; copy the reference survey and
 rewrite CHECKS to match; wire it into the parent loop's check group; add
 the registry entry "Bring a new workstation up to par"; index the doc in
 CLAUDE.md and add the write-back rule to the standing rules.
+
+### v1.9 - 2026-09-10 - The fan-out guard (a runaway the manager cannot cause)
+
+WHAT: a publicly reported catastrophe - a manager asked to "check my
+markdown files for consistency" spawned 821 sub-agents and burned 50M+
+tokens in thirty seconds - is the one mistake that outspends a month of
+work in one turn. The delegation method gains LAW 6, THE FAN-OUT LAW:
+sub-agents are spent money; a batch is a handful of parallel employees,
+a session a dozen, never a burst, never an employee that spawns
+employees, bulk-orchestration tools only at the CEO's per-use word; a
+task that seems to need more is a design problem, never a bigger
+fan-out. And because a law the manager can forget is not a guard rail,
+the hooks gain TIER 2b: a PreToolUse hook on EVERY tool that meters the
+session's spend from the transcript (warnings to the CEO at each step
+and on velocity), caps and rate-limits spawns machine-wide, locks the
+orchestration tool, HALTS every tool call on runaway velocity, and locks
+its own files - with every unlock a command ONLY the CEO runs, in a
+terminal the manager does not drive (the bash guard refuses the manager).
+CARRIES: SUBAGENT_METHOD.md law 6; HOOKS_METHOD.md Tier 2b (+ the
+build-order lesson in its change log); hooks/fanout_guard.py (the guard,
+with LIMITS at the top and `--selftest`); hooks/bash_guard.py generic
+rule (the unlock refusal); hooks/settings.json (the every-tool
+PreToolUse entry); skills/brief step 6 (the fan-out check before
+dispatch); front door THE HOOKS paragraph.
+GRAFT: add law 6 to the project's delegation rules and the fan-out check
+to its brief skill; copy fanout_guard.py into the project's hooks folder
+UNWIRED, adjust LIMITS to the CEO's taste, run `--selftest`; add the
+unlock refusal to the project's bash guard; add the two state files to
+.gitignore; THEN wire the every-tool PreToolUse entry (wire last - the
+guard locks its own files the moment the settings watcher sees it);
+pipe-test live with one refused Edit on the guard; add the standing rule
+to the core instructions file and the row to the tooling doc's hooks
+table. Tell the CEO the five unlock commands - they are the only hands
+that can move the rail.

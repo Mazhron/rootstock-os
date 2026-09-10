@@ -34,7 +34,7 @@ even a same-priced employee saves manager tokens, and a cheaper employee
 multiplies the saving. Delegate the reading and the grinding; keep the
 thinking.
 
-## The five laws
+## The six laws
 
 1. THE BRIEF IS EVERYTHING. Employees know NOTHING - no chat history, no
    project lore. A brief is a work order: exact files/paths, exact spec,
@@ -56,6 +56,23 @@ thinking.
    last ~10 tasks, promote that task type - stronger model or higher
    effort - with a dated, attributed change line in the assignments table.
    The ledger justifies staffing changes; nobody argues from vibes.
+6. THE FAN-OUT LAW (added 2026-09-10 after a public catastrophe: a
+   manager asked to "check my markdown files for consistency" spawned
+   821 sub-agents and burned 50M+ tokens in thirty seconds). Employees
+   are spent money. A delegation batch is at most a handful of parallel
+   employees (the origin project: 4), a session at most a dozen, never a
+   burst, never an employee that spawns employees (fan-out is one level
+   deep and the manager's decision), and any bulk-orchestration tool
+   only at the CEO's explicit per-use word. A task that seems to need
+   more is a DESIGN problem - split it, script it, or ask the CEO - never
+   a bigger fan-out. THE HARNESS ENFORCES IT (HOOKS_METHOD.md, the
+   fan-out guard): spend metered from the transcript with warnings,
+   spawn caps, burst refusal, a lock on orchestration tools, a HALT of
+   every tool call on runaway velocity, and a lock on the guard's own
+   files. ONLY THE CEO LIFTS A CAP, from a terminal the manager does not
+   drive. A refusal from the guard is the CEO's standing decision: the
+   manager stops, reports what it was fanning out and why, and waits -
+   never retries, never routes around it, never edits the guard.
 
 ## The assignments table (build one per project)
 
@@ -116,7 +133,7 @@ silently refuse.
 1. Ask the CEO: who manages, which employee models are available, and where
    the delegation file should live.
 2. Create the project's SUBAGENTS file with: the org chart (as answered),
-   the five laws, a first-draft assignments table for THIS project's task
+   the six laws, a first-draft assignments table for THIS project's task
    types, an empty ledger + tally.
 3. Index it wherever the project indexes its knowledge (one line), so every
    session finds it without scanning.

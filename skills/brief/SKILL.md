@@ -21,6 +21,12 @@ appending/auditing). Then compose the brief with ALL of:
    WORKFLOWS.md entry and paste its STEPS into the brief; the employee's
    stamp ends with "WORKFLOW: matched <entry> | GAP: <uncovered process> |
    n/a".
+6. THE FAN-OUT CHECK (rule 12): before dispatch, count. At most 4
+   employees in this batch, at most 12 this session, no employee that
+   spawns employees, no Workflow tool without Mazhron's word this
+   conversation. Needs more? That is a design problem - split, script, or
+   ask - not a bigger fan-out. If the fan-out guard refuses a spawn, stop
+   and report; only Mazhron lifts a cap, in their own terminal.
 
 AFTER THE EMPLOYEE RETURNS
 - Verify cheap, in order: tests/probes first, spot-read the diff second,
