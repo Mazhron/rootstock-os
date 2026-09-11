@@ -211,3 +211,70 @@ See also: The read diet (above) | HOOKS_METHOD.md Tier 2c | REPORTING_METHOD.md 
   shifts, its index line shifts with it.
 - Cross-references are for NAVIGATION, not prose: one compact line, plain
   arrows, no sentences.
+
+## The cold shelf (rarely-used knowledge moves, never dies)
+Tags: architecture, process, lessons | Prune means MOVE: cold sections go to docs/cold/ verbatim, indexed, with a stub left at the old heading; nothing is ever deleted
+
+THE PRESERVATION LAW, knowledge side (the origin CEO, 2026-09-10, when the
+manager proposed "pruning" dead knowledge): "the knowledge should never
+be lost... all of this is hard fought, hard earned knowledge, even the
+rarely used knowledge." So the wiki has a COLD SHELF:
+- docs/cold/<same basename as the hot file>.md holds sections moved out
+  of the hot file VERBATIM (heading + body byte for byte, one provenance
+  comment under the heading: moved from where, when, why, how many lines).
+- The hot file KEEPS the heading, with a two-line stub under it: "Moved
+  to the cold shelf <date> (<reason>): docs/cold/<file> - read only when
+  this topic comes up." + a See-also to the index. Heading greps still
+  land, and the record of the move is at the old address.
+- docs/cold/INDEX.md is the append-only index (date | moved/restored |
+  hot file | heading | lines | reason | shelf file). It gets ONE line in
+  the core file's library index, and a shelf file is read ONLY when a
+  stub or the index says the topic moved there - never preemptively.
+- The mover is a script (tools/cold_shelf.py: --move, --restore, --list,
+  --check, --dry-run); it contains no deletion code and refuses to
+  overwrite anything on the shelf. --restore brings a section back and
+  leaves a "restored" note on the shelf, so the shelf is history too.
+- CANDIDATES come from the heat map (tools/wiki_heat.py mines the harness
+  transcripts for read counts per section; "cold" = never sectioned-read,
+  or untouched for --days). The OWNER picks what moves. A script proposes;
+  a human rules; nothing moves on its own.
+Why this shape and not deletion: the token cost of a cold section is one
+heading line in every heading grep and a share of every whole-file read
+of its host. Moving it removes that cost; deleting it would also remove
+the knowledge, and the knowledge was the point. The stub costs two lines.
+See also: the learning loop -> this file (next section); THE PRESERVATION
+LAW -> SUBAGENT_METHOD.md law 7 | HOOKS_METHOD.md Tier 2d; the mover ->
+tools/cold_shelf.py; the candidates -> tools/wiki_heat.py.
+
+## The learning loop (ledgers measure, scripts propose, the owner rules)
+Tags: architecture, process | Three read-only scripts close the loop: dead links, section heat, and ledger trends turned into PROPOSE lines at standup
+
+The origin CEO asked (2026-09-10) whether the system learns. Honest
+answer: the model cannot change its weights; the PROJECT learns, in
+files, and only where discipline puts the lesson down. The loop that
+makes learning less dependent on discipline:
+1. MEASURE - every ritual appends a ledger (tests, builds, usage, links,
+   heat, employees, compactions, grants, retirements).
+2. NOTICE - tools/ledger_trends.py reads the ledger tails against a
+   THRESHOLDS table (`--limits` prints it) and emits PROPOSE lines: the
+   read diet slipping (CHECK verdicts, big whole-file reads), a flaky
+   test group, dead wiki links, a cold-shelf sweep due, an employee
+   model past the escalation rule, too many compactions. Standup prints
+   the block right after THE BUDGET. When the proposal set changes, one
+   line lands in docs/history/proposal_runs.txt - the loop has history.
+3. RULE - the owner reads the proposals and says yes, no, or later. The
+   manager never applies one unasked. A proposal that keeps recurring
+   with a no is a threshold to retune, not a rule to force.
+4. GROW - the yes becomes a law, a hook, a threshold change or a cold-
+   shelf move, filed per the conventions; the next ledger line shows
+   whether it worked.
+What it still is not: automatic. Edges in the wiki exist only where a
+session wrote them (the link checker catches the dead ones, not the
+missing ones); heat is lexical (a Read at a line range mapped to the
+CURRENT headings, approximate for old reads); and nothing rewrites a
+rule by itself, by design - the CEO ruled that a script never deletes
+and the same spirit governs what a script may decide.
+See also: the cold shelf -> this file (previous section); the scripts ->
+tools/check_wiki_links.py | tools/wiki_heat.py | tools/ledger_trends.py;
+the ledgers discipline -> REPORTING_METHOD.md; the escalation rule ->
+SUBAGENT_METHOD.md law 5.

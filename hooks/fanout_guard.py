@@ -1,9 +1,9 @@
 """PreToolUse guard on EVERY tool: THE FAN-OUT LAW's circuit breaker (Tier 2b).
 
-KIT COPY (Rootstock v1.10). Born in Everwood on 2026-09-10 after a public report of a Claude that spun up
+Mazhron's ask 2026-09-10, after a public report of a Claude that spun up
 821 sub-agents and burned 50M+ tokens in 30 seconds on "check my markdown
 files for consistency": "I want Rootstock to prevent this type of
-catastrophe at the harness level." Loosened the same day at the CEO's
+catastrophe at the harness level." Loosened the same day at Mazhron's
 word ("this might be too restrictive... I just wanted to prevent complete
 runaway agents and gigantic token spend"): CATASTROPHE-ONLY. Nothing here
 fires on real work, nothing needs a command to lift, and the manager is
@@ -40,21 +40,21 @@ never locked out of its own tools for more than a cooldown.
   python tools/hooks/fanout_guard.py --set burst_cap=12 flood_cap=40   # tune
   python tools/hooks/fanout_guard.py --defaults   # forget the tuning
 
-THE NUMBERS (the origin CEO's ask 2026-09-10, the /runaway skill): DEFAULTS
+THE NUMBERS (Mazhron's ask 2026-09-10, the /runaway skill): DEFAULTS
 below are the script's; the owner's TUNED numbers live in
 .claude/fanout_limits.json (COMMITTED - they travel with the repo and
 survive a kit graft), written by `--set`, read fresh on every call. The
 /runaway skill is the conversational front: it shows `--limits`, takes
 the changes, runs `--set`, then `--selftest`. Only the owner tunes; the
 manager never raises a limit on its own. The manager-side rule (never
-fan out past a handful; a refusal = stop and report) is
-SUBAGENT_METHOD.md law 6; this hook is what makes it true on a bad day.
+fan out past a handful; a refusal = stop and report) is SUBAGENTS.md
+rule 12; this hook is what makes it true on a bad day.
 
 Search keys: fan-out, sub-agent cap, agent limit, token budget, spend
 meter, runaway agents, runaway numbers, tune limits, circuit breaker,
 halt, cooldown.
-See also: _hooklib.py; SUBAGENT_METHOD.md law 6 (THE FAN-OUT
-LAW); HOOKS_METHOD.md Tier 2b (portable); HOOKS_METHOD.md (the contract + bootstrap; The
+See also: tools/hooks/_hooklib.py; SUBAGENTS.md rule 12 (THE FAN-OUT
+LAW); HOOKS_METHOD.md Tier 2b (portable); docs/systems/tooling.md (The
 hooks).
 """
 import json
@@ -141,7 +141,10 @@ def set_limits(pairs, path=CONFIG):
             json.dump(tuned, fh, indent=2, sort_keys=True)
             fh.write("\n")
     elif os.path.exists(path):
-        os.remove(path)
+        # THE PRESERVATION LAW (2026-09-10): the owner's file stays; an
+        # all-defaults tuning is written as {} instead of removed.
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write("{}\n")
     return current, []
 
 
@@ -316,7 +319,7 @@ def evaluate(data, state, now=None):
     if vel >= LIMITS["velocity_halt"]:
         return ("deny", "RUNAWAY (fanout_guard): ~%s weighted tokens in the last %d s "
                 "- no real work spends like that. Tool calls are refused until the "
-                "window drains (about %d s of quiet). Stop, tell the CEO what was "
+                "window drains (about %d s of quiet). Stop, tell Mazhron what was "
                 "running, and do not resume the same loop."
                 % (_fmt(vel), LIMITS["velocity_window"], LIMITS["velocity_window"]), state)
     if vel >= LIMITS["velocity_warn"] and now - s["warned_velocity"] > LIMITS["velocity_window"]:
@@ -331,14 +334,14 @@ def evaluate(data, state, now=None):
         if len(spawns) >= LIMITS["burst_cap"]:
             return ("deny", "THE FAN-OUT LAW (fanout_guard): %d sub-agents were spawned "
                     "on this machine in the last %d s - that is the 821-agents shape, "
-                    "not a delegation batch. Refused. Stop, tell the CEO what you were "
+                    "not a delegation batch. Refused. Stop, tell Mazhron what you were "
                     "fanning out and why; the window clears itself in a minute, but do "
                     "not resume the same fan-out." % (len(spawns), LIMITS["burst_window"]), state)
         recent = [t for t in s["agents"] if t >= now - LIMITS["flood_window"]]
         if len(recent) >= LIMITS["flood_cap"]:
             return ("deny", "THE FAN-OUT LAW (fanout_guard): %d sub-agents in the last %d "
                     "minutes - a loop, not a plan. Refused. A task that needs that many "
-                    "employees is a design problem: split it, script it, or ask the CEO."
+                    "employees is a design problem: split it, script it, or ask Mazhron."
                     % (len(recent), LIMITS["flood_window"] // 60), state)
         s["agents"].append(now)
         spawns.append(now)
@@ -356,7 +359,7 @@ def evaluate(data, state, now=None):
 
     if warnings:
         return ("warn", "[HOOK fanout_guard] " + " | ".join(warnings)
-                + " (relay to the CEO verbatim)", state)
+                + " (relay to Mazhron verbatim)", state)
     return ("ok", "", state)
 
 
@@ -388,8 +391,9 @@ def _cli(argv):
         return 0
     if "--defaults" in argv:
         if os.path.exists(CONFIG):
-            os.remove(CONFIG)
-            print("tuning forgotten (%s removed)" % os.path.relpath(CONFIG, ROOT))
+            with open(CONFIG, "w", encoding="utf-8") as fh:
+                fh.write("{}\n")  # the preservation law: emptied, never removed
+            print("tuning forgotten (%s now {})" % os.path.relpath(CONFIG, ROOT))
         else:
             print("already at defaults")
         print(limits_table(load_limits()))
@@ -537,7 +541,10 @@ def _selftest_body():
     check("junk config falls back per key", lim["burst_cap"] == 8 and lim["flood_cap"] == 25
           and lim["burst_window"] == 90 and "made_up" not in lim)
     lim, errs = set_limits(["burst_window=60"], path=cfg)
-    check("--set back to defaults removes the file", not errs and not os.path.exists(cfg))
+    # THE PRESERVATION LAW (2026-09-10): the file stays, emptied to {}.
+    check("--set back to defaults empties the file, never removes it",
+          not errs and os.path.exists(cfg)
+          and open(cfg, encoding="utf-8").read().strip() == "{}")
     check("selftest ran at DEFAULTS", LIMITS == DEFAULTS)
     print("fanout_guard selftest: %s" % ("PASS" if not fails else "FAIL " + ", ".join(fails)))
     return 0 if not fails else 1

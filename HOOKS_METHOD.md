@@ -166,9 +166,60 @@ refusal, nothing to type:
   heavy whole-file reads and section-read share, each day against the
   previous seven, so a bad day is named the next morning.
 
+TIER 2d - THE PRESERVE GUARD (`preserve_guard.py`, PreToolUse on Bash|
+PowerShell|Write|Edit|MultiEdit|NotebookEdit; kit v1.14, the origin CEO's
+ruling 2026-09-10 after public reports of an agent whose script deleted a
+person's files and another that wiped a machine: "You nor any of your
+employees should ever delete a file, record, etc. without express
+permission from the user. There should be no script created to delete
+either"). A REFUSAL, the second one in the kit after the fan-out guard,
+and like it aimed at the cliff edge only:
+- SHELL: delete verbs with a path argument (rm, rmdir, rd, del, erase,
+  unlink, shred, Remove-Item, ri, Clear-Content, format, diskpart,
+  truncate), find -delete, xargs rm, moves into nul or /dev/null, the
+  git verbs that discard work or history (rm, clean, reset --hard,
+  checkout -- path, restore path, branch -d/-D, push --delete, stash
+  drop/clear, worktree remove, tag -d, reflog expire, gc --prune), and
+  deletion CALLS inside a one-liner or an executed heredoc.
+- WRITE: content that adds deletion calls to a non-prose file (the
+  os/shutil/pathlib calls, the engine's file removal, fs.rm, File.Delete,
+  a Remove-Item or rm -rf line in a script). Prose files pass: a law
+  written down names the verbs it bans, and the guard refused its own
+  author's documentation twice before that exemption existed.
+- PASSES: every path inside the session scratchpad (the harness's own
+  per-session junk); a heredoc body fed to cat/tee; ONE command matching
+  a live GRANT.
+- THE GRANT (tools/delete_grant.py, reference tools/): the manager asks
+  naming the exact target, the CEO says yes, the manager restates, the
+  CEO says yes again, and the four texts are recorded VERBATIM in
+  .claude/delete_grant.json (gitignored, 15 minutes, single use - the
+  guard marks it used, never removes it) plus a committed ledger
+  docs/history/delete_grants.txt. The grant script itself refuses the
+  never-list.
+- NEVER, grant or not: a drive root, the home folder, the repo root or
+  its .git, a bare wildcard, a path that climbs out with "..". Those
+  shapes have no legitimate use in an agent's hands.
+- THE MOVERS replace deletion: tools/retire.py moves a file to
+  _retired/<same relative path> with a ledger line; tools/cold_shelf.py
+  moves a rarely-read wiki section to docs/cold/ verbatim with a stub at
+  the old heading and an index line (WIKI_METHOD.md "The cold shelf").
+  A wrong memory is marked superseded in place.
+- `--selftest` runs 35 in-process checks. No state file; the grant is
+  the only thing it reads besides the tool input.
+The lesson that shaped it: the guard fired on its author within a
+minute of being wired (the settings watcher is live) - first on a
+docstring that mentioned the remove call, then on the documentation
+table naming the banned verbs. Both were the guard working as written;
+the fix was a prose exemption, not a workaround. And the audit the law
+forced turned up one real hazard: the kit-mirror script wiped its
+target folder before copying, which a misconfigured path would have
+turned into an emptied directory. It now refuses a target whose README
+does not name the kit and reports stale files instead of removing them.
+
 State: `.claude/hooks_state.json` (gitignored - the fingerprint is per
 machine); `.claude/fanout_state.json` (gitignored, the guard's meter);
-`.claude/diet_state.json` (gitignored, the diet guard's per-session caps). The checkpoint script's `--reset` stores the fingerprint LAST so
+`.claude/diet_state.json` (gitignored, the diet guard's per-session caps);
+`.claude/delete_grant.json` (gitignored, the single-use grant). The checkpoint script's `--reset` stores the fingerprint LAST so
 the checkpoint commit itself is not counted; the checkpoint ritual's step
 order is commit + push, THEN reset, THEN the marker.
 
@@ -208,6 +259,17 @@ the manager waits on permission or idles after a long employee run.
    `.claude/diet_state.json`. If the project's checkpoint script
    fingerprints the tree, exclude the usage sheet's outputs (the
    reference copy does) so standup's silent refresh never counts as work.
+8. The preserve guard needs nothing project-specific either: wire its
+   Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit PreToolUse entry
+   (the template settings.json has it), run `python
+   tools/hooks/preserve_guard.py --selftest`, gitignore
+   `.claude/delete_grant.json`, copy delete_grant.py, retire.py and
+   cold_shelf.py from reference tools/ into tools/. Then AUDIT the
+   project's existing scripts for deletion calls (grep the os/shutil/
+   pathlib removal calls and the shell verbs) and bring each to the CEO:
+   convert to a move, or keep with the CEO's word on record. Add the
+   registry entries "Delete something (the grant ritual)" and "Retire a
+   file or move a wiki section to the cold shelf".
 
 ## Change log
 
@@ -248,3 +310,17 @@ the manager waits on permission or idles after a long employee run.
   say "checkpoint at the end of this reply if the arc is closed"; the
   checkpoint skill carries the rule at its top. An advisory the manager
   merely relays is a nag; an advisory the manager acts on is a law.
+- 2026-09-10 WS1 (night): Tier 2d, the preserve guard (kit v1.14) - the
+  CEO's ruling after public reports of an agent whose script deleted a
+  person's files and another that wiped a machine: nobody deletes, no
+  script deletes, and a real deletion is granted twice and recorded. The
+  same evening the CEO asked whether the system learns, and the answer
+  became three read-only scripts (link checker, section heat map, ledger
+  trends -> proposals at standup) plus the cold shelf: pruning means
+  MOVING to an indexed shelf, never deleting - "all of this is hard
+  fought, hard earned knowledge, even the rarely used knowledge." The
+  guard refused its own author twice within minutes (a docstring, then
+  the documentation naming the banned verbs); prose files are exempt now.
+  The audit it forced found the kit-mirror script emptying its target
+  folder before copying - a misconfigured path away from the horror
+  story - and that is fixed too.

@@ -178,6 +178,25 @@ tokens (WIKI_METHOD.md "The read diet") and the missing limiter on a
 chatty shell shape (WIKI_METHOD.md "The output diet"). It never refuses
 - an edit that needs the whole file is a fair reason to proceed.
 
+THE PRESERVE GUARD (kit v1.14, hooks/preserve_guard.py + HOOKS_METHOD.md
+Tier 2d): copy it fresh, wire its Bash|PowerShell|Write|Edit|MultiEdit|
+NotebookEdit PreToolUse entry (the template settings.json has it), run
+`--selftest`, gitignore .claude/delete_grant.json, and copy
+delete_grant.py, retire.py and cold_shelf.py from "reference tools/"
+into tools/. It REFUSES delete verbs, work-discarding git verbs and
+deletion calls written into scripts (SUBAGENT_METHOD.md law 7, THE
+PRESERVATION LAW); the session scratchpad and prose files pass; a real
+deletion needs the CEO's yes twice, recorded by delete_grant.py. Files
+retire to a shelf folder and rarely-read wiki sections move to the cold
+shelf (WIKI_METHOD.md "The cold shelf") - nothing is deleted. Audit the
+project's existing scripts for deletion calls and bring each to the CEO.
+THE LEARNING LOOP (same version, WIKI_METHOD.md "The learning loop"):
+reference tools/check_wiki_links.py (dead See-also targets, check group),
+wiki_heat.py (read counts per section from the transcripts, metrics
+group), ledger_trends.py (ledger tails vs thresholds -> PROPOSE lines at
+standup; nothing applied). Wire them when the wiki has a few weeks of
+reads to measure; the thresholds table is the CEO's to tune.
+
 ## STEP 5 - optional boards (adopt when the CEO wants them)
 
 - TOKEN_IDEAS.md style savings board (any token-saving idea, recorded).

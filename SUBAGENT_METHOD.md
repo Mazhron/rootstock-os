@@ -87,6 +87,25 @@ that needs the exact text. Full rule: WIKI_METHOD.md "The read diet".
    (shows every limit current vs default, writes the CEO's changes to a
    committed .claude/fanout_limits.json over the script's defaults);
    the manager never raises one on its own.
+7. THE PRESERVATION LAW (added 2026-09-10 after public reports of an
+   agent whose script deleted a person's files and another that wiped a
+   machine). Nobody in the company deletes: not the manager, not an
+   employee, not a script either of them writes. A file that is no
+   longer wanted RETIRES to a shelf folder with a ledger line; a wiki
+   section that is rarely read moves to a COLD SHELF file, verbatim,
+   with a stub at the old heading and an index entry; a wrong memory is
+   marked superseded in place. Knowledge is hard-won and the rarely used
+   kind is still knowledge. A real deletion needs the CEO's express
+   permission given TWICE (the manager asks naming the exact target,
+   gets a yes, restates, gets a second yes) and the four texts are
+   recorded verbatim before the one command runs. The harness backs it
+   (HOOKS_METHOD.md Tier 2d, the preserve guard): delete verbs,
+   work-discarding git verbs and deletion calls in new code are refused
+   on every shell command and every file write; the session scratchpad
+   passes; a drive root, the home folder or the repo root pass never,
+   grant or not. Every brief carries the law in one line, and a refusal
+   in an employee's report is the law working - the manager moves the
+   thing or asks the CEO twice, never routes around it.
 
 ## The assignments table (build one per project)
 

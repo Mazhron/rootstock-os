@@ -57,6 +57,16 @@
         ]
       },
       {
+        "matcher": "Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/preserve_guard.py\"",
+            "timeout": 15
+          }
+        ]
+      },
+      {
         "matcher": "Read|Bash|PowerShell",
         "hooks": [
           {

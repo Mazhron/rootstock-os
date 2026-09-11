@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.13** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.14** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -385,3 +385,48 @@ GRAFT: add the ADVISED MEANS DO IT paragraph to the project's checkpoint
 skill and its checkpoint law; reword the project's gauge/stop hook
 ADVISED strings so they say "checkpoint at the end of this reply if the
 arc is closed" (keep the project's own owner name); nothing else moves.
+
+### v1.14 - 2026-09-10 - The preservation law, the cold shelf, the learning loop
+WHAT: two of the origin CEO's asks in one evening. (1) THE PRESERVATION
+LAW, after public reports of an agent whose script deleted a person's
+files and another that wiped a machine: "You nor any of your employees
+should ever delete a file, record, etc. without express permission from
+the user. There should be no script created to delete either (without
+express permission of the user and a complete, double acknowledged
+approval of such)... We never want to lose knowledge, all of this is
+hard fought, hard earned knowledge, even the rarely used knowledge."
+Hence hooks/preserve_guard.py (Tier 2d, a refusal on delete verbs,
+work-discarding git verbs and deletion calls written into scripts;
+scratchpad and prose pass; one command per double-acknowledged grant;
+drive roots / home / repo root never), reference tools/delete_grant.py
+(the four verbatim texts, single use, ledgered), reference
+tools/retire.py (files move to a shelf folder, ledgered) and reference
+tools/cold_shelf.py (rarely-read wiki sections move to docs/cold/
+verbatim with a stub at the old heading and an index; --restore
+reverses). (2) THE LEARNING LOOP, after "does Rootstock learn?": three
+read-only scripts - check_wiki_links.py (dead See-also targets),
+wiki_heat.py (read counts per wiki section mined from the harness
+transcripts; the cold candidates), ledger_trends.py (ledger tails vs a
+thresholds table -> PROPOSE lines printed at standup; nothing applied,
+the CEO rules). The audit the law forced found the kit-mirror script
+emptying its target before copying; it now refuses a target whose
+README does not name the kit and reports stale files instead.
+CARRIES: hooks/preserve_guard.py + hooks/settings.json (its PreToolUse
+entry) + hooks/README.txt; reference tools/{delete_grant, retire,
+cold_shelf, check_wiki_links, wiki_heat, ledger_trends}.py;
+HOOKS_METHOD.md Tier 2d + bootstrap step 8 + change log; WIKI_METHOD.md
+"The cold shelf" + "The learning loop"; SUBAGENT_METHOD.md law 7;
+skills/brief (THE PRESERVATION LINE, step 7); SKILLS.md change log; the
+front door's STEP 4 hooks block.
+GRAFT: copy the guard + wire its entry + selftest + gitignore the grant
+file; copy the three movers and the three loop scripts into tools/ and
+wire the loop scripts into the project's check/metrics groups and its
+standup (the trends block prints after the budget block); add law 7 to
+the project's delegation rules and the preservation line to its brief
+skill; add the two registry entries (delete ritual; retire/cold shelf);
+give the core file a one-line index entry for docs/cold/INDEX.md and the
+law's paragraph. Then AUDIT existing scripts for deletion calls and
+bring each to the CEO - convert to a move, or keep with the CEO's word
+recorded. Nothing else moves; a project's own shelf folder name and
+thresholds are its own.
+

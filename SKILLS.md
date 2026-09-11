@@ -78,3 +78,7 @@ Everwood-specific except named examples (marked "in Everwood").
 - 2026-09-10 WS1 (night): /checkpoint gains ADVISED MEANS DO IT (kit
   v1.13) - an advisory from the gauge or the counter is acted on at the
   end of that reply, unprompted; the owner simply /clears.
+- 2026-09-10 WS1 (late): /brief gains THE PRESERVATION LINE (kit v1.14) -
+  every employee brief carries the law that its work contains no
+  deletion code and runs no delete command; an employee that needs a
+  deletion stops and reports.

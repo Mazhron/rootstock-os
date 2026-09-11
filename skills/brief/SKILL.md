@@ -30,6 +30,12 @@ appending/auditing). Then compose the brief with ALL of:
    stop and report; never resume the same loop and never raise a limit
    to get past it.
 
+7. THE PRESERVATION LINE (rule 13, 2026-09-10), verbatim in every brief:
+   "THE PRESERVATION LAW: your work contains NO deletion code and runs no
+   delete command; move or retire instead (tools/retire.py,
+   tools/cold_shelf.py); a harness hook refuses writes containing
+   deletion calls. If the task seems to need a deletion, STOP and report."
+
 AFTER THE EMPLOYEE RETURNS
 - Verify cheap, in order: tests/probes first, spot-read the diff second,
   full read only on smell.
