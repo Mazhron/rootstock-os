@@ -1,4 +1,4 @@
-Rootstock hooks (kit v1.14). Install per HOOKS_METHOD.md 'Bootstrap':
+Rootstock hooks (kit v1.16). Install per HOOKS_METHOD.md 'Bootstrap':
   tools/hooks/  <- these .py files (bash_guard.py: fill PROJECT RULES)
   .claude/settings.json  <- settings.json (merge if one exists)
   .gitignore  <- .claude/hooks_state.json, .claude/settings.local.json,
@@ -29,3 +29,15 @@ CEO's two acknowledgments, verbatim). Movers that replace deletion:
 reference tools/retire.py (files) and reference tools/cold_shelf.py
 (wiki sections). Audit the project's existing scripts for deletion
 calls when installing and bring each to the CEO.
+hygiene_guard.py (Tier 3, kit v1.16, the first PostToolUse hook):
+rewrite its CONFIG block for the project (the portable MD names, the
+kit folder, the skills/hooks dirs, the core file + its lint command,
+the wiki dirs to lint, the player-text patterns, the assets folder),
+wire its Write|Edit|MultiEdit PostToolUse entry (settings.json has it),
+run `python tools/hooks/hygiene_guard.py --selftest`. No state file.
+After every edit it says the law that applies to that file: refresh the
+kit copy (and the public README), add the missing See-also line, fix a
+forbidden character in player-facing text (the one BLOCK), run the
+import after a new asset. The /preserve skill (skills/preserve) is the
+preservation law's front: retire, shelve, or the twice-acknowledged
+delete grant, in that order.

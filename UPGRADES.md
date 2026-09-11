@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.15** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.16** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -461,3 +461,40 @@ sheet sizes tool results, add image_tokens and bump its cache version;
 give wiki_heat an AREA_MAP for the project's own doc->code areas (the
 kit copy carries Everwood's as the worked example - replace it); reword
 the project's cold proposal to active-unread only. Nothing else moves.
+
+### v1.16 - 2026-09-11 - The hygiene guard, the README check, and /preserve
+WHAT: the first PostToolUse hook and the preservation law's front, born
+the morning the kit's public README was found two versions behind (the
+CEO: "we definitely don't want the readme falling behind again"). (1)
+THE HYGIENE GUARD (Tier 3): after every Write/Edit lands, one stateless
+script says the law that applies to THAT file at the moment of the edit:
+a portable original -> refresh its kit copy, the graft log + version if
+a concept changed, the public README if a pillar/skill/hook/box item
+changed, then sync; a kit copy edited directly -> edit the original; the
+core instructions file -> its lint runs and a FAIL is relayed; a touched
+wiki-topic section without a See-also line -> named; a forbidden
+character (em/en dash) in player-facing text -> the edit is BLOCKED with
+the offending lines; a new asset -> run the import. (2) THE README
+CHECK: the kit sync script refuses to push while the public README's
+"Kit version:" line lags the graft log's CURRENT KIT VERSION - the one
+mechanical place a README-only-in-the-public-repo can be caught. (3)
+/preserve: the preservation law lived in prose plus three loose scripts;
+the skill takes a target and offers retire, shelve, then the
+twice-acknowledged delete grant, in that order, with the exact words
+recorded. Lesson: a reminder that fires at the edit is worth ten in a
+law file - the README fell behind while the law to refresh it was
+already written.
+CARRIES: hooks/hygiene_guard.py (+ its PostToolUse entry in
+hooks/settings.json, hooks/README.txt); HOOKS_METHOD.md Tier 3 +
+bootstrap step 9 + change log; skills/preserve/SKILL.md; SKILLS.md
+(shelf entry + change log); the front door STEP 4; WORKFLOW_METHOD's
+instance gains a README step in "Edit the future-project kit".
+GRAFT: copy hygiene_guard.py, rewrite its CONFIG block for the project
+(portable file names, kit folder, skills/hooks dirs, core file + lint
+command, wiki dirs, player-text patterns, assets folder), wire the
+Write|Edit|MultiEdit PostToolUse entry, run `--selftest` (25 checks).
+A project that publishes its own kit: add a "Kit version: vX.Y" line to
+the public README and the version check to its sync script. Copy the
+/preserve skill and list it on the shelf. A project with no player-
+facing text keeps the DASH rule's pattern list empty. Nothing else
+moves.

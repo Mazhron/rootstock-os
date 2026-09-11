@@ -40,6 +40,15 @@ the skills operationalize).
   (`--selftest`), and commits `.claude/fanout_limits.json` - the tuned
   numbers travel with the repo and survive a kit graft. Only the owner
   invokes it to raise a limit; the manager never does on its own.
+- **/preserve** - THE PRESERVATION LAW's front (Mazhron 2026-09-11: the
+  law lived in prose plus three loose scripts). Takes a target and offers
+  the three lawful moves in order: RETIRE a file (`tools/retire.py`, to
+  _retired/, ledgered), SHELVE a wiki section (`tools/cold_shelf.py
+  --move`, verbatim, stub + index), or - only when neither does the job -
+  the DELETE GRANT: the ask naming the exact target and size, the owner's
+  yes, the restatement, the second yes, all four recorded verbatim by
+  `tools/delete_grant.py`, then the ONE command. Never invoked by an
+  employee; never raises a limit or routes around the preserve guard.
 - **hooks** are the shelf's involuntary twin (HOOKS_METHOD.md, 2026-09-06):
   a skill runs when invoked; a hook runs when the harness reaches a moment.
   /standup now fires itself at session start, the checkpoint tick fires
@@ -82,3 +91,8 @@ Everwood-specific except named examples (marked "in Everwood").
   every employee brief carries the law that its work contains no
   deletion code and runs no delete command; an employee that needs a
   deletion stops and reports.
+- 2026-09-11 WS1: /preserve added (kit v1.16) - the preservation law's
+  conversational front: retire, shelve, or the twice-acknowledged delete
+  grant, in that order. Same batch: the hygiene guard hook backs THE
+  SKILLS RULE mechanically - editing a SKILL.md returns the kit-refresh
+  line (copy + shelf entry + README) at the edit.

@@ -58,7 +58,7 @@ and an UPGRADES entry.
   prompt, stop, compact and shell-command hooks; a PostToolUse hook on
   every Write/Edit must stay a pattern match with no heavy imports.
 
-## The kit hooks (hooks/ - seven scripts + _hooklib + settings.json)
+## The kit hooks (hooks/ - nine scripts + _hooklib + settings.json)
 
 TIER 1 - the resumption + checkpoint loop:
 1. `session_start.py` (SessionStart, all sources): runs the standup
@@ -234,13 +234,53 @@ machine); `.claude/fanout_state.json` (gitignored, the guard's meter);
 the checkpoint commit itself is not counted; the checkpoint ritual's step
 order is commit + push, THEN reset, THEN the marker.
 
-## Tiers 3 and 4 (ideas, not built - the origin project pinned them)
+## Tier 3 - THE HYGIENE GUARD (hygiene_guard.py, PostToolUse on Write|Edit|MultiEdit)
+Tags: process, lessons | The laws easiest to forget mid-batch fire on a file edit, not a command - so the harness says them at the edit (kit v1.16)
 
-TIER 3 - wiki and kit hygiene (PostToolUse on Write|Edit): lint the core
-instructions file on edit; check a touched wiki section has its See-also
-line; remind to refresh the kit copy when a portable original changes;
-fail an edit that puts a forbidden character into player-facing text;
-remind to run the engine import after a new asset lands.
+Born 2026-09-11 when the public README was found two kit versions
+behind: three law batches had shipped in one evening and nothing said
+"refresh the README" at the moment the originals changed. The CEO:
+"we definitely don't want the readme falling behind again." One script,
+pattern matching only, no state, one interpreter launch per edit
+(~0.3 s). It runs AFTER the edit lands and answers with context lines -
+never a refusal - except the dash rule, which BLOCKS (PostToolUse
+"decision: block" feeds the reason back so the line is fixed at once).
+Its CONFIG block at the top names the project's files; a kit install
+rewrites that block and nothing else.
+
+1. KIT REFRESH: the edited file is a portable original (a kit MD, a
+   skill's SKILL.md, a hook script, a tool that has a reference copy) ->
+   one line naming the grab-copy to refresh, the graft-log entry + version
+   bump if a concept changed, the public README if a pillar / skill /
+   hook / box item changed, then the sync script. Editing a kit COPY
+   directly names the original instead; editing the graft log reminds of
+   the version line; editing the core instructions file runs its lint at
+   once and relays a FAIL (silent when OK).
+2. SEE-ALSO: a touched section of a wiki topic page (the link checker's
+   hygiene scope) carries no "See also:" line -> the heading is named at
+   the edit, instead of in the next link-checker run. A Write lints every
+   section; an Edit only the section(s) its new text landed in.
+3. DASH (BLOCKS): player-facing text (resource files, UI scripts, the
+   store copy, the changelog) received an em or en dash -> the offending
+   lines come back and the manager fixes them before anything else. The
+   origin project's 217-dash sweep never runs again.
+4. IMPORT: a new asset file landed under the assets folder -> "run the
+   engine import before the next test".
+
+Companion, not a hook: the kit sync script REFUSES to push while the
+README's "Kit version:" line lags the graft log's CURRENT KIT VERSION -
+the README lives only in the public repo, so the sync is the one place a
+stale one can be caught mechanically.
+
+`--selftest` runs 25 in-process checks (every rule, its scope edges, the
+outside-the-repo and empty-input cases).
+
+See also: WORKFLOWS.md "Edit the future-project kit (Rootstock)"; the
+link checker (reference tools/check_wiki_links.py, the after-the-fact
+twin of rule 2); SKILLS.md (THE SKILLS RULE the kit-refresh line backs).
+
+## Tier 4 (ideas, not built - the origin project pinned them)
+
 TIER 4 - the company: SubagentStop refuses an employee's stop when its
 report lacks the stamp / workflow line; Notification -> an OS toast when
 the manager waits on permission or idles after a long employee run.
@@ -281,6 +321,14 @@ the manager waits on permission or idles after a long employee run.
    convert to a move, or keep with the CEO's word on record. Add the
    registry entries "Delete something (the grant ritual)" and "Retire a
    file or move a wiki section to the cold shelf".
+9. The hygiene guard (Tier 3): rewrite its CONFIG block (the portable
+   MD names, the kit folder, the skills/hooks dirs, the core file + its
+   lint command, the wiki dirs the link checker lints, the player-text
+   patterns, the assets folder + import hint), wire its
+   Write|Edit|MultiEdit PostToolUse entry (the template settings.json
+   has it), run `python tools/hooks/hygiene_guard.py --selftest`. No
+   state file. Give the public README (if the project publishes a kit)
+   a "Kit version: vX.Y" line so the sync script's check can hold.
 
 ## Change log
 
@@ -340,3 +388,11 @@ the manager waits on permission or idles after a long employee run.
   refusal, the same call repeated passes; images are silent (priced by
   pixels). Born when the origin project's "21 big reads a day" turned out
   to be screenshots sized by their bytes.
+- 2026-09-11 WS1: Tier 3, the hygiene guard (kit v1.16) - the first
+  PostToolUse hook. Born when the public README was found two kit
+  versions behind; the CEO: "we definitely don't want the readme falling
+  behind again." Kit-refresh reminder (naming the README), See-also lint
+  at the edit, the dash rule as a block, the import reminder; plus the
+  sync script's README version check. Tier 4 stays pinned. Lesson: a
+  reminder that fires at the moment of the edit is worth ten in a law
+  file - the README fell behind while the law was already written.

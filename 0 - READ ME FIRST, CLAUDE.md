@@ -144,7 +144,7 @@ write-up is transcription of the performer's own report.
 
 Copy the kit's skills/ folder into the repo as .claude/skills/ and
 SKILLS.md to the repo root; index it. The skills (/standup /checkpoint
-/ship /brief /runaway) call the tools built in steps 1-3, so they go live last.
+/ship /brief /runaway /preserve) call the tools built in steps 1-3, so they go live last.
 Adopt THE SKILLS RULE: a ritual born or amended updates its skill in the
 same batch.
 
@@ -196,6 +196,19 @@ wiki_heat.py (read counts per section from the transcripts, metrics
 group), ledger_trends.py (ledger tails vs thresholds -> PROPOSE lines at
 standup; nothing applied). Wire them when the wiki has a few weeks of
 reads to measure; the thresholds table is the CEO's to tune.
+THE HYGIENE GUARD (kit v1.16, hooks/hygiene_guard.py + HOOKS_METHOD.md
+Tier 3): the first PostToolUse hook. Rewrite its CONFIG block for the
+project (portable file names, the kit folder, the core file + lint, the
+wiki dirs, the player-text patterns, the assets folder), wire its
+Write|Edit|MultiEdit PostToolUse entry (the template settings.json has
+it), run `--selftest`. No state. It says, at the edit: refresh the kit
+copy (and the public README, if the project publishes a kit), add the
+missing See-also line, fix the forbidden character in player-facing
+text (a block), run the import after a new asset. It exists because the
+origin's public README fell two versions behind while the law saying to
+refresh it was already written. And /preserve (skills/preserve, same
+version) is the preservation law's front: retire, shelve, or the
+twice-acknowledged delete grant, in that order.
 
 ## STEP 5 - optional boards (adopt when the CEO wants them)
 

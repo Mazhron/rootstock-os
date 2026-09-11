@@ -85,6 +85,18 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/hygiene_guard.py\"",
+            "timeout": 30
+          }
+        ]
+      }
     ]
   }
 }

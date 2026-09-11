@@ -12,6 +12,9 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
+Kit version: **v1.16** (2026-09-11). The graft log `UPGRADES.md` is the
+single source of truth; this line is checked against it on every sync.
+
 ---
 
 ## The problem: context is the bill
@@ -113,6 +116,28 @@ make it work:
   scripts generate documents, nothing restated that a table already says,
   limiters on chatty commands.
 
+- **Nothing is deleted (the preservation law).** Neither the manager nor
+  any employee deletes a file, record or tree without the owner's yes
+  given twice, and no script is written that deletes. A file RETIRES to a
+  shelf folder; a rarely-read wiki section moves VERBATIM to a cold shelf
+  with a stub left behind; a wrong fact is marked superseded in place. A
+  hook refuses delete verbs, work-discarding git verbs and deletion calls
+  written into code; the rare real deletion is recorded with the owner's
+  two acknowledgments, word for word, before the one command runs.
+- **The wiki learns (the learning loop).** Three read-only scripts close
+  the loop: a link checker finds dead cross-references, a heat map mines
+  the transcripts for reads per section and says WHY a cold page is cold
+  (code moved after the doc was last opened is the only kind worth a
+  look; cold by read count is never a reason to shelve), and a trends
+  script turns ledger tails into PROPOSE lines at standup when a threshold
+  crosses. Nothing is applied by itself; the owner decides.
+- **Index first.** The first whole read of a big file in a session is
+  refused, and the refusal carries the file's own index (headings or
+  function lines with line numbers) so the next call reads one section.
+  The same call repeated passes. A per-file ledger names which files were
+  read whole and the fix each needs; the manager sections or splits them
+  unasked. Pictures are priced by pixels, never by their bytes.
+
 A lint script guards the core's line budget and keeps the index honest.
 
 The wiki's growth rule is deliberate: files and indexes are nearly free
@@ -181,14 +206,16 @@ because context lives in files, not in the conversation.
   session re-arms in about 15-20k tokens instead of dragging hundreds of
   thousands.
 
-Five rituals ship as Claude Code skills, invocable as slash commands:
-`/standup`, `/checkpoint`, `/ship`, `/brief`, `/runaway`.
+Six rituals ship as Claude Code skills, invocable as slash commands:
+`/standup`, `/checkpoint`, `/ship`, `/brief`, `/runaway`, and `/preserve`
+(the preservation law's front: retire a file, shelve a wiki section, or
+walk the twice-acknowledged delete grant, in that order).
 
 ### The hooks: laws the harness enforces itself (HOOKS_METHOD.md)
 
 A skill runs when invoked; a hook runs when the harness reaches a moment.
 Anything a law can enforce mechanically becomes a hook, not a longer
-reminder. Seven ship in `hooks/`, wired by one settings file:
+reminder. Nine ship in `hooks/`, wired by one settings file:
 
 - **Session start** injects the standup digest by itself - after a /clear
   the manager has everything back before anyone types a word.
@@ -202,9 +229,23 @@ reminder. Seven ship in `hooks/`, wired by one settings file:
   sub-agent spawns or runaway token velocity - each self-clearing - and
   warns on the rest. It exists because a manager once spawned 821 agents
   on "check my markdown files". The CEO tunes its numbers with `/runaway`.
-- **The diet guard** is warn-only: it says a file's size before a whole
-  read past ~10k tokens and the missing limiter on a chatty command,
-  at the moment of the decision. It never refuses.
+- **The diet guard** says a file's size before a whole read past ~10k
+  tokens and the missing limiter on a chatty command, at the moment of
+  the decision; the first whole read of a big file per session is
+  refused with the file's own index in the refusal, and the same call
+  repeated passes.
+- **The preserve guard** refuses delete verbs, work-discarding git verbs
+  and deletion calls written into scripts. The session scratchpad and
+  prose files pass; one command passes per delete grant the owner
+  acknowledged twice. A drive root, the home folder or the repo root pass
+  never.
+- **The hygiene guard** runs AFTER every file edit and says the law that
+  applies to that file: refresh the kit copy (and this README) when a
+  portable original changes, add the missing See-also line to a wiki
+  section, fix a forbidden character in player-facing text (the one
+  block), run the engine import after a new asset. It exists because
+  this README once fell two versions behind while the law to refresh it
+  was already written.
 
 ## What it saves, concretely
 
@@ -218,6 +259,9 @@ reminder. Seven ship in `hooks/`, wired by one settings file:
 | Runaway agent loops | Budget line in every brief, plus the fan-out guard | Partial report instead of a bill |
 | Reading a 24k-token file inline | The diet guard says the size first; section-read or delegate | ~30k weighted becomes ~3k, and it stops riding every later turn |
 | Cost numbers with no baseline | The daily line judges each day against the previous seven | Waste gets a name the next morning |
+| A screenshot counted as a 100k read | Pictures priced by pixels | Diet proposals aimed at real habits, not phantom ones |
+| A deleted file, a wiped tree | Retire, shelve, or ask twice | Knowledge never lost; a bad script cannot cost a folder |
+| Laws forgotten mid-batch | The hygiene guard speaks at the edit | The kit copy and this README stay in step by themselves |
 
 The unglamorous truth this kit encodes: there is no magic compression
 trick. The savings come from structure, scripts, and discipline. (The kit's
@@ -300,12 +344,12 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `REPORTING_METHOD.md` | Scripts + ledgers: the three rules, runner spec, bootstrap |
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, six laws, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
-| `skills/` | The five skills, ready to drop into `.claude/skills/` |
-| `HOOKS_METHOD.md` | The hooks: the contract, the seven kit hooks, tiers, bootstrap |
-| `hooks/` | The seven hook scripts plus the settings template, ready to drop into `tools/hooks/` |
+| `skills/` | The six skills, ready to drop into `.claude/skills/` |
+| `HOOKS_METHOD.md` | The hooks: the contract, the nine kit hooks, tiers, bootstrap |
+| `hooks/` | The nine hook scripts plus the settings template, ready to drop into `tools/hooks/` |
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
-| `reference tools/` | Working standup, checkpoint, lint, usage-sheet (weighted, with the daily line), tag-index, workstation-survey and update-check scripts to adapt, not rewrite |
+| `reference tools/` | Working scripts to adapt, not rewrite: standup, checkpoint, lint, usage sheet (weighted, with the daily line), tag index, workstation survey, update check, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `GODOT_FIELD_NOTES.md` | Domain example: hard-won Godot engine lessons (skip if not Godot) |
 | `CLICKER_DESIGN_NOTES.md` | Domain example: idle/clicker genre lessons (skip if not that genre) |
