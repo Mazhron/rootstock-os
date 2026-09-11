@@ -30,8 +30,12 @@ never locked out of its own tools for more than a cooldown.
 
   THE SPEND METER behind it reads the session transcript + its employee
   transcripts INCREMENTALLY (byte offsets in the state file; a warm call
-  costs ~0.06 s). The first sight of a file backfills totals without
-  feeding velocity, so a mid-session install never halts on catch-up.
+  costs ~0.06 s). It sums the API's OWN usage fields per message - never
+  transcript bytes - so a screenshot's base64 payload prices at 0 and
+  pictures cost what the API charged (pixels). Checked 2026-09-11 after
+  the usage sheet's picture-sizing fix raised the suspicion; selftested.
+  The first sight of a file backfills totals without feeding velocity,
+  so a mid-session install never halts on catch-up.
 
   python tools/hooks/fanout_guard.py --status     # what the meter sees
   python tools/hooks/fanout_guard.py --resume     # clear a halt/burst now
@@ -461,6 +465,16 @@ def _selftest_body():
     usage(os.path.join(sub, "agent-1.jsonl"), "a1", 1000, inp=50_000)
     v, m, st = call("Read", st, now=t0 + 2, file_path="x.gd")
     check("employee transcript metered", st["sessions"][sid]["raw"] == 201_400)
+    # pictures: a screenshot read lands ~200 KB of base64 in the transcript;
+    # the meter reads the API's usage fields only, so those bytes price at 0
+    # (the 2026-09-10 "picture-sizing flaw" suspicion, disproved 2026-09-11)
+    with open(tp, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"message": {"role": "user", "content": [{"type": "tool_result",
+                 "content": [{"type": "image", "source": {"data": "A" * 200_000}}]}]}}) + "\n")
+    usage(tp, "m2", 10, cr=1_000)
+    v, m, st = call("Read", st, now=t0 + 3, file_path="shot.png")
+    check("a 200 KB screenshot in the transcript prices at 0 (usage fields only)",
+          st["sessions"][sid]["raw"] == 202_410)
     # a real delegation batch: 4 parallel spawns, then 4 more a few minutes later
     vs = []
     for i in range(4):
