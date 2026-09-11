@@ -13,7 +13,11 @@ Proposals (each names its ledger and the number that crossed):
   test_runs.txt     >= N FAIL lines in the last 10 -> a flaky group
   wiki_link_runs.txt  dead links > 0 -> fix them (the list is in
                     wiki_links.txt)
-  wiki_heat_runs.txt  cold sections >= N -> propose a cold-shelf sweep
+  wiki_heat_runs.txt  ACTIVE-UNREAD cold sections >= N -> propose a heading
+                      check (cold by read count alone is never a shelf
+                      reason - Mazhron 2026-09-10; see wiki_heat WHY COLD)
+  usage_daily.txt     read-diet CHECKs and big reads point at
+                      docs/history/big_reads.txt (per-file, with the fix)
                     (candidates in wiki_heat.txt; nothing moves without
                     the owner's word)
   SUBAGENTS.md ledger  a model's CORRECTED+FAILED share > 25% of its last
@@ -65,24 +69,33 @@ def workstation():
 def proposals(th=THRESHOLDS):
     out = []
     # 1. usage_daily.txt
+    # A CHECK is a diet signal only when its reasons name the diet (reads,
+    # section share, cache misses); a spend-only CHECK is a busy day, not a
+    # slipping habit (the 2026-09-10 echo: two old heavy days kept proposing
+    # "the diet is slipping" while the last five days ran 90-100% sectioned).
     lines = data_lines("usage_daily.txt")[-7:]
-    checks = [ln for ln in lines if "| CHECK" in ln]
+    diet_re = re.compile(r"heavy whole-file reads|section-read share|cache misses")
+    checks = [ln for ln in lines if "| CHECK" in ln and diet_re.search(ln)]
     if len(checks) >= th["usage_check_days"]:
-        out.append("PROPOSE (usage_daily.txt): %d of the last %d days carry a CHECK "
-                   "verdict - the read diet is slipping. Options: lower the diet "
-                   "guard's BIG_READ_TOK, add a distill step for the files being "
-                   "read whole, or batch CLAUDE.md/MEMORY edits at checkpoint "
-                   "(cache misses)." % (len(checks), len(lines)))
+        out.append("PROPOSE (usage_daily.txt): %d of the last %d days carry a READ-DIET "
+                   "CHECK (heavy whole reads, low section share or cache misses). "
+                   "The files: docs/history/big_reads.txt (`python tools/big_reads.py`) "
+                   "- the manager sections or splits them on that report's word, no "
+                   "approval needed (Mazhron 2026-09-10); misses -> batch CLAUDE.md/"
+                   "MEMORY edits at checkpoint." % (len(checks), len(lines)))
+    # Big reads: judge the LAST THREE active days, not a 7-day mean that two
+    # old heavy days can carry for a week after the habit is fixed.
     bigs = []
     for ln in lines:
         m = re.search(r"\|\s*\d+ \((\d+)\) / \d+,", ln)
         if m:
             bigs.append(int(m.group(1)))
-    if bigs and sum(bigs) / len(bigs) >= th["usage_big_reads"]:
+    recent = bigs[-3:]
+    if recent and sum(recent) / float(len(recent)) >= th["usage_big_reads"]:
         out.append("PROPOSE (usage_daily.txt): big whole-file reads average %.1f/day "
-                   "over the last %d days - which files? `python tools/wiki_heat.py` "
-                   "shows the whole-read column; section them or split them."
-                   % (sum(bigs) / len(bigs), len(bigs)))
+                   "over the last %d active days - the files and their fix are in "
+                   "docs/history/big_reads.txt; section or split them (standing order, "
+                   "no approval needed)." % (sum(recent) / float(len(recent)), len(recent)))
     # 2. test_runs.txt
     tests = data_lines("test_runs.txt")[-10:]
     fails = [ln for ln in tests if "FAIL" in ln]
@@ -99,15 +112,20 @@ def proposals(th=THRESHOLDS):
             out.append("PROPOSE (wiki_link_runs.txt): %s dead wiki link(s) - fix them "
                        "(the list: docs/history/wiki_links.txt)." % m.group(1))
     # 4. wiki_heat_runs.txt
+    # Cold by read count alone is NOT a shelf reason in a game project
+    # (Mazhron 2026-09-10): a system doc goes unread while its system is not
+    # being worked on, and the wiki is a human reference too. Only the
+    # ACTIVE-UNREAD class (code moved, doc never opened) is worth a look.
     heat = data_lines("wiki_heat_runs.txt")
     if heat:
-        m = re.search(r"cold (\d+) \((\d+) lines\)", heat[-1])
+        m = re.search(r"active-unread (\d+)", heat[-1])
         if m and int(m.group(1)) >= th["cold_sections"]:
-            out.append("PROPOSE (wiki_heat_runs.txt): %s cold sections (%s lines never "
-                       "or long-unread) - a cold-shelf sweep would thin the hot wiki. "
-                       "Candidates: docs/history/wiki_heat.txt; the owner picks, "
-                       "`python tools/cold_shelf.py --move` moves (never deletes)."
-                       % (m.group(1), m.group(2)))
+            out.append("PROPOSE (wiki_heat_runs.txt): %s cold sections sit in wiki files "
+                       "whose CODE moved in the last 30 days but whose doc was never "
+                       "opened (active-unread) - check those headings for search keys "
+                       "or staleness (docs/history/wiki_heat.txt, WHY COLD). Dormant, "
+                       "reference and archive cold is expected and never a shelf reason."
+                       % m.group(1))
     # 5. SUBAGENTS.md ledger (rule 6)
     try:
         with open(os.path.join(ROOT, "SUBAGENTS.md"), encoding="utf-8") as fh:

@@ -144,14 +144,25 @@ TIER 2c - THE DIET GUARD (`diet_guard.py`, PreToolUse on Read|Bash|
 PowerShell; kit v1.12, the origin CEO's ruling 2026-09-10 after the
 weighted-usage insight: only the tokens that count against the plan
 matter, and under those weights the manager's context is written at
-1.25x and every tool result rides in it forever). WARN-ONLY, never a
-refusal, nothing to type:
-- THE READ DIET (the 10k rule): a whole-file Read (no offset/limit) or a
-  bare cat/type/Get-Content of a file past ~10k tokens gets one line at
-  the moment of the decision - the size, the line count, how many `## `
-  sections it has, and the cheaper move (grep the headings and read one
-  section; or, for an understand-this step, delegate the reading to an
-  employee and take back a summary). The CEO's own idea was a token count
+1.25x and every tool result rides in it forever). Nothing to type; one
+refusal shape only (INDEX FIRST, kit v1.15), the rest warn-only:
+- INDEX FIRST (kit v1.15, the origin CEO's order 2026-09-10 PM: "section
+  or split as necessary ... should not require my approval ... part of
+  the looping scripts"): the FIRST whole read of a big file per file per
+  session is refused, and the refusal carries the file's own index -
+  `## ` headings for markdown, func/class/def lines for code, each with
+  its line number, capped at 80 - so the next call reads one section by
+  offset/limit. The SAME call repeated passes with the warning only (the
+  editing exception, no words needed). A file with no structure only
+  warns; an image is silent (priced by pixels, ~1-2k tokens however many
+  bytes it holds - sizing pictures by their bytes was the bug that made
+  the origin project's "21 big reads a day": they were screenshots).
+- THE READ DIET (the 10k rule): every later whole-file Read (no
+  offset/limit) or bare cat/type/Get-Content of a file past ~10k tokens
+  gets one line at the moment of the decision - the size, the line
+  count, how many `## ` sections it has, and the cheaper move (grep the
+  headings and read one section; or, for an understand-this step,
+  delegate the reading to an employee and take back a summary). The CEO's own idea was a token count
   in every heading; that went stale by design and cost output to
   maintain, so the count is GENERATED at the cliff edge instead - the
   harness knows the file size before the read happens. Editing that
@@ -324,3 +335,8 @@ the manager waits on permission or idles after a long employee run.
   The audit it forced found the kit-mirror script emptying its target
   folder before copying - a misconfigured path away from the horror
   story - and that is fixed too.
+- 2026-09-10 PM (kit v1.15): Tier 2c gains INDEX FIRST - the first whole
+  read of a big file per session is refused with the file's index in the
+  refusal, the same call repeated passes; images are silent (priced by
+  pixels). Born when the origin project's "21 big reads a day" turned out
+  to be screenshots sized by their bytes.

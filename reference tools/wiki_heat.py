@@ -47,6 +47,7 @@ import glob
 import json
 import os
 import re
+import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -58,10 +59,72 @@ CACHE_VERSION = 1
 
 SENTINEL_EOF = 10**9  # "to EOF" upper bound for an open-ended section read
 
+# WHY COLD (Mazhron's ruling 2026-09-10: "be certain that you are learning
+# why we're not referencing parts of the wiki ... in a game situation, we
+# only touch certain files at certain times ... we built the wiki not only
+# for your reference, but for a human reference"). Every wiki file maps to
+# the code/data areas it documents; git activity in those areas over the
+# window classifies its cold sections:
+#   dormant        system doc, its code untouched in the window -> expected
+#   current        system doc opened (any read) since its code last moved
+#   active-unread  system doc whose code MOVED after the doc was last
+#                  opened -> the one class worth a look (mis-titled
+#                  heading? stale? unneeded?)
+#   process        the operating-system files (laws, registry, roadmap) -
+#                  read when the ritual calls, never on a schedule
+#   reference      human/portable docs (lore, store copy, kit method files)
+#   archive        history + the cold shelf: cold by design
+# Cold by read count alone is NEVER a shelf reason. NOTHING MOVES.
+AREA_MAP = {
+    "docs/systems/soil.md": ["scripts/world/soil_grid.gd", "data/soil", "shaders/soil",
+                             "assets/soil", "scripts/world/water_tile_overlay.gd",
+                             "scripts/world/bank_overlay.gd", "scripts/world/inflow_overlay.gd"],
+    "docs/systems/weather.md": ["scripts/core/climate.gd", "scripts/world/cloud_system.gd",
+                                "scripts/entities/cloud.gd", "scripts/entities/raindrop.gd",
+                                "scripts/world/catastrophe.gd", "scripts/ui/catastrophe_",
+                                "scripts/world/sky_view.gd"],
+    "docs/systems/flora.md": ["scripts/world/plant_system.gd", "scripts/world/seed_system.gd",
+                              "scripts/entities/plant.gd", "scripts/entities/seed.gd",
+                              "data/species", "scripts/core/evolutions.gd", "scripts/data/species"],
+    "docs/systems/fauna.md": ["scripts/world/animal_system.gd", "scripts/world/bird_system.gd",
+                              "scripts/world/pollinator_system.gd", "scripts/entities/animal.gd",
+                              "scripts/entities/bird.gd", "data/animals", "scripts/data/animal"],
+    "docs/systems/world-map.md": ["scripts/core/session.gd", "scripts/ui/rebirth_",
+                                  "scripts/world/run_controller.gd", "scripts/data/biomes",
+                                  "scripts/core/wills.gd", "scripts/ui/will_menu.gd"],
+    "docs/systems/meta.md": ["scripts/core/meta.gd", "scripts/core/save_", "scripts/core/upgrade_manager.gd",
+                             "scripts/core/modifiers.gd", "data/upgrades", "scripts/core/goals.gd",
+                             "scripts/ui/ash_shop.gd", "scripts/core/balance_log.gd"],
+    "docs/systems/ui.md": ["scripts/ui/", "scripts/core/settings.gd", "scripts/core/music_player.gd",
+                           "scripts/core/analytics.gd", "scripts/core/tool_manager.gd"],
+    "docs/systems/perf.md": ["scripts/core/object_pool.gd", "scripts/util/sim_probe.gd",
+                             "scripts/core/spike_tracer.gd", "scripts/world/plant_system.gd"],
+    "docs/systems/lag-and-latency.md": ["scripts/core/object_pool.gd", "scripts/util/sim_probe.gd",
+                                        "scripts/core/spike_tracer.gd", "scripts/world/plant_system.gd"],
+    "docs/systems/art-pipeline.md": ["tools/slice", "tools/extract_", "assets/", "shaders/",
+                                     "scripts/util/asset_slicer.gd", "tools/montage"],
+    "ART_METHOD.md": ["tools/slice", "tools/extract_", "assets/", "scripts/util/asset_slicer.gd"],
+    "docs/systems/tooling.md": ["tools/"],
+    "docs/systems/web-standards.md": ["tools/export_upgrade_web.py", "tools/export_species_web.py",
+                                      "tools/export_cloud_web.py"],
+    "docs/systems/testing.md": ["tools/run_tests.py", "scripts/util/", "tools/soak_report.py",
+                                "tools/progression_report.py"],
+    "GODOT_FIELD_NOTES.md": ["scripts/"],
+    "CLICKER_DESIGN_NOTES.md": ["data/upgrades", "scripts/core/upgrade_manager.gd", "scripts/core/meta.gd"],
+}
+PROCESS_FILES = {"CLAUDE.md", "WORKFLOWS.md", "SUBAGENTS.md", "NEXT_STEPS.md", "TOKEN_IDEAS.md",
+                 "FUTURE_FEATURES.md", "WORKSTATION.md", "SKILLS.md", "HOOKS_METHOD.md",
+                 "WIKI_METHOD.md", "SUBAGENT_METHOD.md", "REPORTING_METHOD.md",
+                 "WORKFLOW_METHOD.md", "WORKSTATION_METHOD.md"}
+REFERENCE_FILES = {"LORE.md", "DESCRIPTION.md", "CHANGELOG.md", "COMPLETED_STEPS.md",
+                   "KNOWLEDGE_INDEX.md", "README.md"}
+ARCHIVE_PREFIXES = ("docs/systems/history.md", "docs/cold/")
+WHY_ORDER = ("active-unread", "current", "dormant", "process", "reference", "archive")
+
 RUNS_HEADER = (
     "# WIKI HEAT HISTORY (append-only; one line per run).\n"
     "# Read the TAIL for recent runs - never the whole file.\n"
-    "# date time | ws | files | sections | touched | cold (lines) | hottest section\n"
+    "# date time | ws | files | sections | touched | cold (lines) | why: active-unread/current/dormant/process/reference/archive | hottest section\n"
 )
 
 
@@ -153,6 +216,56 @@ def parse_sections(abspath):
 def workstation():
     home = os.path.expanduser("~").lower()
     return "WS2" if "travis" in home else "WS1"
+
+
+def git_activity(days):
+    """-> {repo-relative path: [(date, hash), ...]} over the last `days`
+    days (one read-only `git log --name-only`)."""
+    try:
+        out = subprocess.run(["git", "log", "--since=%d.days" % days, "--name-only",
+                              "--date=short", "--format=@@ %ad %h"], cwd=ROOT,
+                             capture_output=True, text=True, timeout=60).stdout
+    except (OSError, subprocess.TimeoutExpired):
+        return {}
+    touches = {}
+    cur = None
+    for ln in out.splitlines():
+        ln = ln.strip()
+        if ln.startswith("@@ "):
+            parts = ln.split()
+            cur = (parts[1], parts[2]) if len(parts) >= 3 else None
+        elif ln and cur:
+            touches.setdefault(ln.replace("\\", "/"), []).append(cur)
+    return touches
+
+
+def classify_file(fid, activity, last_read):
+    """-> (why, distinct_commits, last_commit_date). The reason a file's
+    cold sections are cold. active-unread = the file's code moved AFTER the
+    doc was last opened (or the doc was never opened); current = the doc was
+    opened since its code last moved; dormant = the code did not move."""
+    if fid.startswith(ARCHIVE_PREFIXES):
+        return ("archive", 0, "")
+    if fid in PROCESS_FILES:
+        return ("process", 0, "")
+    if fid in REFERENCE_FILES:
+        return ("reference", 0, "")
+    areas = AREA_MAP.get(fid)
+    if not areas:
+        return ("reference", 0, "")
+    commits = set()
+    last_commit = ""
+    for path, hits in activity.items():
+        low = path.lower()
+        if any(low.startswith(a.lower()) for a in areas):
+            for date, h in hits:
+                commits.add(h)
+                last_commit = max(last_commit, date)
+    if not commits:
+        return ("dormant", 0, "")
+    if last_read and last_read >= last_commit:
+        return ("current", len(commits), last_commit)
+    return ("active-unread", len(commits), last_commit)
 
 
 def transcript_dirs():
@@ -418,7 +531,10 @@ def main():
     for fid, s, fw in all_sections:
         if s["heading"] == "(preamble)" or s["lines"] < 6:
             continue
-        is_cold = (s["sectioned"] == 0) or (not s["last_touch"]) or (s["last_touch"] < cutoff)
+        # A whole-file read within the window counts: the section was seen.
+        # (Before 2026-09-10 "never sectioned-read" alone made a section cold,
+        # which called fauna.md cold after five whole reads.)
+        is_cold = (not s["last_touch"]) or (s["last_touch"] < cutoff)
         if is_cold:
             cold.append((fid, s))
     cold.sort(key=lambda r: -r[1]["lines"])
@@ -426,13 +542,34 @@ def main():
         [["%d lines" % s["lines"], "last %s" % (s["last_touch"] or "never"),
           "%s#%s" % (fid, s["heading"])] for fid, s in cold], 2)
 
+    # -- WHY COLD (the learning: which cold is expected, which deserves a look)
+    activity = git_activity(args.days)
+    why_of = {fid: classify_file(fid, activity, file_stats[fid]["last"]) for fid in wiki_files}
+    why_counts = {w: 0 for w in WHY_ORDER}
+    why_files = {}
+    for fid, s in cold:
+        why, hits, last_commit = why_of[fid]
+        why_counts[why] += 1
+        wf = why_files.setdefault(fid, {"why": why, "hits": hits, "n": 0, "lines": 0,
+                                        "last_commit": last_commit})
+        wf["n"] += 1
+        wf["lines"] += s["lines"]
+    why_rows = sorted(why_files.items(),
+                      key=lambda kv: (WHY_ORDER.index(kv[1]["why"]), -kv[1]["n"]))
+    why_lines = pad_rows(
+        [[wf["why"], "%d cold" % wf["n"], "%d lines" % wf["lines"],
+          "code: %d commits, last %s" % (wf["hits"], wf["last_commit"] or "-"),
+          "doc last read %s" % (file_stats[fid]["last"] or "never"), fid]
+         for fid, wf in why_rows], 5)
+    why_summary = ", ".join("%s %d" % (w, why_counts[w]) for w in WHY_ORDER)
+
     sections_total = sum(len(s) for s in section_map.values())
     touched = sum(1 for _, s, _ in all_sections if s["last_touch"])
     cold_total_lines = sum(s["lines"] for _, s in cold)
     summary = ("files %d | sections %d | touched %d | cold %d (%d lines) "
-               "| events %d | transcripts %d") % (
+               "| why: %s | events %d | transcripts %d") % (
         len(wiki_files), sections_total, touched, len(cold), cold_total_lines,
-        len(all_events), transcript_n)
+        why_summary, len(all_events), transcript_n)
 
     # -- write the report
     lines = [
@@ -457,6 +594,13 @@ def main():
                   "older than %d days)" % args.days)
     lines.extend(cold_lines if cold_lines else ["(none)"])
     lines.append("")
+    lines.append("== WHY COLD (per file: class | cold sections | lines | commits in its "
+                 "code area over %d days + the last one | when the doc was last opened) - "
+                 "active-unread (code moved AFTER the doc was last opened) is the only "
+                 "class worth a look; current, dormant, process, reference and archive "
+                 "cold is expected in a game project (Mazhron 2026-09-10)" % args.days)
+    lines.extend(why_lines if why_lines else ["(none)"])
+    lines.append("")
     lines.append("== SUMMARY")
     lines.append(summary)
     lines.append("")
@@ -472,9 +616,9 @@ def main():
         hottest = "n/a"
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     ledger_line = ("%s | %s | files %d | sections %d | touched %d | "
-                   "cold %d (%d lines) | hottest %s") % (
+                   "cold %d (%d lines) | why: %s | hottest %s") % (
         now, workstation(), len(wiki_files), sections_total, touched,
-        len(cold), cold_total_lines, hottest)
+        len(cold), cold_total_lines, why_summary, hottest)
     if not os.path.isfile(RUNS_TXT):
         with open(RUNS_TXT, "w", encoding="utf-8") as fh:
             fh.write(RUNS_HEADER)

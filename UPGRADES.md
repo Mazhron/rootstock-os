@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.14** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.15** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -430,3 +430,34 @@ bring each to the CEO - convert to a move, or keep with the CEO's word
 recorded. Nothing else moves; a project's own shelf folder name and
 thresholds are its own.
 
+
+### v1.15 - 2026-09-10 - Index-first reads, pictures priced by pixels, why cold is cold
+WHAT: three corrections to the learning loop, all born the evening the
+loop's first proposals were audited. (1) INDEX FIRST in the diet guard:
+the first whole read of a big file per session is refused and the
+refusal carries the file's own index (headings or function lines with
+line numbers, capped at 80); the same call repeated passes with a
+warning - the CEO's "section or split ... should not require my
+approval" made mechanical. (2) The usage sheet prices an image read by
+PIXELS (~w*h/750 after the API downscale, ~1-2k tokens), never by its
+base64 bytes: the old sizing made every screenshot a 100k "big read"
+and the sheet proposed diet fixes for a habit nobody had. A per-file
+big-reads ledger (tools/big_reads.py) names WHICH files were read whole
+and the fix each needs; the manager acts on it unasked. (3) The heat
+map says WHY a cold file is cold (git activity in the code area it
+documents: active-unread / current / dormant / process / reference /
+archive) and a whole-file read counts as seeing a section; only
+active-unread ever reaches a proposal - cold by read count is never a
+shelf reason (the CEO: game work touches certain files at certain times;
+the wiki is a human reference too). Trends proposals count only
+diet-named CHECKs and judge big reads on the last three active days.
+CARRIES: hooks/diet_guard.py (INDEX FIRST, image silence, selftest);
+reference tools/{usage_report, wiki_heat, ledger_trends, big_reads}.py;
+HOOKS_METHOD.md Tier 2c + change log; WIKI_METHOD.md "The read diet"
+(index first, the measurement lesson) + "The cold shelf" (why cold).
+GRAFT: refresh the diet guard and run its selftest; copy big_reads.py
+into tools/ and add it to the metrics group; if the project's usage
+sheet sizes tool results, add image_tokens and bump its cache version;
+give wiki_heat an AREA_MAP for the project's own doc->code areas (the
+kit copy carries Everwood's as the worked example - replace it); reword
+the project's cold proposal to active-unread only. Nothing else moves.

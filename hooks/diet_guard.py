@@ -1,7 +1,6 @@
 """THE DIET GUARD (PreToolUse on Read|Bash|PowerShell, warn-only): the
 read diet and the output diet, enforced at the cliff edge (Tier 2c,
-KIT COPY (Rootstock v1.12) - the origin CEO's ruling 2026-09-10,
-born in Everwood from its TOKEN_IDEAS 15 + 18).
+Mazhron's ruling 2026-09-10 - TOKEN_IDEAS 15 + 18).
 
 WHY: under the budget weights, the manager's context is written at 1.25x
 (2x on the 1-hour cache) and re-read on every later turn; tool RESULTS are
@@ -30,9 +29,10 @@ because every big read is a fresh decision.
 
 Search keys: diet guard, read diet, output diet, big read, whole-file read,
 chatty command, limiter, pretooluse warn, 10k rule.
-See also: fanout_guard.py (the same warn shape); WIKI_METHOD.md (the read
-diet + the output diet laws); reference tools/usage_report.py (the daily
-line that grades the outcome); HOOKS_METHOD.md Tier 2c.
+See also: tools/hooks/fanout_guard.py (the same warn shape); TOKEN_IDEAS.md
+ideas 15-18; WIKI_METHOD.md (the read diet + the output diet laws);
+tools/usage_report.py (the daily line that grades the outcome);
+docs/systems/tooling.md (The hooks).
 """
 import json
 import os
@@ -95,13 +95,25 @@ def _ktok(n):
     return "~%dk" % round(n / 1000.0) if n >= 1000 else str(n)
 
 
+IMAGE_EXT = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp")  # priced by pixels, not bytes
+INDEX_CAP = 80                # index entries served at most
+_CODE_HEAD = re.compile(rb"^\s*(static\s+func|func|class_name|class|def|async\s+def|signal)\b")
+
+
+def _resolve(path, cwd):
+    p = os.path.expanduser((path or "").strip("\"'"))
+    if p and not os.path.isabs(p):
+        p = os.path.join(cwd or ROOT, p)
+    return p
+
+
 def file_size_info(path, cwd):
-    """-> (est_tokens, lines, sections) or None when unreadable."""
+    """-> (est_tokens, lines, sections) or None when unreadable or an image."""
     if not path:
         return None
-    p = os.path.expanduser(path.strip("\"'"))
-    if not os.path.isabs(p):
-        p = os.path.join(cwd or ROOT, p)
+    p = _resolve(path, cwd)
+    if p.lower().endswith(IMAGE_EXT):
+        return None  # ~1-2k tokens however big the file is
     try:
         size = os.path.getsize(p)
         if size < BIG_READ_TOK * BYTES_PER_TOK:
@@ -117,6 +129,33 @@ def file_size_info(path, cwd):
         return None
 
 
+def file_index(path, cwd):
+    """-> ["<line>: <heading or signature>", ...] - the file's own table of
+    contents: `## ` headings for markdown, func/class/def lines for code.
+    Empty when the file has no such structure (a log, a dump)."""
+    p = _resolve(path, cwd)
+    md = p.lower().endswith((".md", ".markdown", ".txt"))
+    out = []
+    try:
+        with open(p, "rb") as fh:
+            for i, ln in enumerate(fh, 1):
+                if md:
+                    hit = ln.startswith(b"## ")
+                else:
+                    hit = bool(_CODE_HEAD.match(ln))
+                if hit:
+                    text = ln.decode("utf-8", "replace").strip()
+                    if len(text) > 72:
+                        text = text[:69] + "..."
+                    out.append("%d: %s" % (i, text))
+                    if len(out) >= INDEX_CAP:
+                        out.append("... (capped at %d entries)" % INDEX_CAP)
+                        break
+    except OSError:
+        return []
+    return out
+
+
 def _read_hint(name, est, lines, sections):
     move = ("Grep \"^## \" it first (%d sections) and read one with offset/limit" % sections
             if sections else "read it with offset/limit (sed -n A,Bp) in slices")
@@ -127,8 +166,22 @@ def _read_hint(name, est, lines, sections):
             % (name, _ktok(est), lines if lines is not None else "?", move))
 
 
+def _index_first(name, est, lines, index):
+    """INDEX FIRST (Mazhron 2026-09-10, "section or split ... should not require
+    my approval ... part of the looping scripts"): the first whole read of a
+    big file in a session is answered with the file's own index instead of
+    the file - ~1-3% of the tokens - and the same call repeated passes."""
+    return ("INDEX FIRST (diet guard): %s is %s tokens (%s lines); here is its index "
+            "(line: heading) so you can read ONE section with offset/limit or sed -n "
+            "A,Bp instead of the whole file:\n  %s\nIf you truly need the whole file "
+            "(editing that needs the exact text), repeat the same call - the second "
+            "attempt passes with a warning only."
+            % (name, _ktok(est), lines if lines is not None else "?", "\n  ".join(index)))
+
+
 def evaluate(data, state, now=None):
-    """-> (message or "", state). Pure apart from the clock and the disk."""
+    """-> (message or "", state, action). action is "" or "deny" (the
+    index-first refusal). Pure apart from the clock and the disk."""
     now = now or time.time()
     tool = data.get("tool_name") or ""
     tin = data.get("tool_input") or {}
@@ -136,21 +189,40 @@ def evaluate(data, state, now=None):
     sid = data.get("session_id") or "unknown"
     s = state.setdefault("sessions", {}).setdefault(sid, {"t": now, "shapes": {}})
     s["t"] = now
+    offered = s.setdefault("offered", {})
     msgs = []
+    action = ""
+
+    def whole_read(raw_path):
+        """One big whole read: the first per file per session is denied with
+        the index; every later one warns."""
+        info = file_size_info(raw_path, cwd)
+        if not (info and info[0] >= BIG_READ_TOK):
+            return None
+        name = os.path.basename(raw_path.strip("\"'"))
+        key = _resolve(raw_path, cwd).replace("\\", "/").lower()
+        if key not in offered:
+            index = file_index(raw_path, cwd)
+            if index:
+                offered[key] = now
+                return ("deny", _index_first(name, info[0], info[1], index))
+        return ("", _read_hint(name, *info))
 
     if tool == "Read":
-        if not (tin.get("offset") or tin.get("limit")):
-            info = file_size_info(tin.get("file_path"), cwd)
-            if info and info[0] >= BIG_READ_TOK:
-                msgs.append(_read_hint(os.path.basename(tin.get("file_path") or "?"), *info))
+        if not (tin.get("offset") or tin.get("limit")) and tin.get("file_path"):
+            r = whole_read(tin.get("file_path"))
+            if r:
+                action = action or r[0]
+                msgs.append(r[1])
     elif tool in ("Bash", "PowerShell"):
         cmd = tin.get("command") or ""
         if cmd:
             if not _LIMITED.search(cmd):
                 for m in _SHELL_READ.finditer(cmd):
-                    info = file_size_info(m.group(4), cwd)
-                    if info and info[0] >= BIG_READ_TOK:
-                        msgs.append(_read_hint(os.path.basename(m.group(4).strip("\"'")), *info))
+                    r = whole_read(m.group(4))
+                    if r:
+                        action = action or r[0]
+                        msgs.append(r[1])
             for name, trig, ok, hint in SHAPES:
                 if re.search(trig, cmd, re.I) and not re.search(ok, cmd, re.I):
                     n = s["shapes"].get(name, 0) + 1
@@ -161,8 +233,8 @@ def evaluate(data, state, now=None):
                                         name, hint,
                                         "; last warning this session for this shape" if n == WARN_CAP else ""))
     if not msgs:
-        return ("", state)
-    return ("[HOOK diet_guard] " + " | ".join(msgs), state)
+        return ("", state, "")
+    return ("[HOOK diet_guard] " + " | ".join(msgs), state, action)
 
 
 # ------------------------------------------------------------ selftest --
@@ -183,18 +255,46 @@ def _selftest():
     with open(small, "w", encoding="utf-8") as fh:
         fh.write("hello\n")
 
+    code = os.path.join(tmp, "big.gd")
+    with open(code, "w", encoding="utf-8") as fh:
+        fh.write("extends Node\n" + ("func f%d():\n\tpass\n" % 0) + ("#" * 79 + "\n") * 700
+                 + "func last():\n\tpass\n")
+    flat = os.path.join(tmp, "flat.log")
+    with open(flat, "w", encoding="utf-8") as fh:
+        fh.write(("x" * 79 + "\n") * 700)
+    png = os.path.join(tmp, "shot.png")
+    with open(png, "wb") as fh:
+        fh.write(b"\x89PNG" + b"\0" * (BIG_READ_TOK * BYTES_PER_TOK))
+
     def run(tool, sess="s1", state=None, **tin):
         return evaluate({"tool_name": tool, "tool_input": tin, "cwd": tmp,
                          "session_id": sess}, state if state is not None else {})[0]
 
-    check("big whole Read warns", "READ DIET" in run("Read", file_path=big))
+    def act(tool, sess="s1", state=None, **tin):
+        return evaluate({"tool_name": tool, "tool_input": tin, "cwd": tmp,
+                         "session_id": sess}, state if state is not None else {})[2]
+
+    st = {}
+    first = evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+                      "session_id": "ix"}, st)
+    second = evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+                       "session_id": "ix"}, st)
+    check("first big whole Read is INDEX FIRST (deny)", first[2] == "deny" and "INDEX FIRST" in first[0]
+          and "1: ## Section" in first[0])
+    check("second identical Read passes with a warning", second[2] == "" and "READ DIET" in second[0])
+    check("index-first is per session", act("Read", sess="other", state=st, file_path=big) == "deny")
+    check("code file index lists funcs", "func last()" in run("Read", file_path=code)
+          and act("Read", file_path=code) == "deny")
+    check("no-structure file warns, never denies", act("Read", file_path=flat) == ""
+          and "READ DIET" in run("Read", file_path=flat))
+    check("image Read is silent (pixels, not bytes)", run("Read", file_path=png) == "")
     check("big Read with limit is silent", run("Read", file_path=big, limit=40) == "")
     check("small whole Read is silent", run("Read", file_path=small) == "")
-    check("cat big file warns", "READ DIET" in run("Bash", command="cat big.md"))
-    check("cat -n big file warns", "READ DIET" in run("Bash", command="cat -n big.md"))
+    check("cat big file is INDEX FIRST", act("Bash", command="cat big.md") == "deny")
+    check("cat -n big file is INDEX FIRST", "INDEX FIRST" in run("Bash", command="cat -n big.md"))
     check("sed -n slice is silent", run("Bash", command="sed -n 1,40p big.md") == "")
     check("cat | head is silent", run("Bash", command="cat big.md | head -50") == "")
-    check("Get-Content big warns", "READ DIET" in run("PowerShell", command="Get-Content big.md"))
+    check("Get-Content big is INDEX FIRST", "INDEX FIRST" in run("PowerShell", command="Get-Content big.md"))
     check("Get-Content -TotalCount silent", run("PowerShell", command="Get-Content big.md -TotalCount 20") == "")
     check("missing file is silent", run("Bash", command="cat nothere.md") == "")
     check("git log bare warns", "git log" in run("Bash", command="git log"))
@@ -215,7 +315,9 @@ def _selftest():
     for _ in range(WARN_CAP + 2):
         last = run("Bash", sess="cap", state=st, command="git log")
     check("shape warning capped per session", last == "" and st["sessions"]["cap"]["shapes"]["git log without a count"] == WARN_CAP + 2)
-    check("read warning never capped", all("READ DIET" in run("Bash", sess="cap", state=st, command="cat big.md") for _ in range(WARN_CAP + 1)))
+    reads = [run("Bash", sess="cap", state=st, command="cat big.md") for _ in range(WARN_CAP + 2)]
+    check("read warning never capped", "INDEX FIRST" in reads[0]
+          and all("READ DIET" in r for r in reads[1:]))
     check("junk input is silent", evaluate({}, {})[0] == "")
     print("diet_guard selftest: %d failed" % len(fails))
     return 1 if fails else 0
@@ -228,14 +330,21 @@ def main():
     if not data.get("tool_name"):
         return
     state = _load()
+    action = ""
     try:
-        msg, state = evaluate(data, state)
+        msg, state, action = evaluate(data, state)
     except Exception as e:  # a guard must never crash the turn
         msg = ""
         state.setdefault("errors", []).append(str(e)[:200])
         state["errors"] = state["errors"][-5:]
     _save(state)
-    if msg:
+    if action == "deny":
+        # INDEX FIRST: the read is refused ONCE and the index travels in the
+        # reason; the same call repeated passes (see _index_first).
+        emit({"hookSpecificOutput": {"hookEventName": "PreToolUse",
+                                     "permissionDecision": "deny",
+                                     "permissionDecisionReason": msg}})
+    elif msg:
         emit({"systemMessage": msg,
               "hookSpecificOutput": {"hookEventName": "PreToolUse",
                                      "additionalContext": msg}})

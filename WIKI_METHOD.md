@@ -166,10 +166,22 @@ WHY NOT A COUNT IN EVERY HEADING (the CEO's first idea): a hand-typed
 token count goes stale the moment the section grows and costs output at
 5x to maintain. The count is GENERATED instead, at the cliff edge: the
 kit's diet guard hook (HOOKS_METHOD.md Tier 2c) reads the file size before
-the Read or the cat runs and says "this is ~24k tokens, 12 sections -
-section-read or delegate" as a warning, never a refusal. The usage sheet's
-daily line then grades the day (heavy whole-file reads, section-read
-share) against the previous seven, so a slip is named the next morning.
+the Read or the cat runs. INDEX FIRST (the CEO's order 2026-09-10 PM,
+"section or split as necessary ... should not require my approval"): the
+first whole read of a big file in a session is REFUSED and the refusal
+carries the file's own index (headings or function lines with line
+numbers, ~1-3% of the file), so the next call reads one section; the
+same call repeated passes with a warning only - the editing exception
+needs no words. The usage sheet's daily line then grades the day (heavy
+whole-file reads, section-read share) against the previous seven, and
+the big-reads ledger (tools/big_reads.py) names WHICH files were read
+whole and the fix each needs (section it, index it, grep it). THE
+STANDING ORDER: the manager sections or splits what that ledger names
+without asking. THE MEASUREMENT LESSON (2026-09-10): the first "21 big
+reads a day" were screenshots - an image is priced by PIXELS (~1-2k
+tokens), never by its base64 bytes; a diet metric that counts pictures
+as text proposes fixes for a habit nobody has. Check what a metric
+counts before acting on it.
 
 See also: The output diet (below) | HOOKS_METHOD.md Tier 2c (the diet guard) | SUBAGENT_METHOD.md "Why this saves money" (the 10k delegation line) | REPORTING_METHOD.md (THE WEIGHTED COLUMN + THE COMPARISON RULE)
 
@@ -235,9 +247,24 @@ rarely used knowledge." So the wiki has a COLD SHELF:
   overwrite anything on the shelf. --restore brings a section back and
   leaves a "restored" note on the shelf, so the shelf is history too.
 - CANDIDATES come from the heat map (tools/wiki_heat.py mines the harness
-  transcripts for read counts per section; "cold" = never sectioned-read,
-  or untouched for --days). The OWNER picks what moves. A script proposes;
-  a human rules; nothing moves on its own.
+  transcripts for read counts per section; "cold" = untouched by any read,
+  whole reads included, for --days). The OWNER picks what moves. A script
+  proposes; a human rules; nothing moves on its own.
+- COLD BY READ COUNT IS NOT A SHELF REASON (the CEO's ruling 2026-09-10:
+  "in a game situation, we only touch certain files at certain times ...
+  we built the wiki not only for your reference, but for a human
+  reference"). The heat map therefore says WHY each cold file is cold,
+  from git activity in the code area it documents: active-unread (the
+  code moved AFTER the doc was last opened - the one class worth a look:
+  a heading that is not a search key, a stale section, or knowledge that
+  was not needed), current (opened since the code last moved), dormant
+  (the code did not move), process (laws, registry, roadmap - read when
+  the ritual calls), reference (lore, store copy, changelog - for humans)
+  and archive (history, the shelf). Only active-unread ever reaches a
+  proposal. The origin project's first count of 367 cold sections was
+  180 changelog entries, 25 shipped-roadmap entries, history, and a
+  counting flaw (a whole-file read did not count as seeing a section):
+  zero system sections were actually cold. Audit the audit before acting.
 Why this shape and not deletion: the token cost of a cold section is one
 heading line in every heading grep and a share of every whole-file read
 of its host. Moving it removes that cost; deleting it would also remove

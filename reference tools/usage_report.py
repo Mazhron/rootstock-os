@@ -104,7 +104,7 @@ EMP_OUT = os.path.join(HIST, "usage_employees.csv")
 XLSX_OUT = os.path.join(HIST, "usage_metrics.xlsx")
 CACHE = os.path.join(HIST, "usage_cache.json")
 DAILY_OUT = os.path.join(HIST, "usage_daily.txt")
-CACHE_VERSION = 3  # v3: weighted, cache misses, read-diet classes
+CACHE_VERSION = 4  # v3: weighted, cache misses, read-diet classes; v4: images priced by pixels
 
 # $ per MILLION tokens: model -> (input, output). None = unknown; fill from
 # the billing page / claude.com/pricing and the cost column comes alive.
@@ -209,6 +209,25 @@ _SHELL_READ = re.compile(r"(^|[\s;|&(])(cat|type|get-content|gc)\s+\S")
 _SHELL_SECTION = re.compile(r"(^|[\s;|&(])(sed\s+-n|head\b|tail\b|awk\b)|-totalcount|-tail\b|select-object\s+-(first|last)|select\s+-(first|last)")
 
 
+IMAGE_EXT = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp")
+
+
+def image_tokens(path):
+    """An image read is priced by PIXELS (~w*h/750 after the API downscales
+    to a 1568 px long edge / ~1.15 MP), roughly 1-2k tokens for a screenshot.
+    Sizing it by its base64 payload / 4 overstated it 50-100x and made every
+    screenshot a "big whole-file read" (found 2026-09-10 by tools/big_reads.py:
+    the 21-a-day "big reads" were PNG montages). A gone file -> the 1600 cap."""
+    try:
+        from PIL import Image
+        with Image.open(path) as im:
+            w, h = im.size
+    except Exception:  # missing file, no PIL, unreadable image
+        return 1600
+    scale = min(1.0, 1568.0 / max(w, h), (1150000.0 / float(w * h)) ** 0.5)
+    return max(1, int(w * scale * h * scale / 750.0))
+
+
 def classify_read(tool, tin):
     """-> 'whole' | 'section' | 'grep' | None for one tool_use block."""
     tin = tin or {}
@@ -285,7 +304,8 @@ def parse_file(path, state, force_agent=False):
                     if isinstance(blk, dict) and blk.get("type") == "tool_use":
                         tool = blk.get("name") or "?"
                         cls = classify_read(tool, blk.get("input"))
-                        pending[blk.get("id") or ""] = [tool, cls]
+                        tin = blk.get("input") if isinstance(blk.get("input"), dict) else {}
+                        pending[blk.get("id") or ""] = [tool, cls, tin.get("file_path")]
                         t = d["tools"].setdefault(tool, {"calls": 0, "ctx": 0})
                         t["calls"] += 1
                         if cls == "grep":
@@ -347,14 +367,18 @@ def parse_file(path, state, force_agent=False):
                     ent = pending.pop(blk.get("tool_use_id") or "", None)
                     if not ent:
                         continue
-                    tool, cls = (ent if isinstance(ent, list) else [ent, None])
+                    ent = ent if isinstance(ent, list) else [ent]
+                    tool, cls, fpath = (ent + [None, None, None])[:3]
                     payload = rec.get("toolUseResult")
                     if payload is None:
                         payload = blk.get("content")
-                    try:
-                        est = len(json.dumps(payload, default=str)) // 4
-                    except (TypeError, ValueError):
-                        est = len(str(payload)) // 4
+                    if fpath and str(fpath).lower().endswith(IMAGE_EXT):
+                        est = image_tokens(fpath)  # pixels, not base64 bytes
+                    else:
+                        try:
+                            est = len(json.dumps(payload, default=str)) // 4
+                        except (TypeError, ValueError):
+                            est = len(str(payload)) // 4
                     d = days.setdefault(day, {"models": {}, "tools": {}, "reads": blank_reads()})
                     d.setdefault("reads", blank_reads())
                     t = d["tools"].setdefault(tool, {"calls": 0, "ctx": 0})
