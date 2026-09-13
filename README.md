@@ -30,6 +30,40 @@ Everything in Rootstock is a variation on one insight:
 > Keep the manager's context small, and let cheap, disposable contexts do
 > the reading.
 
+### "Doesn't a wiki make the context HEAVIER?" (what actually loads)
+
+The natural objection: more files means more to read, so the context gets
+fat and token-hungry. It would, if the files loaded. They do not. Almost
+nothing in Rootstock rides in the context by default:
+
+| What | When it enters context | Size (origin project, 2026-09-13) |
+|---|---|---|
+| CLAUDE.md, the core | Every session, automatically | ~9k tokens |
+| The standup digest | Once, at session start / after /clear | ~3k tokens |
+| The wiki (50 files) | NEVER whole. A section at a time, on demand | ~289k tokens ON DISK; ~0 in context |
+| Skills | Only the one invoked, when invoked | a few hundred tokens each |
+| Hooks | Never (they are scripts; only their one-line output enters) | ~0 |
+
+So a session opens at roughly 12k tokens of context for a project whose
+written knowledge is ~289k. The core is 3% of the wiki, and a linter
+(`check_claude_md.py`) warns when it grows, because THAT is the one file
+that is a standing cost. The rule that keeps it small: CLAUDE.md is an
+INDEX (laws, process, one line per topic file); knowledge lives in the
+topic files.
+
+The rest is reachable, not loaded. Claude greps a file's `## ` headings
+(~50 tokens, the file itself never loads), then reads the one section it
+needs with offset/limit (~1-2k). The origin project's daily meter shows
+85-95% of reads landing as section reads, and a hook says the size out
+loud before any whole-file read past ~10k. The "where we left off" record
+is a few hundred tokens of verbatim exchange, which replaces the several
+thousand it takes to re-explain state to a fresh session by hand.
+
+The honest caveat: dump everything into CLAUDE.md and yes, every session
+pays for all of it. That is exactly the failure Rootstock is built
+against, and the reason the core is guarded by a linter rather than by
+willpower.
+
 ### The receipts: 44 metered days of the origin project
 
 None of the above is a guess. The harness writes a full transcript of every
