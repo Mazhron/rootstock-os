@@ -1,5 +1,13 @@
 # Godot Field Notes
 
+PURPOSE: Hard-won engine knowledge from building Everwood (Godot 4.4):
+  rendering and performance costs, simulation architecture patterns,
+  GDScript and API gotchas, and the measurement toolkit, written portably so
+  it carries to future Godot projects.
+INTENT: Everything in here was learned the expensive way, measured,
+  debugged, or shipped around, so future work, this game or the next one,
+  never pays for it twice.
+
 Hard-won engine knowledge from building Everwood (Godot 4.4). Everything in
 here was LEARNED THE EXPENSIVE WAY - measured, debugged, or shipped around -
 so future work (this game or the next one) never pays for it twice. Portable
@@ -250,3 +258,6 @@ window at all (log to a file instead); a from-source run titles its window
 "<name> (DEBUG)"; sample after the game's own log marker, never by wall
 clock (boot time varies 2-4 s).
 See also: Everwood docs/systems/ui.md "Window mode: the Graphics row and F11".
+
+Search keys: godot field notes, engine lessons, rendering performance,
+  gdscript gotchas, portable knowledge

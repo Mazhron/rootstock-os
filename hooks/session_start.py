@@ -5,6 +5,14 @@ of "after /clear the CEO has nothing": the digest (THE LAST EXCHANGE mined
 from the harness transcript + state + roadmap + ledger tails) arrives in
 the manager's context without anyone typing "standup".
 
+PURPOSE: SessionStart hook that runs tools/standup.py and injects its digest
+  into the manager's context on startup, resume, /clear and after a
+  compaction, with a header telling the manager not to re-run standup and
+  how to relay the last exchange.
+INTENT: closes the gap where after a /clear the manager has no memory of the
+  session, by re-injecting the last exchange, state and roadmap tails
+  automatically instead of relying on anyone remembering to run standup.
+
 Search keys: session start hook, auto standup, resume after clear, compact.
 See also: tools/standup.py (the digest); .claude/skills/standup (the ritual
 this automates); tools/hooks/_hooklib.py.

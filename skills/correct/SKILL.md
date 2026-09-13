@@ -5,6 +5,14 @@ description: Walk a correction - ask what needs correcting, record the owner's w
 
 # /correct - record the words, ask the why, then fix
 
+PURPOSE: Walk a correction: ask what needs correcting, record the owner's
+  words, resolve the open intent claim DIFFERENT, fire /intent, then fix the
+  thing.
+INTENT: Mazhron's ruling 2026-09-13: a correction is not just a fix, it is
+  evidence about a misread intent; recording it before fixing means a lost
+  session loses nothing, and asking what the intent was right after captures
+  the mismatch while it is still fresh.
+
 THE POINT (Mazhron's ruling 2026-09-13): a correction is not just a fix,
 it is evidence about a misread intent. Recording it before fixing means a
 lost session loses nothing, and asking "what was the intent?" right after

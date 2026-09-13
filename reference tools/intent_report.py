@@ -1,5 +1,5 @@
-"""THE INTENT REPORT (Mazhron's ruling 2026-09-13: agreement between Claude's
-intent and Mazhron's, "kept track of by day, week, month, like every other
+"""THE INTENT REPORT (the CEO's ruling 2026-09-13: agreement between Claude's
+intent and the CEO's, "kept track of by day, week, month, like every other
 ledger... in txt for you and your employees and a csv/xcl file for a human
 to read... audited by script and compared as cheaply as possible").
 
@@ -31,9 +31,17 @@ flip, and the whole point is REAL data. Every number is a count of
 recorded verdicts, nothing estimated; "inferred" sources are counted
 separately so a self-judged SAME never hides inside a stated one.
 
-Why a script (INTENT.md "Intent tracking", Mazhron's words): it is the
+Why a script (INTENT.md "Intent tracking", the CEO's words): it is the
 same every time, it is cheap and costs no tokens, and it is structured
 and triggers from the loop we already have - run_all's metrics group.
+
+PURPOSE: Read the intent log and the correction ledger and regenerate the
+  day, week and month agreement metrics as txt, csv and xlsx, plus one run
+  ledger line, with a trend verdict of improving, steady or declining.
+INTENT: the CEO's ruling 2026-09-13: kept track of by day, week, month, like
+  every other ledger, in txt for you and your employees and a csv or xcl
+  file for a human to read, audited by script and compared as cheaply as
+  possible.
 
 Search keys: intent metrics, agreement rate, same similar different,
 intent trend, improving declining, intent spreadsheet, feedback loop.

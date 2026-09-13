@@ -3,7 +3,20 @@
 normal turn. When it speaks, the manager relays the line verbatim
 (the CEO's 80% rule 2026-09-04; the 8/15 task thresholds 2026-09-02).
 
-Search keys: prompt hook, context gauge, 80 percent rule, task counter.
+Since 2026-09-13 it also carries THE KIT LINE: "KIT UNSYNCED" while a
+portable original is newer than its kit copy or the kit folder is ahead
+of the public mirror (tools/refresh_kit.py --check), silent otherwise.
+
+PURPOSE: UserPromptSubmit hook that stays silent on a normal turn and, when
+  a threshold is crossed, prints the checkpoint counter warning (8 tasks
+  advised, 15 dire) and the context-remaining warning, plus since 2026-09-13
+  a KIT UNSYNCED line when a portable original is newer than its kit copy.
+INTENT: relays the checkpoint and context thresholds and the kit-sync check
+  at zero cost on a normal turn, so the manager checkpoints or refreshes the
+  kit only when the harness itself has detected the need.
+
+Search keys: prompt hook, context gauge, 80 percent rule, task counter,
+kit unsynced.
 See also: tools/checkpoint.py (thresholds + the transcript probe);
 tools/hooks/stop_tick.py (the tick that feeds the counter).
 """
@@ -37,3 +50,13 @@ if load_ is not None:
 if lines:
     print("[HOOK prompt_gauge] " + " | ".join(lines)
           + " (relay to the CEO verbatim)")
+# THE KIT LINE (the CEO 2026-09-13: whenever Rootstock is discussed, the kit
+# folder and the public repo are updated in the same batch): one line while
+# an original is newer than its kit copy or the kit is ahead of the mirror.
+try:
+    import refresh_kit as _rk
+    _kit = _rk.check_line()
+except Exception:  # noqa: BLE001 - a hook never crashes the turn
+    _kit = None
+if _kit:
+    print("[HOOK prompt_gauge] " + _kit)

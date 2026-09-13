@@ -1,4 +1,4 @@
-"""THE SYSTEMS AUDIT LEDGER (Mazhron's ask 2026-09-13: "Do we have anything
+"""THE SYSTEMS AUDIT LEDGER (the CEO's ask 2026-09-13: "Do we have anything
 in our loops that audits our ledgers, new features, etc. and considers new
 options to increase efficiency (without losing context), decrease token
 usage (without losing efficiency or context), add txt data structures for
@@ -20,6 +20,16 @@ docs/history/systems_audit_runs.txt (date, ws, day files and commits since
 the previous audit, summary). tools/ledger_trends.py proposes the next
 audit when the day-file count or the age since the last line crosses the
 owner's thresholds (systems_audit_day_files / systems_audit_days).
+
+PURPOSE: Keeps the systems audit ledger: prints status (last audit, days
+  since, day files and commits since) and on --record appends one line to
+  docs/history/systems_audit_runs.txt recording a finished four lane audit
+  (tokens, process, knowledge, features) of the operating system.
+INTENT: the CEO's ask 2026-09-13: 'Do we have anything in our loops that
+  audits our ledgers, new features, etc. and considers new options to
+  increase efficiency (without losing context), decrease token usage
+  (without losing efficiency or context), add txt data structures for
+  increased knowledge, etc?'
 
 Search keys: systems audit, efficiency audit, token audit, process audit,
 knowledge audit, feature audit, audit cadence, auditor.

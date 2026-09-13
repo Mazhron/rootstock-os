@@ -1,4 +1,4 @@
-"""THE CORRECTION LEDGER (Mazhron's ruling 2026-09-13: "Lets pretend I ask
+"""THE CORRECTION LEDGER (the CEO's ruling 2026-09-13: "Lets pretend I ask
 you to do something. You build it, and it's wrong. I send you a correction
 skill. You then inquire: What about the last thing I did needs correcting?
 The user explains. You mark that down and prepare to fix the thing that
@@ -6,14 +6,14 @@ needs correcting, then you would ask 'What was the intent?'")
 
     python tools/correction_log.py --record --actor fable \\
         --shipped "<what was built, 3-10 words>" \\
-        --wrong "<Mazhron's words, verbatim>" \\
+        --wrong "<the CEO's words, verbatim>" \\
         [--intent-id I0007] [--intent-ref "<INTENT.md heading>"]
     python tools/correction_log.py --fixed C0003 --fix "<commit subject or note>"
     python tools/correction_log.py --last      # newest record
     python tools/correction_log.py --open      # corrections without a FIXED line
 
 THE RECORD: docs/history/corrections.txt, append-only. A RECORD line is
-written the moment the correction is understood (Mazhron's words, not a
+written the moment the correction is understood (the CEO's words, not a
 paraphrase); a FIXED line is appended when the fix ships. When the
 correction names an intent claim (--intent-id), that claim is resolved
 DIFFERENT with source=correction in the intent log by this script - a
@@ -25,6 +25,16 @@ proposes a law or an INTENT.md entry when corrections cluster.
 The /correct skill walks the ritual: ask what needs correcting -> record
 -> ask "what was the intent?" -> the /intent skill files the why and
 resolves the claim -> fix -> --fixed.
+
+PURPOSE: Record the correction ledger: a RECORD line the moment a correction
+  is understood in the CEO's own words, a FIXED line when the fix ships, and
+  resolve the named intent claim as DIFFERENT in the intent log when one is
+  given.
+INTENT: the CEO's ruling 2026-09-13: Lets pretend I ask you to do something.
+  You build it, and it's wrong. I send you a correction skill. You then
+  inquire: What about the last thing I did needs correcting? The user
+  explains. You mark that down and prepare to fix the thing that needs
+  correcting, then you would ask What was the intent?
 
 Search keys: correction, corrections ledger, mistake, wrong, fix record,
 manager corrections, employee corrections, feedback loop.
@@ -42,7 +52,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LEDGER = os.path.join(ROOT, "docs", "history", "corrections.txt")
 HEADER = ("# THE CORRECTION LEDGER (append-only; a RECORD line when a correction is understood, "
-          "a FIXED line when the fix ships). Mazhron's words verbatim. Read the TAIL.\n"
+          "a FIXED line when the fix ships). the CEO's words verbatim. Read the TAIL.\n"
           "# kind | id | date time | ws | actor | what shipped | what was wrong (verbatim) | "
           "intent id | INTENT.md ref | fix\n")
 
@@ -135,7 +145,7 @@ def main(argv):
     if "--record" in argv:
         shipped, wrong = opt("--shipped"), opt("--wrong")
         if not (shipped and wrong):
-            sys.exit("--record needs --shipped and --wrong (Mazhron's words verbatim)")
+            sys.exit("--record needs --shipped and --wrong (the CEO's words verbatim)")
         record(opt("--actor", "fable"), shipped, wrong, opt("--intent-id", ""),
                opt("--intent-ref", ""))
         return 0

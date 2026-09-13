@@ -1,4 +1,4 @@
-"""THE README PARITY LINT (Mazhron 2026-09-13: "What can we do to prevent
+"""THE README PARITY LINT (the CEO 2026-09-13: "What can we do to prevent
 the Readme from falling behind so far and missing information like that
 in the future?" - "Lets build it.")
 
@@ -34,6 +34,14 @@ tools/sync_kit_repo.py runs this and REFUSES to push on any FAIL; run_all's
 check group runs it; each run appends to docs/history/readme_lint_runs.txt.
 A machine without the kit clone prints SKIP and exits 0 (a ledger line
 says so) - the lint is a publish gate, not a workstation requirement.
+
+PURPOSE: Derives every countable README fact (laws, skills, hooks, reference
+  tools, the box table, version, the graft README line, number word claims,
+  prose claims) from the kit folder itself and compares it with what the
+  public README says, ledgering PASS, FAIL or SKIP each run.
+INTENT: the CEO 2026-09-13: 'What can we do to prevent the Readme from
+  falling behind so far and missing information like that in the future?'
+  'Lets build it.'
 
 Search keys: readme lint, readme parity, readme drift, kit readme, public
 readme, box table, count check, rootstock readme.

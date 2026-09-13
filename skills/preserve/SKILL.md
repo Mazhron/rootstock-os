@@ -5,6 +5,14 @@ description: Retire a file, shelve a wiki section, or walk the twice-acknowledge
 
 # /preserve - move it, shelve it, or ask twice; never just delete
 
+PURPOSE: Retire a file, shelve a wiki section, or walk the twice-
+  acknowledged delete grant; the conversational front for the preservation
+  law.
+INTENT: The owner's ruling 2026-09-10: neither the manager nor any employee
+  deletes a file, record or tree without the owner's express permission
+  given twice, and no script is written that deletes; knowledge is hard-won
+  and never lost.
+
 THE PRESERVATION LAW (the owner's ruling, 2026-09-10): neither the manager
 nor any employee deletes a file, record or tree without the owner's
 express permission given TWICE, and no script is written that deletes.

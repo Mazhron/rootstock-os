@@ -5,6 +5,13 @@ description: Ship a completed batch - commit with a player-readable subject, pus
 
 # /ship - the per-batch ship ritual
 
+PURPOSE: Ship a completed batch: commit with a player-readable subject,
+  push, and (in projects with builds) refresh build zips without deleting
+  old ones.
+INTENT: Mazhron 2026-09-04: Without my asking the changelog should be
+  updated. The ritual runs every step, tests, version, commit, push, builds,
+  kit sync, changelog, unprompted after each batch so nothing is forgotten.
+
 Run after EVERY completed batch of work; the user should never have to ask.
 
 1. Sanity: tests/checks relevant to the batch are green (trust the ledger -

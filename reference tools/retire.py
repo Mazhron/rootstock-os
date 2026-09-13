@@ -1,6 +1,6 @@
 """Retire a file: MOVE it to _retired/ (same relative path), ledgered. Never delete.
 
-THE PRESERVATION LAW (Mazhron's ruling 2026-09-10): files, records and
+THE PRESERVATION LAW (the CEO's ruling 2026-09-10): files, records and
 knowledge are never deleted - they move somewhere indexed. This is the
 mover for files:
   python tools/retire.py <path> [<path>...] --reason "why"
@@ -12,6 +12,13 @@ mover for files:
 A name collision on the shelf gets a numeric suffix; nothing is ever
 overwritten. `--list` prints the ledger's data lines. Scripts import
 retire() instead of any remove call (apply_upgrade_edits.py does).
+
+PURPOSE: Moves a file to _retired/ (same relative path, Godot import
+  extensions suffixed .retired) and appends one line to
+  docs/history/retired_files.txt; nothing is ever deleted.
+INTENT: THE PRESERVATION LAW, the CEO's ruling 2026-09-10: files, records
+  and knowledge are never deleted, they move somewhere indexed; this script
+  is the mover for files.
 
 Search keys: retire file, never delete, _retired, preservation law,
 retired files ledger, move instead of delete.

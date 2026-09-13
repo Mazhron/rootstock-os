@@ -1,5 +1,14 @@
 # HOOKS_METHOD.md - laws the harness enforces itself (PORTABLE, part of the future-project kit)
 
+PURPOSE: Documents the harness hooks, session start, prompt, stop,
+  compaction, and tool-call guards, that enforce CLAUDE.md's laws
+  mechanically instead of relying on the manager's memory, plus the hook
+  contract and the kit's hook roster.
+INTENT: Founded on Mazhron's question: Claude has a thing called hooks, are
+  there any we could create and add to our workflows. Every law and ritual
+  previously ran from the manager's memory; a hook turns Claude should into
+  Claude cannot.
+
 Founded 2026-09-06 on Mazhron's question "Claude has a thing called hooks -
 are there any we could create and add to our workflows?". The answer was
 yes, and the reason is structural: every law in CLAUDE.md, every ritual on
@@ -58,7 +67,7 @@ and an UPGRADES entry.
   prompt, stop, compact and shell-command hooks; a PostToolUse hook on
   every Write/Edit must stay a pattern match with no heavy imports.
 
-## The kit hooks (hooks/ - nine scripts + _hooklib + settings.json)
+## The kit hooks (hooks/ - ten scripts + _hooklib + settings.json)
 
 TIER 1 - the resumption + checkpoint loop:
 1. `session_start.py` (SessionStart, all sources): runs the standup
@@ -279,6 +288,56 @@ See also: WORKFLOWS.md "Edit the future-project kit (Rootstock)"; the
 link checker (reference tools/check_wiki_links.py, the after-the-fact
 twin of rule 2); SKILLS.md (THE SKILLS RULE the kit-refresh line backs).
 
+## Tier 3b - THE FORMAT GUARD (format_guard.py, PreToolUse + PostToolUse on Write|Edit|MultiEdit)
+Tags: process, architecture, lessons | A community kit needs a guardrail that does not depend on the reader's good faith: a hook that refuses the unsafe settings edit and blocks the unformatted one (kit v1.19)
+
+Born 2026-09-13 from the CEO's three-part ruling on community updates
+(INTENT.md "The format law"): "Anything without proper format should be
+flagged, a script should re-write it after review-only audit. This will
+be a law and may need this to be a hook somehow so that no one can
+inject a prompt that overrides safety protocols." One script, stateless,
+one JSON parse plus pattern matching, ~0.3 s per edit; it imports the
+format lint (reference tools/format_lint.py) and dispatches on the
+event name:
+
+1. BEFORE an edit of a settings file (.claude/settings.json or the kit's
+   hooks/settings.json): the would-be text is computed (a Write's
+   content; an Edit's old -> new applied to the current file) and
+   REFUSED if it would not parse, would name a hook script that does not
+   exist beside it, or would leave any SAFETY hook unwired, narrowed or
+   mis-pointed. The SAFETY table lives in the lint: preserve_guard,
+   bash_guard, fanout_guard, diet_guard, hygiene_guard, format_guard,
+   stop_tick, each with the event and the tools its matcher must cover.
+   Only the CEO changes the wiring, by hand; a prompt, a brief or a
+   contributed patch cannot.
+2. AFTER any edit of a kit thing or its original: the lint runs on that
+   one file and the edit is BLOCKED (PostToolUse "decision: block" - the
+   reason comes back, the edit stays) until the header is right:
+   PURPOSE, INTENT, Search keys, See also; a hook's --selftest and
+   _hooklib import; a skill's frontmatter. The reason carries the
+   rewrite command (`format_lint.py --rewrite <path> --purpose ...
+   --intent ...`), which inserts only the missing lines after a
+   read-only look - never a hand edit.
+
+Two twins close the other doors: the shell guard refuses a shell write
+into a settings file (redirect, Set-Content, sed -i, tee, copy/move, a
+python one-liner), and the Stop hook refuses to end the turn once per
+fingerprint while the live settings file fails the safety check. The
+three together are what "no one can inject a prompt that overrides
+safety protocols" means mechanically.
+
+`--selftest` runs the in-process checks against the live settings file
+(deny on an unwiring Write, on a rename to a missing script, on
+unparsable JSON; silence on a timeout edit; silence on out-of-scope
+files). Install: wire both entries from the kit's settings.json, run the
+selftest, then `python tools/format_lint.py` to see what the project's
+own tools and hooks lack.
+
+See also: reference tools/format_lint.py (the checks, the scope, the
+rewrite); reference tools/purpose_audit.py + FLAGS.md (the audit the
+PURPOSE line serves); CONTRIBUTING.md (the law for contributors);
+SKILLS.md (/flag); WORKFLOWS "Format-check and rewrite a kit thing".
+
 ## Tier 4 (ideas, not built - the origin project pinned them)
 
 TIER 4 - the company: SubagentStop refuses an employee's stop when its
@@ -396,3 +455,14 @@ the manager waits on permission or idles after a long employee run.
   sync script's README version check. Tier 4 stays pinned. Lesson: a
   reminder that fires at the moment of the edit is worth ten in a law
   file - the README fell behind while the law was already written.
+- 2026-09-13 WS1 (kit v1.19): Tier 3b, the format guard - the first hook
+  that runs BEFORE and AFTER the same tools. Born from the CEO's ruling
+  on community updates: every kit thing carries one header, a script
+  flags the rest and rewrites only the missing lines after a read-only
+  look, and a hook refuses a settings edit that would unwire a safety
+  hook, so "no one can inject a prompt that overrides safety protocols".
+  Twins in the shell guard (no shell writes into a settings file) and
+  the Stop hook (refuses the turn while the wiring is broken); the prompt
+  gauge gained the KIT UNSYNCED line the same day. Lesson: a guardrail
+  for a community kit cannot depend on good faith; it is a script that
+  flags, a script that rewrites, and a hook that refuses.

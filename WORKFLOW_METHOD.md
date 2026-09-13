@@ -1,5 +1,16 @@
 # The Workflow Method (portable: the process registry, for any project)
 
+PURPOSE: A portable process registry method: every repeatable multi-step
+  process gets one runbook entry, WHEN, STEPS, VERIFY, in a single registry
+  file, so the choreography between scripts and ledgers is never lost to
+  context clearing or memory.
+INTENT: Process amnesia: a project accumulates processes whose order nobody
+  writes down because it seems obvious right now, so after context clears
+  the sequence gets re-derived from a chat log that no longer exists, or a
+  step is silently skipped for weeks; scripts remember commands and ledgers
+  remember results, but nothing remembered the choreography until this
+  method.
+
 PORTABLE FILE: an architecture, not a project. Hand it to any Claude (or any
 capable agent) at the start of any project alongside its siblings
 (WIKI_METHOD.md, REPORTING_METHOD.md, SUBAGENT_METHOD.md) and say "set this

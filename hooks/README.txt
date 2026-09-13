@@ -1,4 +1,11 @@
-Rootstock hooks (kit v1.16). Install per HOOKS_METHOD.md 'Bootstrap':
+Rootstock hooks (kit v1.19). Install per HOOKS_METHOD.md 'Bootstrap':
+
+PURPOSE: Installation notes for the Rootstock hooks folder: what each hook
+  file needs filled in or wired (bash_guard.py's PROJECT RULES,
+  fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG
+  block) and the gitignore entries a new project needs.
+INTENT: gives a receiving project the exact per-hook setup steps so the kit
+  installs correctly instead of by trial and error.
   tools/hooks/  <- these .py files (bash_guard.py: fill PROJECT RULES)
   .claude/settings.json  <- settings.json (merge if one exists)
   .gitignore  <- .claude/hooks_state.json, .claude/settings.local.json,
@@ -41,3 +48,18 @@ forbidden character in player-facing text (the one BLOCK), run the
 import after a new asset. The /preserve skill (skills/preserve) is the
 preservation law's front: retire, shelve, or the twice-acknowledged
 delete grant, in that order.
+format_guard.py (Tier 3b, kit v1.19, a REFUSAL and a BLOCK): nothing to
+fill in; it imports reference tools/format_lint.py (copy that to tools/
+first and adapt its CONFIG block: kit folder, hooks/skills dirs,
+settings path). Wire BOTH entries from settings.json (PreToolUse and
+PostToolUse on Write|Edit|MultiEdit), run `python tools/hooks/format_guard.py
+--selftest`. Before an edit of a settings file it refuses one that would
+unwire, narrow or mis-point a SAFETY hook (or not parse); after an edit
+of any kit thing it blocks one that leaves the thing without its header
+(PURPOSE / INTENT / Search keys / See also) and names the rewrite
+command. Add the settings-file rule to bash_guard.py (the kit copy has
+it in GENERIC RULES) and the Stop twin from stop_tick.py. Then run
+`python tools/format_lint.py` once: every tool and hook it names gets
+its header by `--rewrite` after a read-only look, never by hand; and
+`python tools/purpose_audit.py` creates FLAGS.md for the first audit
+(see CONTRIBUTING.md and skills/flag).

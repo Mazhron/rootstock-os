@@ -9,7 +9,7 @@ Prints one line per requirement from the CHECKS table (a mirror of the
 step), then appends a summary line to docs/history/workstation_runs.txt.
 Exit 1 when any REQUIRED item is missing so run_all's check group stops.
 
-The WORKSTATION RULE (Mazhron 2026-09-06): a new machine is set up FROM
+The WORKSTATION RULE (the CEO 2026-09-06): a new machine is set up FROM
 WORKSTATION.md, and whatever a machine gains (a package, a tool, a path)
 is added to that document in the same batch. This script is the probe
 that proves the document and the machine agree.
@@ -17,6 +17,18 @@ that proves the document and the machine agree.
 Portable twin: WORKSTATION_METHOD.md (kit) + reference tools copy.
 See also: docs/systems/tooling.md "The workstation survey"; WORKFLOWS.md
 "Bring a new workstation up to par".
+
+PURPOSE: Checks this machine against the CHECKS table (a mirror of
+  WORKSTATION.md's requirements), prints a HAVE or MISSING table, and
+  appends a summary line to docs/history/workstation_runs.txt; exits 1 if a
+  required item is missing.
+INTENT: THE WORKSTATION RULE, the CEO 2026-09-06: a new machine is set up
+  from WORKSTATION.md and whatever it gains is added to that document in the
+  same batch; this script is the probe that proves the document and the
+  machine agree.
+
+Search keys: workstation survey, machine setup check, have missing table,
+  requirements probe, up to par.
 """
 import datetime
 import glob
@@ -104,12 +116,15 @@ CHECKS = [
      lambda: "ok" if pip_has("Pillow") else ""),
     ("pip: numpy (art repair tools)", True,
      lambda: "ok" if pip_has("numpy") else ""),
+    ("pip: openpyxl (the usage spreadsheet)", True,
+     lambda: "ok" if pip_has("openpyxl") else ""),
     ("Node.js (design-web exporters: node --check)", True,
      lambda: ver("node --version")),
     ("Git (+ Git Bash for the hook command form)", True,
      lambda: ver("git --version")),
     ("git user.name / user.email set", True,
-     lambda: run("git config --global user.name") or ""),
+     lambda: run("git config --global user.name")
+             or run(["git", "-C", ROOT, "config", "user.name"]) or ""),
     ("Godot 4.4 console exe (Desktop/GoDot or EVERWOOD_GODOT)", True, godot_exe),
     ("Godot 4.4 export templates (windows x86_64 + web release)", True, godot_templates),
     ("Builds folder ../Everwood - Builds", True,
@@ -134,6 +149,8 @@ CHECKS = [
      lambda: first_existing([os.path.join(PF, "Blender Foundation", "Blender*")])),
     ("7-Zip (inspecting build zips by hand)", False,
      lambda: first_existing([os.path.join(PF, "7-Zip", "7z.exe")])),
+    ("GitHub CLI gh (repos/PRs from a session; PATH or Program Files)", False,
+     lambda: ver("gh --version") or ver('"%s" --version' % os.path.join(PF, "GitHub CLI", "gh.exe"))),
 ]
 
 

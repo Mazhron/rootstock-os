@@ -1,6 +1,6 @@
 """PreToolUse guard on Bash/PowerShell/Write/Edit: THE PRESERVATION LAW.
 
-Mazhron's ruling 2026-09-10, after public reports of an agent that wrote a
+the CEO's ruling 2026-09-10, after public reports of an agent that wrote a
 script which deleted someone's personal files and another that wiped a
 machine: neither the manager nor any employee deletes a file, record or
 tree without the owner's EXPRESS, DOUBLE-ACKNOWLEDGED permission, and no
@@ -33,8 +33,20 @@ NEVER, grant or not: a drive root, the home folder, the repo root or its
 .git, a bare wildcard. Those have no legitimate shape.
 
 A refusal is the owner's standing decision: stop, and either move the
-thing (retire / cold shelf) or ask Mazhron twice and record the grant.
+thing (retire / cold shelf) or ask the CEO twice and record the grant.
 `--selftest` runs the in-process checks (no harness needed).
+
+PURPOSE: PreToolUse guard on Bash, PowerShell, Write, Edit, MultiEdit and
+  NotebookEdit implementing the preservation law: refuses shell delete verbs
+  with a path, git verbs that discard work or history, and deletion calls
+  written into a file, with narrow exceptions for the session scratchpad,
+  prose files, and one command consumed against a twice-acknowledged delete
+  grant; a drive root, the home folder, the repo root or a bare wildcard are
+  refused even with a grant.
+INTENT: stops the manager or an employee from deleting anything without the
+  owner's express, double-acknowledged permission, after public reports of
+  an agent's script that deleted personal files and another that wiped a
+  machine; knowledge moves instead of disappearing.
 
 Search keys: preservation law, delete guard, never delete, grant,
 double acknowledgment, retire, cold shelf, rm guard, git reset hard.
@@ -51,12 +63,12 @@ import time
 from _hooklib import ROOT, deny, read_input
 
 GRANT = os.path.join(ROOT, ".claude", "delete_grant.json")
-LAW = ("THE PRESERVATION LAW (Mazhron's ruling 2026-09-10): nothing is "
+LAW = ("THE PRESERVATION LAW (the CEO's ruling 2026-09-10): nothing is "
        "deleted or discarded without the owner's express, double-acknowledged "
        "permission, and no script is written that deletes. ")
 HOW = ("MOVE instead: `python tools/retire.py <path> --reason ...` (files -> "
        "_retired/, ledgered) or `python tools/cold_shelf.py --move` (wiki "
-       "sections -> docs/cold/). If Mazhron has approved THIS exact deletion "
+       "sections -> docs/cold/). If the CEO has approved THIS exact deletion "
        "twice, record both acknowledgments verbatim: `python tools/delete_grant.py "
        "--target \"<path>\" --ask \"<your question>\" --ack1 \"<first yes>\" "
        "--ack2 \"<second yes>\"`, then retry ONCE.")
@@ -274,7 +286,7 @@ def evaluate(data, grant=None, consume=True):
                         "never delete: retire or move instead (tools/retire.py, "
                         "tools/cold_shelf.py). A script's own temp file from the "
                         "same run is the one fair case - if that is what this is, "
-                        "ask Mazhron and record a grant naming this file, then "
+                        "ask the CEO and record a grant naming this file, then "
                         "retry once." % (m.group(0).strip(), os.path.basename(target)))
         return None
     return None

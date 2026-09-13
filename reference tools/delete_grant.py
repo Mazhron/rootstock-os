@@ -1,6 +1,6 @@
 """Record the owner's double-acknowledged permission for ONE deletion.
 
-THE PRESERVATION LAW (Mazhron's ruling 2026-09-10): nothing is deleted
+THE PRESERVATION LAW (the CEO's ruling 2026-09-10): nothing is deleted
 without the owner's express permission, given twice. The ritual:
   1. The manager asks, naming the exact target: "This will delete X
      (n files, y KB). Do you approve?"
@@ -17,6 +17,14 @@ without the owner's express permission, given twice. The ritual:
 Nothing here deletes anything; `--status` shows the live grant. A target
 in the never-list (a drive root, the home folder, the repo root or its
 .git) is refused here too - no grant covers those.
+
+PURPOSE: Record the owner's double-acknowledged permission for one deletion:
+  write the single-use, time-limited grant file and append the committed
+  delete grants ledger, refusing targets in the never-delete list; performs
+  no deletion itself.
+INTENT: carries out the preservation law's double-acknowledgment ritual so a
+  real deletion is provably the owner's decision, given twice, before the
+  one deleting command runs.
 
 Search keys: delete grant, permission, double acknowledgment, preservation
 law, approved deletion, delete ledger.

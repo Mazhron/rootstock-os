@@ -5,6 +5,12 @@ description: Open a session - print the standup digest and hand back the last ex
 
 # /standup - the session opener
 
+PURPOSE: Open a session: print the standup digest and hand back the last
+  exchange (prompt and response) and project state before anything else.
+INTENT: The script mines the true final exchange from the harness
+  transcript, ground truth on disk, so after a clear the owner has nothing
+  and this gives it back unprompted, even after a mid-arc clear.
+
 1. If a [HOOK session_start] block is already in context, the digest
    was injected automatically - do NOT run the script again. Otherwise
    run `python tools/standup.py` from the repo root.

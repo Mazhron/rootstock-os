@@ -26,6 +26,13 @@ Heading matching: exact text after "## " (case-insensitive, whitespace-
 collapsed). A query that is an unambiguous PREFIX of exactly one heading is
 also accepted; anything else lists the candidates and exits 1.
 
+PURPOSE: Move a rarely used ## wiki section out of a hot file to the cold
+  shelf verbatim, restore one back, list the cold shelf index, or check that
+  every stub still points at an existing cold file and heading.
+INTENT: carries out the preservation law's cold shelf for wiki knowledge
+  that has gone quiet, so it stays reachable but out of the hot read path,
+  without ever deleting anything.
+
 Search keys: cold shelf, move section, prune, rarely used, restore section,
 preservation law.
 See also: WIKI_METHOD.md (the cold shelf); docs/cold/INDEX.md (the index);

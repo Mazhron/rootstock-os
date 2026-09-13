@@ -1,4 +1,4 @@
-"""THE STANDUP DIGEST (TOKEN_IDEAS idea 7, APPROVED by Mazhron 2026-09-02:
+"""THE STANDUP DIGEST (TOKEN_IDEAS idea 7, APPROVED by the CEO 2026-09-02:
 "this goes along with my rules of creating a script for everything").
 
 Replaces the manager reading every handoff note and changelog wholesale after
@@ -8,15 +8,25 @@ manager reads THIS, then opens full notes only where the digest points.
 
 Usage:  python tools/standup.py [--commits N] [--no-usage]   (default 12)
 
-THE BUDGET (Mazhron 2026-09-10, TOKEN_IDEAS 20): the digest refreshes the
+THE BUDGET (the CEO 2026-09-10, TOKEN_IDEAS 20): the digest refreshes the
 usage sheet silently (tools/usage_report.py --quiet, incremental, ~2 s)
 and prints the tail of docs/history/usage_daily.txt - yesterday's and
 today's weighted spend judged against the previous 7 active days, with
 the verdict. --no-usage skips the refresh (no transcripts, no time).
 
+PURPOSE: Prints the post pull standup digest: the last exchange mined from
+  harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget
+  line, ledger trend proposals, version and recent commits, WS notes, ledger
+  tails, and the open roadmap index.
+INTENT: the CEO 2026-09-02: 'this goes along with my rules of creating a
+  script for everything.'
+
 Search keys: standup, pull digest, session start, catch-up, the budget,
 weighted spend. See also: TOKEN_IDEAS.md ideas 7 + 20; docs/history/
 ledgers; NEXT_STEPS.md; tools/usage_report.py (the daily line).
+See also: TOKEN_IDEAS.md ideas 7 and 20; docs/history ledgers;
+  NEXT_STEPS.md; tools/usage_report.py (the daily line);
+  tools/ledger_trends.py (the proposals block).
 """
 import argparse
 import glob
@@ -24,6 +34,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -134,7 +145,7 @@ def _mine_exchange(path):
 
 def print_last_exchange():
     # THE LAST EXCHANGE comes from the HARNESS TRANSCRIPT, not the day file
-    # (Mazhron's third ruling on this, 2026-09-03 PM3): the day-file copy is
+    # (the CEO's third ruling on this, 2026-09-03 PM3): the day-file copy is
     # only as fresh as the last checkpoint, and twice now the exchange
     # replayed stale or condensed. The transcript on disk is ground truth -
     # every prompt and reply, word for word, written by the harness itself.
@@ -178,9 +189,9 @@ def print_budget():
     daily = os.path.join(ROOT, "docs", "history", "usage_daily.txt")
     if not os.path.isfile(script):
         return
-    import sys as _sys
+
     try:
-        subprocess.run([_sys.executable, script, "--quiet"], cwd=ROOT,
+        subprocess.run([sys.executable, script, "--quiet"], cwd=ROOT,
                        capture_output=True, text=True, timeout=90)
     except (OSError, subprocess.TimeoutExpired):
         pass
@@ -246,6 +257,12 @@ def main():
 
     if not args.no_usage:
         print_budget()
+
+    # THE LEARNING LOOP's closing step (the CEO 2026-09-10): ledger trends
+    # become proposals the owner rules on; nothing is applied by a script.
+    out = sh([sys.executable, os.path.join(ROOT, "tools", "ledger_trends.py")])
+    if out:
+        print(out.rstrip())
 
     print("== VERSION + RECENT COMMITS")
     # Version source is per-project: Everwood reads project.godot. In a

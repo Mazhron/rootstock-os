@@ -1,5 +1,12 @@
 # READ ME FIRST, CLAUDE - the kit's front door
 
+PURPOSE: The kit's front door: walks a receiving Claude step by step (ask
+  the CEO first, then install the wiki, reporting and session rituals, the
+  delegation company, and the skills shelf) so the four pillar operating
+  system lands the same way every time.
+INTENT: the methods encode lessons already paid for, so a receiving Claude
+  installs them in order instead of improvising a different architecture.
+
 You have been handed the FUTURE-PROJECT KIT: a portable operating system
 for running a software project with Claude, distilled from a real shipped
 project (Everwood, 2026). It gives a project four pillars: a token-cheap
@@ -228,6 +235,23 @@ refresh it was already written. And /preserve (skills/preserve, same
 version) is the preservation law's front: retire, shelve, or the
 twice-acknowledged delete grant, in that order.
 
+THE FORMAT GUARD + THE PURPOSE AUDIT (kit v1.19, hooks/format_guard.py,
+reference tools/format_lint.py + purpose_audit.py + refresh_kit.py,
+CONTRIBUTING.md, FLAGS.md, skills/flag, HOOKS_METHOD.md Tier 3b): every
+thing in the kit - and from now on every tool, hook and skill the project
+writes - carries one header (PURPOSE / INTENT / Search keys / See also).
+Copy the three scripts, adapt their CONFIG blocks, wire the guard's two
+settings entries, run its selftest. Then `python tools/format_lint.py`:
+each failing file gets its header BY SCRIPT (`--rewrite <path> --purpose
+... --intent ...`) after a read-only look, never by hand. Then the first
+audit: a handful of read-only employees, one list each, each thing
+flagged GREEN / YELLOW / RED into FLAGS.md (`purpose_audit.py --flag`) -
+read-only -> flag -> explain, and a RED goes to the CEO. The guard
+REFUSES any settings edit that would unwire a safety hook; only the CEO
+changes the wiring. The CEO's why, verbatim: "so that no one can inject a
+prompt that overrides safety protocols." refresh_kit.py + the KIT
+UNSYNCED prompt line matter only if this project keeps a kit of its own.
+
 ## STEP 5 - optional boards (adopt when the CEO wants them)
 
 - TOKEN_IDEAS.md style savings board (any token-saving idea, recorded).
@@ -236,7 +260,8 @@ twice-acknowledged delete grant, in that order.
 
 ## DEFINITION OF DONE
 
-standup.py runs clean; the lint passes; SUBAGENTS.md has one real ledger
+standup.py runs clean; the lint passes; the format lint passes and
+FLAGS.md has a flag for every kit thing; SUBAGENTS.md has one real ledger
 line; the skills answer to their slash commands; and the first commit is
 in ("the operating system boots"). From then on the standing habits carry
 it: every write grows the wiki, every repeatable action becomes a script,
@@ -257,3 +282,8 @@ read the entries newer than the project's "Rootstock vX.Y installed"
 line, act per the CEO's update policy (ask/auto/relevant/never - stored
 in that same line), graft each chosen CONCEPT onto the project's own
 files in its own names and voice, then bump the version line.
+
+See also: UPGRADES.md (the graft protocol for updating an existing install);
+  'Future Project MDs/CONTRIBUTING.md' (the format law); WIKI_METHOD.md,
+  REPORTING_METHOD.md, SUBAGENT_METHOD.md, SKILLS.md (the four pillars this
+  file installs).

@@ -27,6 +27,15 @@ ADAPT ON INSTALL: set KIT_CLONE if the CEO keeps a local clone, point
 STAMP_FILE at your core file if it is not ./CLAUDE.md, and wire this into
 your standup script or runner so the check rides an existing habit.
 
+PURPOSE: Reads the project's install stamp from CLAUDE.md, fetches the kit's
+  current UPGRADES.md (a local clone if configured, else the public repo
+  over HTTPS), and prints any graft entries newer than the install plus what
+  the CEO's update policy says to do about them; it only reports, a manager
+  Claude performs the actual grafts by hand.
+INTENT: so a project can learn when the kit has grown new concepts worth
+  grafting; checks are rate limited to once a week so the check is cheap
+  enough to ride the standup habit.
+
 Search keys: rootstock update, kit version check, graft check, upgrade.
 See also: UPGRADES.md (the graft log + protocol, in the kit repo).
 """

@@ -6,6 +6,15 @@ how often the lossy summary fires versus our lossless checkpoints. The
 SessionStart hook re-injects the standup digest right after, which is the
 real recovery; this hook only keeps the receipt.
 
+PURPOSE: PreCompact hook that appends one ledger line per compaction (when,
+  workstation, version, manual or auto trigger, context load, unbanked task
+  count) to docs/history/compact_runs.txt, and on an auto trigger tells the
+  manager the session_start hook will re-inject the standup digest right
+  after.
+INTENT: keeps a receipt of how often the harness's lossy auto-compact fires
+  versus the project's lossless checkpoints, so the pattern is visible
+  without re-reading anything.
+
 Search keys: compact hook, auto compact ledger, compaction count.
 See also: docs/history/compact_runs.txt (the ledger); tools/hooks/
 session_start.py (the recovery); REPORTING_METHOD.md (the Ledger rule).

@@ -1,6 +1,6 @@
 """Ledger trends -> PROPOSALS: the learning loop's closing step, read-only.
 
-Mazhron's ask 2026-09-10 ("Is Rootstock implementing learning loops?"):
+the CEO's ask 2026-09-10 ("Is Rootstock implementing learning loops?"):
 the ledgers already MEASURE (usage, tests, links, heat, employees,
 compactions); this script reads their tails, compares them with the
 THRESHOLDS below and prints proposed rule changes for the owner. It never
@@ -15,7 +15,7 @@ Proposals (each names its ledger and the number that crossed):
                     wiki_links.txt)
   wiki_heat_runs.txt  ACTIVE-UNREAD cold sections >= N -> propose a heading
                       check (cold by read count alone is never a shelf
-                      reason - Mazhron 2026-09-10; see wiki_heat WHY COLD)
+                      reason - the CEO 2026-09-10; see wiki_heat WHY COLD)
   usage_daily.txt     read-diet CHECKs and big reads point at
                       docs/history/big_reads.txt (per-file, with the fix)
                     (candidates in wiki_heat.txt; nothing moves without
@@ -30,6 +30,13 @@ Proposals (each names its ledger and the number that crossed):
   delete_grants.txt / retired_files.txt  informational counts
 When the set of proposals differs from the last run's, one line goes to
 docs/history/proposal_runs.txt so the loop has its own history.
+
+PURPOSE: Reads the tails of the project's history ledgers (usage, tests,
+  wiki links, wiki heat, employee corrections, compactions, README audit,
+  intent claims, corrections, systems audit), compares them against fixed
+  thresholds, and prints proposed rule changes; it applies nothing itself.
+INTENT: the CEO's ask 2026-09-10: 'Is Rootstock implementing learning
+  loops?'
 
 Search keys: learning loop, proposals, ledger trends, thresholds, rule
 change proposal, standup proposals, escalation, cold shelf sweep.
@@ -90,7 +97,7 @@ def proposals(th=THRESHOLDS):
                    "CHECK (heavy whole reads, low section share or cache misses). "
                    "The files: docs/history/big_reads.txt (`python tools/big_reads.py`) "
                    "- the manager sections or splits them on that report's word, no "
-                   "approval needed (Mazhron 2026-09-10); misses -> batch CLAUDE.md/"
+                   "approval needed (the CEO 2026-09-10); misses -> batch CLAUDE.md/"
                    "MEMORY edits at checkpoint." % (len(checks), len(lines)))
     # Big reads: judge the LAST THREE active days, not a 7-day mean that two
     # old heavy days can carry for a week after the habit is fixed.
@@ -122,7 +129,7 @@ def proposals(th=THRESHOLDS):
                        "(the list: docs/history/wiki_links.txt)." % m.group(1))
     # 4. wiki_heat_runs.txt
     # Cold by read count alone is NOT a shelf reason in a game project
-    # (Mazhron 2026-09-10): a system doc goes unread while its system is not
+    # (the CEO 2026-09-10): a system doc goes unread while its system is not
     # being worked on, and the wiki is a human reference too. Only the
     # ACTIVE-UNREAD class (code moved, doc never opened) is worth a look.
     heat = data_lines("wiki_heat_runs.txt")
@@ -167,7 +174,7 @@ def proposals(th=THRESHOLDS):
         out.append("PROPOSE (compact_runs.txt): %d compactions in the last 7 days - "
                    "sessions run past the gauge; checkpoint at the first ADVISED line."
                    % len(comps))
-    # 7. readme_audit_runs.txt (Mazhron 2026-09-13: the README's third layer)
+    # 7. readme_audit_runs.txt (the CEO 2026-09-13: the README's third layer)
     # The parity lint (tools/readme_lint.py) catches facts a script can
     # derive; only a four-employee audit catches an answer the wiki holds
     # that the README never says. Propose one when the kit has moved past
@@ -187,7 +194,7 @@ def proposals(th=THRESHOLDS):
                        "cross-reference and `--record` it." % (commits, days, stamp))
     except Exception:  # noqa: BLE001 - a missing helper never breaks standup
         pass
-    # 8-10. THE INTENT LOOP (Mazhron 2026-09-13, INTENT.md "Intent tracking"):
+    # 8-10. THE INTENT LOOP (the CEO 2026-09-13, INTENT.md "Intent tracking"):
     # the agreement trend, stale claims, clustered corrections, and the
     # systems-audit cadence. Real data, past vs present, improving or not.
     runs = data_lines("intent_runs.txt")
@@ -195,7 +202,7 @@ def proposals(th=THRESHOLDS):
         last = runs[-1]
         if "DECLINING" in last:
             out.append("PROPOSE (intent_runs.txt): the 7-day intent agreement is DECLINING (%s) "
-                       "- Claude's reading of asks is drifting from Mazhron's; read the "
+                       "- Claude's reading of asks is drifting from the CEO's; read the "
                        "DIFFERENT lines in docs/history/intent_log.txt and file the missing "
                        "INTENT.md sections (the why) before the next build." % last.split(" | ")[-1])
     try:
@@ -218,7 +225,7 @@ def proposals(th=THRESHOLDS):
     if len(corr) >= th["corrections_7d"]:
         out.append("PROPOSE (corrections.txt): %d corrections in the last 7 days - a law or an "
                    "INTENT.md section is missing; read their 'what was wrong' words together "
-                   "and name the pattern to Mazhron." % len(corr))
+                   "and name the pattern to the CEO." % len(corr))
     try:
         import systems_audit  # noqa: E402
         stamp, days, dfs, commits = systems_audit.status()
@@ -229,7 +236,7 @@ def proposals(th=THRESHOLDS):
         elif (days or 0) >= th["systems_audit_days"] or dfs >= th["systems_audit_day_files"]:
             out.append("PROPOSE (systems_audit_runs.txt): %s day(s) and %d day file(s) since the "
                        "last systems audit (%s) - run the four-lane audit (tokens, process, "
-                       "knowledge, features) and `--record` it; proposals only, Mazhron decides."
+                       "knowledge, features) and `--record` it; proposals only, the CEO decides."
                        % (days, dfs, stamp))
     except Exception:  # noqa: BLE001
         pass

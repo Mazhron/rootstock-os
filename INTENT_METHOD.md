@@ -1,5 +1,16 @@
 # The Intent Method (portable: the intent discipline, for any project)
 
+PURPOSE: The intent discipline: one project file, INTENT.md, holds one
+  section per ruling with the owner's verbatim ASKED and WHY, the manager's
+  GENERALIZES TO reading, and a LIVES IN pointer, plus a comparison ledger,
+  correction ritual, and periodic report measuring whether Claude's reading
+  of the owner's intent is converging on it.
+INTENT: The owner's example: "It's not as important that you know to make
+  looping scripts because you were told to, it's almost more important that
+  you understand we make looping scripts because 1.) It decreases your token
+  usage, 2.) It's done the same every time and very structured, 3.) It's
+  something that triggers without asking."
+
 PORTABLE FILE: an architecture, not a project. Hand it to any Claude (or any
 capable agent) at the start of any project alongside its siblings
 (WIKI_METHOD.md, SUBAGENT_METHOD.md, REPORTING_METHOD.md, WORKFLOW_METHOD.md)

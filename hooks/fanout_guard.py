@@ -1,9 +1,9 @@
 """PreToolUse guard on EVERY tool: THE FAN-OUT LAW's circuit breaker (Tier 2b).
 
-Mazhron's ask 2026-09-10, after a public report of a Claude that spun up
+the CEO's ask 2026-09-10, after a public report of a Claude that spun up
 821 sub-agents and burned 50M+ tokens in 30 seconds on "check my markdown
 files for consistency": "I want Rootstock to prevent this type of
-catastrophe at the harness level." Loosened the same day at Mazhron's
+catastrophe at the harness level." Loosened the same day at the CEO's
 word ("this might be too restrictive... I just wanted to prevent complete
 runaway agents and gigantic token spend"): CATASTROPHE-ONLY. Nothing here
 fires on real work, nothing needs a command to lift, and the manager is
@@ -44,7 +44,7 @@ never locked out of its own tools for more than a cooldown.
   python tools/hooks/fanout_guard.py --set burst_cap=12 flood_cap=40   # tune
   python tools/hooks/fanout_guard.py --defaults   # forget the tuning
 
-THE NUMBERS (Mazhron's ask 2026-09-10, the /runaway skill): DEFAULTS
+THE NUMBERS (the CEO's ask 2026-09-10, the /runaway skill): DEFAULTS
 below are the script's; the owner's TUNED numbers live in
 .claude/fanout_limits.json (COMMITTED - they travel with the repo and
 survive a kit graft), written by `--set`, read fresh on every call. The
@@ -53,6 +53,15 @@ the changes, runs `--set`, then `--selftest`. Only the owner tunes; the
 manager never raises a limit on its own. The manager-side rule (never
 fan out past a handful; a refusal = stop and report) is SUBAGENTS.md
 rule 12; this hook is what makes it true on a bad day.
+
+PURPOSE: PreToolUse guard on every tool call implementing the fan-out law's
+  circuit breaker: refuses only catastrophic spawn shapes (a burst inside a
+  short window machine-wide, a flood inside a session, or runaway weighted-
+  token velocity, all self-clearing) and otherwise only warns on spawn
+  count, session spend and the Workflow tool; the owner tunes the numbers
+  with --set into fanout_limits.json.
+INTENT: I want Rootstock to prevent this type of catastrophe at the harness
+  level
 
 Search keys: fan-out, sub-agent cap, agent limit, token budget, spend
 meter, runaway agents, runaway numbers, tune limits, circuit breaker,
@@ -323,7 +332,7 @@ def evaluate(data, state, now=None):
     if vel >= LIMITS["velocity_halt"]:
         return ("deny", "RUNAWAY (fanout_guard): ~%s weighted tokens in the last %d s "
                 "- no real work spends like that. Tool calls are refused until the "
-                "window drains (about %d s of quiet). Stop, tell Mazhron what was "
+                "window drains (about %d s of quiet). Stop, tell the CEO what was "
                 "running, and do not resume the same loop."
                 % (_fmt(vel), LIMITS["velocity_window"], LIMITS["velocity_window"]), state)
     if vel >= LIMITS["velocity_warn"] and now - s["warned_velocity"] > LIMITS["velocity_window"]:
@@ -338,14 +347,14 @@ def evaluate(data, state, now=None):
         if len(spawns) >= LIMITS["burst_cap"]:
             return ("deny", "THE FAN-OUT LAW (fanout_guard): %d sub-agents were spawned "
                     "on this machine in the last %d s - that is the 821-agents shape, "
-                    "not a delegation batch. Refused. Stop, tell Mazhron what you were "
+                    "not a delegation batch. Refused. Stop, tell the CEO what you were "
                     "fanning out and why; the window clears itself in a minute, but do "
                     "not resume the same fan-out." % (len(spawns), LIMITS["burst_window"]), state)
         recent = [t for t in s["agents"] if t >= now - LIMITS["flood_window"]]
         if len(recent) >= LIMITS["flood_cap"]:
             return ("deny", "THE FAN-OUT LAW (fanout_guard): %d sub-agents in the last %d "
                     "minutes - a loop, not a plan. Refused. A task that needs that many "
-                    "employees is a design problem: split it, script it, or ask Mazhron."
+                    "employees is a design problem: split it, script it, or ask the CEO."
                     % (len(recent), LIMITS["flood_window"] // 60), state)
         s["agents"].append(now)
         spawns.append(now)
@@ -363,7 +372,7 @@ def evaluate(data, state, now=None):
 
     if warnings:
         return ("warn", "[HOOK fanout_guard] " + " | ".join(warnings)
-                + " (relay to Mazhron verbatim)", state)
+                + " (relay to the CEO verbatim)", state)
     return ("ok", "", state)
 
 

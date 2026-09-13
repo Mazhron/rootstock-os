@@ -6,6 +6,18 @@ Warns (exit 1) when the lean core bloats past its budget or the library
 index drifts from the files on disk. Run it whenever CLAUDE.md grows; the
 answer to a warning is moving knowledge into docs/systems/, never raising
 the budget casually.
+
+PURPOSE: Read CLAUDE.md and fail with exit 1 when the lean core exceeds its
+  line budget or when the docs/systems library index in CLAUDE.md drifts
+  from the files actually on disk.
+INTENT: keeps CLAUDE.md lean from the 2026-08-24 token diet restructure by
+  catching bloat and index drift the moment they happen, instead of letting
+  the file grow back into old habits.
+
+Search keys: claude.md check, token diet, line budget, library index, index
+  drift, knowledge file count
+See also: CLAUDE.md (the file guarded), docs/systems/ (the library index
+  checked), tools/run_all.py (check group).
 """
 import os
 import re
@@ -36,7 +48,7 @@ if problems:
         print(" - " + p)
     sys.exit(1)
 
-# The expansion-doctrine count (Mazhron 2026-09-03): knowledge files are
+# The expansion-doctrine count (the CEO 2026-09-03): knowledge files are
 # cheap and MEANT to multiply - this is informational, never a failure.
 # At a round-1000 milestone, the manager mentions it to the user once.
 kcount = len([n for n in os.listdir(ROOT) if n.endswith(".md")]) + len(on_disk)

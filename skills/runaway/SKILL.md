@@ -5,6 +5,13 @@ description: Show and tune the fan-out guard's runaway numbers (spawn burst and 
 
 # /runaway - the guard's numbers, in the owner's hands
 
+PURPOSE: Show and tune the fan-out guard's runaway numbers (spawn burst and
+  flood caps, token velocity halt, the warning steps).
+INTENT: The guard refuses only runaway shapes so real work is never blocked,
+  and only the owner tunes its numbers, never the manager on its own, so a
+  limit only moves when the owner has actually seen the guard speak on
+  honest work.
+
 The fan-out guard (tools/hooks/fanout_guard.py, a PreToolUse hook on every
 tool) refuses only runaway shapes and warns on the rest. Its DEFAULTS live
 in the script; the owner's TUNED numbers live in `.claude/fanout_limits.json`

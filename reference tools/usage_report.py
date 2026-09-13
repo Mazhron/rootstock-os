@@ -1,4 +1,4 @@
-"""THE USAGE SHEET (Mazhron's ask 2026-09-03: one aggregate sheet - totals
+"""THE USAGE SHEET (the CEO's ask 2026-09-03: one aggregate sheet - totals
 per day, week, and month for every model and every tool, CSV for humans +
 TXT twin, scripted).
 
@@ -24,11 +24,11 @@ in). The billing dashboard remains the only truth for dollars.
 Outputs (REGENERATED whole each run - the transcripts are the ledger, this
 is the derived sheet, so no append-only file here):
   docs/history/usage_metrics.txt  - OPEN THIS ONE: totals by day/week/month,
-                                    then the BREAKDOWNS (Mazhron's ask
+                                    then the BREAKDOWNS (the CEO's ask
                                     2026-09-10): averages per request, the
                                     context window by month, averages per
                                     tool call, employee runs
-  docs/history/usage_metrics.xlsx - THE SPREADSHEET (Mazhron's ask
+  docs/history/usage_metrics.xlsx - THE SPREADSHEET (the CEO's ask
                                     2026-09-10): header row frozen, every
                                     token column a Number with thousands
                                     separators, per-period TOTAL rows bold
@@ -40,7 +40,7 @@ is the derived sheet, so no append-only file here):
   docs/history/usage_employees.csv - one row per sub-agent run (day, model,
                                     minutes, tokens, tool calls, est$, the
                                     brief's first line)
-  docs/history/usage_daily.txt    - THE DAILY LINE (Mazhron 2026-09-10, ideas
+  docs/history/usage_daily.txt    - THE DAILY LINE (the CEO 2026-09-10, ideas
                                     17 + 20): one line per active day - the
                                     weighted total, its top pillar, cache
                                     misses, the read diet - each judged
@@ -51,7 +51,7 @@ is the derived sheet, so no append-only file here):
   docs/history/usage_cache.json   - incremental parse cache (transcripts are
                                     append-only; reruns only read new bytes)
 
-THE WEIGHTED COLUMN (Mazhron's insight 2026-09-10, idea 13): only the tokens
+THE WEIGHTED COLUMN (the CEO's insight 2026-09-10, idea 13): only the tokens
 that count against the plan matter. weighted_tok prices every token relative
 to fresh input: input 1, cache write 1.25 (2.0 on the 1-hour TTL), cache
 read 0.1 (0.025 on Fable 5.1), output 5. It is THE headline; the raw count
@@ -81,6 +81,13 @@ Needs:  openpyxl (pip) for the .xlsx; without it the CSV/TXT still write
         and the run says so (WORKSTATION.md carries the row).
 
 Usage:  python tools/usage_report.py --quiet   # standup's silent refresh
+
+PURPOSE: Mines the Claude Code harness JSONL transcripts for real per model
+  per tool token usage and writes an aggregate usage sheet (CSV, TXT, XLSX,
+  employee runs, and the daily budget line) totaled by day, week and month.
+INTENT: the CEO's ask 2026-09-03: 'one aggregate sheet, totals per day,
+  week, and month for every model and every tool, CSV for humans plus TXT
+  twin, scripted.'
 
 Search keys: usage, token costs, tool costs, metrics sheet, daily totals,
 weekly totals, monthly totals, harness meter, transcript mining, average
@@ -115,7 +122,7 @@ CACHE_VERSION = 4  # v3: weighted, cache misses, read-diet classes; v4: images p
 # the Opus 4.1-era 15/75 - Opus 5-tier is 5/25.
 # Third value = the CACHE READ multiplier on the input price: 0.1x on most
 # models, 0.025x on Claude Fable 5.1 ($0.25/MTok - every "fable" message in
-# these transcripts is claude-fable-5-1; corrected 2026-09-10 after Mazhron
+# these transcripts is claude-fable-5-1; corrected 2026-09-10 after the CEO
 # asked whether cache reads count: they do, at this discount).
 PRICING = {
     "haiku": (1.0, 5.0, 0.1),
@@ -492,7 +499,7 @@ def build_rows(all_days, ws):
             rows.append([ptype, period, ws, "tool", tool, "-", v["calls"],
                          "", "", "", "", "", v["ctx"], "",
                          v["ctx"], v["ctx"] // (v["calls"] or 1), "", "", ""])
-        # THE TOTAL ROW sits LAST in its period (Mazhron 2026-09-10: "in
+        # THE TOTAL ROW sits LAST in its period (the CEO 2026-09-10: "in
         # line under their final record"); the .xlsx bolds it and rules a
         # thick border under it.
         tot = total["in"] + total["out"] + total["read"] + total["c5"] + total["c1"]
@@ -739,7 +746,7 @@ def _verdict(value, baseline, higher_is_bad=True):
 
 
 def daily_lines(all_days, ws):
-    """THE DAILY LINE (Mazhron 2026-09-10: "a number without comparison means
+    """THE DAILY LINE (the CEO 2026-09-10: "a number without comparison means
     nothing"): every active day judged against the previous COMPARE_DAYS
     active days - weighted total, cache misses, whole-file reads - with a
     HIGH / normal / LOW verdict and the reason. Oldest first; the tail is
@@ -819,7 +826,7 @@ def diet_lines(all_days, ws):
 
 
 def breakdown_lines(by, emp_rows):
-    """THE BREAKDOWNS (Mazhron's ask 2026-09-10): per request, the context
+    """THE BREAKDOWNS (the CEO's ask 2026-09-10): per request, the context
     window by month, per tool call, employee runs."""
     L = []
     H = "=" * 66

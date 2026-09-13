@@ -1,4 +1,4 @@
-"""THE README AUDIT LEDGER (Mazhron 2026-09-13, the third layer of "prevent
+"""THE README AUDIT LEDGER (the CEO 2026-09-13, the third layer of "prevent
 the README falling behind": the lint catches drift in facts a script can
 derive; only an AUDIT catches an answer we know that the README never
 says).
@@ -16,6 +16,14 @@ audit. tools/ledger_trends.py reads the tail and PROPOSES a fresh audit
 at standup when the kit has moved past a threshold of commits or days
 since the last line (readme_audit_kit_commits / readme_audit_days in its
 THRESHOLDS - the owner's numbers). Nothing runs an audit by itself.
+
+PURPOSE: Keeps the README audit ledger: prints status (last audit date, days
+  since, kit folder commits since) and on --record appends one line to
+  docs/history/readme_audit_runs.txt recording a finished four employee
+  cross reference of the public README.
+INTENT: the CEO 2026-09-13, the third layer of 'prevent the README falling
+  behind': the lint catches drift in facts a script can derive, only an
+  audit catches an answer the README never says.
 
 Search keys: readme audit, audit cadence, readme review, kit audit,
 cross-reference audit, unwritten answers.

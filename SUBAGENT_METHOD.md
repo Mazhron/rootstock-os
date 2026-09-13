@@ -1,5 +1,14 @@
 # The Sub-Agent Method (portable: the delegation company, for any project)
 
+PURPOSE: A portable architecture for delegating work to sub-agent employees:
+  the org chart (CEO, manager, employees), why it saves money, the seven
+  laws, the assignments table, the scorecard, and bootstrap steps for a new
+  project.
+INTENT: An AI's cost is mostly context, not cleverness; delegating the
+  reading and the grinding to a throwaway-context employee while the manager
+  keeps the thinking saves tokens even when the employee costs the same, and
+  multiplies the saving when it costs less.
+
 PORTABLE FILE: this describes an ARCHITECTURE, not a project. Nothing in here
 assumes a game, a language, or a specific AI model. Hand it to any Claude (or
 any capable agent) at the start of any project and say "set this up" - it
@@ -173,3 +182,8 @@ silently refuse.
 4. Delegate something small on day one (a test run, a search sweep) to
    prove the stamp/ledger loop end to end - and ledger it, even if perfect.
 5. Let the ledger run. Promote or demote models with data, not impressions.
+
+Search keys: sub-agent method, delegation company, manager employee, seven
+  laws, org chart
+See also: SUBAGENTS.md (this project's instance); WIKI_METHOD.md (the read
+  diet, the 10k line)

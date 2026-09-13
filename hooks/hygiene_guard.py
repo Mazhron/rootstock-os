@@ -1,6 +1,6 @@
 """THE HYGIENE GUARD - Tier 3 (PostToolUse on Write|Edit|MultiEdit).
 
-Mazhron 2026-09-11 ("we definitely don't want the readme falling behind
+the CEO 2026-09-11 ("we definitely don't want the readme falling behind
 again"): the laws easiest to forget MID-BATCH are the ones that fire on a
 file edit, not on a command - so the harness says them at the edit.
 
@@ -30,6 +30,14 @@ launch per edit is the whole cost). `--selftest` runs the in-process
 checks. Everwood-specific names live in the CONFIG block at the top;
 a kit install rewrites that block and nothing else.
 
+PURPOSE: PostToolUse guard on Write, Edit and MultiEdit that, after an edit
+  lands, hands the manager one line of context per applicable law: KIT
+  REFRESH when a portable original changed, SEE-ALSO when a touched
+  docs/systems section has no See also line, DASH when player-facing text
+  received an em or en dash (this one BLOCKS), and IMPORT when a new asset
+  needs the engine import run; stateless pattern matching only.
+INTENT: we definitely don't want the readme falling behind again
+
 Search keys: hygiene guard, PostToolUse, kit refresh reminder, see-also
 lint, dash guard, import reminder, Tier 3.
 See also: HOOKS_METHOD.md (Tier 3); docs/systems/tooling.md (The hooks);
@@ -54,7 +62,7 @@ KIT_MDS = {
 }
 KIT_DIR = "Future Project MDs"           # the grab-copy folder (repo root)
 KIT_ONLY = {"0 - READ ME FIRST, CLAUDE.md", "UPGRADES.md",  # no repo-root original
-            "hooks/README.txt", "hooks/settings.json"}
+            "CONTRIBUTING.md", "FLAGS.md", "hooks/README.txt", "hooks/settings.json"}
 SKILLS_DIR = ".claude/skills"
 HOOKS_DIR = "tools/hooks"
 REF_TOOLS_DIR = KIT_DIR + "/reference tools"

@@ -1,5 +1,13 @@
 # Clicker / Idle Design Notes
 
+PURPOSE: Genre knowledge earned building Everwood, written portably: cost
+  curve shapes, clicking and auto-click patterns, progression gating, the
+  prestige economy, offline progress, feedback economics, balance telemetry,
+  and the tooling workflow, so it carries to the next clicker or idle game.
+INTENT: The three-layer rule: engine facts live in GODOT_FIELD_NOTES.md,
+  genre patterns live here, game-specific detail lives in that game's own
+  docs, one home per fact.
+
 Genre knowledge earned building Everwood, written PORTABLY: what carries to
 the next clicker/idle game, with Everwood only as the worked example. The
 three-layer rule: engine facts live in GODOT_FIELD_NOTES.md, genre patterns
@@ -203,3 +211,8 @@ pure numbers:
   hiding with a visible tell, vision cones (one dot product), corpses that
   persist and feed - each was a few constants and a state flag, and
   together they read as "alive" to players.
+
+Search keys: clicker design, idle game, cost curves, prestige economy,
+  offline progress, genre lessons
+See also: GODOT_FIELD_NOTES.md (engine facts); WIKI_METHOD.md (the three-
+  layer rule's home)

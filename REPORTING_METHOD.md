@@ -1,5 +1,14 @@
 # The Reporting Method (portable: scripted runs + history ledgers, for any project)
 
+PURPOSE: A portable method for scripted runs and history ledgers: every
+  repeatable run is a script, every run appends one labeled line to an
+  append-only ledger, and a recorded baseline lets a regression show up as a
+  single line flip between two ledger lines.
+INTENT: Ad-hoc runs are amnesia: a test retyped by hand cannot be compared
+  run to run, silently skips what someone forgot, and its result vanishes
+  into a chat log nobody re-reads, so regressions can survive for weeks
+  unnoticed.
+
 PORTABLE FILE: an architecture, not a project. Hand it to any Claude (or any
 capable agent) at the start of any project alongside its siblings
 (SUBAGENT_METHOD.md, WIKI_METHOD.md) and say "set this up". Nothing here
@@ -167,3 +176,6 @@ history, because chat history is not a ledger.
    line; the employee runs the script and reports its output verbatim.
 6. Never prune a ledger; if one grows huge, start a dated continuation file
    and leave a pointer - history is the product.
+
+Search keys: reporting method, scripted runs, history ledger, baseline rule,
+  script rule

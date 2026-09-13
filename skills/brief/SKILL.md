@@ -5,6 +5,14 @@ description: Compose and dispatch a sub-agent (employee) brief that follows the 
 
 # /brief - delegate a task by the laws
 
+PURPOSE: Compose and dispatch a sub-agent (employee) brief that follows the
+  delegation laws, stamped, self-contained, budget-capped, diff-only
+  reporting, then verify cheap and ledger the outcome.
+INTENT: So delegated work stays safe and reviewable: the employee starts
+  self-contained, is capped at about 30 tool calls, never deletes, respects
+  the fan-out limits, and the manager logs an intent claim and ledgers the
+  outcome afterward.
+
 Read SUBAGENTS.md RULES + ASSIGNMENTS first (never the ledger unless
 appending/auditing). Then compose the brief with ALL of:
 

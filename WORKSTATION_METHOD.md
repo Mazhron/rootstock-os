@@ -1,5 +1,16 @@
 # WORKSTATION_METHOD.md - the machine inventory that installs itself (PORTABLE, part of the future-project kit)
 
+PURPOSE: The machine inventory method: one workstation file records what
+  every script, hook and ritual needs, why, what the origin machine has, and
+  how to install it, so any Claude can get a new machine up to par and write
+  back what it adds.
+INTENT: Mazhron's ask 2026-09-06: "we should have a new workstation document
+  that lists our complete setup, all the installation packages, software we
+  installed (such as python), etc. so that any Claude can get any
+  workstation up to par ... so that any user could simply set up a new
+  workstation based on their current. Their Claude would add their setup to
+  the document."
+
 Founded 2026-09-06 on Mazhron's ask: "we should have a 'new workstation'
 document that lists our complete setup, all the installation packages,
 software we installed (such as python), etc. so that any Claude can get

@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.18** (2026-09-13). The graft log `UPGRADES.md` is the
+Kit version: **v1.19** (2026-09-13). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -263,9 +263,9 @@ because context lives in files, not in the conversation.
   session re-arms in about 15-20k tokens instead of dragging hundreds of
   thousands.
 
-Eight rituals ship as Claude Code skills, invocable as slash commands:
+Nine rituals ship as Claude Code skills, invocable as slash commands:
 `/standup`, `/checkpoint`, `/ship`, `/brief`, `/runaway`, `/preserve`,
-`/intent`, and `/correct`
+`/intent`, `/correct`, and `/flag`
 (the preservation law's front: retire a file, shelve a wiki section, or
 walk the twice-acknowledged delete grant, in that order). `/ship` is the
 one you will use most: sanity-check tests (trusting the ledger), bump the
@@ -277,7 +277,7 @@ changed, and export the changelog unprompted.
 
 A skill runs when invoked; a hook runs when the harness reaches a moment.
 Anything a law can enforce mechanically becomes a hook, not a longer
-reminder. Nine ship in `hooks/`, wired by one settings file:
+reminder. Ten ship in `hooks/`, wired by one settings file:
 
 - **Session start** injects the standup digest by itself - after a /clear
   the manager has everything back before anyone types a word.
@@ -310,6 +310,15 @@ reminder. Nine ship in `hooks/`, wired by one settings file:
   block), run the engine import after a new asset. It exists because
   this README once fell two versions behind while the law to refresh it
   was already written.
+- **The format guard** runs BEFORE an edit of the settings file and
+  refuses one that would unwire, narrow or mis-point a safety hook (or
+  not parse), and AFTER every edit of a kit thing, blocking one that
+  leaves the thing without its header (PURPOSE, INTENT, search keys, see
+  also) with the rewrite command in the reason. The shell guard refuses
+  shell writes into a settings file and the Stop hook refuses to end a
+  turn while the live wiring is broken, so no prompt, brief or contributed
+  patch switches a guard off quietly. It exists because a community kit
+  needs a guardrail that does not depend on the reader's good faith.
 
 The contract, plainly, because a worried reader asks these first:
 
@@ -359,6 +368,37 @@ the why while the mismatch is fresh. A systems audit, ledgered and
 proposed on a cadence, has read-only employees look at tokens, process,
 knowledge and shipped features and return proposals only. Nothing in
 this loop applies anything by itself; the owner decides.
+
+### The format law and the purpose audit (CONTRIBUTING.md)
+
+Two guardrails for a kit that is meant to take contributions, ours or
+yours:
+
+- **The format law.** Every thing in the kit (a script, a hook, a skill,
+  a method file, the front door) carries one header: `PURPOSE:` (what it
+  does, plainly), `INTENT:` (why it exists, in the words of whoever asked
+  for it), search keys and see-also links. A lint derives the scope from
+  the kit folder itself, names every thing that lacks the header, and
+  the publish script refuses to push on a failure. A missing header is
+  added BY SCRIPT after a read-only look (`format_lint.py --rewrite`
+  inserts only the missing lines), never by hand. The format guard hook
+  above makes it a law rather than a reminder.
+- **The purpose audit.** Before an update merges, and whenever a thing is
+  unflagged or has changed since its last flag, a Claude (or a person)
+  reads it, compares what its PURPOSE line says against what the body
+  does, and flags it: GREEN does what it says and nothing more; YELLOW
+  matches in substance but something is off (fix later, may ship); RED
+  does what its purpose does not say or crosses a law (deletes, disables
+  a guard, unbounded spend) and the owner sees it before it ships. The
+  ritual is read-only, then flag, then explain: the auditor never edits
+  the thing in the audit turn. `FLAGS.md` is the one committed file that
+  references every flag, hashed to the exact version reviewed, tallied at
+  the top, and open to any reviewer's findings by pull request. `/flag`
+  walks the ritual; `purpose_audit.py --pending` lists what needs one.
+
+`CONTRIBUTING.md` carries both laws in full, plus what a contributed
+update looks like (the header, the graft-log entry, a passing lint, a
+flag from someone other than the author, nothing deleted).
 
 ### The two companions (WORKFLOW_METHOD.md, WORKSTATION_METHOD.md)
 
@@ -511,6 +551,13 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 - **Can I take part of it?** Yes; see "What you need" above. The wiki
   conventions alone are the biggest single saving.
 - **Can I use it commercially?** MIT. Yes.
+- **Can I contribute?** Yes, by pull request, under two guardrails that
+  apply to the kit's own authors too: every new or changed thing carries
+  the header (`PURPOSE:`, `INTENT:`, search keys, see also) or the lint
+  refuses it, and every changed thing gets a read-only purpose audit
+  (GREEN / YELLOW / RED) filed in `FLAGS.md`, ideally by someone other
+  than its author. `CONTRIBUTING.md` has the whole of it. A RED is a
+  question for the maintainer, not a rejection.
 
 ## What is in the box
 
@@ -521,14 +568,16 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `REPORTING_METHOD.md` | Scripts + ledgers: the three rules, runner spec, bootstrap |
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, seven laws, assignments table, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
-| `skills/` | The eight skills, ready to drop into `.claude/skills/` |
-| `HOOKS_METHOD.md` | The hooks: the contract, the nine kit hooks, tiers, bootstrap |
-| `hooks/` | The nine hook scripts (drop into `tools/hooks/`) plus the settings template (merge into `.claude/settings.json`) |
+| `skills/` | The nine skills, ready to drop into `.claude/skills/` |
+| `HOOKS_METHOD.md` | The hooks: the contract, the ten kit hooks, tiers, bootstrap |
+| `hooks/` | The ten hook scripts (drop into `tools/hooks/`) plus the settings template (merge into `.claude/settings.json`) |
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |
-| `reference tools/` | Twenty working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line), update check. Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger) |
+| `reference tools/` | 23 working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line), update check. Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger), the format law and the purpose audit (format lint, purpose audit, kit refresh) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
+| `CONTRIBUTING.md` | The format law and the purpose audit: the one header every thing carries, the read-only flag ritual, what a contributed update looks like |
+| `FLAGS.md` | The flag ledger: every kit thing's latest GREEN / YELLOW / RED, hashed to the version reviewed, tallied, append-only |
 | `GODOT_FIELD_NOTES.md` | Domain example: hard-won Godot engine lessons (skip if not Godot) |
 | `CLICKER_DESIGN_NOTES.md` | Domain example: idle/clicker genre lessons (skip if not that genre) |
 

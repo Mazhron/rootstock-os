@@ -1,6 +1,6 @@
 """THE DIET GUARD (PreToolUse on Read|Bash|PowerShell, warn-only): the
 read diet and the output diet, enforced at the cliff edge (Tier 2c,
-Mazhron's ruling 2026-09-10 - TOKEN_IDEAS 15 + 18).
+the CEO's ruling 2026-09-10 - TOKEN_IDEAS 15 + 18).
 
 WHY: under the budget weights, the manager's context is written at 1.25x
 (2x on the 1-hour cache) and re-read on every later turn; tool RESULTS are
@@ -26,6 +26,15 @@ WHAT IT SAYS:
 Shell shapes are warned at most WARN_CAP times per session per shape so a
 deliberate choice is not nagged; the big-read warning fires every time,
 because every big read is a fresh decision.
+
+PURPOSE: PreToolUse guard on Read, Bash and PowerShell enforcing the read
+  diet and output diet: warns when a shell command shape (git log, git diff,
+  recursive listing, install) has no limiter, and on the first whole read of
+  a file over about 10k tokens in a session it denies once and returns the
+  file's own section or function index instead; the same call repeated
+  afterward passes with a warning only.
+INTENT: section or split ... should not require my approval ... part of the
+  looping scripts
 
 Search keys: diet guard, read diet, output diet, big read, whole-file read,
 chatty command, limiter, pretooluse warn, 10k rule.
@@ -167,7 +176,7 @@ def _read_hint(name, est, lines, sections):
 
 
 def _index_first(name, est, lines, index):
-    """INDEX FIRST (Mazhron 2026-09-10, "section or split ... should not require
+    """INDEX FIRST (the CEO 2026-09-10, "section or split ... should not require
     my approval ... part of the looping scripts"): the first whole read of a
     big file in a session is answered with the file's own index instead of
     the file - ~1-3% of the tokens - and the same call repeated passes."""

@@ -5,6 +5,13 @@ description: Record the WHY of a ruling in the owner's words and resolve the ope
 
 # /intent - file the why in the owner's own words, then close the claim
 
+PURPOSE: Record the WHY of a ruling in the owner's own words in INTENT.md
+  and resolve the open intent claim comparing the manager's reading against
+  it.
+INTENT: Mazhron's ruling 2026-09-13: a ruling is not just a rule, it is a
+  WHY, and knowing the why lets Claude or any employee make the same call
+  next time without asking.
+
 THE POINT (Mazhron's ruling 2026-09-13): a ruling is not just a rule, it
 is a WHY - and knowing the why lets Claude or any employee make the same
 call next time without asking. INTENT.md holds one section per ruling;

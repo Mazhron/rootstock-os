@@ -3,7 +3,7 @@
     python tools/export_tag_index.py            # write KNOWLEDGE_INDEX.md
     python tools/export_tag_index.py --dry-run  # print summary only
 
-THE TAG CONVENTION (Mazhron approved 2026-09-03): any section whose content
+THE TAG CONVENTION (the CEO approved 2026-09-03): any section whose content
 is hard-won knowledge (a lesson, a trap, a doctrine) carries, directly under
 its `## ` heading, a line:
 
@@ -17,6 +17,13 @@ new tags appear automatically on the next run. Prefer the starter tags
 (lessons, gotchas, architecture, performance, process, design, economy);
 invent a new one only when none fits - the summary prints the tag inventory
 so drift is visible.
+
+PURPOSE: Sweep repo-root and docs/systems markdown for Tags lines under
+  headings and compile KNOWLEDGE_INDEX.md, one section per tag with links to
+  each section's true home.
+INTENT: makes the wiki's hard-won lessons browsable by tag without
+  duplicating any knowledge, per the tag convention the CEO approved
+  2026-09-03.
 
 Search keys: knowledge index, tags, lessons compiled, browsable pitfalls.
 See also: WIKI_METHOD.md (the convention), tools/export_wiki_view.py.

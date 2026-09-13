@@ -5,6 +5,14 @@ description: Close an arc safely - push, refresh the day file's WHERE WE LEFT OF
 
 # /checkpoint - close the arc so the chat can be cleared losslessly
 
+PURPOSE: Close an arc safely: push, refresh the day file's WHERE WE LEFT OFF
+  section with both sides of the final exchange verbatim, reset the task
+  counter, and emit the safe-to-clear marker.
+INTENT: Mazhron's ruling 2026-09-10, ADVISED MEANS DO IT: the owner never
+  has to ask to checkpoint, they simply /clear afterward, so after /clear
+  the owner should have nothing lost, everything they need is given back
+  unprompted.
+
 ADVISED MEANS DO IT (the owner's ruling 2026-09-10): when the prompt
 gauge or the Stop hook says CHECKPOINT ADVISED, run this sequence at the
 END OF THAT REPLY, unprompted - the owner never has to ask, they simply

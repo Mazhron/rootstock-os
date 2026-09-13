@@ -1,6 +1,14 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.18** (this file is the single source of truth for
+PURPOSE: The append only graft log: every kit concept update, recorded as
+  WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed
+  project's own files, and which README section it touched, so installs
+  update by concept rather than by overwriting a project's customized files.
+INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
+  never update a project by overwriting its files; this log is the one place
+  updates travel as grafts instead.
+
+CURRENT KIT VERSION: **v1.19** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -600,3 +608,77 @@ README: "4. Lossless Sessions" (eight rituals, /intent and /correct), a
 new "The intent loop (INTENT_METHOD.md)" section after the hooks, "What
 is in the box" (INTENT_METHOD.md row, reference tools: twenty), the "Kit
 version:" line.
+
+See also: 'Future Project MDs/CONTRIBUTING.md' (the format law); '0 - READ
+  ME FIRST, CLAUDE.md' (installs from this log);
+  tools/rootstock_update_check.py (reads this file to check for updates).
+
+### v1.19 - 2026-09-13 - The format law, the purpose audit and the kit-sync ruling (CONTRIBUTING.md, FLAGS.md, /flag, the format guard)
+WHAT: the CEO, the same day as the intent loop, three rulings in one
+prompt. (1) THE KIT-SYNC RULING: "Every time I discuss rootstock-os, or
+it's features, scripts, audits, intents, laws , etc. the intention is to
+update the future projects and rootstock-os folder and upload to git
+with updated readme and files whenever applicable." A kit refresh script
+(originals -> copies, the owner-name substitution in scripts, adapted
+copies reported not overwritten) runs first inside the sync, and the
+prompt hook says KIT UNSYNCED until copies and mirror agree. (2) THE
+PURPOSE AUDIT: "Rootstock-os will eventually, hopefully, turn into a
+community involved system. Guardrails need to be in place so that
+anything written in updates must have a comment describing the purpose
+and intent of the 'thing' in the update. Claude MUST compare the purpose
+and intent of the thing vs what the thing actually reads whether it's a
+script, hook, code or injectable prompt. If there is reason to flag it,
+Claude should flag them green, yellow or red. Claude should always
+read-only -> Flag -> Explain. There should be a file that directly
+references anything that is green, yellow or red flags, tally them and
+put them in the git for review. Any Claude can review and put their
+findings there for future review." FLAGS.md is that file: one entry per
+audit (SAYS from the thing's PURPOSE line, DOES, FLAG, hash of the exact
+version), append-only, the tally regenerated at its top by script, STALE
+when the thing changes; the /flag skill and a WORKFLOWS entry carry the
+ritual; employees may flag (delegation rule 15) and report RED upward.
+(3) THE FORMAT LAW: "Any updates, upgrades, hooks, scripts, etc need to
+be in the same format so that they work with our current filing system.
+Anything without proper format should be flagged, a script should
+re-write it after review-only audit. This will be a law and may need
+this to be a hook somehow so that no one can inject a prompt that
+overrides safety protocols." Every kit thing carries PURPOSE / INTENT /
+Search keys / See also (a hook also --selftest + _hooklib, a skill its
+frontmatter, the settings template its SAFETY wiring); the format lint
+derives the scope from the kit folder, flags the rest, and --rewrite
+inserts ONLY the missing lines with the reviewer's words after a
+read-only look; the format guard hook (Tier 3b) blocks an unformatted
+edit and REFUSES a settings edit that unwires, narrows or mis-points a
+safety hook, with the shell guard (no shell writes into a settings file)
+and the Stop hook (refuses the turn while the wiring is broken) as
+twins. The first audit: four read-only employees flagged every kit thing
+in one batch (FLAGS.md carries the result). Lesson: a guardrail for a
+community kit cannot depend on the reader's good faith; it has to be a
+script that flags, a script that rewrites, and a hook that refuses.
+CARRIES: CONTRIBUTING.md (the two laws for contributors); FLAGS.md (the
+ledger); reference tools/format_lint.py, purpose_audit.py,
+refresh_kit.py; hooks/format_guard.py + its settings.json entries
+(PreToolUse and PostToolUse on Write|Edit|MultiEdit); hooks/bash_guard.py
+rule (no shell writes into a settings file); hooks/stop_tick.py (the
+Stop twin); hooks/prompt_gauge.py (the KIT UNSYNCED line); skills/flag;
+SUBAGENT_METHOD.md law + SKILLS.md shelf entry; HOOKS_METHOD.md Tier 3b;
+the front door's THE FORMAT GUARD + THE PURPOSE AUDIT step and the
+definition of done; the sync script's refresh + first gate + tally.
+GRAFT: copy the three scripts and the hook, adapt the CONFIG blocks
+(kit folder, hooks/skills dirs, settings path); wire the hook's two
+entries; add the settings-file rule to the project's shell guard and the
+Stop twin to its stop hook; add format_lint + purpose_audit --pending to
+the check group and the refresh + gate + tally to the publish script;
+copy CONTRIBUTING.md and let the first status run create FLAGS.md; run
+`format_lint.py` and rewrite each failing header BY SCRIPT after a
+read-only look (never by hand); then audit every thing once (a handful
+of read-only employees, one list each) so FLAGS.md starts with real
+data; add the /flag skill to the shelf and the flag rule to the
+delegation rules. A project with no public kit still keeps the format
+law for its own tools and hooks.
+README: "The hooks" (ten, the format guard bullet), "4. Lossless
+Sessions" (nine rituals, /flag), a new "The format law and the purpose
+audit (CONTRIBUTING.md)" section after the intent loop, "What is in the
+box" (CONTRIBUTING.md + FLAGS.md rows, skills: nine, hooks: ten,
+reference tools: 23), "Questions people ask" (Can I contribute?), the
+"Kit version:" line.

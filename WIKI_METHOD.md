@@ -1,5 +1,13 @@
 # The Knowledge Wiki Method
 
+PURPOSE: A portable system for organizing a project's knowledge (a lean
+  CLAUDE.md core, a docs/systems topic library, portable root notes) so an
+  AI assistant finds anything in three cheap hops, Glob, Grep for headings,
+  then a targeted Read, without wasting tokens.
+INTENT: Developed on Everwood so a future project can bootstrap the same
+  system with one instruction, keeping token costs low without losing
+  findability.
+
 A portable system for organizing a project's knowledge so an AI assistant
 (Claude) finds anything in three cheap hops and never wastes tokens reading
 what it does not need. Developed on Everwood (2026-08); written so a future
@@ -305,3 +313,6 @@ See also: the cold shelf -> this file (previous section); the scripts ->
 tools/check_wiki_links.py | tools/wiki_heat.py | tools/ledger_trends.py;
 the ledgers discipline -> REPORTING_METHOD.md; the escalation rule ->
 SUBAGENT_METHOD.md law 5.
+
+Search keys: wiki method, knowledge library, three-hop lookup, CLAUDE.md
+  core, docs systems library

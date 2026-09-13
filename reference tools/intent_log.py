@@ -1,4 +1,4 @@
-"""THE INTENT LOG (Mazhron's ruling 2026-09-13: "When you or an agent has a
+"""THE INTENT LOG (the CEO's ruling 2026-09-13: "When you or an agent has a
 concept, your own intent, there should be a record of that to compare vs my
 intent. Then, there needs to be a comparison of how many times your
 intention or that of a subagent was the same, similar, or different than
@@ -6,7 +6,7 @@ mine.")
 
     python tools/intent_log.py --claim --actor fable --task "<3-8 words>" \\
         --mine "<what I understood the ask to be, before building>"
-    python tools/intent_log.py --resolve I0007 --theirs "<Mazhron's intent>" \\
+    python tools/intent_log.py --resolve I0007 --theirs "<the CEO's intent>" \\
         --verdict same|similar|different --source stated|correction|inferred \\
         [--intent-ref "<INTENT.md heading>"]
     python tools/intent_log.py --pending        # open claims
@@ -16,7 +16,7 @@ THE RECORD: one line per claim in docs/history/intent_log.txt (append-only;
 a resolve appends a RESOLVED line that supersedes the claim's PENDING
 state - nothing is edited in place). A CLAIM is written BEFORE building:
 the manager's (or an employee's, relayed by the manager) own reading of
-what was asked. The RESOLVE lands when the truth is known: Mazhron stated
+what was asked. The RESOLVE lands when the truth is known: the CEO stated
 or confirmed it (stated), a /correct revealed it (correction), or the
 manager judged from the outcome with no explicit words (inferred - kept
 honest by naming it). The verdict is the comparison:
@@ -38,6 +38,14 @@ word ("the /intent skill"), or set MSYS_NO_PATHCONV=1.
 Why a log and not memory: real data, past vs present, and a trend that
 says whether the feedback loop works (INTENT.md "Intent tracking").
 
+PURPOSE: Log an intent claim before building and resolve it against
+  the CEO's actual intent as same, similar or different, append-only, one
+  line per claim and one per resolution.
+INTENT: the CEO's ruling 2026-09-13: When you or an agent has a concept,
+  your own intent, there should be a record of that to compare vs my intent.
+  Then, there needs to be a comparison of how many times your intention or
+  that of a subagent was the same, similar, or different than mine.
+
 Search keys: intent log, intent claim, same similar different, agreement,
 mazhron intent, manager intent, employee intent, feedback loop.
 See also: INTENT.md (the why of every ruling); tools/intent_report.py;
@@ -55,7 +63,7 @@ LOG = os.path.join(ROOT, "docs", "history", "intent_log.txt")
 VERDICTS = ("SAME", "SIMILAR", "DIFFERENT")
 SOURCES = ("stated", "correction", "inferred")
 HEADER = ("# THE INTENT LOG (append-only; a CLAIM line before building, a RESOLVED line when "
-          "Mazhron's intent is known - the newest line for an id wins). Read the TAIL.\n"
+          "the CEO's intent is known - the newest line for an id wins). Read the TAIL.\n"
           "# kind | id | date time | ws | actor | task | claude intent | mazhron intent | "
           "verdict | source | INTENT.md ref\n")
 

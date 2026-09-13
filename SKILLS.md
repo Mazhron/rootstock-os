@@ -1,5 +1,13 @@
 # SKILLS.md - the skills shelf (PORTABLE, part of the future-project kit)
 
+PURPOSE: The skills shelf: catalogs each ritual, standup, checkpoint, ship,
+  brief, runaway, preserve, intent, correct, as an invocable Claude Code
+  skill in .claude/skills/, so a ritual runs from a script instead of from
+  memory.
+INTENT: Mazhron's ruling 2026-09-03: rituals that live only as law text get
+  executed from memory; rituals that live as skills get executed from the
+  script.
+
 Founded 2026-09-03 on Mazhron's ruling: rituals that live only as law text
 get executed from memory; rituals that live as SKILLS get executed from the
 script. A skill is a markdown instruction pack in `.claude/skills/<name>/
@@ -70,6 +78,17 @@ the skills operationalize).
   itself at every reply, and shell guards refuse what the laws forbid. A
   ritual that CAN be mechanical becomes a hook, not a longer skill.
 
+- **/flag** - the purpose audit (Mazhron 2026-09-13: "Claude should
+  always read-only -> Flag -> Explain"). One kit thing at a time: read it
+  without editing, compare what its PURPOSE line says with what it does,
+  color it GREEN (does what it says, nothing more) / YELLOW (matches in
+  substance, something is off) / RED (does what it does not say, or
+  crosses a law - Mazhron sees it first), then file the entry with
+  `tools/purpose_audit.py --flag` into the kit's FLAGS.md (SAYS / DOES /
+  FLAG, hashed to the version reviewed, tallied at the top). Any Claude
+  may flag; a missing header is rewritten by script afterwards, never by
+  hand in the audit turn.
+
 ## THE SKILLS RULE (standing, Mazhron 2026-09-03)
 
 When a ritual or law is BORN or AMENDED, its skill is added or updated IN
@@ -116,3 +135,8 @@ Everwood-specific except named examples (marked "in Everwood").
   correction ritual that records the words and asks for the intent at
   once; the intent log compares Claude's reading with the owner's
   (INTENT_METHOD.md).
+- 2026-09-13 (kit v1.19): /flag joins the shelf - the purpose audit's
+  ritual (read-only, flag green / yellow / red, explain, file in
+  FLAGS.md). Nine skills. Every SKILL.md now carries the format header
+  (PURPOSE / INTENT after the title) - the format guard blocks a skill
+  edit without it.

@@ -28,9 +28,17 @@ API record's usage (input + cache_read + cache_creation) IS the live
 context load - and warns once less than 80% of the auto-compact budget
 remains (urgent under 30%). Calibration 2026-09-04: the CEO's UI read
 "44% remaining" at a measured 518k context -> a ~1.0M window with
-auto-compact near 925k; override per-machine with PROJECT_CTX_COMPACT
+auto-compact near 925k; override per-machine with EVERWOOD_CTX_COMPACT
 (tokens) if the plan/window differs. Probe failure is SILENT (headless
 runs, WS2 paths) - the task counter never depends on it.
+
+PURPOSE: Track the checkpoint task counter and the live context gauge: tick,
+  show status, or reset the count, warning at 8 tasks and dire at 15, and
+  warning again when the session's live context nears the auto-compact
+  budget.
+INTENT: the CEO's rule 2026-09-04: regardless of the tasks 3/8, 5/8, if the
+  remaining percent before auto compact hits 80 percent remaining, suggest a
+  checkpoint and clear.
 
 Search keys: checkpoint counter, task count, clear warning, context budget,
 context gauge, auto compact.
@@ -72,7 +80,7 @@ def save(counts):
             fh.write("%s | %d | %s\n" % (ws, n, when))
 
 
-COMPACT_BUDGET = int(os.environ.get("PROJECT_CTX_COMPACT", "925000"))
+COMPACT_BUDGET = int(os.environ.get("EVERWOOD_CTX_COMPACT", "925000"))
 
 # THE WORK FINGERPRINT (the Stop hook's "did anything change?" test).
 HOOK_STATE = os.path.join(ROOT, ".claude", "hooks_state.json")  # gitignored

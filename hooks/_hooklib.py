@@ -10,6 +10,11 @@ call and feeds the reason back; a Stop "block" refuses to end the turn
 once. Wiring lives in .claude/settings.json (checked in - travels to both
 workstations). Everything here is import-only.
 
+PURPOSE: Shared plumbing every hook imports: reads the harness's JSON from
+  stdin, emits JSON back for deny, block or context decisions, and resolves
+  the project version; import-only, no side effects on its own.
+INTENT: are there any hooks we could create and add to our workflows?
+
 Search keys: hooks, harness hooks, settings.json, hook input, deny, block.
 See also: docs/systems/tooling.md (the hooks section); HOOKS_METHOD.md
 (portable method); tools/checkpoint.py (the counter the Stop hook ticks).

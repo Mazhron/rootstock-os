@@ -35,6 +35,15 @@ Outputs:
 Usage:  python tools/wiki_heat.py [--days 30] [--top 20] [--no-cache]
         # in run_all's metrics group
 
+PURPOSE: Mines the harness transcripts for read events against wiki markdown
+  files and sections, reports file and section read counts plus hot and cold
+  sections, and classifies cold sections by why they are cold using git
+  activity in their code areas; it never moves anything.
+INTENT: the CEO's ruling 2026-09-10: 'be certain that you are learning why
+  we're not referencing parts of the wiki ... in a game situation, we only
+  touch certain files at certain times ... we built the wiki not only for
+  your reference, but for a human reference.'
+
 Search keys: wiki heat, read counts, cold sections, cold shelf candidates,
 transcript mining.
 See also: docs/systems/tooling.md (the wiki tooling); WIKI_METHOD.md (the
@@ -59,7 +68,7 @@ CACHE_VERSION = 1
 
 SENTINEL_EOF = 10**9  # "to EOF" upper bound for an open-ended section read
 
-# WHY COLD (Mazhron's ruling 2026-09-10: "be certain that you are learning
+# WHY COLD (the CEO's ruling 2026-09-10: "be certain that you are learning
 # why we're not referencing parts of the wiki ... in a game situation, we
 # only touch certain files at certain times ... we built the wiki not only
 # for your reference, but for a human reference"). Every wiki file maps to
@@ -598,7 +607,7 @@ def main():
                  "code area over %d days + the last one | when the doc was last opened) - "
                  "active-unread (code moved AFTER the doc was last opened) is the only "
                  "class worth a look; current, dormant, process, reference and archive "
-                 "cold is expected in a game project (Mazhron 2026-09-10)" % args.days)
+                 "cold is expected in a game project (the CEO 2026-09-10)" % args.days)
     lines.extend(why_lines if why_lines else ["(none)"])
     lines.append("")
     lines.append("== SUMMARY")

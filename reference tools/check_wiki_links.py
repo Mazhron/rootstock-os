@@ -28,6 +28,14 @@ This script is warn-only by law: it never deletes anything, only regenerates
 its own two output files (docs/history/wiki_links.txt overwritten each run,
 docs/history/wiki_link_runs.txt appended to).
 
+PURPOSE: Warn-only link checker for the knowledge wiki: scan repo-root,
+  docs/systems and docs/cold markdown for the four cross-reference forms,
+  resolve each against the repo, and report dead links plus See-also
+  hygiene.
+INTENT: keeps the wiki's cross-reference web honest as it grows without
+  deleting or blocking anything, so dead links surface for the manager to
+  fix by hand.
+
 Search keys: wiki links, dead links, see also, link checker, hygiene.
 See also: docs/systems/tooling.md (the wiki tooling); WIKI_METHOD.md (the
 conventions); tools/run_all.py (check group).
