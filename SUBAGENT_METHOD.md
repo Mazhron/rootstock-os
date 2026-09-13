@@ -43,7 +43,7 @@ diet guard hook says the size at the moment of the read (warn-only), and
 the usage sheet's daily line grades the habit. The exception is an edit
 that needs the exact text. Full rule: WIKI_METHOD.md "The read diet".
 
-## The six laws
+## The seven laws
 
 1. THE BRIEF IS EVERYTHING. Employees know NOTHING - no chat history, no
    project lore. A brief is a work order: exact files/paths, exact spec,
@@ -166,7 +166,7 @@ silently refuse.
 1. Ask the CEO: who manages, which employee models are available, and where
    the delegation file should live.
 2. Create the project's SUBAGENTS file with: the org chart (as answered),
-   the six laws, a first-draft assignments table for THIS project's task
+   the seven laws, a first-draft assignments table for THIS project's task
    types, an empty ledger + tally.
 3. Index it wherever the project indexes its knowledge (one line), so every
    session finds it without scanning.
