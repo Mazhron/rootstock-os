@@ -196,6 +196,14 @@ wiki_heat.py (read counts per section from the transcripts, metrics
 group), ledger_trends.py (ledger tails vs thresholds -> PROPOSE lines at
 standup; nothing applied). Wire them when the wiki has a few weeks of
 reads to measure; the thresholds table is the CEO's to tune.
+THE README GATE (kit v1.17, reference tools/readme_lint.py +
+readme_audit.py): only for a project that publishes a kit or keeps a
+public README whose facts derive from files. The lint derives every
+countable claim (counts, the box table, the version line, a claims table
+of past prose slips) from the source files and the publish script refuses
+on a mismatch; every graft-log entry names the README section it touched;
+the audit ledger + ledger_trends rule 7 propose the next human
+cross-reference. Skip it whole otherwise.
 THE HYGIENE GUARD (kit v1.16, hooks/hygiene_guard.py + HOOKS_METHOD.md
 Tier 3): the first PostToolUse hook. Rewrite its CONFIG block for the
 project (portable file names, the kit folder, the core file + lint, the

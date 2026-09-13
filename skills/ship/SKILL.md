@@ -21,7 +21,9 @@ Run after EVERY completed batch of work; the user should never have to ask.
    zips - old versions are the "before" side of dev-log comparisons.
 6. Kit sync (projects that publish a kit): if the batch touched any
    future-project-kit file, run the kit sync script (in Everwood:
-   `python tools/sync_kit_repo.py` pushes the public Rootstock repo).
+   `python tools/sync_kit_repo.py` pushes the public Rootstock repo; it
+   REFUSES while the README's version lags or the README parity lint
+   fails - fix the README or the kit, never bypass).
 7. The checkpoint counter ticks itself (Stop hook) - relay any warning
    the hook prints; never tick by hand (it double-counts). Hookless
    machines only: `python tools/checkpoint.py --tick`.

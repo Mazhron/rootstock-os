@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.16** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.17** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -43,6 +43,11 @@ to graft it onto a project's own files, whatever they are named there.
    changelog records what was grafted.
 
 ## The entries
+
+Every entry carries WHAT (the concept), CARRIES (the kit files that hold
+it), GRAFT (how it lands on an installed project's own files) and, from
+v1.17 on, README (the public-README section the concept touched, or
+"none, wording only" - the parity lint refuses a newest entry without it).
 
 ### v1.0 - 2026-09-03 - The public release
 WHAT: the four pillars as first published: the knowledge wiki
@@ -498,3 +503,47 @@ the public README and the version check to its sync script. Copy the
 /preserve skill and list it on the shelf. A project with no player-
 facing text keeps the DASH rule's pattern list empty. Nothing else
 moves.
+
+### v1.17 - 2026-09-13 - The README gate (parity lint, graft README line, audit cadence)
+WHAT: the 09-13 four-employee audit of the public README found three
+prose slips the v1.16 version check could not see (a law count still
+"six", settings.json sent to the wrong folder, a mechanic misdescribed)
+and a page of mechanics nobody had been asked to write. The CEO: "What
+can we do to prevent the Readme from falling behind so far and missing
+information like that in the future?" Three layers, cheapest first.
+(1) THE PARITY LINT: a script derives every countable README fact from
+the kit folder itself - the law count from the delegation method's
+numbered list (and its heading's own number word), the skills from the
+skills dir (count word + every /name), the hooks from the hooks dir, the
+reference-tool count, every box-table row against the kit's top level
+and back, the version line - plus a small CLAIMS table of grep-able
+prose facts (a must-match and a must-not-match per slip already seen).
+The kit sync REFUSES to push on any FAIL; the check group runs it; a
+ledger line per run. (2) THE GRAFT README LINE: every graft entry gains
+a fourth field, README, naming the public-README section the concept
+touched or "none, wording only"; the lint fails while the newest entry
+lacks it, so "did this reach the front page?" is decided when the
+concept ships, not remembered later. (3) THE AUDIT CADENCE: the audit
+itself (read-only employees compare the README against every method
+file, the skills, the hooks and the front door) is ledgered with
+`--record`; ledger_trends PROPOSES the next one at standup when the kit
+folder has moved past a commit count or an age since the last line
+(owner's thresholds). Lesson: a version line is one fact; a README is
+a hundred, and the ones that drift are the ones no script reads.
+CARRIES: reference tools/readme_lint.py (+ its refusal in the kit sync
+script and its check-group line), reference tools/readme_audit.py,
+reference tools/ledger_trends.py (rule 7 + two thresholds), this file's
+README field (from this entry on), the process registry's kit entry
+(step 3 rewritten) and its new "Audit the public README" entry.
+GRAFT: a project that publishes its own kit or keeps any public README
+whose facts derive from files: copy readme_lint.py, rewrite its CONFIG
+block (README path, source-of-truth files, box heading, CLAIMS rows),
+call it from the publish/sync script as a refusal, add it to the check
+group, run `--selftest`. Add the README field to the project's own
+graft-log entries from its next entry on. Copy readme_audit.py, graft
+rule 7 and the two thresholds into the project's ledger_trends, record
+the last audit (or let the "none on record" proposal ask for the
+first). A project with no public README skips this entry whole.
+README: "Updating an installed project" (the README field + the gate
+sentence), "What is in the box" (reference tools: sixteen), the
+"Kit version:" line.

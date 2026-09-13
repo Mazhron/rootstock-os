@@ -24,6 +24,9 @@ Proposals (each names its ledger and the number that crossed):
                     10 lines -> the escalation rule (SUBAGENTS rule 6)
   compact_runs.txt  >= N compactions in the last 7 days -> checkpoint
                     earlier
+  readme_audit_runs.txt  >= N kit-folder commits or >= N days since the last
+                    README audit -> run the four-employee cross-reference
+                    (tools/readme_audit.py; the lint is the mechanical layer)
   delete_grants.txt / retired_files.txt  informational counts
 When the set of proposals differs from the last run's, one line goes to
 docs/history/proposal_runs.txt so the loop has its own history.
@@ -49,6 +52,8 @@ THRESHOLDS = {
     "cold_sections": 10,        # cold sections reported by wiki_heat
     "employee_correction_pct": 25,  # SUBAGENTS rule 6
     "compactions_7d": 2,        # compactions inside the last 7 days
+    "readme_audit_kit_commits": 12,  # kit-folder commits since the last README audit
+    "readme_audit_days": 30,         # days since the last README audit
 }
 
 
@@ -158,6 +163,26 @@ def proposals(th=THRESHOLDS):
         out.append("PROPOSE (compact_runs.txt): %d compactions in the last 7 days - "
                    "sessions run past the gauge; checkpoint at the first ADVISED line."
                    % len(comps))
+    # 7. readme_audit_runs.txt (Mazhron 2026-09-13: the README's third layer)
+    # The parity lint (tools/readme_lint.py) catches facts a script can
+    # derive; only a four-employee audit catches an answer the wiki holds
+    # that the README never says. Propose one when the kit has moved past
+    # a commit count or an age since the last recorded audit.
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "tools"))
+        import readme_audit  # noqa: E402 - sibling script, same folder
+        stamp, days, commits = readme_audit.status()
+        if stamp is None:
+            out.append("PROPOSE (readme_audit_runs.txt): no README audit on record - run the "
+                       "four-employee cross-reference (WORKFLOWS.md 'Audit the public README') "
+                       "and `python tools/readme_audit.py --record \"...\"`.")
+        elif commits >= th["readme_audit_kit_commits"] or (days or 0) >= th["readme_audit_days"]:
+            out.append("PROPOSE (readme_audit_runs.txt): %d kit-folder commit(s) and %s day(s) "
+                       "since the last README audit (%s) - the lint keeps the counts honest, "
+                       "an audit finds the answers the README never got; run the four-employee "
+                       "cross-reference and `--record` it." % (commits, days, stamp))
+    except Exception:  # noqa: BLE001 - a missing helper never breaks standup
+        pass
     return out
 
 

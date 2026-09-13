@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.16** (2026-09-11). The graft log `UPGRADES.md` is the
+Kit version: **v1.17** (2026-09-13). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -433,8 +433,16 @@ own knowledge into those files - overwriting them would destroy the very
 thing the system protects. So the kit updates CONCEPTS, not files:
 
 - The kit is versioned, and `UPGRADES.md` is its **graft log**: one entry
-  per concept added, each with WHAT it is, which kit files CARRY it, and
-  how to GRAFT it onto an existing install.
+  per concept added, each with WHAT it is, which kit files CARRY it, how
+  to GRAFT it onto an existing install, and which README section it
+  touched (so a concept cannot ship without deciding whether this page
+  needs to know).
+- This page is checked, not trusted. A parity lint derives every count on
+  it (laws, skills, hooks, scripts, the box table, the version line) from
+  the kit's own files, and the kit's publish script refuses to push while
+  any of them disagree. A ledgered audit cadence proposes a fresh
+  cross-reference, by employees who read every method file against this
+  page, whenever the kit has moved far enough since the last one.
 - Installing stamps a line into the project's CLAUDE.md:
   `Rootstock vX.Y installed <date> | updates: <policy>`.
 - To update: pull this repo (or hand Claude the new folder) and say
@@ -493,7 +501,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `hooks/` | The nine hook scripts (drop into `tools/hooks/`) plus the settings template (merge into `.claude/settings.json`) |
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
-| `reference tools/` | Fourteen working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line), update check. Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant) |
+| `reference tools/` | Sixteen working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line), update check. Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `GODOT_FIELD_NOTES.md` | Domain example: hard-won Godot engine lessons (skip if not Godot) |
 | `CLICKER_DESIGN_NOTES.md` | Domain example: idle/clicker genre lessons (skip if not that genre) |

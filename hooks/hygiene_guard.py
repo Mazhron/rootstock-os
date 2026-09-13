@@ -118,7 +118,7 @@ def kit_refresh(r, run_lint=True):
         return None
     if r in KIT_MDS:
         return ("KIT REFRESH: %s is a portable original - refresh '%s/%s' in this batch; "
-                "UPGRADES.md entry + version bump if a concept changed; %s; then %s"
+                "UPGRADES.md entry (WHAT/CARRIES/GRAFT/README) + version bump if a concept changed; %s; then %s"
                 % (r, KIT_DIR, name, README_HINT, KIT_SYNC))
     if r.startswith(SKILLS_DIR + "/") and name == "SKILL.md":
         skill = r.split("/")[2] if r.count("/") >= 3 else name
