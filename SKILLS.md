@@ -49,6 +49,21 @@ the skills operationalize).
   yes, the restatement, the second yes, all four recorded verbatim by
   `tools/delete_grant.py`, then the ONE command. Never invoked by an
   employee; never raises a limit or routes around the preserve guard.
+- **/intent** - files the WHY of a ruling in Mazhron's own words (Mazhron
+  2026-09-13: "there should be a record of that to compare vs my
+  intent"). Asks "What was the intent?" when it is not already stated,
+  files a dated ASKED/WHY/GENERALIZES-TO/LIVES-IN section in INTENT.md,
+  then resolves the open claim (`tools/intent_log.py --resolve ...
+  --verdict same|similar|different`) so Claude's reading is measured
+  against Mazhron's actual words. Never invoked by an employee.
+- **/correct** - the correction ritual (Mazhron 2026-09-13's feedback-loop
+  ask). Asks "What about the last thing I did needs correcting?", records
+  Mazhron's words BEFORE fixing anything (`tools/correction_log.py
+  --record`, which resolves the matching intent claim DIFFERENT by
+  itself), fires /intent's "what was the intent?" question while the
+  mismatch is fresh, then fixes and logs `--fixed`. /intent and /correct
+  form one loop: a wrong build, the words that named it wrong, the why
+  behind the right answer, the fix.
 - **hooks** are the shelf's involuntary twin (HOOKS_METHOD.md, 2026-09-06):
   a skill runs when invoked; a hook runs when the harness reaches a moment.
   /standup now fires itself at session start, the checkpoint tick fires
@@ -96,3 +111,8 @@ Everwood-specific except named examples (marked "in Everwood").
   grant, in that order. Same batch: the hygiene guard hook backs THE
   SKILLS RULE mechanically - editing a SKILL.md returns the kit-refresh
   line (copy + shelf entry + README) at the edit.
+- 2026-09-13 (Mazhron's intent + correction ruling): /intent and /correct
+  join the shelf - the why of every ruling in the owner's words, the
+  correction ritual that records the words and asks for the intent at
+  once; the intent log compares Claude's reading with the owner's
+  (INTENT_METHOD.md).

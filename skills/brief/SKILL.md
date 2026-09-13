@@ -35,8 +35,18 @@ appending/auditing). Then compose the brief with ALL of:
    delete command; move or retire instead (tools/retire.py,
    tools/cold_shelf.py); a harness hook refuses writes containing
    deletion calls. If the task seems to need a deletion, STOP and report."
+8. THE INTENT LINE (rule 14, 2026-09-13): if the task rests on a ruling
+   whose why matters, `Grep "^## " INTENT.md` and PASTE the relevant
+   section into the brief (never "see INTENT.md"). Every brief ends by
+   requiring "INTENT: <one line: what you understood the task to be, in
+   your own words>" after the STAMP/TOOLS/WORKFLOW lines.
 
 AFTER THE EMPLOYEE RETURNS
+- Log the INTENT line as a claim (`python tools/intent_log.py --claim
+  --actor <model> --task "..." --mine "<the line>"`) and resolve it once
+  verified (SAME / SIMILAR / DIFFERENT, source inferred or stated); a
+  correction goes through /correct (tools/correction_log.py, actor = the
+  model) which resolves the claim DIFFERENT itself.
 - Verify cheap, in order: tests/probes first, spot-read the diff second,
   full read only on smell.
 - Watch for fabrication (it has happened): claims must match the diff.

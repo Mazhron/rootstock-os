@@ -1,6 +1,6 @@
 # UPGRADES.md - the graft log (how Rootstock updates without overwriting)
 
-CURRENT KIT VERSION: **v1.17** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.18** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -547,3 +547,56 @@ first). A project with no public README skips this entry whole.
 README: "Updating an installed project" (the README field + the gate
 sentence), "What is in the box" (reference tools: sixteen), the
 "Kit version:" line.
+
+### v1.18 - 2026-09-13 - The intent loop (INTENT.md, the comparison ledger, /correct, the systems audit)
+WHAT: the CEO, the same morning as the README gate: "I believe Intent would
+help cover the 'why' of something which may help you or any Claude make
+better decisions in the future. It's not as important that you know to
+make looping scripts because you were told to, it's almost more important
+that you understand we make looping scripts because 1.) It decreases your
+token usage, 2.) It's done the same every time and very structured, 3.)
+It's something that triggers without asking." Four parts. (1) THE INTENT
+FILE: one INTENT.md per project, one section per ruling - ASKED (the
+owner's prompt verbatim), WHY (the owner's numbered reasons verbatim),
+GENERALIZES TO (the manager's reading, marked as such), LIVES IN; a brief
+pastes the section; a missing section IS the question to ask. (2) THE
+COMPARISON LEDGER: before building, the manager logs its OWN reading of
+the ask (a CLAIM); employees state theirs in a stamp line; when the
+owner's intent is known the claim resolves SAME / SIMILAR / DIFFERENT
+with its source named (stated / correction / inferred - self-judged
+agreement is counted apart so it never inflates the rate). A script turns
+the log into day / week / month / actor agreement rates - txt for Claude,
+csv + xlsx for a human - and calls the trend IMPROVING / STEADY /
+DECLINING. The owner's why, verbatim: "we 1.) Want to have real data, 2.)
+We want to compare past to present, 3.) We want to know if we are
+improving, staying the same, or declining because each one of those will
+tell us something about our feedback loop." (3) THE CORRECTION RITUAL:
+/correct asks "What about the last thing I did needs correcting?",
+records the owner's words verbatim, resolves the open claim DIFFERENT by
+itself, then asks "What was the intent?" and /intent files the why - one
+feedback loop. (4) THE SYSTEMS AUDIT: the loop measured but never thought;
+a ledgered, cadence-proposed audit by a handful of read-only employees
+in four lanes (tokens, process, knowledge, features) returns proposals
+only. Three new trend rules propose on a declining agreement, stale
+claims, clustered corrections and audit age. Lesson: knowing the rule
+lets a Claude comply; knowing the why lets it decide the case the rule
+never named.
+CARRIES: INTENT_METHOD.md (the portable method + bootstrap); reference
+tools/intent_log.py, correction_log.py, intent_report.py,
+systems_audit.py, ledger_trends.py (rules 8-10 + four thresholds);
+skills/intent and skills/correct (+ SKILLS.md shelf entries); the /brief
+skill's step 8 (paste the intent, require the INTENT line); the front
+door's THE INTENT LOOP step.
+GRAFT: create INTENT.md from INTENT_METHOD.md's format with the first
+ruling the day one is made (never a backfill sweep); copy the four
+scripts, adapt paths; add intent_report to the metrics loop; graft rules
+8-10 + thresholds into the project's ledger_trends; copy the two skills
+and list them on the shelf; add the employee INTENT stamp line to the
+delegation rules and the paste-the-section step to the brief ritual; add
+INTENT.md and INTENT_METHOD.md index lines to the core file. A project
+with no owner rulings yet still creates the empty INTENT.md - the first
+correction fills it.
+README: "4. Lossless Sessions" (eight rituals, /intent and /correct), a
+new "The intent loop (INTENT_METHOD.md)" section after the hooks, "What
+is in the box" (INTENT_METHOD.md row, reference tools: twenty), the "Kit
+version:" line.

@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.17** (2026-09-13). The graft log `UPGRADES.md` is the
+Kit version: **v1.18** (2026-09-13). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -263,8 +263,9 @@ because context lives in files, not in the conversation.
   session re-arms in about 15-20k tokens instead of dragging hundreds of
   thousands.
 
-Six rituals ship as Claude Code skills, invocable as slash commands:
-`/standup`, `/checkpoint`, `/ship`, `/brief`, `/runaway`, and `/preserve`
+Eight rituals ship as Claude Code skills, invocable as slash commands:
+`/standup`, `/checkpoint`, `/ship`, `/brief`, `/runaway`, `/preserve`,
+`/intent`, and `/correct`
 (the preservation law's front: retire a file, shelve a wiki section, or
 walk the twice-acknowledged delete grant, in that order). `/ship` is the
 one you will use most: sanity-check tests (trusting the ledger), bump the
@@ -334,6 +335,30 @@ The contract, plainly, because a worried reader asks these first:
   refuses an employee's report when its stamp is missing, and a
   notification hook that toasts the OS when the manager is waiting on
   you. Neither ships until the CEO asks.
+
+### The intent loop (INTENT_METHOD.md)
+
+A rule tells Claude what to do; the reason tells it what to do in the
+case the rule never named. So every ruling gets a section in the
+project's INTENT.md: the owner's ask verbatim, the owner's numbered
+reasons verbatim, the manager's reading marked as the manager's, and
+where the rule lives. Before building, the manager logs its OWN reading
+of the ask; employees state theirs in a stamp line. When the owner's
+intent is known, the claim resolves SAME, SIMILAR or DIFFERENT, with its
+source named (stated, revealed by a correction, or self-judged, which is
+counted apart so it never inflates the rate). A script turns that log
+into day, week and month agreement rates per actor, a text file for
+Claude and a spreadsheet for you, and calls the trend improving, steady
+or declining. The owner's reason, in the owner's words: real data, past
+against present, and a trend that says whether the feedback loop works.
+
+`/correct` closes the loop from the other side: it asks what about the
+last thing needs correcting, records your words verbatim, marks the
+claim DIFFERENT, then asks "What was the intent?" and `/intent` files
+the why while the mismatch is fresh. A systems audit, ledgered and
+proposed on a cadence, has read-only employees look at tokens, process,
+knowledge and shipped features and return proposals only. Nothing in
+this loop applies anything by itself; the owner decides.
 
 ### The two companions (WORKFLOW_METHOD.md, WORKSTATION_METHOD.md)
 
@@ -496,12 +521,13 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `REPORTING_METHOD.md` | Scripts + ledgers: the three rules, runner spec, bootstrap |
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, seven laws, assignments table, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
-| `skills/` | The six skills, ready to drop into `.claude/skills/` |
+| `skills/` | The eight skills, ready to drop into `.claude/skills/` |
 | `HOOKS_METHOD.md` | The hooks: the contract, the nine kit hooks, tiers, bootstrap |
 | `hooks/` | The nine hook scripts (drop into `tools/hooks/`) plus the settings template (merge into `.claude/settings.json`) |
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
-| `reference tools/` | Sixteen working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line), update check. Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger) |
+| `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |
+| `reference tools/` | Twenty working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line), update check. Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `GODOT_FIELD_NOTES.md` | Domain example: hard-won Godot engine lessons (skip if not Godot) |
 | `CLICKER_DESIGN_NOTES.md` | Domain example: idle/clicker genre lessons (skip if not that genre) |

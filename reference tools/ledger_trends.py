@@ -54,6 +54,10 @@ THRESHOLDS = {
     "compactions_7d": 2,        # compactions inside the last 7 days
     "readme_audit_kit_commits": 12,  # kit-folder commits since the last README audit
     "readme_audit_days": 30,         # days since the last README audit
+    "intent_pending_days": 7,        # an intent claim left PENDING this long
+    "corrections_7d": 3,             # corrections recorded inside the last 7 days
+    "systems_audit_days": 30,        # days since the last systems audit
+    "systems_audit_day_files": 10,   # day files written since the last systems audit
 }
 
 
@@ -182,6 +186,52 @@ def proposals(th=THRESHOLDS):
                        "an audit finds the answers the README never got; run the four-employee "
                        "cross-reference and `--record` it." % (commits, days, stamp))
     except Exception:  # noqa: BLE001 - a missing helper never breaks standup
+        pass
+    # 8-10. THE INTENT LOOP (Mazhron 2026-09-13, INTENT.md "Intent tracking"):
+    # the agreement trend, stale claims, clustered corrections, and the
+    # systems-audit cadence. Real data, past vs present, improving or not.
+    runs = data_lines("intent_runs.txt")
+    if runs:
+        last = runs[-1]
+        if "DECLINING" in last:
+            out.append("PROPOSE (intent_runs.txt): the 7-day intent agreement is DECLINING (%s) "
+                       "- Claude's reading of asks is drifting from Mazhron's; read the "
+                       "DIFFERENT lines in docs/history/intent_log.txt and file the missing "
+                       "INTENT.md sections (the why) before the next build." % last.split(" | ")[-1])
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "tools"))
+        import intent_log  # noqa: E402
+        st, order = intent_log.state()
+        cutoff = (datetime.datetime.now() - datetime.timedelta(
+            days=th["intent_pending_days"])).strftime("%Y-%m-%d %H:%M")
+        stale = [i for i in order if st[i]["verdict"] == "PENDING" and st[i]["when"] < cutoff]
+        if stale:
+            out.append("PROPOSE (intent_log.txt): %d intent claim(s) pending past %d days (%s) - "
+                       "resolve each (`python tools/intent_log.py --resolve <id> ...`); an "
+                       "unresolved claim is a comparison never made."
+                       % (len(stale), th["intent_pending_days"], ", ".join(stale[:5])))
+    except Exception:  # noqa: BLE001
+        pass
+    week = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
+    corr = [ln for ln in data_lines("corrections.txt") if ln.startswith("RECORD | ")
+            and ln.split(" | ")[2][:10] >= week]
+    if len(corr) >= th["corrections_7d"]:
+        out.append("PROPOSE (corrections.txt): %d corrections in the last 7 days - a law or an "
+                   "INTENT.md section is missing; read their 'what was wrong' words together "
+                   "and name the pattern to Mazhron." % len(corr))
+    try:
+        import systems_audit  # noqa: E402
+        stamp, days, dfs, commits = systems_audit.status()
+        if stamp is None:
+            out.append("PROPOSE (systems_audit_runs.txt): no systems audit on record - run the "
+                       "four-lane audit (WORKFLOWS.md 'Audit the operating system') and "
+                       "`python tools/systems_audit.py --record \"...\"`.")
+        elif (days or 0) >= th["systems_audit_days"] or dfs >= th["systems_audit_day_files"]:
+            out.append("PROPOSE (systems_audit_runs.txt): %s day(s) and %d day file(s) since the "
+                       "last systems audit (%s) - run the four-lane audit (tokens, process, "
+                       "knowledge, features) and `--record` it; proposals only, Mazhron decides."
+                       % (days, dfs, stamp))
+    except Exception:  # noqa: BLE001
         pass
     return out
 

@@ -196,6 +196,16 @@ wiki_heat.py (read counts per section from the transcripts, metrics
 group), ledger_trends.py (ledger tails vs thresholds -> PROPOSE lines at
 standup; nothing applied). Wire them when the wiki has a few weeks of
 reads to measure; the thresholds table is the CEO's to tune.
+THE INTENT LOOP (kit v1.18, INTENT_METHOD.md + reference tools/intent_log.py,
+correction_log.py, intent_report.py, systems_audit.py + skills/intent,
+skills/correct): create the project's INTENT.md from the method's format
+the day the first ruling is made (never a backfill); copy the four
+scripts and adapt their paths; add intent_report to the metrics loop and
+rules 8-10 to ledger_trends; list /intent and /correct on the shelf; add
+the employee INTENT stamp line to the delegation rules and the
+paste-the-section step to the brief ritual. The manager logs its own
+reading of every non-trivial ask BEFORE building; the report says whether
+agreement with the CEO improves.
 THE README GATE (kit v1.17, reference tools/readme_lint.py +
 readme_audit.py): only for a project that publishes a kit or keeps a
 public README whose facts derive from files. The lint derives every
