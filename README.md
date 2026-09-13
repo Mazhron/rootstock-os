@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.19** (2026-09-13). The graft log `UPGRADES.md` is the
+Kit version: **v1.20** (2026-09-13). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -333,8 +333,9 @@ The contract, plainly, because a worried reader asks these first:
 - **A broken hook CAN lock you out**, which is the one real hazard: a
   hook that exits with the blocking code (a mis-typed path, a missing
   interpreter) refuses every tool call, not just the one it meant to
-  guard. The fix is one line in settings.json; every kit hook is tested by
-  piping a fake event into it before it is wired.
+  guard. The fix is one line in settings.json; every kit hook answers
+  `--selftest` and is tested by piping a fake event into it before it is
+  wired.
 - **Turning one off** is removing its line from settings.json. No hook has
   state that survives being unwired.
 - **Cost.** Tokens: none (a hook is a script; only its one-line verdict
@@ -395,6 +396,10 @@ yours:
   references every flag, hashed to the exact version reviewed, tallied at
   the top, and open to any reviewer's findings by pull request. `/flag`
   walks the ritual; `purpose_audit.py --pending` lists what needs one.
+  The kit's own first audit (v1.19) flagged 58 things: 53 green, 5
+  yellow, 0 red. v1.20 closed all five the next morning, one of them by
+  the first independent read of the front door, which found the header
+  undersold what the file installs. Three author passes had missed it.
 
 `CONTRIBUTING.md` carries both laws in full, plus what a contributed
 update looks like (the header, the graft-log entry, a passing lint, a

@@ -1,4 +1,4 @@
-Rootstock hooks (kit v1.19). Install per HOOKS_METHOD.md 'Bootstrap':
+Rootstock hooks (kit v1.20). Install per HOOKS_METHOD.md 'Bootstrap':
 
 PURPOSE: Installation notes for the Rootstock hooks folder: what each hook
   file needs filled in or wired (bash_guard.py's PROJECT RULES,
@@ -20,11 +20,13 @@ warns on the rest; nothing for the CEO to type. The CEO tunes the
 numbers through the /runaway skill (skills/runaway): `--limits` shows,
 `--set key=value` writes .claude/fanout_limits.json - COMMIT that file,
 it is the CEO's setting and travels with the repo.
-diet_guard.py (Tier 2c, kit v1.12, warn-only): nothing to fill in.
-Wire its Read|Bash|PowerShell PreToolUse entry (settings.json has it) and
-run `python tools/hooks/diet_guard.py --selftest`. It says a file's size
-before a whole read past ~10k tokens and the missing limiter on a chatty
-shell command; it never refuses.
+diet_guard.py (Tier 2c, kit v1.12; INDEX FIRST kit v1.15): nothing to
+fill in. Wire its Read|Bash|PowerShell PreToolUse entry (settings.json
+has it) and run `python tools/hooks/diet_guard.py --selftest`. It refuses
+exactly once: the FIRST whole read of a file past ~10k tokens per session
+comes back as the file's own index; the same call repeated passes with a
+warning. Everything else is warn-only: a file's size before a later big
+read, the missing limiter on a chatty shell command.
 preserve_guard.py (Tier 2d, kit v1.14, a REFUSAL): nothing to fill in.
 Wire its Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit PreToolUse
 entry (settings.json has it), run `python tools/hooks/preserve_guard.py

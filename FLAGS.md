@@ -33,34 +33,34 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-13 11:57 | items 58 | GREEN 53 | YELLOW 5 | RED 0 | unflagged 0 | stale 0
+Updated 2026-09-13 12:22 | items 58 | GREEN 58 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST, CLAUDE.md | YELLOW | ok | fable | 2026-09-13 11:57 |
+| 0 - READ ME FIRST, CLAUDE.md | GREEN | ok | sonnet-fd1 | 2026-09-13 12:20 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | fable | 2026-09-13 11:57 |
+| HOOKS_METHOD.md | GREEN | ok | fable | 2026-09-13 12:22 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| UPGRADES.md | GREEN | ok | fable | 2026-09-13 11:57 |
+| UPGRADES.md | GREEN | ok | fable | 2026-09-13 12:22 |
 | WIKI_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | WORKSTATION_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
-| hooks/README.txt | GREEN | ok | fable | 2026-09-13 11:57 |
+| hooks/README.txt | GREEN | ok | fable | 2026-09-13 12:22 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
-| hooks/diet_guard.py | YELLOW | ok | sonnet-fmt1 | 2026-09-13 11:52 |
+| hooks/diet_guard.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/hygiene_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
-| hooks/pre_compact.py | YELLOW | ok | sonnet-fmt1 | 2026-09-13 11:52 |
+| hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
-| hooks/prompt_gauge.py | YELLOW | ok | sonnet-fmt1 | 2026-09-13 11:52 |
-| hooks/session_start.py | YELLOW | ok | sonnet-fmt1 | 2026-09-13 11:52 |
+| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-13 12:21 |
+| hooks/session_start.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/settings.json | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/stop_tick.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
@@ -433,3 +433,53 @@ FLAG: The YELLOW reason (no selftest) is fixed; the selftest proves the safety c
 SAYS: check every kit thing (a script, a hook, a skill, a method file, the hooks README, the settings template) and its repo original for the one header the filing system needs - PURPOSE, INTENT, Search keys, See also - plus the safety wiring in settings.json; report PASS/FAIL per file with the reason; on request rewrite ONLY the missing scaffold lines, never the body.
 DOES: Checks every kit thing's header and the settings wiring, rewrites only missing lines; --selftest is now required only of hooks that can refuse or block, info-only hooks get a WARN.
 FLAG: The relaxation is deliberate and documented in the code; the three WARNs are visible in every run. Re-flagged by the author.
+
+### 2026-09-13 12:19 | 0 - READ ME FIRST, CLAUDE.md | YELLOW | sonnet-fd1 | WS1 | afc159b2
+SAYS: The kit's front door: walks a receiving Claude step by step (ask the CEO first, then install the wiki, reporting and session rituals, the delegation company, and the skills shelf) so the four pillar operating system lands the same way every time.
+DOES: Walks a receiving Claude through installing Rootstock in order: asks the CEO five bootstrap questions at STEP 0, then builds the knowledge wiki at STEP 1, the reporting scripts, session rituals and workstation doc at STEP 2, the delegation company at STEP 3, the skills shelf plus a large hooks and guard system at STEP 4, points to optional boards at STEP 5, and gives the graft protocol for updating an existing install. Every reference tools, hooks, skills and root MD file it names exists in the Future Project MDs folder.
+FLAG: Yellow, not green, because PURPOSE and INTENT advertise only a four pillar operating system, wiki, reporting, delegation, skills, while STEP 4 also installs a fifth major component, the hooks and guard system, format guard, fanout guard, diet guard, preserve guard, hygiene guard, about a third of the file, unnamed in the header. The STEP 4 parenthetical skill list, standup checkpoint ship brief runaway preserve, is also stale, missing correct, intent and flag which exist in the skills folder. Nothing in the body deletes, disables a guard, or routes around a refusal, so this is a purpose line staleness issue, not a safety issue. Fix by naming the hooks system in PURPOSE as a fifth installed piece or folding it explicitly into the four pillars, and refreshing the STEP 4 skill list. This is the first non-author full-body read of this file, every earlier reviewer either wrote part of it or read only its head.
+
+### 2026-09-13 12:20 | 0 - READ ME FIRST, CLAUDE.md | GREEN | sonnet-fd1 | WS1 | 39d5c17b
+SAYS: The kit's front door: walks a receiving Claude step by step (ask the CEO first, then install the wiki, reporting and session rituals, the delegation company, the skills shelf and the hooks that enforce the laws in the harness, then the two companions and the optional boards) so the four pillar operating system and its guards land the same way every time.
+DOES: Walks a receiving Claude through installing Rootstock in order: asks the CEO five bootstrap questions at STEP 0, then builds the knowledge wiki, reporting scripts and session rituals, the delegation company, the skills shelf, and the hooks and guard system, then points to optional boards and the graft protocol for updating an existing install. Every reference tools, hooks, skills and root MD file it names exists in the Future Project MDs folder.
+FLAG: Green. This is the second read by the same non-author reviewer, after the manager fixed both prior findings. PURPOSE now names the hooks that enforce the laws in the harness and ends four pillar operating system and its guards, so the fifth component is no longer unnamed in the header. The STEP 4 skill list now reads standup checkpoint ship brief runaway preserve correct intent flag, matching every skill actually present in the skills folder. Nothing else was off in the full read, so with both spots corrected the file does what it says and nothing more.
+
+### 2026-09-13 12:21 | hooks/diet_guard.py | GREEN | fable | WS1 | 48f93ac5
+SAYS: PreToolUse guard on Read, Bash and PowerShell enforcing the read diet and output diet: warns when a shell command shape (git log, git diff, recursive listing, install) has no limiter, and on the first whole read of a file over about 10k tokens in a session it denies once and returns the file's own section or function index instead; the same call repeated afterward passes with a warning only.
+DOES: PreToolUse guard on Read, Bash and PowerShell: refuses the first whole read of a file past about 10k tokens once per session with the file's own index in the refusal, passes the same call repeated with a warning, and warns on chatty shell shapes with no limiter; state in .claude/diet_state.json; 27 in-process selftest checks.
+FLAG: The yellow reason is fixed: the docstring's opening line and its it-never-refuses sentence now say it refuses exactly once (INDEX FIRST) and warns on everything else, matching the code and the docstring's own INDEX FIRST section; the kit hooks README line was corrected the same way. Selftest 0 failed. Re-flagged by the author of the wording fix; the code did not change.
+
+### 2026-09-13 12:21 | hooks/pre_compact.py | GREEN | fable | WS1 | 8fa883d6
+SAYS: PreCompact hook that appends one ledger line per compaction (when, workstation, version, manual or auto trigger, context load, unbanked task count) to docs/history/compact_runs.txt, and on an auto trigger tells the manager the session_start hook will re-inject the standup digest right after.
+DOES: PreCompact hook: appends one ledger line per compaction to docs/history/compact_runs.txt and on an auto trigger emits a one-line notice; the module-level work now lives in main(), the line builder and the append take a ledger path, and --selftest exercises them against a temp file.
+FLAG: The yellow reason (no --selftest) is fixed by employee T-0913-YEL-1; live behavior is unchanged (same line format, same message), verified by the pipe test line in the real ledger and a diff read. Selftest 0 failed. Re-flagged by the manager who verified the diff, not its author.
+
+### 2026-09-13 12:21 | hooks/prompt_gauge.py | GREEN | fable | WS1 | 901e18d1
+SAYS: UserPromptSubmit hook that stays silent on a normal turn and, when a threshold is crossed, prints the checkpoint counter warning (8 tasks advised, 15 dire) and the context-remaining warning, plus since 2026-09-13 a KIT UNSYNCED line when a portable original is newer than its kit copy.
+DOES: UserPromptSubmit hook: silent on a normal turn; prints the checkpoint counter line at 8 and 15 tasks, the context line under 80 and 30 percent remaining, and the KIT UNSYNCED line while the kit lags; gauge_lines() is the pure threshold builder and --selftest checks its five cases.
+FLAG: The yellow reason (no --selftest) is fixed by employee T-0913-YEL-1; the threshold text is byte-identical to before, moved into gauge_lines() and main(). Selftest 0 failed; pipe test prints only the kit line at n=0. Re-flagged by the manager who verified the diff.
+
+### 2026-09-13 12:21 | hooks/session_start.py | GREEN | fable | WS1 | 22cbca42
+SAYS: SessionStart hook that runs tools/standup.py and injects its digest into the manager's context on startup, resume, /clear and after a compaction, with a header telling the manager not to re-run standup and how to relay the last exchange.
+DOES: SessionStart hook: runs tools/standup.py in a subprocess and injects its digest as additionalContext with a relay header; header_for() builds the header and --selftest checks it plus the standup script's presence without running standup.
+FLAG: The yellow reason (no --selftest) is fixed by employee T-0913-YEL-1; the header text and the subprocess call are unchanged, verified by the pipe test returning the digest JSON. Selftest 0 failed. Re-flagged by the manager who verified the diff.
+
+### 2026-09-13 12:21 | hooks/README.txt | GREEN | fable | WS1 | 712166c6
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: Installation notes for the kit hooks folder: per-hook fill-in and wiring steps, the gitignore entries, the selftest command for each guard; this batch corrected the diet guard paragraph to say it refuses once (INDEX FIRST) and warns otherwise.
+FLAG: Stale only because the diet guard paragraph changed; the new wording matches diet_guard.py's code and docstring. Re-flagged by the author of the wording fix.
+
+### 2026-09-13 12:22 | HOOKS_METHOD.md | GREEN | fable | WS1 | 3b76afb5
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: Documents the hook contract, the ten kit hooks by tier and the bootstrap; this batch appended one change-log line (v1.20: every hook answers --selftest, the diet guard wording, the front door's independent read).
+FLAG: Stale from an appended change-log line only; the line matches the three selftests and the wording fix in the hook files. Re-flagged by the author of the addition.
+
+### 2026-09-13 12:22 | UPGRADES.md | GREEN | fable | WS1 | 6df49141
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: The append-only graft log; this batch bumped the version to v1.20 and appended the entry for the closed yellows (WHAT / CARRIES / GRAFT / README).
+FLAG: Stale from the v1.20 entry only; the entry names the files that actually changed and the README sections that carry the claims, and the README lint passes at v1.20. Re-flagged by the author of the entry.
+
+### 2026-09-13 12:22 | hooks/README.txt | GREEN | fable | WS1 | 704677d6
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: Installation notes for the kit hooks folder: per-hook fill-in and wiring steps, gitignore entries, the selftest command per guard; the diet guard paragraph now says it refuses once and warns otherwise; header bumped to kit v1.20.
+FLAG: Stale from the version bump on line 1 after the earlier re-flag; nothing else changed. Re-flagged by the author.

@@ -1,6 +1,7 @@
-"""THE DIET GUARD (PreToolUse on Read|Bash|PowerShell, warn-only): the
-read diet and the output diet, enforced at the cliff edge (Tier 2c,
-the CEO's ruling 2026-09-10 - TOKEN_IDEAS 15 + 18).
+"""THE DIET GUARD (PreToolUse on Read|Bash|PowerShell; refuses ONCE per big
+whole read, warns on everything else): the read diet and the output diet,
+enforced at the cliff edge (Tier 2c, the CEO's ruling 2026-09-10 -
+TOKEN_IDEAS 15 + 18; INDEX FIRST 2026-09-10 PM, TOKEN_IDEAS 21).
 
 WHY: under the budget weights, the manager's context is written at 1.25x
 (2x on the 1-hour cache) and re-read on every later turn; tool RESULTS are
@@ -14,9 +15,12 @@ the bulk of what gets written. Two habits leak the most:
      result is context nobody asked for.
 The harness knows the file size and the command BEFORE the call runs, so
 this hook says so at the moment of the decision - the guard rail at the
-cliff edge, never a command to type. It NEVER refuses: the manager may
-have a reason (editing needs exact text). It says the number and the
-cheaper move; the daily line in the usage sheet reports the outcome.
+cliff edge, never a command to type. It refuses exactly ONCE: the first
+whole read of a big file in a session comes back as the file's own index
+(INDEX FIRST, below); the same call repeated passes with a warning,
+because the manager may have a reason (editing needs exact text).
+Everything else is warn-only. It says the number and the cheaper move;
+the daily line in the usage sheet reports the outcome.
 
 WHAT IT SAYS:
   READ DIET: <file> is ~Nk tokens (L lines, S '## ' sections) - whole read.

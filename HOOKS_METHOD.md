@@ -466,3 +466,14 @@ the manager waits on permission or idles after a long employee run.
   gauge gained the KIT UNSYNCED line the same day. Lesson: a guardrail
   for a community kit cannot depend on good faith; it is a script that
   flags, a script that rewrites, and a hook that refuses.
+- 2026-09-13 PM (kit v1.20): the first purpose audit's five yellows closed.
+  The three info-only hooks (session_start, prompt_gauge, pre_compact)
+  gained `--selftest` with no live change (module work into main(), pure
+  builders factored so a selftest never touches stdin, a real ledger or
+  the standup script); every hook in the kit now answers `--selftest`.
+  The diet guard's docstring stopped claiming it never refuses (it
+  refuses once, INDEX FIRST). The front door got its first independent
+  full read, which found the PURPOSE line undersold the hooks install
+  and a stale skill list; both fixed, then GREEN. Lesson: the audit
+  loop works on the kit's own authors - a non-author read found what
+  three author passes had not.

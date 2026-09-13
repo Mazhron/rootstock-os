@@ -2,8 +2,10 @@
 
 PURPOSE: The kit's front door: walks a receiving Claude step by step (ask
   the CEO first, then install the wiki, reporting and session rituals, the
-  delegation company, and the skills shelf) so the four pillar operating
-  system lands the same way every time.
+  delegation company, the skills shelf and the hooks that enforce the laws
+  in the harness, then the two companions and the optional boards) so the
+  four pillar operating system and its guards land the same way every
+  time.
 INTENT: the methods encode lessons already paid for, so a receiving Claude
   installs them in order instead of improvising a different architecture.
 
@@ -151,7 +153,8 @@ write-up is transcription of the performer's own report.
 
 Copy the kit's skills/ folder into the repo as .claude/skills/ and
 SKILLS.md to the repo root; index it. The skills (/standup /checkpoint
-/ship /brief /runaway /preserve) call the tools built in steps 1-3, so they go live last.
+/ship /brief /runaway /preserve /correct /intent /flag) call the tools
+built in steps 1-3, so they go live last.
 Adopt THE SKILLS RULE: a ritual born or amended updates its skill in the
 same batch.
 

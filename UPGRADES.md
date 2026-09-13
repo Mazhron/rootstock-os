@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.19** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.20** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -682,3 +682,35 @@ audit (CONTRIBUTING.md)" section after the intent loop, "What is in the
 box" (CONTRIBUTING.md + FLAGS.md rows, skills: nine, hooks: ten,
 reference tools: 23), "Questions people ask" (Can I contribute?), the
 "Kit version:" line.
+
+### v1.20 - 2026-09-13 - The first audit's yellows closed (every hook answers --selftest, the front door read independently)
+WHAT: the CEO read the five yellows from the kit's first purpose audit
+(v1.19) and said "Do it all, make it happen." (1) The three info-only
+hooks (session_start, prompt_gauge, pre_compact) now answer
+`--selftest` like every guard: module-level work moved into main(), the
+pure builders (ledger line, gauge lines, header) factored out so a
+selftest never touches stdin, a real ledger or the standup script; live
+output byte-identical. Every hook in the kit now carries a selftest,
+which the format lint already expected. (2) The diet guard's docstring
+and the hooks README stopped saying it "never refuses": it refuses once
+per big file (INDEX FIRST, v1.15) and warns on everything else. (3) The
+front door got its first full read by a reviewer who did not write it.
+The read found the PURPOSE line claimed a four-pillar install while a
+third of the file installs the hooks, and the STEP 4 skill list lacked
+/correct /intent /flag; both fixed, re-read, GREEN. FLAGS.md: 58
+flagged, 58 GREEN, 0 YELLOW, 0 RED.
+CARRIES: hooks/pre_compact.py, hooks/prompt_gauge.py,
+hooks/session_start.py (the selftests); hooks/diet_guard.py and
+hooks/README.txt (the wording); the front door's PURPOSE line and STEP
+4 list; FLAGS.md (the re-flags); HOOKS_METHOD.md change log.
+GRAFT: copy the three hooks over the installed ones if they were taken
+unchanged (their live behaviour is identical; only the structure and
+the selftest are new) - if the project adapted them, graft the main()
+split and the _selftest() by hand and keep the project's text. Reword
+the diet guard's docstring the same way if the install kept the v1.12
+wording. Re-flag whatever changed. Then the lesson, which is the real
+graft: have a non-author read the front door of YOUR install whole once;
+three author passes missed what one independent read found.
+README: "The hooks" (the contract bullet: every kit hook answers
+--selftest), "The format law and the purpose audit" (the first audit's
+outcome line), the "Kit version:" line.
