@@ -122,7 +122,7 @@ arithmetic, not anecdote: a session that clears re-reads a small context
 many times instead of a huge one, and a model that reads sections stops
 paying for whole files on every turn that follows.
 
-## The four pillars
+## The four pillars, and two companions
 
 ### 1. The Knowledge Wiki (WIKI_METHOD.md)
 
@@ -189,9 +189,14 @@ Anything repeatable becomes a SCRIPT; every result lands in a LEDGER.
 
 - **The Script Rule.** Tests, fixes, imports, exports, probes: scripted
   once, changed only to add or fix, never re-typed in chat.
-- **Ledgers.** Every run appends one labeled line to a history file. You
-  read the TAIL, never the whole file, and runs compare across versions
-  without re-reading anything.
+- **Ledgers.** Every run appends one labeled line to a history file: date
+  and time, machine (or agent), project version, what ran, the result,
+  and the failures if any. You read the TAIL, never the whole file, and
+  runs compare across versions without re-reading anything.
+- **Sheets a human opens get a spreadsheet twin.** The CSV and TXT stay
+  for grep and git diffs; the .xlsx has a frozen header, thousands
+  separators and a bold total per period. Numbers you cannot read do not
+  change behaviour.
 - **Trust the ledger.** A green test at an unchanged version is never
   re-run "for confidence". The runner warns if you try.
 
@@ -208,16 +213,33 @@ disposable contexts.
 - The manager never reads a big unfamiliar file inline (that plants it in
   the expensive context forever). An employee reads it in a throwaway
   context and returns a ten-line map.
+- **Who gets what.** An assignments table per project maps task types to
+  models, cheapest first: the cheapest model runs tests, search sweeps and
+  mechanical batch edits; the middle tier implements from a precise spec,
+  drafts doc sections and does first-pass review; the strong tier takes
+  multi-file refactors and gnarly bugs with a written plan; design,
+  architecture, rulings, verification and pushes never leave the manager.
 - Every brief is STAMPED (task, date, model), SELF-CONTAINED, and carries a
   budget line: exceed ~30 tool calls or fail the same step twice, and the
-  employee stops and reports instead of running up a bill.
+  employee stops and reports instead of running up a bill. The report ends
+  with the employee's own stamp: model, effort, tokens, confidence, and
+  the tools it used.
+- **How many at once.** A handful of employees per batch (four is the
+  habit), never a burst, never an employee that spawns employees. A task
+  that seems to need dozens is a design question for the CEO, not a
+  bigger fan-out.
 - Employees write files directly and report the diff, never paste bodies.
-- **The fabrication check.** Claims must match the diff. This is not
-  hypothetical: the method exists because a delegated audit once returned a
-  fabricated report, and the ledger caught it.
+- **The fabrication check.** Claims must match the diff, and the stamp's
+  tool count must match the harness meter: a claimed read or run with a
+  metered tool count of zero was invented. This is not hypothetical: the
+  method exists because a delegated audit once "classified" a file it
+  never opened (93k tokens of fiction, caught for about 2k).
 - **The scorecard.** An append-only performance ledger tracks every
-  employee task with correction tallies. Models are promoted or demoted on
-  data, not impressions. Failures are priced per incident.
+  employee task (who delegated, task type, model and effort, metered
+  tokens, outcome) with correction tallies. The escalation rule: when a
+  task type's corrections pass ~25% of its last ~10 tasks, that task type
+  is promoted to a stronger model, with a dated line saying so. Models
+  move on data, not impressions.
 
 The manager keeps design, laws, architecture, verification, and pushes.
 
@@ -229,7 +251,8 @@ because context lives in files, not in the conversation.
 - **The Daily Log.** Each work day gets a file: the CEO's asks, the
   completions, and a WHERE WE LEFT OFF section carrying both sides of the
   final exchange (your last prompt AND the manager's last response).
-- **The Checkpoint Protocol.** A counter ticks after every task and warns
+- **The Checkpoint Protocol.** A counter ticks whenever a reply actually
+  changed the tree or the commit (a pure question never ticks) and warns
   when the session gets heavy. At an arc's end the manager pushes,
   refreshes the day file, and emits the marker: "CHECKPOINT - safe to
   /clear. Nothing in this chat exists only in this chat."
@@ -243,7 +266,11 @@ because context lives in files, not in the conversation.
 Six rituals ship as Claude Code skills, invocable as slash commands:
 `/standup`, `/checkpoint`, `/ship`, `/brief`, `/runaway`, and `/preserve`
 (the preservation law's front: retire a file, shelve a wiki section, or
-walk the twice-acknowledged delete grant, in that order).
+walk the twice-acknowledged delete grant, in that order). `/ship` is the
+one you will use most: sanity-check tests (trusting the ledger), bump the
+version if warranted, commit with a player-readable subject, push, run
+the build script without deleting old builds, sync the kit if kit files
+changed, and export the changelog unprompted.
 
 ### The hooks: laws the harness enforces itself (HOOKS_METHOD.md)
 
@@ -262,7 +289,9 @@ reminder. Nine ship in `hooks/`, wired by one settings file:
 - **The fan-out guard** is catastrophe-only: it refuses a burst or flood of
   sub-agent spawns or runaway token velocity - each self-clearing - and
   warns on the rest. It exists because a manager once spawned 821 agents
-  on "check my markdown files". The CEO tunes its numbers with `/runaway`.
+  on "check my markdown files". The default numbers: 8 spawns in a
+  minute, 25 in ten, or 10M weighted tokens in two minutes. The CEO tunes
+  them with `/runaway`; the manager never raises one on its own.
 - **The diet guard** says a file's size before a whole read past ~10k
   tokens and the missing limiter on a chatty command, at the moment of
   the decision; the first whole read of a big file per session is
@@ -280,6 +309,54 @@ reminder. Nine ship in `hooks/`, wired by one settings file:
   block), run the engine import after a new asset. It exists because
   this README once fell two versions behind while the law to refresh it
   was already written.
+
+The contract, plainly, because a worried reader asks these first:
+
+- **Hooks need Claude Code.** They are wired through `.claude/settings.json`,
+  which is Claude Code's mechanism. In another client (the Claude app,
+  Cowork, an IDE plugin) the laws are prose again; the wiki and the
+  rituals still work, the enforcement does not.
+- **A hook cannot trap you.** The Stop hook refuses to end a turn once per
+  threshold crossing, re-blocks only every five further tasks, and checks
+  the harness's own loop flag so it can never refuse forever. Every other
+  refusal is one command, with the reason printed; the next command runs.
+- **A broken hook CAN lock you out**, which is the one real hazard: a
+  hook that exits with the blocking code (a mis-typed path, a missing
+  interpreter) refuses every tool call, not just the one it meant to
+  guard. The fix is one line in settings.json; every kit hook is tested by
+  piping a fake event into it before it is wired.
+- **Turning one off** is removing its line from settings.json. No hook has
+  state that survives being unwired.
+- **Cost.** Tokens: none (a hook is a script; only its one-line verdict
+  enters the context). Time: one interpreter launch per trigger, about
+  0.3 seconds, and a shell command runs four of them in a row.
+- **What is not built yet.** Two ideas wait on the pin board: a hook that
+  refuses an employee's report when its stamp is missing, and a
+  notification hook that toasts the OS when the manager is waiting on
+  you. Neither ships until the CEO asks.
+
+### The two companions (WORKFLOW_METHOD.md, WORKSTATION_METHOD.md)
+
+Two smaller disciplines ride with the pillars. Neither saves tokens
+directly; both stop a kind of amnesia.
+
+- **The process registry.** A project accumulates multi-step processes
+  (the ship order, an art pipeline, a retune round-trip) that nobody
+  writes down, so the sequence is re-derived from memory or a vanished
+  chat, and a step gets skipped. WORKFLOWS.md holds ONE runbook entry per
+  repeatable process: WHEN it applies, the STEPS with the scripts named,
+  how to VERIFY. The capture rule: before any such task the manager checks
+  the registry; a stale entry is a bug fixed in the same batch; a missing
+  entry is a gap the performer writes up in the same batch (transcription
+  work, so it goes to the cheapest model). Employees never edit it; they
+  report gaps on their stamp line.
+- **The workstation inventory.** One document listing every package,
+  tool, path and setting the project's scripts and hooks depend on, split
+  REQUIRED and OPTIONAL, with the need, the why, and the install command
+  for each, plus a survey script that proves a machine up to par. A second
+  machine, a reinstall or a collaborator sets up from a document instead
+  of from error messages. The rule: a new dependency goes into the
+  inventory and the survey in the same batch that introduced it.
 
 ## What it saves, concretely
 
@@ -332,10 +409,17 @@ never restructures a live repo unasked.
 
 1. Give this repo's contents to Claude (Claude Code, any capable model).
 2. Say: **read "0 - READ ME FIRST, CLAUDE.md" and install the kit.**
-3. Answer its STEP 0 questions (project name, who manages, which employee
-   models are available, how many workstations).
-4. Claude builds the operating system in order: wiki, reporting, delegation,
-   skills, hooks, and finishes with a definition of done you can verify.
+3. Answer its STEP 0 questions: project, engine and repo; who manages and
+   which employee models are available; one workstation or several; which
+   domain-notes files apply; and your update policy (ask, auto, relevant
+   or never).
+4. Claude builds the operating system in order: wiki, reporting and the
+   session rituals, delegation, skills, hooks, the process registry and
+   the workstation inventory.
+5. It finishes with a definition of done you can verify yourself: the
+   standup script runs clean, the lint passes, the delegation ledger has
+   one real line, the skills answer to their slash commands, and the first
+   commit is in.
 
 That is the whole handoff. The front-door file exists precisely so that a
 stranger's Claude needs no other instructions.
@@ -351,8 +435,8 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 - The kit is versioned, and `UPGRADES.md` is its **graft log**: one entry
   per concept added, each with WHAT it is, which kit files CARRY it, and
   how to GRAFT it onto an existing install.
-- Installing stamps a "Rootstock vX.Y installed" line into the project's
-  CLAUDE.md.
+- Installing stamps a line into the project's CLAUDE.md:
+  `Rootstock vX.Y installed <date> | updates: <policy>`.
 - To update: pull this repo (or hand Claude the new folder) and say
   **update rootstock**. Claude reads the graft log's entries newer than
   the project's stamp, applies each concept to the project's OWN files in
@@ -361,13 +445,39 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 - You don't have to remember any of this: the install wires
   `rootstock_update_check.py` into your project's standup, which checks
   this repo weekly (offline-safe, one ledger line per check) and reports
-  newer grafts by itself.
+  newer grafts by itself. What it does on the network: one HTTPS fetch of
+  this repo's UPGRADES.md, at most once a week, or a read of a local clone
+  if you point it at one. It sends nothing about your project anywhere.
 - **You choose the noise level.** The stamp carries your update policy -
   `ask` (default: present the grafts, you pick), `auto` (apply everything,
   report after), `relevant` (only offer grafts that benefit your project;
   skipped ones are never re-offered), or `never` (quiet unless you ask).
   Change it any time by telling Claude "update automatically", "stop
   asking about updates", or "only show me relevant updates".
+
+## Questions people ask
+
+- **Does it need Claude Code?** For the full kit, yes. What carries to
+  other clients (the Claude app, Cowork, Cursor, the API): the wiki
+  carries fully, it is plain markdown any model can read if the client's
+  project instructions point at the front door; the day files, ledgers
+  and brief rules carry as method; the skills carry where the client runs
+  skills, though ours shell out to Python; the hooks do not carry at all.
+- **Does it improve my prompts?** No, and that is the point. It moves
+  the CONTEXT (wiki, ledgers, day files) and the INTERPRETATION (laws,
+  hooks, the process registry) out of the prompt and into files read
+  every session. A miss gets filed once as a ruling, a memory or a hook
+  instead of being rephrased into every prompt after it; and because a
+  fresh session is free, a lazy one-line prompt still lands.
+- **Does it work with models other than Claude?** The methods are model
+  agnostic and the front door makes Claude ASK who manages rather than
+  assume. The skills and hooks are Claude Code mechanisms.
+- **Is anything sent anywhere?** No. Everything is local files and git.
+  The only network call is the optional weekly fetch of this repo's graft
+  log, and nothing about your project leaves your machine.
+- **Can I take part of it?** Yes; see "What you need" above. The wiki
+  conventions alone are the biggest single saving.
+- **Can I use it commercially?** MIT. Yes.
 
 ## What is in the box
 
@@ -376,14 +486,14 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `0 - READ ME FIRST, CLAUDE.md` | The front door: install order, STEP 0 questions, definition of done |
 | `WIKI_METHOD.md` | The knowledge wiki: token mechanics, conventions, bootstrap |
 | `REPORTING_METHOD.md` | Scripts + ledgers: the three rules, runner spec, bootstrap |
-| `SUBAGENT_METHOD.md` | The delegation company: org chart, six laws, scorecard, bootstrap |
+| `SUBAGENT_METHOD.md` | The delegation company: org chart, seven laws, assignments table, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
 | `skills/` | The six skills, ready to drop into `.claude/skills/` |
 | `HOOKS_METHOD.md` | The hooks: the contract, the nine kit hooks, tiers, bootstrap |
-| `hooks/` | The nine hook scripts plus the settings template, ready to drop into `tools/hooks/` |
+| `hooks/` | The nine hook scripts (drop into `tools/hooks/`) plus the settings template (merge into `.claude/settings.json`) |
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
-| `reference tools/` | Working scripts to adapt, not rewrite: standup, checkpoint, lint, usage sheet (weighted, with the daily line), tag index, workstation survey, update check, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant) |
+| `reference tools/` | Fourteen working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line), update check. Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `GODOT_FIELD_NOTES.md` | Domain example: hard-won Godot engine lessons (skip if not Godot) |
 | `CLICKER_DESIGN_NOTES.md` | Domain example: idle/clicker genre lessons (skip if not that genre) |
