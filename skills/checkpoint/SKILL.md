@@ -24,6 +24,13 @@ PRECONDITIONS (refuse and say why if any fail):
 - No uncommitted work; never checkpoint mid-arc.
 
 SEQUENCE
+0. Close the loop (THE LOOP LAW, 2026-09-14): `python tools/run_all.py
+   session` (regen + check + metrics append their ledgers; the session-
+   start hook also runs it once a day, so this is usually seconds). If the
+   Stop hook said CHANGELOG UNEXPORTED, run `python tools/export_changelog.py`
+   now. Ask once: was anything this arc done by hand twice? Then it is a
+   WORKFLOW GAP - write the WORKFLOWS.md entry (or brief a haiku) before
+   pushing.
 1. Push everything (tree clean, remote up to date).
 2. Refresh the NEWEST day file's `## WHERE WE LEFT OFF` section
    (docs/history/days/YYYY-MM-DD-WS#.md; create today's file + a

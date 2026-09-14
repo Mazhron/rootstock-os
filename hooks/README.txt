@@ -65,3 +65,11 @@ it in GENERIC RULES) and the Stop twin from stop_tick.py. Then run
 its header by `--rewrite` after a read-only look, never by hand; and
 `python tools/purpose_audit.py` creates FLAGS.md for the first audit
 (see CONTRIBUTING.md and skills/flag).
+
+THE LOOP LAW (kit v1.21, 2026-09-14): session_start.py runs the parent
+loop's session group (reference tools/run_all.py) once a day before the
+digest and ledgers the digest's size (digest_size.txt); stop_tick.py warns
+CHANGELOG UNEXPORTED when commits sit past a changelog anchor (silent
+without one). A project without run_all.py gets a one-line note, never a
+failure. Both hooks' --selftest cover the new paths.
+

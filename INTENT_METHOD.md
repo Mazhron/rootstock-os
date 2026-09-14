@@ -185,6 +185,42 @@ once enough day files or enough elapsed time has piled up since the last
 one - the audit is on a cadence, not a whim, but the cadence only proposes,
 it never fires the audit unasked.
 
+## The loop law: a repeatable script is called by the loop, never by hand
+Tags: intent, process, lessons | The first systems audit's headline: ledgers drift when the parent loop is bypassed; the fix is wiring, not discipline
+
+The first audit (2026-09-13) found the scorecard ledger silent for ten
+days while its siblings in the same run_all group ran by hand, one probe
+group run once as a baseline and never again, and four check scripts
+appending identical rows minutes apart because two callers ran them. The
+owner's ruling, verbatim: "Any script that should be run multiple times
+must be called by the main looping script; every action, every standup,
+something like this. If it requires a hook or re-write of scripts to
+accommodate, have the appropriate manager/employee do it."
+
+What that builds, portably: the parent loop ledgers every group it runs
+(loop_runs.txt); the session-start hook runs the session group once a
+day before the digest and measures the digest it injects; standup shows
+each group's age; the trend script proposes when a group goes stale; the
+build script runs the probes. A ledger that stops advancing is a wiring
+bug. Identical results at an unchanged tree are not re-appended (the
+trust-the-ledger helper) so the loop can call a check twice without
+lying in the ledger.
+See also: REPORTING_METHOD.md (the script and ledger rules);
+WORKFLOW_METHOD.md; HOOKS_METHOD.md (the session-start hook).
+
+## Security first, then cost, then efficiency
+Tags: intent, design | The order of goods when a proposal trades one for another
+
+The audit proposed moving tunable numbers out of code into a committed
+data file, as the fan-out guard's limits already are. The owner's answer:
+"We care about Security first, then cost and efficiency." So the rule:
+a number behind a REFUSAL (a guard's threshold) stays in code, where a
+data-file edit cannot silently disarm it; a number behind a PROPOSAL
+(the trend thresholds) may live in a data file the owner tunes. The
+fan-out guard is the ruled exception, its numbers the owner's by name.
+See also: HOOKS_METHOD.md (guards vs warnings); "The systems audit"
+above.
+
 ## The laws
 Tags: intent, process, lessons | The discipline in seven short rules, none of them optional and none of them automatic
 

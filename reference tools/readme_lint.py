@@ -55,6 +55,9 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _ledger
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ----------------------------------------------------------- CONFIG --
 KIT_DIR = os.path.join(ROOT, "Future Project MDs")
@@ -205,14 +208,15 @@ def checks(readme, t):
 
 def ledger(status, t, fails, nchecks):
     new = not os.path.isfile(LEDGER)
-    with open(LEDGER, "a", encoding="utf-8") as fh:
-        if new:
+    if new:
+        with open(LEDGER, "w", encoding="utf-8") as fh:
             fh.write("# README PARITY LINT (append-only; one line per run). Read the TAIL.\n"
                      "# date time | ws | kit version | checks | fails | PASS/FAIL/SKIP | detail\n")
-        fh.write("%s | %s | v%s | %d | %d | %s | %s\n" % (
-            datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), workstation(),
-            t.get("version") if t else "?", nchecks, len(fails), status,
-            "; ".join(f[1] for f in fails)[:300] or "clean"))
+    line = "%s | %s | v%s | %d | %d | %s | %s\n" % (
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), workstation(),
+        t.get("version") if t else "?", nchecks, len(fails), status,
+        "; ".join(f[1] for f in fails)[:300] or "clean")
+    _ledger.append_unless_identical(LEDGER, line)
 
 
 def main(argv):

@@ -22,6 +22,11 @@ INTENT: Mazhron 2026-09-13: "Claude MUST compare the purpose and intent of
    contributed update is audited BEFORE it merges: every thing it adds or
    changes. Paths are kit-relative (hooks/preserve_guard.py,
    reference tools/standup.py, skills/ship/SKILL.md, WIKI_METHOD.md).
+   THE BATCH RULE (Mazhron 2026-09-14, the first systems audit: "employee
+   is cheap. Manager is not."): more than about five pending things go to
+   ONE read-only employee (sonnet, the /brief skill) that reads them and
+   files the flags itself; the manager reads only the REDs it reports.
+   The 09-13 audit read 58 files in the manager's context - never again.
 2. READ ONLY. Read the thing's header (PURPOSE, INTENT) and then its body.
    Do not edit it, do not run its side effects, do not "fix while here".
    For a method file read the first forty lines and the section index;

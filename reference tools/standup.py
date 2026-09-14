@@ -16,8 +16,9 @@ the verdict. --no-usage skips the refresh (no transcripts, no time).
 
 PURPOSE: Prints the post pull standup digest: the last exchange mined from
   harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget
-  line, ledger trend proposals, version and recent commits, WS notes, ledger
-  tails, and the open roadmap index.
+  line, THE LOOP (each run_all group's age), ledger trend proposals, version
+  and recent commits, WS notes, ledger tails, the open roadmap index, and
+  OPEN QUESTIONS TO MAZHRON.
 INTENT: the CEO 2026-09-02: 'this goes along with my rules of creating a
   script for everything.'
 
@@ -213,6 +214,63 @@ def print_budget():
         print("  manager: a CHECK verdict names what went wrong - relay it verbatim.")
 
 
+def print_open_questions():
+    """THE OPEN QUESTIONS block (the CEO's ruling 2026-09-14): open ones,
+    oldest first, so a question waiting on the owner never scrolls off a
+    ledger nobody rereads. Silent on any failure - never blocks standup."""
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "tools"))
+        import open_questions
+        ages = open_questions.open_rows()
+    except Exception:
+        print("== OPEN QUESTIONS TO MAZHRON (unavailable)")
+        return
+    oldest = ages[0][0] if ages else 0
+    print("== OPEN QUESTIONS TO MAZHRON (%d open, oldest %s d)" % (len(ages), oldest))
+    for age, r in ages:
+        print("  %s | %sd | %s" % (r["id"], age if age >= 0 else "?", r["question"]))
+
+
+# THE LOOP LAW (the CEO's ruling: "Any script that should be run multiple
+# times must be called by the main looping script; every action, every
+# standup"). Fixed list matching tools/run_all.py's GROUPS keys (check,
+# regen, tests, metrics, probes, builds, session) - a plain list rather
+# than importing run_all.py, which would run its module-level code.
+LOOP_GROUPS = ["check", "regen", "tests", "metrics", "probes", "builds", "session"]
+
+
+def print_loop():
+    """THE LOOP block: last run per run_all group, from loop_runs.txt
+    (`date time | ws | group | seconds | result`, written by run_all.py)."""
+    import datetime
+    print("== THE LOOP (run_all groups, from loop_runs.txt)")
+    latest = {}
+    path = os.path.join(ROOT, "docs", "history", "loop_runs.txt")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            for ln in fh:
+                ln = ln.strip()
+                if not ln or ln.startswith("#"):
+                    continue
+                parts = [p.strip() for p in ln.split("|")]
+                if len(parts) < 3:
+                    continue
+                latest[parts[2]] = parts[0]
+    except OSError:
+        pass
+    for g in LOOP_GROUPS:
+        when = latest.get(g)
+        if not when:
+            print("  %-8s | never" % g)
+            continue
+        try:
+            dt = datetime.datetime.strptime(when, "%Y-%m-%d %H:%M")
+            age = (datetime.datetime.now() - dt).days
+            print("  %-8s | last run %s | %d d" % (g, when, age))
+        except ValueError:
+            print("  %-8s | last run %s" % (g, when))
+
+
 def main():
     ap = argparse.ArgumentParser(description="Post-pull standup digest")
     ap.add_argument("--commits", type=int, default=12)
@@ -257,6 +315,8 @@ def main():
 
     if not args.no_usage:
         print_budget()
+
+    print_loop()
 
     # THE LEARNING LOOP's closing step (the CEO 2026-09-10): ledger trends
     # become proposals the owner rules on; nothing is applied by a script.
@@ -309,6 +369,8 @@ def main():
                     print("  " + ln.strip())
     except OSError:
         print("  (no NEXT_STEPS.md)")
+
+    print_open_questions()
 
     days_index = os.path.join(ROOT, "docs", "history", "days_index.txt")
     if os.path.isfile(days_index):

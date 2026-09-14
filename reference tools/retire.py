@@ -110,5 +110,75 @@ def main():
     return 0
 
 
+def _selftest():
+    """Exercise the real retire() write path against a temp ROOT/SHELF/LEDGER
+    (never the live _retired/ or docs/history/retired_files.txt). The
+    tempfile.mkdtemp() directory is left in place afterward - a selftest
+    never deletes anything (THE PRESERVATION LAW)."""
+    import tempfile
+    global ROOT, SHELF, LEDGER
+    orig_root, orig_shelf, orig_ledger = ROOT, SHELF, LEDGER
+    tmp = tempfile.mkdtemp(prefix="everwood_retire_selftest_")
+    fails = 0
+    try:
+        ROOT = tmp
+        SHELF = os.path.join(tmp, "_retired")
+        LEDGER = os.path.join(tmp, "retired_files.txt")
+
+        src1 = os.path.join(ROOT, "scratch_one.txt")
+        with open(src1, "wb") as fh:
+            fh.write(b"selftest payload one")
+        before = open(src1, "rb").read()
+        dst1 = retire("scratch_one.txt", "selftest reason one")
+
+        ok = os.path.isfile(LEDGER) and open(LEDGER, encoding="utf-8").read().startswith(HEADER)
+        print(("PASS  " if ok else "FAIL  ") + "ledger created with its header when absent")
+        fails += not ok
+
+        ok = open(os.path.join(tmp, dst1), "rb").read() == before
+        print(("PASS  " if ok else "FAIL  ") + "moved file's bytes are identical after the move")
+        fails += not ok
+
+        src2 = os.path.join(ROOT, "scratch_two.txt")
+        with open(src2, "wb") as fh:
+            fh.write(b"selftest payload two")
+        dst2 = retire("scratch_two.txt", "selftest reason two")
+        text = open(LEDGER, encoding="utf-8").read()
+        header_lines = sum(1 for ln in text.splitlines() if ln.startswith("#"))
+        ok = header_lines == 3
+        print(("PASS  " if ok else "FAIL  ") + "second write appends without repeating the header")
+        fails += not ok
+
+        data_lines = [ln for ln in text.splitlines() if ln.strip() and not ln.startswith("#")]
+        ok = len(data_lines) == 2 and all(len(ln.split(" | ")) == 4 for ln in data_lines)
+        print(("PASS  " if ok else "FAIL  ") + "line format matches the header's 4 columns")
+        fails += not ok
+
+        ok = ("scratch_one.txt" in data_lines[0] and dst1 in data_lines[0])
+        print(("PASS  " if ok else "FAIL  ") + "ledger line names both the from and to paths")
+        fails += not ok
+
+        # a pre-existing header-only ledger must not get a second header
+        LEDGER = os.path.join(tmp, "preexisting_ledger.txt")
+        with open(LEDGER, "w", encoding="utf-8") as fh:
+            fh.write(HEADER)
+        src3 = os.path.join(ROOT, "scratch_three.txt")
+        with open(src3, "wb") as fh:
+            fh.write(b"selftest payload three")
+        retire("scratch_three.txt", "selftest reason three")
+        text3 = open(LEDGER, encoding="utf-8").read()
+        ok = sum(1 for ln in text3.splitlines() if ln.startswith("#")) == 3
+        print(("PASS  " if ok else "FAIL  ") + "pre-existing header-only ledger takes its first real append cleanly")
+        fails += not ok
+    finally:
+        ROOT, SHELF, LEDGER = orig_root, orig_shelf, orig_ledger
+
+    print("retire selftest: %d failed (scratch dir left at %s, never cleaned up - THE PRESERVATION LAW)"
+          % (fails, tmp))
+    return 1 if fails else 0
+
+
 if __name__ == "__main__":
+    if "--selftest" in sys.argv[1:]:
+        sys.exit(_selftest())
     sys.exit(main())

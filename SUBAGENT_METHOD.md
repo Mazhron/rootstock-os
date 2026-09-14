@@ -15,6 +15,7 @@ any capable agent) at the start of any project and say "set this up" - it
 plugs into any workflow. The concepts matter; the specifics are yours to fill.
 
 ## The org chart (three roles, always)
+Tags: delegation, process, architecture | CEO, manager and employee roles with the cardinal rule: ask the CEO which model manages
 
 - THE CEO - the human. Sets direction, makes rulings, owns the product. The
   CEO can make mistakes too; the ledger and attribution exist so ANYONE's
@@ -35,6 +36,7 @@ and record the answer in the project's SUBAGENTS file. Revisit when models
 change.
 
 ## Why this saves money (the one insight)
+Tags: delegation, process, performance | Context cost dominates; delegate reading and grinding to fresh-context employees to multiply savings
 
 An AI's cost is mostly CONTEXT, not cleverness: the long conversation plus
 every file the manager reads itself rides along with every single request.
@@ -53,6 +55,7 @@ the usage sheet's daily line grades the habit. The exception is an edit
 that needs the exact text. Full rule: WIKI_METHOD.md "The read diet".
 
 ## The seven laws
+Tags: delegation, process, architecture | Seven cardinal laws: brief, stamp, verify cheap, ledger, escalate, fan-out caps and preservation
 
 1. THE BRIEF IS EVERYTHING. Employees know NOTHING - no chat history, no
    project lore. A brief is a work order: exact files/paths, exact spec,
@@ -162,6 +165,7 @@ ESTIMATES clearly marked as estimates, because no model can see its own
 meter; the billing dashboard is the only truth.
 
 ## Attribution and trust (pairs with a roadmap file, if the project has one)
+Tags: delegation, process, architecture | Every idea and change is attributed and dated; contradiction with prior rules is flagged and confirmed
 
 Every idea and every change of plan is attributed (CEO / manager-1 /
 manager-2 / employee) and dated, so mistakes trace to their maker and get

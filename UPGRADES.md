@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.20** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.21** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -714,3 +714,49 @@ three author passes missed what one independent read found.
 README: "The hooks" (the contract bullet: every kit hook answers
 --selftest), "The format law and the purpose audit" (the first audit's
 outcome line), the "Kit version:" line.
+
+### v1.21 - 2026-09-14 - The first systems audit, ruled and built (the loop law, trust the ledger, the ledgers born, open questions)
+WHAT: the systems audit (v1.18) ran for real: four read-only employees,
+one lane each, 26 proposals with evidence, nothing applied by the audit.
+The CEO ruled on all 26 the same night; this version is what the rulings
+built. (1) THE LOOP LAW ("Any script that should be run multiple times
+must be called by the main looping script; every action, every
+standup"): run_all.py ledgers every group run (loop_runs.txt), the
+session-start hook runs the session group once a day and measures the
+digest it injects (digest_size.txt), standup shows THE LOOP (each
+group's age), ledger_trends proposes on a stale group (rule 13), a big
+digest (rule 12) and an old open question (rule 11); probes ride every
+build. (2) TRUST THE LEDGER for the check scripts: _ledger.py, one
+helper at four append sites (format lint, purpose audit, README lint,
+link check) skips an identical result at an unchanged tree - gotcha
+found on the way: a ledger's own append changes the tree signature, so
+the ledgers exclude themselves. (3) The three preservation ledgers
+(retired_files, delete_grants, corrections) had never been born; the
+movers got --selftest against a temp dir and the ledgers exist
+header-only. (4) open_questions.py: a ledger for decisions only the
+owner can make, with age, shown in standup. (5) usage_report: avg tokens
+per Read on the daily line, usage_by_arc.txt (checkpoint to checkpoint,
+per-commit verdict), cache_misses.txt with causes (first finding: TTL
+gaps dominate - the price of coming back after an hour, not a habit).
+(6) stop_tick warns CHANGELOG UNEXPORTED; /checkpoint closes the loop
+first; /flag's batch rule sends more than five things to one employee
+("employee is cheap. Manager is not."). (7) Proposal-only thresholds
+moved to .claude/trend_limits.json; guard numbers stay in code
+(SECURITY FIRST, then cost, then efficiency - the CEO's order).
+CARRIES: reference tools/run_all.py, open_questions.py, _ledger.py
+(new); reference tools/standup.py, ledger_trends.py, usage_report.py,
+format_lint.py, purpose_audit.py, readme_lint.py, check_wiki_links.py,
+retire.py, delete_grant.py, correction_log.py; hooks/session_start.py,
+hooks/stop_tick.py; skills/checkpoint, skills/flag; INTENT_METHOD.md
+(the loop law + security-first sections); this entry.
+GRAFT: adopt run_all.py's GROUPS for your own habitual scripts, then let
+the session-start hook call it (the hook degrades to a note when
+run_all.py is absent). Wire _ledger.append_unless_identical at every
+append site you have that can run twice at one tree. Run the three
+movers' --selftest once and let them birth their ledgers. Add the three
+trend rules and the limits JSON; keep your guards' numbers in code.
+Seed open_questions.txt with whatever your owner has not answered yet.
+README: "The intent loop" (the first audit's outcome paragraph), "What
+is in the box" (26 scripts, the parent loop, open questions, trust the
+ledger).
+

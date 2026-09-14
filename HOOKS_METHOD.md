@@ -477,3 +477,13 @@ the manager waits on permission or idles after a long employee run.
   and a stale skill list; both fixed, then GREEN. Lesson: the audit
   loop works on the kit's own authors - a non-author read found what
   three author passes had not.
+- 2026-09-14 (kit v1.21): THE LOOP LAW landed in two hooks. session_start
+  now runs the parent loop's session group once a day before the digest
+  (a note says it ran or when it last ran; a missing run_all.py degrades
+  to a note) and appends the digest's byte size to digest_size.txt every
+  time it fires, so the injected context is measured, not guessed.
+  stop_tick adds a warn-only CHANGELOG UNEXPORTED line when commits sit
+  past the changelog anchor (once per count; silent when no anchor
+  exists). Both selftests extended. The systems audit that asked for
+  this is in INTENT_METHOD.md "The loop law".
+

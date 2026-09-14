@@ -46,6 +46,9 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _ledger
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs", "history", "wiki_links.txt")
 RUNS = os.path.join(ROOT, "docs", "history", "wiki_link_runs.txt")
@@ -314,8 +317,7 @@ def main():
                 "no-see-also %d | %s\n") % (
         now, ws, len(files), total_links, len(total_dead), total_basename,
         no_seealso_total, first_dead)
-    with open(RUNS, "a", encoding="utf-8", newline="\n") as fh:
-        fh.write(run_line)
+    _ledger.append_unless_identical(RUNS, run_line)
 
     if args.strict and total_dead:
         sys.exit(1)

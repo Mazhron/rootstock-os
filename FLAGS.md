@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-13 12:22 | items 58 | GREEN 58 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
+Updated 2026-09-14 01:01 | items 61 | GREEN 61 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -41,16 +41,16 @@ Updated 2026-09-13 12:22 | items 58 | GREEN 58 | YELLOW 0 | RED 0 | unflagged 0 
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | fable | 2026-09-13 12:22 |
-| INTENT_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
+| HOOKS_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
+| INTENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
 | REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
-| SUBAGENT_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| UPGRADES.md | GREEN | ok | fable | 2026-09-13 12:22 |
+| SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
+| UPGRADES.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
 | WIKI_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | WORKSTATION_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
-| hooks/README.txt | GREEN | ok | fable | 2026-09-13 12:22 |
+| hooks/README.txt | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/diet_guard.py | GREEN | ok | fable | 2026-09-13 12:21 |
@@ -60,36 +60,39 @@ Updated 2026-09-13 12:22 | items 58 | GREEN 58 | YELLOW 0 | RED 0 | unflagged 0 
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-13 12:21 |
-| hooks/session_start.py | GREEN | ok | fable | 2026-09-13 12:21 |
+| hooks/session_start.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | hooks/settings.json | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
-| hooks/stop_tick.py | GREEN | ok | fable | 2026-09-13 11:57 |
+| hooks/stop_tick.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/_ledger.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/check_claude_md.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
-| reference tools/check_wiki_links.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
+| reference tools/check_wiki_links.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/checkpoint.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
-| reference tools/correction_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
-| reference tools/delete_grant.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
+| reference tools/correction_log.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
-| reference tools/format_lint.py | GREEN | ok | fable | 2026-09-13 11:57 |
+| reference tools/format_lint.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
-| reference tools/ledger_trends.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/purpose_audit.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
+| reference tools/ledger_trends.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/purpose_audit.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/readme_lint.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/readme_lint.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/refresh_kit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/retire.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/standup.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/run_all.py | GREEN | ok | fable | 2026-09-14 01:01 |
+| reference tools/standup.py | GREEN | ok | fable | 2026-09-14 01:01 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/usage_report.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/usage_report.py | GREEN | ok | fable | 2026-09-14 01:01 |
 | reference tools/wiki_heat.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
-| skills/checkpoint/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
+| skills/checkpoint/SKILL.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
-| skills/flag/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
+| skills/flag/SKILL.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/preserve/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/runaway/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
@@ -483,3 +486,128 @@ FLAG: Stale from the v1.20 entry only; the entry names the files that actually c
 SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
 DOES: Installation notes for the kit hooks folder: per-hook fill-in and wiring steps, gitignore entries, the selftest command per guard; the diet guard paragraph now says it refuses once and warns otherwise; header bumped to kit v1.20.
 FLAG: Stale from the version bump on line 1 after the earlier re-flag; nothing else changed. Re-flagged by the author.
+
+### 2026-09-14 00:58 | HOOKS_METHOD.md | GREEN | sonnet-flag1 | WS1 | d104bcd7
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: Appends a dated lesson entry about the loop law (session_start running the session group, stop_tick warning on unexported commits) to the lessons log.
+FLAG: Matches the file's own job of logging hard-won lessons with tags, nothing added outside that scope.
+
+### 2026-09-14 00:58 | INTENT_METHOD.md | GREEN | sonnet-flag1 | WS1 | c0b6d333
+SAYS: The intent discipline: one project file, INTENT.md, holds one section per ruling with the owner's verbatim ASKED and WHY, the manager's GENERALIZES TO reading, and a LIVES IN pointer, plus a comparison ledger, correction ritual, and periodic report measuring whether Claude's reading of the owner's intent is converging on it.
+DOES: Adds two new ruling sections, the loop law and security first then cost then efficiency, each with the owner's verbatim words and tags.
+FLAG: Consistent with the file's stated job of recording rulings verbatim with a manager generalization.
+
+### 2026-09-14 00:58 | SUBAGENT_METHOD.md | GREEN | sonnet-flag1 | WS1 | 5fb1dd45
+SAYS: A portable architecture for delegating work to sub-agent employees: the org chart (CEO, manager, employees), why it saves money, the seven laws, the assignments table, the scorecard, and bootstrap steps for a new project.
+DOES: Adds Tags lines to four existing section headings (org chart, why this saves money, seven laws, attribution) without changing their content.
+FLAG: Pure tagging for the KNOWLEDGE_INDEX export, matches the wiki tagging convention this file already follows.
+
+### 2026-09-14 00:58 | UPGRADES.md | GREEN | sonnet-flag1 | WS1 | 5a39f152
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: Bumps CURRENT KIT VERSION to v1.21 and appends the v1.21 entry (WHAT/CARRIES/GRAFT/README) describing the first systems audit's rulings.
+FLAG: Follows the file's own append-only WHAT/CARRIES/GRAFT/README format exactly.
+
+### 2026-09-14 00:58 | hooks/README.txt | GREEN | sonnet-flag1 | WS1 | 0a405804
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: Adds one paragraph documenting that session_start.py now runs the session group daily and ledgers digest size, and stop_tick.py now warns CHANGELOG UNEXPORTED.
+FLAG: Accurately summarizes the two hook changes reviewed in the same batch, nothing overstated.
+
+### 2026-09-14 00:59 | hooks/session_start.py | GREEN | sonnet-flag1 | WS1 | b1f5f203
+SAYS: SessionStart hook that runs tools/standup.py and injects its digest into the manager's context on startup, resume, /clear and after a compaction, with a header telling the manager not to re-run standup and how to relay the last exchange; also runs the session group itself when it has not run today (THE LOOP LAW) and ledgers the digest's byte size.
+DOES: Adds loop_note(), which runs run_all.py session once a day via subprocess with a 600s timeout when the session group has not run today, and log_digest_size(), which appends one line to digest_size.txt for every injected digest; both are wrapped so a failure never blocks the digest.
+FLAG: PURPOSE and INTENT were updated to name both the daily session run and the digest size ledger, so the new subprocess and the new ledger are disclosed, not hidden.
+
+### 2026-09-14 00:59 | hooks/stop_tick.py | GREEN | sonnet-flag1 | WS1 | f5547518
+SAYS: Stop hook that ticks the checkpoint counter only when work actually happened (HEAD moved or the tree changed since the last Stop), shows an advised system message at 8 tasks or under 80% context, refuses to end the turn once at 15 tasks or under 30% context (re-blocking every 5 further tasks), refuses once when a safety hook has gone unwired in settings.json, and warns once per unexported commit count when the changelog anchor has fallen behind HEAD.
+DOES: Adds a warn-only CHANGELOG UNEXPORTED note when tools/.changelog_anchor exists and HEAD has moved past it, deduped per commit count via the existing hook state file, silent when there is no anchor.
+FLAG: PURPOSE and INTENT name the changelog warning explicitly, and the selftest only touches temp anchor files, never the real tools/.changelog_anchor.
+
+### 2026-09-14 00:59 | reference tools/_ledger.py | GREEN | sonnet-flag1 | WS1 | b63026eb
+SAYS: One append_unless_identical() call site for the four check-script ledgers (format_lint, purpose_audit, readme_lint, check_wiki_links) so a rerun at an unchanged tree does not grow duplicate rows.
+DOES: New shared module: append_unless_identical() skips an append when the ledger's last line has the same payload, same date, and the same git HEAD and dirty signature (excluding the ledger files themselves); includes a selftest against a temp dir.
+FLAG: Body matches the PURPOSE line exactly, one helper for the four named callers and nothing else.
+
+### 2026-09-14 00:59 | reference tools/check_wiki_links.py | GREEN | sonnet-flag1 | WS1 | fe16e092
+SAYS: Warn-only link checker for the knowledge wiki: scan repo-root, docs/systems and docs/cold markdown for the four cross-reference forms, resolve each against the repo, and report dead links plus See-also hygiene.
+DOES: Replaces the direct ledger append with _ledger.append_unless_identical so an unchanged rerun does not duplicate a row in wiki_link_runs.txt.
+FLAG: Same ledger, same PURPOSE, only the append is deduped, the file still reads as a warn-only link checker.
+
+### 2026-09-14 00:59 | reference tools/correction_log.py | GREEN | sonnet-flag1 | WS1 | bed7b6c0
+SAYS: Record the correction ledger: a RECORD line the moment a correction is understood in the CEO's own words, a FIXED line when the fix ships, and resolve the named intent claim as DIFFERENT in the intent log when one is given.
+DOES: Adds a --selftest that exercises record()/fixed() against a temp ledger with subprocess.run stubbed, so no real intent claim is resolved and the live corrections.txt is never touched.
+FLAG: Matches the kit-wide selftest convention, the scratch dir is left on disk per the preservation law, nothing deleted.
+
+### 2026-09-14 00:59 | reference tools/delete_grant.py | GREEN | sonnet-flag1 | WS1 | 26cea7dc
+SAYS: Record the owner's double-acknowledged permission for one deletion: write the single-use, time-limited grant file and append the committed delete grants ledger, refusing targets in the never-delete list; performs no deletion itself.
+DOES: Factors the write into write_grant() with injectable paths and clock, then adds a --selftest exercising it against temp files including expiry and never-list refusals; main() behavior is unchanged.
+FLAG: PURPOSE already covers writing the grant file and ledger and refusing never-list targets, the refactor and selftest add no new live-file behavior.
+
+### 2026-09-14 00:59 | reference tools/format_lint.py | GREEN | sonnet-flag1 | WS1 | 19b06167
+SAYS: check every kit thing (a script, a hook, a skill, a method file, the hooks README, the settings template) and its repo original for the one header the filing system needs - PURPOSE, INTENT, Search keys, See also - plus the safety wiring in settings.json; report PASS/FAIL per file with the reason; on request rewrite ONLY the missing scaffold lines, never the body.
+DOES: Replaces the direct ledger append with _ledger.append_unless_identical so an unchanged rerun does not duplicate a row in the format lint runs ledger.
+FLAG: Internal reliability change only, the file's PURPOSE of linting the format law and ledgering the run still holds.
+
+### 2026-09-14 00:59 | reference tools/ledger_trends.py | GREEN | sonnet-flag1 | WS1 | 5593425f
+SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop), compares them against tunable thresholds, and prints proposed rule changes; it applies nothing itself.
+DOES: Adds three new proposal rules (open questions past N days, an oversized standup digest, a stale run_all group) and moves proposal-only thresholds into a tunable .claude/trend_limits.json read fresh each call, with --limits reporting source per key.
+FLAG: PURPOSE, INTENT and search keys were all updated to name open questions, digest size, the run_all loop and the limits file, nothing here is undisclosed.
+
+### 2026-09-14 00:59 | reference tools/open_questions.py | GREEN | sonnet-flag1 | WS1 | f64b0c92
+SAYS: Log a question only the owner can answer, list the open ones with their age, and record the resolution in the owner's own words when it lands, append-only.
+DOES: New CLI and ledger: --add raises a question, --resolve records the owner's answer, --open lists open ones oldest first with age, appending to docs/history/open_questions.txt.
+FLAG: Body matches its PURPOSE line exactly.
+
+### 2026-09-14 00:59 | reference tools/purpose_audit.py | GREEN | sonnet-flag1 | WS1 | 3e3e19e7
+SAYS: keep the kit's flag ledger (FLAGS.md in the kit folder): every kit thing's latest flag (GREEN / YELLOW / RED), who gave it and when, whether the thing changed since (STALE), the ones nobody has audited yet (UNFLAGGED), and the tally - regenerated in place from the entries; `--flag` appends one entry (SAYS = the thing's own PURPOSE line, DOES = what the reviewer found it actually does, FLAG = why the color).
+DOES: Replaces the direct ledger append with _ledger.append_unless_identical so an unchanged rerun does not duplicate a row in purpose_audit_runs.txt; the flagging logic itself is unchanged.
+FLAG: Internal reliability change only, consistent with the file's own PURPOSE of keeping the flag ledger.
+
+### 2026-09-14 00:59 | reference tools/readme_lint.py | GREEN | sonnet-flag1 | WS1 | 9520ba06
+SAYS: Derives every countable README fact (laws, skills, hooks, reference tools, the box table, version, the graft README line, number word claims, prose claims) from the kit folder itself and compares it with what the public README says, ledgering PASS, FAIL or SKIP each run.
+DOES: Replaces the direct ledger append with _ledger.append_unless_identical so an unchanged rerun does not duplicate a row in the README parity lint ledger.
+FLAG: Same ledger, same PURPOSE, only the append is deduped.
+
+### 2026-09-14 00:59 | reference tools/retire.py | GREEN | sonnet-flag1 | WS1 | d9276e6a
+SAYS: Moves a file to _retired/ (same relative path, Godot import extensions suffixed .retired) and appends one line to docs/history/retired_files.txt; nothing is ever deleted.
+DOES: Adds a --selftest that exercises the real retire() move-and-ledger path against a temp ROOT/SHELF/LEDGER, proving byte-identical moves and header handling without ever touching the live _retired/ folder or ledger.
+FLAG: No deletion anywhere in the selftest or the mover, matches the never-delete PURPOSE line.
+
+### 2026-09-14 00:59 | reference tools/run_all.py | GREEN | sonnet-flag1 | WS1 | d6e1356a
+SAYS: Chain habitual scripts by named group (check/regen/tests/metrics/ probes/builds/session/standup) and ledger every group run so staleness is visible instead of silent.
+DOES: New parent-loop runner: chains named groups of scripts (check/regen/tests/metrics/probes/builds/session/standup), prints each step's tail, stops on first failure, and appends one loop_runs.txt line per group with duration and result; last_run() reads that ledger for session_start.py.
+FLAG: Body matches the PURPOSE line exactly, including the full group list.
+
+### 2026-09-14 00:59 | reference tools/standup.py | YELLOW | sonnet-flag1 | WS1 | 0204c51e
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, ledger trend proposals, version and recent commits, WS notes, ledger tails, and the open roadmap index.
+DOES: Adds print_loop() (prints each run_all group's last run and age from loop_runs.txt) and print_open_questions() (prints open_questions.py's open rows oldest first) as two new sections printed on every standup run.
+FLAG: The PURPOSE line still lists only the pre-existing sections and should also name THE LOOP and OPEN QUESTIONS TO MAZHRON blocks since they now print on every run; add them to PURPOSE in a later batch.
+
+### 2026-09-14 00:59 | reference tools/usage_report.py | YELLOW | sonnet-flag1 | WS1 | dcf11aff
+SAYS: Mines the Claude Code harness JSONL transcripts for real per model per tool token usage and writes an aggregate usage sheet (CSV, TXT, XLSX, employee runs, and the daily budget line) totaled by day, week and month.
+DOES: Adds arc_lines()/miss_lines() and wires them into main() to write two new ledgers every run, docs/history/usage_by_arc.txt (per-arc spend between Checkpoint commits, via git log subprocess calls) and docs/history/cache_misses.txt plus cache_miss_runs.txt (per-miss cause classification), alongside the existing daily/CSV/XLSX outputs.
+FLAG: The PURPOSE line only names the aggregate usage sheet totaled by day, week and month, it should also name usage_by_arc.txt and cache_misses.txt/cache_miss_runs.txt, which the file body documents but PURPOSE does not.
+
+### 2026-09-14 00:59 | skills/checkpoint/SKILL.md | GREEN | sonnet-flag1 | WS1 | 95bfccc9
+SAYS: Close an arc safely: push, refresh the day file's WHERE WE LEFT OFF section with both sides of the final exchange verbatim, reset the task counter, and emit the safe-to-clear marker.
+DOES: Adds a new SEQUENCE step 0 that runs the session loop group, checks for an unexported changelog, and asks once whether anything was done by hand twice (a workflow gap) before the existing push and day-file steps.
+FLAG: Fits the skill's own stated purpose of closing an arc safely, this is a precondition-style addition, not a new capability outside that purpose.
+
+### 2026-09-14 00:59 | skills/flag/SKILL.md | GREEN | sonnet-flag1 | WS1 | 0a20dd69
+SAYS: the ritual behind FLAGS.md - one kit thing at a time, the auditor reads it, compares the stated purpose with the behaviour, gives it a color, explains the color in the entry, and never touches the thing.
+DOES: Adds THE BATCH RULE to step 1: more than about five pending items go to one read-only employee that files the flags itself, with the manager reading only the REDs it reports.
+FLAG: Matches the skill's own stated purpose of running the ritual, this documents who performs it at scale, not a new behavior.
+
+### 2026-09-14 01:01 | reference tools/standup.py | GREEN | fable | WS1 | 8927b63b
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, WS notes, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: prints the digest: last exchange, where we left off, the budget line, THE LOOP block, trend proposals, version + commits, WS notes, ledger tails, roadmap index, OPEN QUESTIONS block
+FLAG: PURPOSE amended 2026-09-14 to name THE LOOP and OPEN QUESTIONS blocks the yellow named; re-read the block list against main(), matches
+
+### 2026-09-14 01:01 | reference tools/usage_report.py | GREEN | fable | WS1 | d12a7b49
+SAYS: Mines the Claude Code harness JSONL transcripts for real per model per tool token usage and writes an aggregate usage sheet (CSV, TXT, XLSX, employee runs, and the daily budget line) totaled by day, week and month, plus usage_by_arc.txt (checkpoint to checkpoint) and cache_misses.txt + cache_miss_runs.txt (every miss with its likely cause).
+DOES: mines transcripts into the usage sheet, the daily line, usage_by_arc.txt and cache_misses.txt + cache_miss_runs.txt
+FLAG: PURPOSE amended 2026-09-14 to name the two new ledgers the yellow named; main() writes exactly those
+
+### 2026-09-14 01:01 | reference tools/run_all.py | GREEN | fable | WS1 | 946248e6
+SAYS: Chain habitual scripts by named group (check/regen/tests/metrics/ probes/builds/session/standup) and ledger every group run so staleness is visible instead of silent.
+DOES: runs the named groups in order, appends one loop_runs.txt line per group, and a composite (session) also logs its members; --stale prints each group's age
+FLAG: re-flag after the composite-member logging patch of 2026-09-14; header names the ledger and the flag

@@ -136,7 +136,81 @@ def open_ones():
     return rows
 
 
+def _selftest():
+    """Exercise the real record()/fixed() write path against a temp ledger
+    (never the live docs/history/corrections.txt), with subprocess.run
+    stubbed so no real intent claim is ever resolved. tempfile.mkdtemp() is
+    left in place afterward - a selftest never deletes anything (THE
+    PRESERVATION LAW)."""
+    import tempfile
+    global LEDGER
+    tmp = tempfile.mkdtemp(prefix="everwood_correction_log_selftest_")
+    orig_ledger = LEDGER
+    orig_run = subprocess.run
+    calls = []
+
+    class _FakeResult:
+        stdout = "stubbed: no real intent claim touched (selftest)"
+        stderr = ""
+        returncode = 0
+
+    def fake_run(cmd, **kwargs):
+        calls.append(cmd)
+        return _FakeResult()
+
+    fails = 0
+    try:
+        LEDGER = os.path.join(tmp, "corrections.txt")
+        subprocess.run = fake_run
+
+        i1 = record("selftest-actor", "built a selftest widget",
+                    "this is not what I meant", intent_id="I9999", ref="Some Heading")
+        ok = os.path.isfile(LEDGER) and open(LEDGER, encoding="utf-8").read().startswith(HEADER)
+        print(("PASS  " if ok else "FAIL  ") + "ledger created with its header when absent")
+        fails += not ok
+
+        ok = (len(calls) == 1 and calls[0][0] == sys.executable
+              and "intent_log.py" in calls[0][1] and "--resolve" in calls[0])
+        print(("PASS  " if ok else "FAIL  ") + "intent-log call stubbed - no real claim resolved")
+        fails += not ok
+
+        record("selftest-actor", "built another widget", "still not it")
+        text = open(LEDGER, encoding="utf-8").read()
+        ok = sum(1 for ln in text.splitlines() if ln.startswith("#")) == 2
+        print(("PASS  " if ok else "FAIL  ") + "second write appends without repeating the header")
+        fails += not ok
+
+        data_lines = [ln for ln in text.splitlines() if ln.strip() and not ln.startswith("#")]
+        ok = len(data_lines) == 2 and all(len(ln.split(" | ")) == 10 for ln in data_lines)
+        print(("PASS  " if ok else "FAIL  ") + "line format matches the header's 10 columns")
+        fails += not ok
+
+        fixed(i1, "shipped the correct widget")
+        ok = ("FIXED | %s" % i1) in open(LEDGER, encoding="utf-8").read()
+        print(("PASS  " if ok else "FAIL  ") + "fixed() appends a FIXED line for a known id")
+        fails += not ok
+
+        # a pre-existing header-only ledger must not get a second header
+        LEDGER = os.path.join(tmp, "preexisting_ledger.txt")
+        with open(LEDGER, "w", encoding="utf-8") as fh:
+            fh.write(HEADER)
+        record("selftest-actor", "third widget", "still wrong")
+        text3 = open(LEDGER, encoding="utf-8").read()
+        ok = sum(1 for ln in text3.splitlines() if ln.startswith("#")) == 2
+        print(("PASS  " if ok else "FAIL  ") + "pre-existing header-only ledger takes its first real append cleanly")
+        fails += not ok
+    finally:
+        LEDGER = orig_ledger
+        subprocess.run = orig_run
+
+    print("correction_log selftest: %d failed (scratch dir left at %s, never cleaned up - THE PRESERVATION LAW)"
+          % (fails, tmp))
+    return 1 if fails else 0
+
+
 def main(argv):
+    if "--selftest" in argv:
+        return _selftest()
     def opt(name, default=None):
         if name in argv:
             j = argv.index(name)

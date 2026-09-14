@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.20** (2026-09-13). The graft log `UPGRADES.md` is the
+Kit version: **v1.21** (2026-09-14). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -370,6 +370,20 @@ proposed on a cadence, has read-only employees look at tokens, process,
 knowledge and shipped features and return proposals only. Nothing in
 this loop applies anything by itself; the owner decides.
 
+The first systems audit ran on 2026-09-13 (kit v1.21). Four read-only
+employees returned 26 proposals; the owner ruled on every one. What it
+found and what changed: habitual scripts were being run by hand and their
+ledgers drifted, so THE LOOP LAW now holds (a script that runs more than
+once is called by the parent loop, `reference tools/run_all.py`, which
+ledgers every group run; the session-start hook runs the session group
+once a day; standup shows each group's age; ledger trends proposes when
+one goes stale). Four check scripts re-appended identical rows at an
+unchanged tree, so they share a trust-the-ledger helper. Three ledgers
+the preservation law promised had never been born, so the movers got
+selftests and the ledgers exist. Open questions to the owner now have
+their own ledger with an age nudge. The standup digest's size, a per-arc
+cost line and a cache-miss ledger with causes are measured, not guessed.
+
 ### The format law and the purpose audit (CONTRIBUTING.md)
 
 Two guardrails for a kit that is meant to take contributions, ours or
@@ -579,7 +593,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |
-| `reference tools/` | 23 working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line), update check. Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger), the format law and the purpose audit (format lint, purpose audit, kit refresh) |
+| `reference tools/` | 26 working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), trust the ledger for the check scripts |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `CONTRIBUTING.md` | The format law and the purpose audit: the one header every thing carries, the read-only flag ritual, what a contributed update looks like |
 | `FLAGS.md` | The flag ledger: every kit thing's latest GREEN / YELLOW / RED, hashed to the version reviewed, tallied, append-only |

@@ -58,6 +58,9 @@ import re
 import sys
 import textwrap
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _ledger
+
 NL = chr(10)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -455,8 +458,7 @@ def ledger(items, fails):
     if not os.path.isfile(LEDGER):
         with open(LEDGER, "w", encoding="utf-8") as f:
             f.write("# format lint runs: date | ws | items | failing | PASS/FAIL | first failing\n")
-    with open(LEDGER, "a", encoding="utf-8") as f:
-        f.write(line)
+    _ledger.append_unless_identical(LEDGER, line)
     return line.strip()
 
 

@@ -50,6 +50,21 @@ is the derived sheet, so no append-only file here):
                                     nothing".
   docs/history/usage_cache.json   - incremental parse cache (transcripts are
                                     append-only; reruns only read new bytes)
+  docs/history/usage_by_arc.txt   - THE PER-ARC LINE (the CEO 2026-09-14):
+                                    one line per arc between consecutive
+                                    "Checkpoint:" commits - commits, weighted
+                                    spend, employee runs, spend per commit,
+                                    top pillar, a CHECK verdict vs the
+                                    previous 5 arcs; the open arc since the
+                                    last checkpoint is the final "(open)" line
+  docs/history/cache_misses.txt   - THE CACHE-MISS INVESTIGATION (the CEO
+                                    2026-09-14): one line per detected cache
+                                    miss, classified by likely cause (session
+                                    start, TTL gap, long pause, prefix change
+                                    mid-session, employee) with a SUMMARY
+                                    block; regenerated whole each run
+  docs/history/cache_miss_runs.txt - append-only, one line per run: misses,
+                                    wasted ~weighted, dominant cause
 
 THE WEIGHTED COLUMN (the CEO's insight 2026-09-10, idea 13): only the tokens
 that count against the plan matter. weighted_tok prices every token relative
@@ -84,7 +99,9 @@ Usage:  python tools/usage_report.py --quiet   # standup's silent refresh
 
 PURPOSE: Mines the Claude Code harness JSONL transcripts for real per model
   per tool token usage and writes an aggregate usage sheet (CSV, TXT, XLSX,
-  employee runs, and the daily budget line) totaled by day, week and month.
+  employee runs, and the daily budget line) totaled by day, week and month,
+  plus usage_by_arc.txt (checkpoint to checkpoint) and cache_misses.txt +
+  cache_miss_runs.txt (every miss with its likely cause).
 INTENT: the CEO's ask 2026-09-03: 'one aggregate sheet, totals per day,
   week, and month for every model and every tool, CSV for humans plus TXT
   twin, scripted.'
@@ -101,6 +118,7 @@ import datetime
 import json
 import os
 import re
+import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -111,7 +129,14 @@ EMP_OUT = os.path.join(HIST, "usage_employees.csv")
 XLSX_OUT = os.path.join(HIST, "usage_metrics.xlsx")
 CACHE = os.path.join(HIST, "usage_cache.json")
 DAILY_OUT = os.path.join(HIST, "usage_daily.txt")
-CACHE_VERSION = 4  # v3: weighted, cache misses, read-diet classes; v4: images priced by pixels
+ARC_OUT = os.path.join(HIST, "usage_by_arc.txt")
+MISS_OUT = os.path.join(HIST, "cache_misses.txt")
+MISS_RUNS_OUT = os.path.join(HIST, "cache_miss_runs.txt")
+CACHE_VERSION = 5  # v3: weighted, cache misses, read-diet classes; v4: images
+# priced by pixels; v5: per-request timestamp log (reqs) for the per-arc
+# ledger + per-miss detail records (misses) for the cache-miss investigation
+BASELINE_ARCS = 5      # per-arc verdict baseline window
+ARC_OVERSPEND = 1.50   # per-commit spend past this x the baseline mean is CHECK
 
 # $ per MILLION tokens: model -> (input, output). None = unknown; fill from
 # the billing page / claude.com/pricing and the cost column comes alive.
@@ -274,15 +299,22 @@ def first_text(msg, limit=90):
 
 def parse_file(path, state, force_agent=False):
     """Stream one transcript, resuming from the cached byte offset.
-    state = {"size", "offset", "last_id", "pending", "days"} (mutated).
-    force_agent: employee transcripts (subagents/agent-*.jsonl) meter under
-    role "agent" even where records lack the isSidechain flag."""
+    state = {"size", "offset", "last_id", "pending", "days", "reqs",
+    "misses"} (mutated). force_agent: employee transcripts
+    (subagents/agent-*.jsonl) meter under role "agent" even where records
+    lack the isSidechain flag. "reqs" is a per-request timestamp log (one
+    entry per metered assistant message: [ts, model, role, in, out, read,
+    c5, c1]) that feeds THE PER-ARC LINE (usage_by_arc.txt), which needs
+    finer-than-a-day time buckets. "misses" is one entry per detected cache
+    miss ([ts, session8, gap_min, box, wr, wasted_weighted, cause]) that
+    feeds cache_misses.txt."""
     size = os.path.getsize(path)
     if size == state.get("size") and state.get("days") is not None:
         return  # unchanged since last run
     if size < state.get("size", 0) or state.get("days") is None:
         state.update({"offset": 0, "last_id": "", "pending": {}, "days": {},
-                      "t_first": "", "t_last": "", "label": "", "nreq": 0})
+                      "t_first": "", "t_last": "", "label": "", "nreq": 0,
+                      "prev_ts": "", "reqs": [], "misses": []})
     days, pending = state["days"], state["pending"]
     with open(path, "rb") as fh:
         fh.seek(state.get("offset", 0))
@@ -348,16 +380,43 @@ def parse_file(path, state, force_agent=False):
                       + (usage.get("cache_read_input_tokens", 0) or 0)
                       + (c5 or 0) + (c1 or 0))
                 m["maxp"] = max(m["maxp"], bx)
+                # Per-request timestamp log (v5): the per-arc ledger needs
+                # finer-than-a-day time buckets (checkpoints fall mid-day).
+                state.setdefault("reqs", []).append(
+                    [ts, model, role, usage.get("input_tokens", 0) or 0,
+                     usage.get("output_tokens", 0) or 0,
+                     usage.get("cache_read_input_tokens", 0) or 0,
+                     c5 or 0, c1 or 0])
                 # Cache misses (idea 14): a big write on a not-first request.
                 wr = (c5 or 0) + (c1 or 0)
+                gap_min = minutes_between(state["prev_ts"], ts) \
+                    if state.get("prev_ts") else None
                 state["nreq"] = state.get("nreq", 0) + 1
                 if bx >= MISS_MIN_BOX and wr >= MISS_SHARE * bx:
                     if state["nreq"] == 1:
                         m["cold_n"] += 1
                         m["cold_tok"] += wr
+                        cause = "session start"
                     else:
                         m["miss_n"] += 1
                         m["miss_tok"] += wr
+                        # Priority: an employee transcript's misses are
+                        # expected fresh-context overhead, not investigable
+                        # by pause length, so that check outranks the gap
+                        # buckets even though it reads last in prose.
+                        if force_agent:
+                            cause = "employee"
+                        elif gap_min is None or gap_min >= 60:
+                            cause = "TTL gap"
+                        elif gap_min >= 5:
+                            cause = "long pause"
+                        else:
+                            cause = "prefix change mid-session"
+                    wasted = (c5 or 0) * W_WRITE_5M + (c1 or 0) * W_WRITE_1H
+                    state.setdefault("misses", []).append(
+                        [ts, (rec.get("sessionId") or "?")[:8], gap_min,
+                         bx, wr, wasted, cause])
+                state["prev_ts"] = ts
             elif rtype == "user":
                 # Tool results: size them - that is what enters context.
                 msg = rec.get("message") or {}
@@ -579,6 +638,12 @@ def ktok(n):
     return "~%dk" % round(int(n) / 1000.0) if int(n) >= 1000 else str(n)
 
 
+def avg_tag(n):
+    """Like ktok but always tilde-prefixed, for a per-call average figure."""
+    n = int(n)
+    return "~%dk" % round(n / 1000.0) if n >= 1000 else "~%d" % n
+
+
 def write_txt(rows, emp_rows, ws):
     by = {}
     for r in rows:
@@ -724,12 +789,14 @@ def day_summary(day, d):
         miss_tok += m["miss_tok"]
         msgs += m["count"]
     wn, wctx, big, sn, sctx, grep = read_diet(d)
+    read_n = wn + sn
     return {"day": day, "weighted": w, "raw": raw, "pillars": agg, "msgs": msgs,
             "miss_n": miss_n, "miss_tok": miss_tok, "whole_n": wn,
             "whole_ctx": wctx, "big_n": big, "section_n": sn,
             "section_ctx": sctx, "grep_n": grep,
             "section_share": (100.0 * sn / (sn + wn)) if (sn + wn) else None,
-            "whole_avg": (wctx // wn) if wn else 0}
+            "whole_avg": (wctx // wn) if wn else 0,
+            "read_avg": ((wctx + sctx) // read_n) if read_n else None}
 
 
 def _verdict(value, baseline, higher_is_bad=True):
@@ -756,7 +823,7 @@ def daily_lines(all_days, ws):
     today = datetime.date.today().isoformat()
     L = ["# THE DAILY LINE - one line per active day, judged against the previous "
          "%d active days (regenerated by tools/usage_report.py; read the TAIL)" % COMPARE_DAYS,
-         "# date | WS | weighted (raw) | vs prev days | top pillar | misses | reads: whole (big) / section, share | verdict"]
+         "# date | WS | weighted (raw) | vs prev days | top pillar | misses | reads: whole (big) / section, share, avg tokens/read | verdict"]
     for i, s in enumerate(sums):
         prev = sums[max(0, i - COMPARE_DAYS):i]
         base_w = sum(p["weighted"] for p in prev) / len(prev) if prev else 0
@@ -790,10 +857,12 @@ def daily_lines(all_days, ws):
             verdict = "normal"
         partial = " (today, partial)" if s["day"] == today else ""
         vs = ("%+d%%" % wp) if prev else "-"
+        reads_txt = ("%.0f%% sectioned avg %s" % (s["section_share"], avg_tag(s["read_avg"])) ) \
+            if s["section_share"] is not None else "no reads"
         L.append("%s | %s | %s (%s) | %s | %s | %d | %d (%d) / %d, %s | %s%s" % (
             s["day"], ws, ktok(int(s["weighted"])), ktok(s["raw"]), vs, top_txt,
             s["miss_n"], s["whole_n"], s["big_n"], s["section_n"],
-            ("%.0f%% sectioned" % s["section_share"]) if s["section_share"] is not None else "no reads",
+            reads_txt,
             verdict, partial))
     return L
 
@@ -994,6 +1063,186 @@ def write_xlsx(rows, emp_rows):
     return os.path.relpath(XLSX_OUT, ROOT)
 
 
+def parse_ts(ts):
+    """Transcript ISO timestamp ('...Z') -> aware datetime, or None."""
+    try:
+        return datetime.datetime.fromisoformat((ts or "").replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        return None
+
+
+def parse_git_ts(s):
+    """git log '%ci' ('YYYY-MM-DD HH:MM:SS +ZZZZ') -> aware datetime, or None."""
+    try:
+        dt = datetime.datetime.strptime(s[:19], "%Y-%m-%d %H:%M:%S")
+        sign = 1 if s[20] == "+" else -1
+        oh, om = int(s[21:23]), int(s[23:25])
+        return dt.replace(tzinfo=datetime.timezone(
+            sign * datetime.timedelta(hours=oh, minutes=om)))
+    except (ValueError, IndexError):
+        return None
+
+
+def git_commits():
+    """All commits on HEAD, oldest first: (short_hash, dt, subject). Powers
+    THE PER-ARC LINE - an arc is the span between two consecutive
+    "Checkpoint:" commits (the /checkpoint skill's own commit convention)."""
+    try:
+        out = subprocess.check_output(
+            ["git", "log", "--format=%h|%ci|%s"], cwd=ROOT,
+            encoding="utf-8", errors="replace")
+    except (OSError, subprocess.CalledProcessError):
+        return []
+    commits = []
+    for line in out.splitlines():
+        parts = line.split("|", 2)
+        if len(parts) != 3:
+            continue
+        dt = parse_git_ts(parts[1])
+        if dt:
+            commits.append((parts[0], dt, parts[2]))
+    commits.reverse()
+    return commits
+
+
+def keep_other_ws_lines(path, ws, ws_field_idx=1):
+    """Non-comment lines from another workstation survive a rerun here -
+    the plain-text twin of keep_other_ws, for '|'-delimited ledgers that
+    are regenerated whole (not appended) each run."""
+    if not os.path.isfile(path):
+        return []
+    kept = []
+    with open(path, encoding="utf-8") as fh:
+        for raw in fh:
+            ln = raw.rstrip("\n")
+            if not ln or ln.startswith("#"):
+                continue
+            parts = [p.strip() for p in ln.split("|")]
+            if len(parts) > ws_field_idx and parts[ws_field_idx] != ws:
+                kept.append(ln)
+    return kept
+
+
+def arc_lines(all_reqs, emp_starts, ws):
+    """THE PER-ARC LINE (the CEO 2026-09-14: "Per-arc cost line, sounds
+    great"): one line per arc between consecutive "Checkpoint:" commits -
+    commits in the window, weighted+raw spend, employee runs started in
+    the window, spend per commit, the biggest weighted pillar, and a CHECK
+    verdict when per-commit spend beats the mean of the previous
+    BASELINE_ARCS arcs by more than (ARC_OVERSPEND - 1) x 100%. The open
+    arc since the last checkpoint is the final line, marked (open)."""
+    commits = git_commits()
+    if not commits:
+        return []
+    checkpoints = [c for c in commits if c[2].startswith("Checkpoint:")]
+    reqs = []
+    for (ts, model, _role, i_, o_, rd, c5, c1) in all_reqs:
+        dt = parse_ts(ts)
+        if dt:
+            reqs.append((dt, model, i_, o_, rd, c5, c1))
+
+    def in_window(dt, start_dt, end_dt):
+        if start_dt is not None and dt <= start_dt:
+            return False
+        if end_dt is not None and dt > end_dt:
+            return False
+        return True
+
+    spans = []  # (start_dt, start_hash, end_commit_or_None)
+    for i, cp in enumerate(checkpoints):
+        if i > 0:
+            start_dt, start_hash = checkpoints[i - 1][1], checkpoints[i - 1][0]
+        else:
+            start_dt, start_hash = None, commits[0][0]
+        spans.append((start_dt, start_hash, cp))
+    if checkpoints:
+        open_start_dt, open_start_hash = checkpoints[-1][1], checkpoints[-1][0]
+    else:
+        open_start_dt, open_start_hash = None, commits[0][0]
+    spans.append((open_start_dt, open_start_hash, None))
+
+    lines = []
+    closed_per_commit = []
+    for start_dt, start_hash, end in spans:
+        is_open = end is None
+        end_dt = end[1] if not is_open else None
+        end_hash = "HEAD" if is_open else end[0]
+        date = datetime.date.today().isoformat() if is_open else end[1].date().isoformat()
+        cms = [c for c in commits if in_window(c[1], start_dt, end_dt)]
+        n_commits = len(cms)
+        agg = {"cache writes": 0.0, "cache reads": 0.0, "output": 0.0, "input": 0.0}
+        w = raw = 0.0
+        for dt, model, i_, o_, rd, c5, c1 in reqs:
+            if not in_window(dt, start_dt, end_dt):
+                continue
+            m = {"in": i_, "out": o_, "read": rd, "c5": c5, "c1": c1}
+            w += weighted(model, m)
+            raw += i_ + o_ + rd + c5 + c1
+            for k, v in pillars(model, m).items():
+                agg[k] += v
+        emps = sum(1 for dt in emp_starts if in_window(dt, start_dt, end_dt))
+        per_commit = w / max(n_commits, 1)
+        top = max(agg.items(), key=lambda kv: kv[1]) if w else None
+        top_txt = ("%s %.0f%%" % (top[0], 100.0 * top[1] / (w or 1))) if top else "-"
+        base = closed_per_commit[-BASELINE_ARCS:]
+        if not base:
+            verdict = "first arcs - no baseline"
+        else:
+            base_mean = sum(base) / len(base)
+            if base_mean and per_commit > base_mean * ARC_OVERSPEND:
+                pct = int(round((per_commit / base_mean - 1.0) * 100))
+                verdict = "CHECK: per-commit +%d%% vs previous %d arcs" % (pct, len(base))
+            else:
+                verdict = "normal"
+        if not is_open:
+            closed_per_commit.append(per_commit)
+        lines.append("%s | %s | %s..%s | %d | %s (%s) | %d | %s | %s | %s%s" % (
+            date, ws, start_hash, end_hash, n_commits,
+            ktok(int(w)), ktok(int(raw)), emps, ktok(int(per_commit)), top_txt,
+            verdict, " (open)" if is_open else ""))
+    return lines
+
+
+def miss_lines(all_misses, ws):
+    """THE CACHE-MISS INVESTIGATION (the CEO 2026-09-14, "come up with a
+    plan, create data points"): one line per detected cache miss - same
+    detection as the daily line's miss/cold counters (MISS_MIN_BOX /
+    MISS_SHARE, unchanged), itemized with a likely cause so the dominant
+    waste is visible without a script. Regenerated whole each run from
+    this workstation's own cached transcripts (each machine only has its
+    own transcripts to mine)."""
+    rows = []
+    for (ts, sess, gap_min, bx, wr, wasted, cause) in all_misses:
+        dt = parse_ts(ts)
+        if not dt:
+            continue
+        local = dt.astimezone()
+        gap_txt = "-" if gap_min is None else "%.1f" % gap_min
+        rows.append((local.strftime("%Y-%m-%d %H:%M"), sess, gap_txt, bx, wr, wasted, cause))
+    rows.sort(key=lambda r: r[0])
+    total_n, total_wasted = len(rows), sum(r[5] for r in rows)
+    by_cause = {}
+    for r in rows:
+        c = by_cause.setdefault(r[6], {"n": 0, "wasted": 0.0})
+        c["n"] += 1
+        c["wasted"] += r[5]
+    L = ["# THE CACHE-MISS INVESTIGATION - one line per detected cache miss "
+         "(detection unchanged: MISS_MIN_BOX/MISS_SHARE in tools/usage_report.py; "
+         "this ledger itemizes and classifies each one; regenerated whole each run "
+         "from this workstation's own transcripts)",
+         "# date time | ws | session (8 chars) | gap since previous request (min) | "
+         "box tokens | cache write tokens | wasted ~weighted | likely cause",
+         "# SUMMARY: %d misses, %s wasted ~weighted, split by cause:" % (
+             total_n, ktok(int(total_wasted)))]
+    for cause in sorted(by_cause, key=lambda c: -by_cause[c]["wasted"]):
+        c = by_cause[cause]
+        L.append("#   %s: %d misses, %s wasted" % (cause, c["n"], ktok(int(c["wasted"]))))
+    for r in rows:
+        L.append("%s | %s | %s | %s | %d | %d | %s | %s" % (
+            r[0], ws, r[1], r[2], r[3], r[4], ktok(int(r[5])), r[6]))
+    return L, total_n, total_wasted, by_cause
+
+
 def main():
     quiet = "--quiet" in sys.argv[1:]
     ws = workstation()
@@ -1038,6 +1287,48 @@ def main():
     daily = daily_lines(all_days, ws)
     with open(DAILY_OUT, "w", encoding="utf-8") as fh:
         fh.write("\n".join(daily) + "\n")
+
+    # THE PER-ARC LINE (usage_by_arc.txt): per-request + employee-start
+    # timestamps flattened across every cached transcript on this machine.
+    all_reqs, emp_starts = [], []
+    for fpath, state in cache["files"].items():
+        all_reqs.extend(state.get("reqs") or [])
+        parts = fpath.replace("\\", "/").split("/")
+        if "subagents" in parts and state.get("t_first"):
+            dt = parse_ts(state["t_first"])
+            if dt:
+                emp_starts.append(dt)
+    arc_header = [
+        "# THE PER-ARC LINE - one line per arc between consecutive "
+        "\"Checkpoint:\" commits (commits = count of commits strictly after "
+        "the previous checkpoint through and including this arc's own "
+        "checkpoint commit; regenerated by tools/usage_report.py)",
+        "# date | ws | arc (start..end commit) | commits | weighted (raw) | "
+        "employee runs | per commit | top pillar | verdict"]
+    arc_body = arc_lines(all_reqs, emp_starts, ws) + keep_other_ws_lines(ARC_OUT, ws)
+    arc_body.sort(key=lambda ln: ln.split("|")[0].strip())
+    with open(ARC_OUT, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(arc_header + arc_body) + "\n")
+
+    # THE CACHE-MISS INVESTIGATION (cache_misses.txt + cache_miss_runs.txt).
+    all_misses = []
+    for state in cache["files"].values():
+        all_misses.extend(state.get("misses") or [])
+    miss_body, miss_n, miss_wasted, miss_by_cause = miss_lines(all_misses, ws)
+    with open(MISS_OUT, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(miss_body) + "\n")
+    dominant = max(miss_by_cause, key=lambda c: miss_by_cause[c]["wasted"]) \
+        if miss_by_cause else "-"
+    run_header = "# date time | ws | misses | wasted ~weighted | dominant cause"
+    run_line = "%s | %s | %d | %s | %s" % (
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), ws, miss_n,
+        ktok(int(miss_wasted)), dominant)
+    need_header = not os.path.isfile(MISS_RUNS_OUT)
+    with open(MISS_RUNS_OUT, "a", encoding="utf-8") as fh:
+        if need_header:
+            fh.write(run_header + "\n")
+        fh.write(run_line + "\n")
+
     xlsx_note = write_xlsx(rows, emp)
     if quiet:
         return
@@ -1059,6 +1350,12 @@ def main():
     print("  THE DAILY LINE (last 2 of %s):" % os.path.relpath(DAILY_OUT, ROOT))
     for ln in daily[-2:]:
         print("    " + ln)
+    arc_data_lines = [ln for ln in arc_body if not ln.startswith("#")]
+    print("  THE PER-ARC LINE (last 3 of %s):" % os.path.relpath(ARC_OUT, ROOT))
+    for ln in arc_data_lines[-3:]:
+        print("    " + ln)
+    print("  CACHE MISSES this run: %d, %s wasted, dominant cause %s (-> %s)" % (
+        miss_n, ktok(int(miss_wasted)), dominant, os.path.relpath(MISS_OUT, ROOT)))
     print("  -> OPEN %s (the spreadsheet: usage / per_request / employees)" % xlsx_note)
     print("     %s (totals + the breakdowns, plain text)" % os.path.relpath(TXT_OUT, ROOT))
     print("     csv twins: %s, %s (%d employee runs)" % (
