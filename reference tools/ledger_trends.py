@@ -90,7 +90,7 @@ DEFAULTS = {
     "systems_audit_days": 30,        # days since the last systems audit
     "systems_audit_day_files": 10,   # day files written since the last systems audit
     "open_question_days": 7,         # an OPEN question waited this many days
-    "digest_warn_bytes": 24000,      # the standup digest's byte size
+    "digest_warn_bytes": 12000,      # the standup digest's byte size (24000 before THE DIGEST DIET, 2026-09-14: ~6-8k after it)
     "loop_stale_days": {             # per run_all group: days since last run
         "session": 2, "metrics": 2, "check": 2, "regen": 7, "probes": 14, "tests": 7,
     },

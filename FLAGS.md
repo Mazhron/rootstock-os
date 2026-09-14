@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-14 16:56 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
+Updated 2026-09-14 19:02 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -46,7 +46,7 @@ Updated 2026-09-14 16:56 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 
 | REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
-| UPGRADES.md | GREEN | ok | fable | 2026-09-14 16:56 |
+| UPGRADES.md | GREEN | ok | fable | 2026-09-14 19:02 |
 | WIKI_METHOD.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | WORKSTATION_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
@@ -76,7 +76,7 @@ Updated 2026-09-14 16:56 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 
 | reference tools/format_lint.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
-| reference tools/ledger_trends.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-09-14 19:02 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-09-14 16:55 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
@@ -85,7 +85,7 @@ Updated 2026-09-14 16:56 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/run_all.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
-| reference tools/standup.py | GREEN | ok | fable | 2026-09-14 16:33 |
+| reference tools/standup.py | GREEN | ok | fable | 2026-09-14 19:02 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-14 01:01 |
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
@@ -759,3 +759,18 @@ FLAG: does what the PURPOSE says and nothing more; the no-change skip narrows a 
 SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
 DOES: the graft log: the current kit version line and one WHAT/CARRIES/GRAFT/README entry per concept, newest v1.24 the quiet audit; append-only, read by the README lint for the version and the README field
 FLAG: matches its purpose; the v1.24 entry follows the entry shape and names its README section
+
+### 2026-09-14 19:02 | reference tools/standup.py | GREEN | fable | WS1 | 9cc6925d
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: prints the session-start digest: the last exchange mined from the transcript, WHERE WE LEFT OFF, the budget line, the loop ages, proposals, version and five commits, the core lint line, WS note headlines, ledger tails (full line for a verdict or a ledger newer than the last standup, the rest as name plus date, ledgers shown elsewhere skipped), the roadmap index, open questions, recent days as first clauses; --selftest covers the pure diet helpers
+FLAG: does what the PURPOSE says; the diet narrows what prints, never what exists, and the header tells the reader where the rest is
+
+### 2026-09-14 19:02 | reference tools/ledger_trends.py | GREEN | fable | WS1 | 61eea05b
+SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop), compares them against tunable thresholds, and prints proposed rule changes; it applies nothing itself.
+DOES: reads the history ledgers against thresholds (script DEFAULTS overlaid by .claude/trend_limits.json) and prints PROPOSE lines, nothing applied; digest_warn_bytes default now 12000 after the digest diet
+FLAG: unchanged in behavior; one default lowered to match the smaller digest
+
+### 2026-09-14 19:02 | UPGRADES.md | GREEN | fable | WS1 | f142e4cc
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: the graft log: the current kit version line and one WHAT/CARRIES/GRAFT/README entry per concept, newest v1.25 the digest diet; append-only, read by the README lint
+FLAG: matches its purpose; the v1.25 entry names its README section

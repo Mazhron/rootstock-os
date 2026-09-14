@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.24** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.25** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -813,6 +813,37 @@ digest rows), the new "The installed CLAUDE.md: what it holds and how
 big it is" subsection, "Quick start" (the front door's name), "Questions
 people ask" (the Reddit question), "What is in the box" (the front door
 row, 27 scripts, core_diet).
+
+### v1.25 - 2026-09-14 - The digest diet (the standup prints what the manager acts on; the loss test)
+WHAT: after the core diet and the pointer core, the standup digest was
+the largest fixed load at session start (~4.3k tokens on the origin).
+Measured by block, LEDGER TAILS was 35% of it (33 ledgers, one full line
+each, most unchanged for days) and several blocks repeated another (the
+daily usage line, the open questions, the day index, the summary twin of
+every *_runs ledger). The CEO's condition: "the most important pieces are
+context and efficiency. As long as there is no loss there, I'm happy."
+THE LOSS TEST: a line leaves the digest only when it duplicates another
+block, or carries no verdict and is one `tail -1` away by a path the
+digest already prints. Never cut: THE LAST EXCHANGE (the verbatim law)
+and WHERE WE LEFT OFF. The rest: a ledger's newest line prints in full
+only when it carries a verdict (CHECK, FAIL, RED n, STALE, WARN, UNSYNCED,
+a cliff) or is newer than the previous standup (digest_size.txt's last
+line); the others collapse to `name date` on shared "quiet" lines;
+duplicated ledgers are skipped; commits 12 -> 5; RECENT DAYS prints each
+day's first clause. Same session, before/after: 17.4 KB -> 6.3 KB (-64%).
+The warn threshold followed the size down (digest_warn_bytes 24000 ->
+12000), so growth is caught at the new floor, not the old ceiling.
+CARRIES: reference tools/standup.py (SHOWN_ELSEWHERE, has_verdict,
+line_stamp, last_standup_stamp, tails_plan, wrap_names, first_clause,
+--selftest); reference tools/ledger_trends.py (the lowered default);
+REPORTING_METHOD.md is unchanged (the ledgers themselves are untouched).
+GRAFT: copy standup.py fresh (keep the project's version-source block);
+lower digest_warn_bytes in the project's trend_limits.json to about twice
+its post-diet digest size; add the project's own verdict words to
+_VERDICT if its ledgers use others; add any ledger another block already
+prints to SHOWN_ELSEWHERE. Then run the digest twice and diff: every line
+that left must fail the loss test.
+README: "What actually loads" tables (the digest row: ~1.6k-2k tokens).
 
 ### v1.24 - 2026-09-14 - The quiet audit (FLAGS.md's stamp means last changed, not last run)
 WHAT: the purpose audit's tally block carries an "Updated" stamp, and the

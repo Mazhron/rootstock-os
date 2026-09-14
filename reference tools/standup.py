@@ -6,7 +6,20 @@ a pull: prints a ~20-line digest - recent commits, the newest WS-note
 headlines, the tail of every history ledger, and the open roadmap index. The
 manager reads THIS, then opens full notes only where the digest points.
 
-Usage:  python tools/standup.py [--commits N] [--no-usage]   (default 12)
+Usage:  python tools/standup.py [--commits N] [--no-usage] [--selftest]   (default 5)
+
+THE DIGEST DIET (the CEO 2026-09-14, "the most important pieces are context
+and efficiency. As long as there is no loss there, I'm happy"): the digest
+is the largest fixed load at session start, so it prints only what the
+manager acts on. THE LOSS TEST: a line leaves the digest only when it is a
+duplicate of another block, or carries no verdict and is one `tail -1`
+away by a path the digest already prints. THE LAST EXCHANGE and WHERE WE
+LEFT OFF are never cut. LEDGER TAILS prints a ledger's newest line in full
+only when it carries a verdict (CHECK, FAIL, RED, STALE, WARN, UNSYNCED,
+a cliff) or is newer than the previous standup (digest_size.txt's last
+line); the rest collapse to name + date on shared lines; ledgers another
+block already shows are skipped. Commits default to 5; RECENT DAYS prints
+each day's first clause.
 
 THE BUDGET (the CEO 2026-09-10, TOKEN_IDEAS 20): the digest refreshes the
 usage sheet silently (tools/usage_report.py --quiet, incremental, ~2 s)
@@ -25,7 +38,7 @@ INTENT: the CEO 2026-09-02: 'this goes along with my rules of creating a
   script for everything.'
 
 Search keys: standup, pull digest, session start, catch-up, the budget,
-weighted spend. See also: TOKEN_IDEAS.md ideas 7 + 20; docs/history/
+weighted spend, digest diet, loss test, quiet ledgers. See also: TOKEN_IDEAS.md ideas 7 + 20; docs/history/
 ledgers; NEXT_STEPS.md; tools/usage_report.py (the daily line).
 See also: TOKEN_IDEAS.md ideas 7 and 20; docs/history ledgers;
   NEXT_STEPS.md; tools/usage_report.py (the daily line);
@@ -274,9 +287,121 @@ def print_loop():
             print("  %-8s | last run %s" % (g, when))
 
 
+# ---- THE DIGEST DIET helpers (pure; covered by --selftest) -----------------
+
+# Ledgers another digest block already prints in full (THE BUDGET, THE LOOP,
+# PROPOSALS, OPEN QUESTIONS, RECENT DAYS) or that only summarize a *_runs
+# sibling printed on the same list. One `tail -1` away, never lost.
+SHOWN_ELSEWHERE = {
+    "usage_daily.txt", "loop_runs.txt", "proposal_runs.txt", "open_questions.txt",
+    "days_index.txt", "wiki_heat.txt", "wiki_links.txt", "big_reads.txt",
+    "intent_metrics.txt", "usage_metrics.txt", "cache_misses.txt", "core_diet.txt",
+    "ledger_heads.txt",
+}
+_VERDICT = re.compile(r"\b(CHECK|FAIL|RED [1-9]|STALE|WARN|UNSYNCED|ERROR|STALL|MISSING|missing required: (?!none))")
+_DATE = re.compile(r"(\d{4}-\d{2}-\d{2})(?: (\d{2}:\d{2}))?")  # first date in the line
+
+
+def has_verdict(line):
+    """True when a ledger line carries something the manager must see."""
+    return bool(_VERDICT.search(line))
+
+
+def line_stamp(line):
+    """'YYYY-MM-DD HH:MM' (or 'YYYY-MM-DD'): the first date in the line's head, else ''."""
+    m = _DATE.search(line[:80])
+    if not m:
+        return ""
+    return m.group(1) + (" " + m.group(2) if m.group(2) else "")
+
+
+def last_standup_stamp(ledger_text):
+    """The previous standup's 'YYYY-MM-DD HH:MM' from digest_size.txt, else ''."""
+    for ln in reversed(ledger_text.splitlines()):
+        st = line_stamp(ln)
+        if st:
+            return st
+    return ""
+
+
+def tails_plan(ledgers, since):
+    """ledgers: [(name, newest_line)] -> (full: [(name, line)], quiet: [name date]).
+    Full when the line has a verdict or is newer than `since`; quiet otherwise."""
+    full, quiet = [], []
+    for name, line in ledgers:
+        if name in SHOWN_ELSEWHERE:
+            continue
+        st = line_stamp(line)
+        if has_verdict(line) or (st and since and st > since):
+            full.append((name, line))
+        else:
+            quiet.append("%s %s" % (name[:-4] if name.endswith(".txt") else name,
+                                    st[5:10] if st else "-"))
+    return full, quiet
+
+
+def wrap_names(names, width=96, indent="    "):
+    out, cur = [], ""
+    for n in names:
+        piece = (", " if cur else "") + n
+        if len(cur) + len(piece) > width and cur:
+            out.append(indent + cur)
+            cur = n
+        else:
+            cur += piece
+    if cur:
+        out.append(indent + cur)
+    return out
+
+
+def first_clause(summary, cap=150):
+    """A days_index summary's first clause: up to the first ';' or ' then ',
+    capped; the full line stays in days_index.txt."""
+    cut = re.split(r";| then |\. ", summary, maxsplit=1)[0].strip().rstrip(",:")
+    return cut if len(cut) <= cap else cut[:cap].rstrip() + "..."
+
+
+def selftest():
+    fails = []
+
+    def check(name, cond):
+        print(("PASS  " if cond else "FAIL  ") + name)
+        if not cond:
+            fails.append(name)
+    check("CHECK is a verdict", has_verdict("2026-09-14 | WS1 | CHECK: spend +229%"))
+    check("PASS clean is not", not has_verdict("2026-09-11 16:53 | WS2 | raingoal | 1/1 PASS"))
+    check("RED 0 is not, RED 2 is", not has_verdict("| RED 0 |") and has_verdict("| RED 2 |"))
+    check("PROPOSE: none is not", not has_verdict("== PROPOSE: none"))
+    check("a cliff is", has_verdict("cliffs: r8 LIFT STALL (<+5%)"))
+    check("missing required: none is not", not has_verdict("20/20 present | missing required: none"))
+    check("line_stamp reads date+time", line_stamp("2026-09-14 16:35 | WS1 | x") == "2026-09-14 16:35")
+    check("line_stamp reads a bare date", line_stamp("2026-09-14 | WS1 | x") == "2026-09-14")
+    check("line_stamp empty without a date", line_stamp("files 47 | sections 687") == "")
+    check("line_stamp finds a date later in the head", line_stamp("RESOLVED | I0040 | 2026-09-14 16:55 | WS1") == "2026-09-14 16:55")
+    check("first_clause drops a trailing comma", first_clause("I0002 explained, then x") == "I0002 explained")
+    check("last_standup_stamp takes the newest dated line",
+          last_standup_stamp("# hdr\n2026-09-14 10:00 | a\n2026-09-14 16:39 | b\n") == "2026-09-14 16:39")
+    full, quiet = tails_plan([("a_runs.txt", "2026-09-14 17:00 | new"),
+                              ("b_runs.txt", "2026-09-10 | old | PASS"),
+                              ("c_runs.txt", "2026-09-01 | FAIL"),
+                              ("usage_daily.txt", "2026-09-14 | CHECK")], "2026-09-14 16:39")
+    check("newer than the last standup prints in full", ("a_runs.txt", "2026-09-14 17:00 | new") in full)
+    check("old and clean collapses to name + date", quiet == ["b_runs 09-10"])
+    check("old with a verdict prints in full", any(n == "c_runs.txt" for n, _ in full))
+    check("shown-elsewhere ledgers are skipped", not any(n == "usage_daily.txt" for n, _ in full))
+    check("first_clause cuts at ';'", first_clause("Pulled WS2; then more") == "Pulled WS2")
+    check("first_clause cuts at ' then '", first_clause("I0002 explained then THE AUDIT") == "I0002 explained")
+    check("first_clause caps long text", first_clause("x" * 200).endswith("..."))
+    check("wrap_names wraps", len(wrap_names(["n%02d 09-14" % i for i in range(30)])) > 1)
+    print("standup selftest: %d failed" % len(fails))
+    return 1 if fails else 0
+
+
 def main():
+    if "--selftest" in sys.argv:
+        sys.exit(selftest())
     ap = argparse.ArgumentParser(description="Post-pull standup digest")
-    ap.add_argument("--commits", type=int, default=12)
+    ap.add_argument("--commits", type=int, default=5)  # THE DIGEST DIET: was 12
     ap.add_argument("--no-usage", action="store_true",
                     help="skip the usage-sheet refresh + THE BUDGET block")
     args = ap.parse_args()
@@ -385,13 +510,31 @@ def main():
     # THE DIGEST DIET (2026-09-14): one tail line per ledger, not two - the
     # previous line is one `tail -2` away when a comparison is wanted, and
     # thirty ledgers at two lines each were a third of the digest.
-    print("== LEDGER TAILS (docs/history/, newest line each; `tail -3 <ledger>` for a trend)")
-    for path in sorted(glob.glob(os.path.join(ROOT, "docs", "history", "*.txt"))):
+    # THE DIGEST DIET (the CEO 2026-09-14, "no loss" as the test): a
+    # ledger's newest line prints in full only when it carries a verdict or
+    # is newer than the previous standup; the rest collapse to name + date.
+    hist = os.path.join(ROOT, "docs", "history")
+    try:
+        with open(os.path.join(hist, "digest_size.txt"), encoding="utf-8") as fh:
+            since = last_standup_stamp(fh.read())
+    except OSError:
+        since = ""
+    ledgers = []
+    for path in sorted(glob.glob(os.path.join(hist, "*.txt"))):
         with open(path, encoding="utf-8") as fh:
             lines = [ln.rstrip() for ln in fh if ln.strip()
                      and not ln.startswith("#")]
         if lines:
-            print("  %s: %s" % (os.path.basename(path), lines[-1]))
+            ledgers.append((os.path.basename(path), lines[-1]))
+    full, quiet = tails_plan(ledgers, since)
+    print("== LEDGER TAILS (docs/history/; full line = a verdict or new since the last standup%s; `tail -3 <ledger>` for a trend)"
+          % (" " + since if since else ""))
+    for name, line in full:
+        print("  %s: %s" % (name, line))
+    if quiet:
+        print("  quiet (no verdict, unchanged; name + last date):")
+        for ln in wrap_names(quiet):
+            print(ln)
 
     print("== OPEN ROADMAP (NEXT_STEPS index)")
     try:
@@ -411,7 +554,11 @@ def main():
             lines = [ln.rstrip() for ln in fh if ln.strip()
                      and not ln.startswith("#")]
         for ln in lines[-3:]:
-            print("  " + ln)
+            parts = [x.strip() for x in ln.split(" | ", 3)]
+            if len(parts) == 4:  # THE DIGEST DIET: the first clause; the file has the rest
+                print("  %s | %s | %s | %s" % (parts[0], parts[1], parts[2], first_clause(parts[3])))
+            else:
+                print("  " + ln)
 
 
 if __name__ == "__main__":
