@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.23** (2026-09-14). The graft log `UPGRADES.md` is the
+Kit version: **v1.24** (2026-09-14). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -489,7 +489,9 @@ yours:
   ritual is read-only, then flag, then explain: the auditor never edits
   the thing in the audit turn. `FLAGS.md` is the one committed file that
   references every flag, hashed to the exact version reviewed, tallied at
-  the top, and open to any reviewer's findings by pull request. `/flag`
+  the top, and open to any reviewer's findings by pull request. The
+  tally's stamp moves only when a flag moves, never on a no-change run,
+  so the mirror check never warns over noise. `/flag`
   walks the ritual; `purpose_audit.py --pending` lists what needs one.
   The kit's own first audit (v1.19) flagged 58 things: 53 green, 5
   yellow, 0 red. v1.20 closed all five the next morning, one of them by

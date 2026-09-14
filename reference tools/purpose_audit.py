@@ -38,7 +38,11 @@ header goes through tools/format_lint.py --rewrite, never by hand.
 Items are keyed by their kit-relative path (what the public repo shows)
 and hashed from the kit copy, so a contributor's flag and ours name the
 same thing. The runs ledger (docs/history/purpose_audit_runs.txt) carries
-one tally line per status run for standup and the trends.
+one tally line per status run for standup and the trends. The tally's
+"Updated" stamp means LAST CHANGED, not last run: a status run whose rows
+and counts match the file leaves FLAGS.md byte-identical, so the loop's
+audit never makes the mirror check cry KIT UNSYNCED over nothing (Q0003,
+the CEO 2026-09-14: option 2, fix the cause).
 
 Search keys: purpose audit, flags, green yellow red, flag ledger, FLAGS.md,
 read-only audit, stale flag, unflagged, contributor review, says does.
@@ -238,8 +242,19 @@ def regenerate(rows, tally, path=None):
         raise SystemExit("FLAGS.md has no tally markers (%s / %s) - restore them by hand" % (TALLY_START, TALLY_END))
     a = text.index(TALLY_START)
     b = text.index(TALLY_END) + len(TALLY_END)
-    text = text[:a] + tally_block(rows, tally) + text[b:]
-    write(path, text)
+    fresh = tally_block(rows, tally)
+    if _same_but_stamp(text[a:b], fresh):
+        return False  # Q0003 (the CEO 2026-09-14, option 2): nothing changed, leave the file alone
+    write(path, text[:a] + fresh + text[b:])
+    return True
+
+
+def _same_but_stamp(old_block, new_block):
+    """True when two tally blocks differ only in the Updated timestamp, so a
+    no-change run leaves FLAGS.md byte-identical (the mirror check stays
+    quiet; the run itself is still in purpose_audit_runs.txt)."""
+    strip = lambda t: re.sub(r"^Updated \S+ \S+", "Updated", t, count=1, flags=re.M)
+    return strip(old_block) == strip(new_block)
 
 
 @contextlib.contextmanager
@@ -395,6 +410,14 @@ def selftest():
         check("newest entry wins; red counted; no longer stale", t["red"] == 1 and t["green"] == 0 and t["stale"] == 0)
         n = read(fpath).count("### ")
         check("entries are append-only (three kept)", n == 3)
+        rows, t = status(kit, read(fpath))
+        regenerate(rows, t, path=fpath)
+        before = read(fpath)
+        check("regenerate with nothing changed leaves FLAGS.md byte-identical (Q0003)",
+              regenerate(rows, t, path=fpath) is False and read(fpath) == before)
+        t2 = dict(t, green=t["green"] + 1)
+        check("regenerate with a changed tally rewrites the block",
+              regenerate(rows, t2, path=fpath) is True and read(fpath) != before)
         try:
             add_flag("hooks/a.py", "green", "t", "does — x", "y", path=fpath, kit=kit)
             check("em dash in an entry is refused", False)

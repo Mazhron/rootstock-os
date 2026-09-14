@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.23** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.24** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -813,6 +813,31 @@ digest rows), the new "The installed CLAUDE.md: what it holds and how
 big it is" subsection, "Quick start" (the front door's name), "Questions
 people ask" (the Reddit question), "What is in the box" (the front door
 row, 27 scripts, core_diet).
+
+### v1.24 - 2026-09-14 - The quiet audit (FLAGS.md's stamp means last changed, not last run)
+WHAT: the purpose audit's tally block carries an "Updated" stamp, and the
+loop runs the audit at every standup, so the stamp was rewritten every
+session even when no flag, row or count had moved. The mirror check saw
+one byte-different kit file and the prompt hook said KIT UNSYNCED on
+every prompt over nothing (the origin's open question Q0003). The CEO
+ruled option 2, fix the cause, over the cheap fix of teaching the mirror
+check to ignore that line: the audit now compares the fresh tally block
+against the one in the file with the stamp masked, and skips the write
+when nothing else changed. The stamp now means LAST CHANGED; the runs
+ledger (purpose_audit_runs.txt) still records every run. A generated
+line inside a committed file must not churn on a no-op run: a sync
+warning that fires on noise trains everyone to ignore it.
+CARRIES: reference tools/purpose_audit.py (regenerate() returns False on
+a stamp-only difference; selftest covers both branches); FLAGS.md (the
+generated tally, unchanged in shape).
+GRAFT: copy purpose_audit.py fresh over the project's adapted copy (the
+change is inside regenerate() and one helper; keep any local KIT_DIR or
+ledger-path edits). If the project's mirror check or sync hook was taught
+to ignore the Updated line as a workaround, drop that exception in the
+same batch. Any other generated stamp in a committed file gets the same
+treatment: rewrite on change, never on a run.
+README: "The format law and the purpose audit" (one sentence: the tally
+stamp moves only when a flag moves).
 
 ### v1.23 - 2026-09-14 - The pointer core (CLAUDE.md points, the master index lists, rules load by path; Anthropic's 200-line target guarded)
 WHAT: (1) THE SECOND RULING on the core, the same day as v1.22. The CEO
