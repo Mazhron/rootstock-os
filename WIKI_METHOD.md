@@ -38,13 +38,16 @@ of thousands.
 
 ## The architecture (three layers, one home per fact)
 
-1. **THE HOT CORE - CLAUDE.md** (always loaded): the laws in one line
-   each, the process every session needs, active/handoff notes, and THE
-   INDEX - one line per library file and per sub-index. Budget it IN
-   TOKENS (Everwood: 3,500, ~300 lines, the lint fails past it; a fresh
-   install lands at ~1.5k-3k). What falls out of daily use moves BY
-   SCRIPT to a docs/index/ sub-index (the section below); everything
-   else lives in a topic file.
+1. **THE POINTER CORE - CLAUDE.md** (always loaded): the project in a
+   paragraph, how to read, how to verify, the laws no hook enforces, and
+   ONE pointer to the master index. Under Anthropic's 200-line target
+   (the lint fails past LINE_BUDGET 200 / TOKEN_BUDGET 2,000, warns past
+   1,000; the origin lands ~900 tokens, a fresh install lower). Rules that
+   only matter for part of the codebase live in .claude/rules/ with
+   `paths:` front matter and load only while a matching file is read.
+   Everything else is one line in docs/index/MASTER_INDEX.md, the one
+   door, and what falls out of use in the core moves there BY SCRIPT
+   (the section below).
 2. **THE TOPIC LIBRARY - docs/systems/*.md** (read on demand): one file
    per subject (soil, fauna, ui, performance...). Read ONLY when touching
    that subject. Grows without limit; the core never grows with it.
@@ -284,7 +287,7 @@ LAW -> SUBAGENT_METHOD.md law 7 | HOOKS_METHOD.md Tier 2d; the mover ->
 tools/cold_shelf.py; the candidates -> tools/wiki_heat.py.
 
 ## The hot core and the sub-indexes (the core diet: CLAUDE.md never bloats again)
-Tags: architecture, economy, lessons | CLAUDE.md is the hot core inside a TOKEN budget; sections that fall out of use move by script into docs/index/ sub-indexes, one stub line each, verbatim and reversible
+Tags: architecture, economy, lessons | CLAUDE.md is a pointer core under Anthropic's 200-line target; knowledge has three homes (always / when a matching file is read / on demand behind the master index); sections that fall out of use move by script, one stub line each, verbatim and reversible
 
 The origin project's CLAUDE.md grew from ~250 lines to ~10k tokens in
 three weeks while its own law said "index only" - laws were promoted in
@@ -298,14 +301,45 @@ out of CLAUDE.md ... These indexes can grow much more than the CLAUDE.md
 file. They will need to have appropriate names for the files and sections
 inside that connect to the appropriate knowledge txt files."
 
+THE SECOND RULING (Mazhron 2026-09-14, after reading Anthropic's memory
+doc, code.claude.com/docs/en/memory): "Claude.md should simply point to
+everything else ... Claude.md doesn't need to load 2-5k tokens each
+time, Claude.MD just needs to guide Claude on where to go to get the
+information Claude needs which Claude will add to it's cache/context as
+needed only." Anthropic's page settles the mechanics: target under 200
+lines per file; imports and unscoped rules load at launch, so moving
+must-read text into them "helps organization but doesn't reduce
+context"; a rule with a `paths:` field loads only when Claude reads a
+matching file; CLAUDE.md is guidance, hooks are the enforcement layer.
+So KNOWLEDGE HAS THREE HOMES, by WHEN it is needed:
+- ALWAYS -> CLAUDE.md, the pointer core: the project in a paragraph, how
+  to read, how to verify (build commands belong here, Anthropic says),
+  the laws no hook enforces, one line each. Nothing else is restated.
+- WHEN A MATCHING FILE IS READ -> .claude/rules/<topic>.md with `paths:`
+  front matter (game code rules for scripts/, text rules for data/ and
+  ui/, wiki hygiene for every .md). The harness loads them itself; no
+  hook, no Read call, no output tokens. A rule WITHOUT paths loads every
+  session, so the lint counts its tokens against the core budget.
+- ON DEMAND -> docs/index/MASTER_INDEX.md, THE ONE DOOR: every topic
+  file, root file, sub-index, law stub, rule and knowledge file, one
+  line each, and every destination listed DIRECTLY (each hop costs a
+  Read; never chain three files to reach a fact).
+A must-read chain enforced by hook was considered and rejected: a file
+Claude must read every session costs the same as if it sat in CLAUDE.md
+plus a Read call, and a hook cannot make Claude read, only inject or
+block. The saving is in loading rules only when they apply.
+
 THE LAW:
-1. CLAUDE.md is THE HOT CORE, budgeted IN TOKENS (bytes/4): the lint
-   (check_claude_md.py TOKEN_BUDGET, Everwood 3,500) FAILS past it and the
-   answer is never a raised budget. What it holds: the project in a
-   paragraph, the wiki convention in short form, ONE line per topic file
-   and per sub-index, the laws as one-line stubs, the active notes, and
-   the process every session runs (perf rules, verifying, player-text
-   rules). A fresh install lands at ~1.5k-3k tokens.
+1. CLAUDE.md is THE POINTER CORE, budgeted in lines AND tokens: the lint
+   (check_claude_md.py) FAILS past LINE_BUDGET (200, Anthropic's target)
+   or TOKEN_BUDGET (bytes/4; 2,000, the owner's action line), WARNS past
+   WARN_TOKENS (1,000), requires CLAUDE.md to name the master index and
+   the master index to list every docs/systems and docs/index file and
+   every rule, and fails on a rule with no `paths:` field. The answer is
+   never a raised budget. standup prints the OK/WARN line every session
+   so the owner sees the size; the hygiene guard runs the lint the moment
+   CLAUDE.md, the master index or a rule is edited. The origin lands at
+   ~900 tokens / 68 lines; a fresh install lower.
 2. Every `## `/`### ` section of the core is a UNIT. A unit that should
    be movable carries `Index: <name>` (its sub-index); `Index: core` pins
    it. A hard-won unit carries `Tags: ... | brief` - the brief becomes
@@ -320,8 +354,9 @@ THE LAW:
    search keys, each section keeps its Tags and See-also lines that
    connect it to its knowledge files, a provenance comment records the
    origin) and, while the core is still over budget, the coldest routed
-   units next. Each move leaves ONE line in the core's "## The
-   sub-indexes" block: `- <heading> -> docs/index/<name>.md | <brief>`.
+   units next. Each move leaves ONE line in the MASTER INDEX's "## The
+   sub-indexes" block: `- <heading> -> docs/index/<name>.md | <brief>`
+   (the block lived in CLAUDE.md itself until the pointer core).
    A COLD unit with no Index line is only PROPOSED - a human names its
    home. `--move-section` is the manager's explicit call; `--restore`
    reverses a move (the unit returns after the unit it followed).
@@ -330,7 +365,7 @@ THE LAW:
    wiki file: `Grep "^## "` then the section. The scanners (wiki_heat,
    check_wiki_links, export_tag_index, export_wiki_view, cold_shelf)
    discover docs/index/ as wiki files; the lint requires every sub-index
-   to be named in the core.
+   to be named in the master index, and the master index in the core.
 6. NOTHING IS DELETED (the preservation law): a move is verbatim,
    stubbed, ledgered (docs/history/core_diet.txt regenerated,
    core_diet_runs.txt appended) and reversible. The laws that matter most
@@ -343,9 +378,11 @@ sections out of the one ALWAYS-LOADED file, by script, on heat and budget,
 because that file's size is the only standing cost in the system.
 
 See also: the architecture (layer 1) above; the cold shelf below;
-tools/core_diet.py; tools/check_claude_md.py; WORKFLOWS.md "Diet the
-core (move a CLAUDE.md section to a sub-index)"; INTENT.md "The core
-diet"; the hooks rule -> HOOKS_METHOD.md.
+tools/core_diet.py; tools/check_claude_md.py; docs/index/MASTER_INDEX.md;
+.claude/rules/; WORKFLOWS.md "Diet the core (move a CLAUDE.md section to
+a sub-index)" and "Add or change a path-scoped rule"; INTENT.md "The core
+diet" (both rulings); the hooks rule -> HOOKS_METHOD.md;
+https://code.claude.com/docs/en/memory (Anthropic: size, rules, imports).
 
 ## The learning loop (ledgers measure, scripts propose, the owner rules)
 Tags: architecture, process | Three read-only scripts close the loop: dead links, section heat, and ledger trends turned into PROPOSE lines at standup

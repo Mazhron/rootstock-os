@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.22** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.23** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -814,3 +814,69 @@ big it is" subsection, "Quick start" (the front door's name), "Questions
 people ask" (the Reddit question), "What is in the box" (the front door
 row, 27 scripts, core_diet).
 
+### v1.23 - 2026-09-14 - The pointer core (CLAUDE.md points, the master index lists, rules load by path; Anthropic's 200-line target guarded)
+WHAT: (1) THE SECOND RULING on the core, the same day as v1.22. The CEO
+asked whether a single MASTER_INDEX would be the right call ("Claude.md
+should simply point to everything else") and had the manager read
+Anthropic's memory page (code.claude.com/docs/en/memory) before ruling.
+The page settles the mechanics: target under 200 lines per CLAUDE.md;
+`@path` imports and rules WITHOUT a paths field load at launch, so moving
+must-read text into them "helps organization but doesn't reduce context";
+a `.claude/rules/*.md` file WITH `paths:` front matter loads only when
+Claude reads a matching file; CLAUDE.md is guidance and hooks are the
+enforcement layer; block HTML comments are stripped before injection.
+The CEO's must-read chain enforced by hook was dropped by his own
+verdict ("your response is likely more correct than mine"); the master
+index and the smallest-possible core were kept. (2) KNOWLEDGE HAS THREE
+HOMES, by when it is needed: ALWAYS -> CLAUDE.md, the pointer core (the
+project in a paragraph, how to read, how to verify, the laws no hook
+enforces, one pointer to the master index; the origin: 68 lines, ~900
+tokens, from ~3.5k); WHEN A MATCHING FILE IS READ -> path-scoped rules
+(the origin: game-code.md for scripts/scenes/shaders, player-text.md for
+.tres/ui/store/changelog text, wiki.md for every .md; each moved VERBATIM
+with the core diet's provenance comment so --restore still works; the
+format header sits in a stripped HTML comment, free); ON DEMAND ->
+docs/index/MASTER_INDEX.md, THE ONE DOOR (every topic file, root file,
+sub-index, law stub, rule and knowledge file, one line each, every
+destination direct). The cross-workstation notes moved to
+docs/index/notes.md; standup prints their headlines from there. (3) THE
+GUARD: check_claude_md.py now fails past LINE_BUDGET 200 (Anthropic's
+number) or TOKEN_BUDGET 2,000 (the CEO's action line), WARNS past
+WARN_TOKENS 1,000, requires CLAUDE.md to name the master index, the
+master index to list every docs/systems and docs/index file and every
+rule, and fails on a rule with no paths field (it would load every
+session; its tokens are counted against the core). standup prints the
+lint's OK/WARN line under "== THE CORE" so the owner sees the size every
+session; the hygiene guard runs the lint the moment CLAUDE.md, the master
+index or a rule is edited. (4) core_diet.py's stub block now lives in the
+master index, not the core (selftest proves the round trip both ways;
+a pre-v1.23 core still holding its own block restores cleanly). (5)
+check_wiki_links treats the master index like the core (every docs/
+mention must resolve); refresh_kit carries PORTABLE_RULES (rules/wiki.md
+travels; game and text rules stay per project). (6) WORKFLOWS gained "Add
+or change a path-scoped rule"; the front door's STEP 1 and definition of
+done name the master index, the rules and the size line.
+CARRIES: rules/wiki.md (new, the first kit rule); reference tools/
+check_claude_md.py, core_diet.py, standup.py, check_wiki_links.py,
+refresh_kit.py; hooks/hygiene_guard.py (CORE_CONTRACT); WIKI_METHOD.md
+(architecture layer 1 + "The hot core and the sub-indexes": the second
+ruling and the three homes); the front door STEP 1 + definition of done;
+this entry.
+GRAFT: rewrite your core as a pointer file (identity, how to read, how to
+verify, the laws no hook enforces, ONE line naming docs/index/
+MASTER_INDEX.md); build the master index from the core's old library
+lines and its sub-index stub block; move each part-of-the-codebase rule
+set VERBATIM into `.claude/rules/<topic>.md` with a `paths:` list first
+and the core-diet provenance comment; copy rules/wiki.md and adjust its
+paths; take the new check_claude_md.py (set LINE_BUDGET 200, TOKEN_BUDGET
+and WARN_TOKENS to your owner's numbers, never raise them later),
+core_diet.py, standup.py, check_wiki_links.py, refresh_kit.py and the
+hygiene guard; run core_diet --selftest and check_claude_md; confirm a
+rule loads by opening a matching file and running /context.
+README: the new top section "What loads every session, what Anthropic
+says, and what guards it" (right after the intro), the "Doesn't a wiki
+make the context HEAVIER?" table (core row ~900 tokens / 68 lines), "The
+installed CLAUDE.md: what it holds and how big it is" (rewritten for the
+three homes), "Quick start" (the core lands under Anthropic's target),
+"What is in the box" (the rules/ row, 27 scripts), "Questions people ask"
+(the size question answered with Anthropic's number).

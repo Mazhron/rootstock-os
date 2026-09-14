@@ -53,13 +53,20 @@ the exchange into the day file by hand). Record each skip in the stamp
 ## STEP 1 - the wiki (WIKI_METHOD.md, "Bootstrapping a NEW project")
 
 Everything else is indexed into it, so it comes first: the project's
-CLAUDE.md as THE HOT CORE (laws, process, one line per knowledge file,
-inside a TOKEN budget: WIKI_METHOD.md "The hot core and the sub-indexes";
-a fresh install lands at ~1.5k-3k tokens), docs/systems/ topic files,
-docs/index/ sub-indexes for what falls out of the core, the wiki
-convention block, the lint (reference tools/check_claude_md.py) and the
+CLAUDE.md as THE POINTER CORE (the project in a paragraph, how to read,
+how to verify, the laws no hook enforces, ONE pointer to the master
+index; under Anthropic's 200-line target, the lint fails past 200 lines
+or 2,000 tokens and warns past 1,000: WIKI_METHOD.md "The hot core and
+the sub-indexes"; the origin lands ~900 tokens), docs/index/
+MASTER_INDEX.md (the one door: every topic file, root file, sub-index and
+rule, one line each), .claude/rules/ path-scoped rules for what only
+matters while one part of the codebase is open (copy rules/wiki.md from
+the kit; write the project's own code and text rules with a `paths:`
+field), docs/systems/ topic files, docs/index/ sub-indexes for what falls
+out of the core, the lint (reference tools/check_claude_md.py) and the
 mover (reference tools/core_diet.py) in the check group. Copy the portable
-MDs to the repo root and index each with one line. Create WORKFLOWS.md
+MDs to the repo root and index each with one line in the master index.
+Create WORKFLOWS.md
 (WORKFLOW_METHOD.md) the day the first two-step process exists. Stamp the
 install: "Rootstock vX.Y installed <date> | updates: <policy>" in the
 core's index (version: UPGRADES.md).
@@ -105,8 +112,10 @@ commit subjects.
 
 ## DEFINITION OF DONE
 
-standup.py runs clean; check_claude_md.py passes (the core inside its
-token budget); the format lint passes and FLAGS.md flags every kit thing;
+standup.py runs clean and prints the core's size; check_claude_md.py
+passes (the core under 200 lines and inside its token budget, every rule
+by path, the master index complete); the format lint passes and FLAGS.md
+flags every kit thing;
 SUBAGENTS.md has one real ledger line; the skills answer to their slash
 commands; the first commit is in. From then on: every write grows the
 wiki, every repeatable action becomes a script, every result lands in a

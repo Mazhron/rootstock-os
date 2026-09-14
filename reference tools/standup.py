@@ -17,8 +17,10 @@ the verdict. --no-usage skips the refresh (no transcripts, no time).
 PURPOSE: Prints the post pull standup digest: the last exchange mined from
   harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget
   line, THE LOOP (each run_all group's age), ledger trend proposals, version
-  and recent commits, WS notes, ledger tails, the open roadmap index, and
-  OPEN QUESTIONS TO MAZHRON.
+  and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a
+  subprocess so the owner sees the core's size every session), WS notes
+  from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN
+  QUESTIONS TO MAZHRON.
 INTENT: the CEO 2026-09-02: 'this goes along with my rules of creating a
   script for everything.'
 
@@ -358,15 +360,27 @@ def main():
     else:
         print("  (no git history - not a git repo, or git unavailable)")
 
-    print("== NEWEST WS NOTES (headlines only - open CLAUDE.md for a body)")
+    # THE POINTER CORE (2026-09-14): the notes live in docs/index/notes.md now;
+    # the core's size is said out loud here so the owner sees it every session.
+    print("== THE CORE (CLAUDE.md; tools/check_claude_md.py; Anthropic: under 200 lines)")
     try:
-        with open(os.path.join(ROOT, "CLAUDE.md"), encoding="utf-8") as fh:
-            heads = re.findall(r"^- \*\*(→ WS[^:]{0,110})", fh.read(),
+        out = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "check_claude_md.py")],
+                             cwd=ROOT, capture_output=True, text=True, timeout=20).stdout.strip()
+        print("  " + (out.splitlines()[0] if out else "(no output)"))
+        for ln in out.splitlines()[1:6]:
+            print("  " + ln)
+    except Exception as e:  # noqa: BLE001 - the digest never crashes on a lint
+        print("  (lint did not run: %s)" % e)
+
+    print("== NEWEST WS NOTES (headlines only - open docs/index/notes.md for a body)")
+    try:
+        with open(os.path.join(ROOT, "docs", "index", "notes.md"), encoding="utf-8") as fh:
+            heads = re.findall(r"^- \*\*(→ (?:BOTH )?WS[^:]{0,110})", fh.read(),
                                flags=re.M)
         for h in heads[:6]:
             print("  " + h.strip())
     except OSError:
-        print("  (no CLAUDE.md)")
+        print("  (no docs/index/notes.md)")
 
     # THE DIGEST DIET (2026-09-14): one tail line per ledger, not two - the
     # previous line is one `tail -2` away when a comparison is wanted, and

@@ -19,7 +19,9 @@ This script keeps it the HOT CORE and nothing else:
     VERBATIM to its sub-index and, while CLAUDE.md is still over its token
     budget (check_claude_md.TOKEN_BUDGET), the coldest routed units next,
     lowest heat first; each move leaves ONE line in CLAUDE.md's
-    "## The sub-indexes" block: `- <heading> -> docs/index/<name>.md | brief`
+    "## The sub-indexes" block OF docs/index/MASTER_INDEX.md (since the pointer
+    core, 2026-09-14; the block used to live in CLAUDE.md itself):
+    `- <heading> -> docs/index/<name>.md | brief`
     (the brief is the unit's Tags line brief, so the core still states the
     law in a sentence), so every moved section stays findable by grep;
   * a COLD unit with no Index: line is only PROPOSED - a human names its
@@ -82,6 +84,7 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
 CORE_NAME = "CLAUDE.md"
+MASTER_REL = os.path.join("docs", "index", "MASTER_INDEX.md")   # the stub block lives here (the pointer core, 2026-09-14)
 INDEX_DIRNAME = os.path.join("docs", "index")
 BLOCK_HEADING = "## The sub-indexes"
 BLOCK_INTRO = ("(moved out by tools/core_diet.py, verbatim: heading -> sub-index | brief; "
@@ -100,7 +103,8 @@ INDEX_FILE_HEADER = (
     "  grows without limit and is read by section, on demand, never whole.\n"
     "\n"
     "Search keys: {name} index, sub-index, core diet, moved from CLAUDE.md.\n"
-    "See also: CLAUDE.md (the hot core, \"The sub-indexes\" block);\n"
+    "See also: docs/index/MASTER_INDEX.md (the one door, \"The sub-indexes\" block);\n"
+    "  CLAUDE.md (the pointer core); "
     "  WIKI_METHOD.md \"The hot core and the sub-indexes\"; tools/core_diet.py.\n"
 )
 
@@ -302,6 +306,30 @@ def index_path(root, name):
     return os.path.join(root, INDEX_DIRNAME, name + ".md")
 
 
+MASTER_HEADER = (
+    "# MASTER_INDEX - the one door to everything CLAUDE.md does not carry\n"
+    "\n"
+    "PURPOSE: list, one line each, every topic file, sub-index, law stub and\n"
+    "  rule of the project, so CLAUDE.md can stay a pointer file.\n"
+    "INTENT: CLAUDE.md should simply point to everything else (the owner, 2026-09-14).\n"
+    "\n"
+    "Search keys: master index, the one door, sub-indexes, rules.\n"
+    "See also: CLAUDE.md; docs/index/*.md; .claude/rules/*.md; tools/core_diet.py.\n"
+)
+
+
+def master_path(root):
+    return os.path.join(root, MASTER_REL)
+
+
+def read_master(root):
+    """The master index's lines (created with its header when missing)."""
+    p = master_path(root)
+    if not os.path.isfile(p):
+        write_text(p, MASTER_HEADER)
+    return read_text(p).splitlines(keepends=True)
+
+
 def block_span(lines):
     """(start, end) of the sub-indexes block, or None."""
     for i, ln in enumerate(lines):
@@ -363,12 +391,14 @@ def move_unit(root, core_path, lines, unit, name, reason, dry_run, nl="\n"):
         addition += nl
     write_text(target, existing + addition)
     new_lines = lines[:unit["start"]] + lines[unit["end"]:]
-    new_lines = ensure_block(new_lines, nl)
-    bstart, bend = block_span(new_lines)
+    # the stub line lands in the master index's block (the pointer core, 2026-09-14)
+    mlines = ensure_block(read_master(root), nl)
+    bstart, bend = block_span(mlines)
     insert_at = bend
-    while insert_at > bstart + 1 and new_lines[insert_at - 1].strip() == "":
+    while insert_at > bstart + 1 and mlines[insert_at - 1].strip() == "":
         insert_at -= 1
-    new_lines = new_lines[:insert_at] + [stub_line(unit, name) + nl] + new_lines[insert_at:]
+    mlines = mlines[:insert_at] + [stub_line(unit, name) + nl] + mlines[insert_at:]
+    write_text(master_path(root), "".join(mlines))
     print("MOVED %d lines (~%d tokens): %s -> %s" % (n, unit["tokens"], unit["heading"], rel_target))
     return new_lines
 
@@ -413,9 +443,12 @@ def restore_unit(root, core_path, heading, dry_run):
     note = RESTORED.format(heading=ilines[i][3:].rstrip("\r\n"), core=CORE_NAME, day=today) + nl
     new_index = ilines[:i] + ["## " + ilines[i][3:], note, nl] + ilines[end:]
     write_text(path, "".join(new_index))
-    # drop the stub line, put the unit back after the unit it followed
+    # drop the stub line from the master index, put the unit back after the unit it followed
     stub = "- %s ->" % ilines[i][3:].rstrip("\r\n")
-    lines = [ln for ln in lines if not ln.startswith(stub)]
+    if os.path.isfile(master_path(root)):
+        mlines = read_master(root)
+        write_text(master_path(root), "".join(ln for ln in mlines if not ln.startswith(stub)))
+    lines = [ln for ln in lines if not ln.startswith(stub)]   # a pre-09-14 core still holding its own block
     units = parse_units(lines)
     at = len(lines)
     if after != "(top)":
@@ -533,7 +566,8 @@ def run(root, do_move, dry_run, reason):
                              % (u["heading"], u["tokens"], days))
     if core_tokens > budget:
         proposals.append("PROPOSE (core_diet): CLAUDE.md is ~%d tokens (budget %d) and nothing routed "
-                         "is left to move - route more sections or shorten what stays"
+                         "is left to move - route more sections, move a rule set to .claude/rules/ "
+                         "with a paths: field, or shorten what stays"
                          % (core_tokens, budget))
     if dry_run:
         print("[dry-run] CLAUDE.md ~%d tokens now (budget %d); %d move(s) planned; nothing written, "
@@ -606,11 +640,13 @@ def selftest():
     idx = read_text(index_path(tmp, "laws"))
     check("## Rule A" in idx and "body A" in idx and "core diet: moved" in idx, "moved verbatim with provenance")
     core_text = read_text(core)
-    check("body A" not in core_text and "- Rule A -> docs/index/laws.md | brief A" in core_text, "stub line in the block")
-    check(BLOCK_HEADING in core_text, "block created")
+    master_text = read_text(master_path(tmp))
+    check("body A" not in core_text and "- Rule A" not in core_text, "unit and stub both out of the core")
+    check("- Rule A -> docs/index/laws.md | brief A" in master_text, "stub line in the master index block")
+    check(BLOCK_HEADING in master_text and master_text.startswith("# MASTER_INDEX"), "master index created with its block")
     restore_unit(tmp, core, "Rule A", False)
     core_text = read_text(core)
-    check("### Rule A" in core_text and "body A" in core_text and "- Rule A ->" not in core_text, "restored, stub gone")
+    check("### Rule A" in core_text and "body A" in core_text and "- Rule A ->" not in read_text(master_path(tmp)), "restored, stub gone from the master index")
     check(core_text.index("### Rule A") > core_text.index("## Laws") and core_text.index("### Rule A") < core_text.index("### Rule B"), "restored after the unit it followed")
     check("restored to CLAUDE.md" in read_text(index_path(tmp, "laws")), "index keeps a restored note")
     print("core_diet selftest: " + ("PASS" if ok else "FAIL"))

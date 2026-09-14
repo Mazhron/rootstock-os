@@ -12,10 +12,61 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.22** (2026-09-14). The graft log `UPGRADES.md` is the
+Kit version: **v1.23** (2026-09-14). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
+
+## What loads every session, what Anthropic says, and what guards it
+
+The installed CLAUDE.md is a POINTER file: the project in a paragraph, how
+to read, how to verify, the laws no hook enforces, and one line naming the
+master index. It stays under Anthropic's own 200-line target for a
+CLAUDE.md file. This repository looks large because it is install
+instructions, method files and reference scripts, read ONCE by the Claude
+doing the install; none of it is a CLAUDE.md and none of it loads into a
+session's context.
+
+| What | When it loads | Size (origin project, 2026-09-14) |
+|---|---|---|
+| CLAUDE.md, the pointer core | Every session, automatically | ~900 tokens, 68 lines |
+| A path-scoped rule (`.claude/rules/*.md`) | Only while a matching file is open | a few hundred tokens each |
+| The standup digest | Once, at session start / after /clear | ~3.4k tokens |
+| The master index / wiki (47 files) | NEVER whole. A section at a time, on demand | ~289k tokens on disk, ~0 by default |
+| The front door `0 - READ ME FIRST.md` | Once, at install | ~1.8k tokens |
+
+Knowledge has three homes, by WHEN it is needed:
+
+- **ALWAYS.** CLAUDE.md itself: the pointer core.
+- **WHEN A MATCHING FILE IS READ.** A `.claude/rules/*.md` file with a
+  `paths:` front matter field, loaded by Claude Code itself, not by a hook
+  or a Read call.
+- **ON DEMAND.** `docs/index/MASTER_INDEX.md`, the one door: every topic
+  file, root file, sub-index, law stub, rule and knowledge file, one line
+  each, every destination listed directly.
+
+What guards the shape:
+
+- **The token-budget lint** (`check_claude_md.py`) fails past LINE_BUDGET
+  200 (Anthropic's own number) or TOKEN_BUDGET 2,000 (the owner's action
+  line), and WARNS past WARN_TOKENS 1,000. It also requires CLAUDE.md to
+  name the master index, the master index to list every topic file,
+  sub-index and rule, and it fails a rule file that has no `paths:` field,
+  because such a rule would load every session and its tokens belong to
+  the core's budget.
+- **The standup digest** prints the lint's OK/WARN line every session, so
+  the size is visible without asking.
+- **The hygiene guard**, a PostToolUse hook, runs the lint the moment
+  CLAUDE.md, the master index or a rule is edited.
+- **The core diet** (`core_diet.py`) moves a cold section out of the core
+  by script, verbatim and reversibly, leaving one stub line in the master
+  index.
+
+Anthropic's own guidance: https://code.claude.com/docs/en/memory. Its
+words: target under 200 lines per CLAUDE.md file, longer files consume
+more context and reduce adherence; it gives no token figure of its own.
+The 1,000-token number that circulates online is a community estimate,
+not Anthropic's.
 
 ## The problem: context is the bill
 
@@ -38,20 +89,22 @@ nothing in Rootstock rides in the context by default:
 
 | What | When it enters context | Size (origin project, 2026-09-14) |
 |---|---|---|
-| CLAUDE.md, the core | Every session, automatically | ~3.5k tokens (was ~10k before the core diet) |
+| CLAUDE.md, the pointer core | Every session, automatically | ~900 tokens, 68 lines (was ~3.5k that same morning, ~10k before the core diet) |
+| A path-scoped rule (`.claude/rules/*.md`) | Only while a matching file is open | a few hundred tokens each |
 | The standup digest | Once, at session start / after /clear | ~3.4k tokens |
-| The wiki (45 files) | NEVER whole. A section at a time, on demand | ~289k tokens ON DISK; ~0 in context |
+| The wiki (47 files) | NEVER whole. A section at a time, on demand | ~289k tokens ON DISK; ~0 in context |
 | Skills | Only the one invoked, when invoked | a few hundred tokens each |
 | Hooks | Never (they are scripts; only their one-line output enters) | ~0 |
 
-So a session opens at roughly 7k tokens of context for a project whose
-written knowledge is ~289k. The core is about 1% of the wiki, and a linter
-(`check_claude_md.py`) warns when it grows, because THAT is the one file
-that is a standing cost. The rule that keeps it small: CLAUDE.md is an
-INDEX (laws, process, one line per topic file); knowledge lives in the
-topic files. Since v1.22 the budget is in tokens and a script (the core
-diet, below) moves what falls out of use, so the number cannot drift up
-again unnoticed.
+So a session opens at roughly 4.3k tokens of context for a project whose
+written knowledge is ~289k. The core is a sliver of the wiki, and a linter
+(`check_claude_md.py`) fails when it grows past budget, because THAT is
+the one file that is a standing cost. The rule that keeps it small:
+CLAUDE.md is a POINTER file, one pointer to `docs/index/MASTER_INDEX.md`;
+the index lines live in the master index, and knowledge lives in the topic
+files. Since v1.22 the budget is in tokens and a script (the core diet,
+below) moves what falls out of use, so the number cannot drift up again
+unnoticed.
 
 The rest is reachable, not loaded. Claude greps a file's `## ` headings
 (~50 tokens, the file itself never loads), then reads the one section it
@@ -68,24 +121,29 @@ willpower.
 
 ### The installed CLAUDE.md: what it holds and how big it is
 
-An installed project's core carries only: the project in a paragraph; the
-wiki convention in short form; one line per topic file and per sub-index;
-every law as a one-line stub pointing at its sub-index; the active
-cross-machine notes; and the process every session runs (the non-negotiable
-code rules, how to verify, the player-text rules). Everything else is read
-by section, on demand, from the topic files the stubs point at.
+Knowledge has three homes, by when it is needed. ALWAYS lives in
+CLAUDE.md, the pointer core: the project in a paragraph, how to read, how
+to verify, the laws no hook enforces, and one pointer to
+`docs/index/MASTER_INDEX.md`. WHEN A MATCHING FILE IS READ lives in a
+`.claude/rules/*.md` file with a `paths:` front matter field, loaded by
+Claude Code itself while that kind of file is open, never by a hook. ON
+DEMAND lives in the master index, the one door: every topic file, root
+file, sub-index, law stub, rule and knowledge file, one line each.
 
-The target is ~1.5k-3k tokens fresh off an install; the origin project's
-own core sits at ~3.5k after three weeks of live notes accumulating on top
-of a fresh install. It stays that size on its own: the token-budget lint
-(`check_claude_md.py`) fails past budget and the budget is never raised,
-and the core diet (`core_diet.py`, kit v1.22) runs before it, moving the
-coldest routed sections VERBATIM out to their `docs/index/` sub-index,
-leaving one stub line behind, reversible with `--restore`.
+The origin project's own core sits at 68 lines, ~900 tokens. It stays that
+size on its own: the token-budget lint (`check_claude_md.py`) fails past
+budget and the budget is never raised, and the core diet (`core_diet.py`,
+kit v1.22) runs before it, moving the coldest routed sections VERBATIM out
+to the master index, leaving one stub line behind, reversible with
+`--restore`.
 
 The honest line: the origin's own core had drifted to ~10k tokens before
-any of this existed. The ruling that built the mechanism was the CEO's,
-made after a reader measured the front door file and called the kit slop.
+any of this existed, then to ~3.5k after the first fix. The mechanism took
+two rulings the same day: the CEO first ordered the token-budgeted diet,
+then asked whether CLAUDE.md should simply point to everything else. A
+read of Anthropic's own memory page settled the mechanics, and the second
+ruling followed: a pointer core, a single master index, and rules that
+load only by path.
 
 ### The receipts: 44 metered days of the origin project
 
@@ -524,9 +582,10 @@ never restructures a live repo unasked.
    session rituals, delegation, skills, hooks, the process registry and
    the workstation inventory.
 5. It finishes with a definition of done you can verify yourself: the
-   standup script runs clean, the lint passes, the delegation ledger has
-   one real line, the skills answer to their slash commands, and the first
-   commit is in.
+   standup script runs clean, the lint passes, the resulting CLAUDE.md
+   lands under Anthropic's 200-line target and the lint keeps it there,
+   the delegation ledger has one real line, the skills answer to their
+   slash commands, and the first commit is in.
 
 That is the whole handoff. The front-door file exists precisely so that a
 stranger's Claude needs no other instructions. The front door is an
@@ -583,11 +642,17 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 - **Isn't a 5k-token CLAUDE.md the opposite of lean?** It would be, and it
   is not one: the file a reader measured was the install runbook, since
   renamed ("0 - READ ME FIRST.md") so the name cannot mislead. The
-  per-session CLAUDE.md Rootstock builds is the hot core: laws as
-  one-line stubs, one line per knowledge file, the process every session
-  needs, ~1.5k-3k tokens fresh, budgeted in tokens by a lint that fails
-  and never raises, with a script that moves cold sections out. See "The
-  installed CLAUDE.md: what it holds and how big it is" above.
+  per-session CLAUDE.md Rootstock builds is a pointer core: one pointer to
+  the master index, the laws no hook enforces, and the process every
+  session needs, budgeted in tokens by a lint that fails and never raises,
+  with a script that moves cold sections out. See "The installed
+  CLAUDE.md: what it holds and how big it is" above.
+- **How big is the CLAUDE.md this actually installs?** Anthropic's own
+  guidance targets under 200 lines per CLAUDE.md file; it gives no token
+  figure. The 1,000-token number that circulates online is a community
+  estimate, not Anthropic's. The origin project's installed core is 68
+  lines, about 900 tokens, guarded by a lint that fails past 2,000 tokens
+  or 200 lines and warns past 1,000 tokens.
 - **Does it improve my prompts?** No, and that is the point. It moves
   the CONTEXT (wiki, ledgers, day files) and the INTERPRETATION (laws,
   hooks, the process registry) out of the prompt and into files read
@@ -621,6 +686,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, seven laws, assignments table, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
 | `skills/` | The nine skills, ready to drop into `.claude/skills/` |
+| `rules/` | The first path-scoped rule, `wiki.md`: drop into `.claude/rules/`, loads only while a markdown file is open; write your own game and text rules beside it |
 | `HOOKS_METHOD.md` | The hooks: the contract, the ten kit hooks, tiers, bootstrap |
 | `hooks/` | The ten hook scripts (drop into `tools/hooks/`) plus the settings template (merge into `.claude/settings.json`) |
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |

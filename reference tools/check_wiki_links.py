@@ -14,7 +14,8 @@ THE WIKI: repo-root *.md (non-recursive) + docs/systems/*.md + docs/cold/*.md
       topic words ("this file", "above") carry no file and are ignored.
   (b) [[name]] wiki links - resolve against any wiki file's basename.
   (c) markdown [text](relative/path) links - schemeless paths only.
-  (d) in CLAUDE.md only, every "docs/systems/<name>.md" mention.
+  (d) in CLAUDE.md and docs/index/MASTER_INDEX.md, every "docs/systems/<name>.md"
+      and "docs/index/<name>.md" mention.
 
 RESOLUTION: repo-root-relative, then relative to the referencing file's own
 directory, then by BASENAME anywhere under the wiki's search roots (repo
@@ -226,7 +227,7 @@ def scan_file(path, bmap, wiki_basenames, is_claude_md):
                 continue
             record(idx, token)
 
-    # (d) CLAUDE.md: every docs/systems/<name>.md and docs/index/<name>.md mention
+    # (d) CLAUDE.md + MASTER_INDEX.md: every docs/systems/<name>.md and docs/index/<name>.md mention
     if is_claude_md:
         for idx, ln in enumerate(lines, start=1):
             for m in re.finditer(r"docs/(?:systems|index)/[\w-]+\.md", ln):
@@ -266,7 +267,7 @@ def main():
 
     for path in files:
         rel = os.path.relpath(path, ROOT).replace("\\", "/")
-        is_claude_md = (os.path.basename(path) == "CLAUDE.md")
+        is_claude_md = (os.path.basename(path) in ("CLAUDE.md", "MASTER_INDEX.md"))
         links, dead, by_base, sec_total, sec_without = scan_file(
             path, bmap, wiki_basenames, is_claude_md)
         total_links += links

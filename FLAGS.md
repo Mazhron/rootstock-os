@@ -33,11 +33,11 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-14 15:42 | items 62 | GREEN 62 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
+Updated 2026-09-14 16:33 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| 0 - READ ME FIRST.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
@@ -46,8 +46,8 @@ Updated 2026-09-14 15:42 | items 62 | GREEN 62 | YELLOW 0 | RED 0 | unflagged 0 
 | REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
-| UPGRADES.md | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
-| WIKI_METHOD.md | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| UPGRADES.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
+| WIKI_METHOD.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | WORKSTATION_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | hooks/README.txt | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
@@ -56,7 +56,7 @@ Updated 2026-09-14 15:42 | items 62 | GREEN 62 | YELLOW 0 | RED 0 | unflagged 0 
 | hooks/diet_guard.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
-| hooks/hygiene_guard.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| hooks/hygiene_guard.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-13 12:21 |
@@ -65,11 +65,11 @@ Updated 2026-09-14 15:42 | items 62 | GREEN 62 | YELLOW 0 | RED 0 | unflagged 0 
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/_ledger.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
-| reference tools/check_claude_md.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
-| reference tools/check_wiki_links.py | GREEN | ok | fable | 2026-09-14 15:42 |
+| reference tools/check_claude_md.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
+| reference tools/check_wiki_links.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/checkpoint.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
-| reference tools/core_diet.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/correction_log.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
@@ -81,15 +81,16 @@ Updated 2026-09-14 15:42 | items 62 | GREEN 62 | YELLOW 0 | RED 0 | unflagged 0 
 | reference tools/purpose_audit.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/readme_lint.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
-| reference tools/refresh_kit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/refresh_kit.py | GREEN | ok | fable | 2026-09-14 16:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/run_all.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
-| reference tools/standup.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| reference tools/standup.py | GREEN | ok | fable | 2026-09-14 16:33 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-14 01:01 |
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| rules/wiki.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/checkpoint/SKILL.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
@@ -688,3 +689,63 @@ FLAG: the yellow named the header prose omitting docs/index; the THE WIKI / PURP
 SAYS: Mines the harness transcripts for read events against wiki markdown files and sections, reports file and section read counts plus hot and cold sections, and classifies cold sections by why they are cold using git activity in their code areas; it never moves anything.
 DOES: discovers docs/index/*.md alongside repo-root, docs/systems and docs/cold; header now says so
 FLAG: the yellow named the header prose omitting docs/index; the THE WIKI / PURPOSE lines were amended 2026-09-14 and re-read against the discovery code
+
+### 2026-09-14 16:32 | rules/wiki.md | GREEN | sonnet-PC-FLAG-1 | WS1 | 62ac5a1e
+SAYS: path-scoped rule carrying the wiki convention at the moment a markdown file is read: headings are search keys, every section ends with See also, the core stays a pointer file, nothing is deleted
+DOES: Path-scoped rule (paths: **/*.md) injecting the wiki convention (read cheap, headings as search keys, grow the wiki into docs/systems + one MASTER_INDEX line, preservation law) whenever a markdown file is open; its format header sits inside an HTML block comment so the comment is stripped before the rule enters context
+FLAG: Matches its own header exactly; body content is identical to the source .claude/rules/wiki.md; correctly points new always-true knowledge to a sub-index or path-scoped rule instead of CLAUDE.md
+
+### 2026-09-14 16:32 | 0 - READ ME FIRST.md | GREEN | sonnet-PC-FLAG-1 | WS1 | 16eaae6a
+SAYS: The kit's front door: walks a receiving Claude through the install in order (ask the CEO first, then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: Install runbook walking a receiving Claude through STEP 0-5 by pointing at each method file's bootstrap section; STEP 1 already describes the pointer-core CLAUDE.md, docs/index/MASTER_INDEX.md as the one door, .claude/rules path-scoped rules including copying rules/wiki.md, and the 200-line/2000-token lint
+FLAG: Content matches current behavior, no stale references to the old stub-in-CLAUDE.md scheme found
+
+### 2026-09-14 16:32 | UPGRADES.md | GREEN | sonnet-PC-FLAG-1 | WS1 | 026fae52
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: Append-only graft log; the v1.23 entry (lines ~815-882) documents today's pointer-core batch accurately: the pointer core, three knowledge homes, the guard's LINE_BUDGET/TOKEN_BUDGET/WARN_TOKENS and its rule paths check, core_diet.py's stub moving to the master index, check_wiki_links treating the master index like the core, refresh_kit's PORTABLE_RULES, and the new WORKFLOWS entry
+FLAG: Entry is thorough and current, matches the actual files it lists under CARRIES
+
+### 2026-09-14 16:32 | WIKI_METHOD.md | GREEN | sonnet-PC-FLAG-1 | WS1 | 8de2a323
+SAYS: A portable system for organizing a project's knowledge (a lean CLAUDE.md core, a docs/systems topic library, portable root notes) so an AI assistant finds anything in three cheap hops, Glob, Grep for headings, then a targeted Read, without wasting tokens.
+DOES: Portable method file; both the architecture section (layer 1) and 'The hot core and the sub-indexes' section fully describe the 2026-09-14 pointer-core restructure: three knowledge homes (CLAUDE.md always, path-scoped rules when a file is read, MASTER_INDEX.md on demand), the LINE_BUDGET/TOKEN_BUDGET/WARN_TOKENS guard, and that the sub-indexes stub block now lives in the master index rather than CLAUDE.md itself
+FLAG: No stale language describing the old CLAUDE.md-holds-its-own-stub-block behavior found; matches core_diet.py and check_claude_md.py as read
+
+### 2026-09-14 16:32 | hooks/hygiene_guard.py | GREEN | sonnet-PC-FLAG-1 | WS1 | 2d15b330
+SAYS: PostToolUse guard on Write, Edit and MultiEdit that, after an edit lands, hands the manager one line of context per applicable law: KIT REFRESH when a portable original changed, SEE-ALSO when a touched docs/systems section has no See also line, DASH when player-facing text received an em or en dash (this one BLOCKS), and IMPORT when a new asset needs the engine import run; stateless pattern matching only.
+DOES: PostToolUse guard on Write/Edit/MultiEdit; kit_refresh() checks r == CORE_FILE or r == CORE_CONTRACT[0] (docs/index/MASTER_INDEX.md) or r.startswith(CORE_CONTRACT[1]) (.claude/rules/) and runs check_claude_md.py, relaying a FAIL; also emits KIT REFRESH, SEE-ALSO, DASH (blocking) and IMPORT lines as documented
+FLAG: CORE_CONTRACT tuple matches the PURPOSE/header description that editing the core, the master index or a rules file triggers the lint; selftest covers CLAUDE.md triggering the lint but not MASTER_INDEX.md or a rules file directly, a minor test gap rather than a purpose mismatch
+
+### 2026-09-14 16:32 | reference tools/check_claude_md.py | GREEN | sonnet-PC-FLAG-1 | WS1 | b547dc7e
+SAYS: Read CLAUDE.md and fail with exit 1 when the pointer core exceeds its token or line budget, when CLAUDE.md does not name the master index, when the master index (docs/index/MASTER_INDEX.md) drifts from the docs/systems and docs/index files on disk, or when a .claude/rules file has no paths field (it would load every session; its tokens count against the core); warn past WARN_TOKENS.
+DOES: Reads CLAUDE.md, fails at LINE_BUDGET 200 or TOKEN_BUDGET 2000, warns past WARN_TOKENS 1000, requires CLAUDE.md to name docs/index/MASTER_INDEX.md, requires the master index to list every docs/systems file, every docs/index sub-index and every scoped .claude/rules file, and fails when a rules file lacks a paths: front matter field (counting its tokens against the core budget)
+FLAG: Body matches PURPOSE line for line, no undisclosed behavior
+
+### 2026-09-14 16:32 | reference tools/check_wiki_links.py | GREEN | sonnet-PC-FLAG-1 | WS1 | 7d51e915
+SAYS: Warn-only link checker for the knowledge wiki: scan repo-root, docs/systems, docs/cold and docs/index markdown for the four cross-reference forms, resolve each against the repo, and report dead links plus See-also hygiene.
+DOES: Scans repo-root, docs/systems, docs/cold and docs/index markdown for the four cross-reference forms and reports dead links plus See-also hygiene; is_claude_md now covers both CLAUDE.md and MASTER_INDEX.md (line 270) so form (d), every docs/systems and docs/index mention, is checked in both files; writes docs/history/wiki_links.txt and appends to wiki_link_runs.txt, never deletes
+FLAG: Docstring form (d) explicitly names MASTER_INDEX.md, matching the code; PURPOSE line's general docs/index wording is consistent with this
+
+### 2026-09-14 16:32 | reference tools/core_diet.py | GREEN | sonnet-PC-FLAG-1 | WS1 | ec76c931
+SAYS: Measure the heat of every CLAUDE.md section from the transcript read cache, git recency and pointer follows, report it, and move cold or over-budget routed sections verbatim into named sub-index files under docs/index/ leaving a one-line stub, with an explicit move and a restore, so the always-loaded core stays inside its token budget by script.
+DOES: Measures CLAUDE.md section heat (reads, follows, git recency), then --move moves cold or over-budget routed sections verbatim into docs/index/<name>.md, leaving one stub line in docs/index/MASTER_INDEX.md's sub-indexes block (moved out of CLAUDE.md itself per the 2026-09-14 pointer core); --restore reverses it and also strips a stub from a pre-09-14 core that still holds its own block; selftest exercises the full move/restore round trip against the master index
+FLAG: Docstring and code agree that the stub block lives in the master index now, not CLAUDE.md; no deletion, matches the preservation law
+
+### 2026-09-14 16:32 | reference tools/refresh_kit.py | YELLOW | sonnet-PC-FLAG-1 | WS1 | 22e9186d
+SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, .claude/skills/*/SKILL.md, tools/hooks/*.py, the tools/*.py that have a reference copy), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
+DOES: Copies portable originals to their kit grab-copies; pairs() now also copies any rules/*.md file named in PORTABLE_RULES (currently wiki.md) from .claude/rules/ to the kit's rules/ folder, applying the CEO substitution to it as a script
+FLAG: PURPOSE line lists 'repo-root MDs, .claude/skills/*/SKILL.md, tools/hooks/*.py, the tools/*.py that have a reference copy' but omits the .claude/rules/ PORTABLE_RULES category entirely, even though pairs() (lines 89-92) copies rules/wiki.md every run. Fix: add '.claude/rules/*.md files listed in PORTABLE_RULES' to the PURPOSE line's parenthetical list
+
+### 2026-09-14 16:33 | reference tools/standup.py | YELLOW | sonnet-PC-FLAG-1 | WS1 | bb3c3ee6
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, WS notes, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: Prints the post-pull digest; also runs check_claude_md.py as a subprocess and prints its first output lines under a '== THE CORE' heading (lines 363-371), and reads workstation-note headlines from docs/index/notes.md under '== NEWEST WS NOTES' (lines 373-381)
+FLAG: PURPOSE line lists the last exchange, WHERE WE LEFT OFF, the usage budget line, THE LOOP, ledger trend proposals, version and recent commits, WS notes, ledger tails, the open roadmap index, and OPEN QUESTIONS, but never mentions the == THE CORE section that runs check_claude_md.py and prints the lint's OK-or-WARN line every session. Fix: add '(5) the core lint's OK/WARN line under == THE CORE' to the PURPOSE list so the subprocess call is disclosed
+
+### 2026-09-14 16:33 | reference tools/refresh_kit.py | GREEN | fable | WS1 | da71b966
+SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, .claude/skills/*/SKILL.md, tools/hooks/*.py, the tools/*.py that have a reference copy, and the .claude/rules/*.md files named in PORTABLE_RULES), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
+DOES: copies every portable original (repo-root MDs, skills, hooks, reference tools, and the .claude/rules files named in PORTABLE_RULES) to its kit grab-copy with the CEO substitution in scripts; --check reports drift
+FLAG: PC-FLAG-1 yellow: the PURPOSE list omitted the rules category; header amended to name PORTABLE_RULES
+
+### 2026-09-14 16:33 | reference tools/standup.py | GREEN | fable | WS1 | 5eff3c08
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: prints the standup digest including THE CORE line from check_claude_md.py run as a subprocess and WS note headlines from docs/index/notes.md
+FLAG: PC-FLAG-1 yellow: the PURPOSE list did not mention the core lint line; header amended

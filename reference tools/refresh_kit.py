@@ -3,7 +3,8 @@ updated and pushed whenever it is discussed").
 
 PURPOSE: copy every portable ORIGINAL to its grab-copy in the kit folder
   (repo-root MDs, .claude/skills/*/SKILL.md, tools/hooks/*.py, the
-  tools/*.py that have a reference copy), with the one substitution the
+  tools/*.py that have a reference copy, and the .claude/rules/*.md files
+  named in PORTABLE_RULES), with the one substitution the
   kit carries in scripts (the owner's name -> "the CEO"); report the
   hand-adapted files it must never overwrite; `--check` only says what
   is out of step (the prompt hook's KIT UNSYNCED line).
@@ -42,6 +43,8 @@ KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os")
 HOOKS_DIR = os.path.join(ROOT, "tools", "hooks")
 TOOLS_DIR = os.path.join(ROOT, "tools")
 SKILLS_DIR = os.path.join(ROOT, ".claude", "skills")
+RULES_DIR = os.path.join(ROOT, ".claude", "rules")
+PORTABLE_RULES = {"wiki.md"}                # path-scoped rules that travel; game rules stay per project
 ADAPTED = {"hooks/bash_guard.py"}          # hand-tailored kit copies: never overwritten
 SUBST = [("the CEO's", "the CEO's"), ("the CEO", "the CEO")]   # scripts only; prose stays verbatim
 JUNK = {"__pycache__", ".git"}
@@ -84,6 +87,10 @@ def pairs():
         for f in sorted(os.listdir(HOOKS_DIR)):
             if f.endswith(".py"):
                 out.append((os.path.join(HOOKS_DIR, f), "hooks/" + f, True))
+    if os.path.isdir(RULES_DIR):
+        for f in sorted(os.listdir(RULES_DIR)):
+            if f in PORTABLE_RULES:
+                out.append((os.path.join(RULES_DIR, f), "rules/" + f, False))
     ref = os.path.join(KIT_DIR, "reference tools")
     if os.path.isdir(ref):
         for f in sorted(os.listdir(ref)):

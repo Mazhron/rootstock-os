@@ -67,6 +67,7 @@ SKILLS_DIR = ".claude/skills"
 HOOKS_DIR = "tools/hooks"
 REF_TOOLS_DIR = KIT_DIR + "/reference tools"
 CORE_FILE = "CLAUDE.md"                  # its lint runs on edit
+CORE_CONTRACT = ("docs/index/MASTER_INDEX.md", ".claude/rules/")   # the one door + the path-scoped rules: same lint (the pointer core, 2026-09-14)
 CORE_LINT = ["python", "tools/check_claude_md.py"]
 KIT_SYNC = "python tools/sync_kit_repo.py"
 README_HINT = "the public README (rootstock-os/README.md) if a pillar, skill, hook or box item changed"
@@ -113,7 +114,7 @@ def new_texts(tool, tin):
 def kit_refresh(r, run_lint=True):
     """One line when a portable original (or a kit copy) changed."""
     name = os.path.basename(r)
-    if r == CORE_FILE:
+    if r == CORE_FILE or r == CORE_CONTRACT[0] or r.startswith(CORE_CONTRACT[1]):
         if not run_lint:
             return "KIT/CORE: %s changed - its lint would run here" % r
         try:
