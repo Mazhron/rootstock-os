@@ -61,7 +61,7 @@ KIT_MDS = {
     "SKILLS.md", "HOOKS_METHOD.md", "WORKSTATION_METHOD.md",
 }
 KIT_DIR = "Future Project MDs"           # the grab-copy folder (repo root)
-KIT_ONLY = {"0 - READ ME FIRST, CLAUDE.md", "UPGRADES.md",  # no repo-root original
+KIT_ONLY = {"0 - READ ME FIRST.md", "UPGRADES.md",  # no repo-root original (front door renamed 2026-09-14: it is an install runbook, not a CLAUDE.md)
             "CONTRIBUTING.md", "FLAGS.md", "hooks/README.txt", "hooks/settings.json"}
 SKILLS_DIR = ".claude/skills"
 HOOKS_DIR = "tools/hooks"

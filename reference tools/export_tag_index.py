@@ -9,7 +9,7 @@ its `## ` heading, a line:
 
     Tags: tag1, tag2 | one-line brief of the takeaway
 
-This script sweeps repo-root *.md + docs/systems/*.md and generates
+This script sweeps repo-root *.md + docs/systems/*.md + docs/index/*.md and generates
 KNOWLEDGE_INDEX.md (repo root, GENERATED - never hand-edit): one section per
 tag, one clickable line per entry linking to the section's TRUE home. No
 knowledge is duplicated - the index is links + briefs only. New files and
@@ -18,7 +18,7 @@ new tags appear automatically on the next run. Prefer the starter tags
 invent a new one only when none fits - the summary prints the tag inventory
 so drift is visible.
 
-PURPOSE: Sweep repo-root and docs/systems markdown for Tags lines under
+PURPOSE: Sweep repo-root, docs/systems and docs/index markdown for Tags lines under
   headings and compile KNOWLEDGE_INDEX.md, one section per tag with links to
   each section's true home.
 INTENT: makes the wiki's hard-won lessons browsable by tag without
@@ -76,6 +76,11 @@ def main():
     for name in sorted(os.listdir(sysdir)):
         if name.endswith(".md"):
             files.append((os.path.join(sysdir, name), "docs/systems/" + name))
+    indexdir = os.path.join(ROOT, "docs", "index")  # the core diet's sub-indexes carry Tags lines too (2026-09-14)
+    if os.path.isdir(indexdir):
+        for name in sorted(os.listdir(indexdir)):
+            if name.endswith(".md"):
+                files.append((os.path.join(indexdir, name), "docs/index/" + name))
 
     by_tag = {}
     total = 0

@@ -5,7 +5,8 @@ from, read here instead for READ EVENTS (Read/Bash/PowerShell/Grep calls
 that touch a .md wiki file).
 
 THE WIKI = every *.md at the repo root (non-recursive) + docs/systems/*.md +
-docs/cold/*.md (that folder may not exist yet). A SECTION is a "## " heading
+docs/cold/*.md + docs/index/*.md (the core diet's sub-indexes; either folder
+may not exist yet). A SECTION is a "## " heading
 line through the line before the next "## " (or EOF); lines before the
 first heading are the pseudo-section "(preamble)".
 
@@ -150,6 +151,9 @@ def discover_wiki_files():
         files["docs/systems/" + os.path.basename(p)] = p
     for p in sorted(glob.glob(os.path.join(ROOT, "docs", "cold", "*.md"))):
         files["docs/cold/" + os.path.basename(p)] = p
+    # docs/index/*.md: the sub-indexes the core diet fills (2026-09-14)
+    for p in sorted(glob.glob(os.path.join(ROOT, "docs", "index", "*.md"))):
+        files["docs/index/" + os.path.basename(p)] = p
     return files
 
 
@@ -162,6 +166,8 @@ def build_wiki_index(wiki_files):
             cat = "systems"
         elif fid.startswith("docs/cold/"):
             cat = "cold"
+        elif fid.startswith("docs/index/"):
+            cat = "index"
         else:
             cat = "root"
         index.setdefault(base, []).append((cat, fid))
@@ -187,12 +193,15 @@ def match_wiki_file(raw_path, wiki_index):
         return None
     has_systems = "docs/systems/" in norm
     has_cold = "docs/cold/" in norm
+    has_index = "docs/index/" in norm
     for cat, fid in candidates:
         if cat == "systems" and has_systems:
             return fid
         if cat == "cold" and has_cold:
             return fid
-        if cat == "root" and not has_systems and not has_cold:
+        if cat == "index" and has_index:
+            return fid
+        if cat == "root" and not has_systems and not has_cold and not has_index:
             return fid
     return None
 

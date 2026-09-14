@@ -385,6 +385,9 @@ def hot_files(root):
     systems_dir = root / "docs" / "systems"
     if systems_dir.exists():
         files.extend(sorted(systems_dir.glob("*.md")))
+    index_dir = root / "docs" / "index"  # the core diet's sub-indexes are hot wiki files too (2026-09-14)
+    if index_dir.exists():
+        files.extend(sorted(index_dir.glob("*.md")))
     return sorted(files)
 
 

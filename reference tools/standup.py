@@ -161,7 +161,7 @@ def print_last_exchange():
     if not best:
         print("== THE LAST EXCHANGE: no harness transcripts found - falling "
               "back to the day file's WHERE WE LEFT OFF below.")
-        return
+        return False
     asst_ts, user_ts, user_txt, imgs, asst_txt = best
     sess = os.path.basename(best_file).split(".")[0][:8]
     print("== THE LAST EXCHANGE (harness transcript = ground truth; "
@@ -180,6 +180,7 @@ def print_last_exchange():
         body = body[:_CAP] + "\n[truncated - full text in the transcript]"
     for ln in body.splitlines():
         print("  > " + ln)
+    return True
 
 
 def print_budget():
@@ -283,7 +284,7 @@ def main():
     # the STATE summary (version, shipped, queue, next-likely) - it still
     # stores the checkpoint-time exchange for the searchable record, but
     # verbatim replay no longer depends on it.
-    print_last_exchange()
+    replayed = print_last_exchange()
 
     days = sorted(glob.glob(os.path.join(ROOT, "docs", "history", "days", "*.md")))
     if days:
@@ -307,8 +308,24 @@ def main():
         wm = re.search(r"## WHERE WE LEFT OFF.*?(?=\n## |\Z)", body, flags=re.S)
         print("== WHERE WE LEFT OFF (%s)" % newest)
         if wm:
+            # THE DIGEST DIET (2026-09-14, after ledger_trends proposed a trim
+            # at 33k bytes): when the transcript block above already replayed
+            # the exchange verbatim, the day file's copy of the same quote
+            # blocks is not printed twice - only its STATE / NEXT lines.
+            quoting = False
             for ln in wm.group(0).splitlines()[1:]:
+                s = ln.strip()
+                if replayed:
+                    if s.startswith(("MAZHRON'S LAST PROMPT", "MANAGER'S LAST RESPONSE",
+                                     "USER'S LAST PROMPT")):
+                        quoting = True
+                        continue
+                    if quoting and (s.startswith(">") or s == ""):
+                        continue
+                    quoting = False
                 print("  " + ln)
+            if replayed:
+                print("  (prompt + response omitted here: the transcript block above is the verbatim record)")
         else:
             print("  (no WHERE WE LEFT OFF section yet - see the file's "
                   "COMPLETED list)")
@@ -351,15 +368,16 @@ def main():
     except OSError:
         print("  (no CLAUDE.md)")
 
-    print("== LEDGER TAILS (docs/history/)")
+    # THE DIGEST DIET (2026-09-14): one tail line per ledger, not two - the
+    # previous line is one `tail -2` away when a comparison is wanted, and
+    # thirty ledgers at two lines each were a third of the digest.
+    print("== LEDGER TAILS (docs/history/, newest line each; `tail -3 <ledger>` for a trend)")
     for path in sorted(glob.glob(os.path.join(ROOT, "docs", "history", "*.txt"))):
         with open(path, encoding="utf-8") as fh:
             lines = [ln.rstrip() for ln in fh if ln.strip()
                      and not ln.startswith("#")]
         if lines:
-            print("  %s:" % os.path.basename(path))
-            for ln in lines[-2:]:
-                print("    " + ln)
+            print("  %s: %s" % (os.path.basename(path), lines[-1]))
 
     print("== OPEN ROADMAP (NEXT_STEPS index)")
     try:

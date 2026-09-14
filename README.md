@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.21** (2026-09-14). The graft log `UPGRADES.md` is the
+Kit version: **v1.22** (2026-09-14). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -36,20 +36,22 @@ The natural objection: more files means more to read, so the context gets
 fat and token-hungry. It would, if the files loaded. They do not. Almost
 nothing in Rootstock rides in the context by default:
 
-| What | When it enters context | Size (origin project, 2026-09-13) |
+| What | When it enters context | Size (origin project, 2026-09-14) |
 |---|---|---|
-| CLAUDE.md, the core | Every session, automatically | ~9k tokens |
-| The standup digest | Once, at session start / after /clear | ~3k tokens |
-| The wiki (50 files) | NEVER whole. A section at a time, on demand | ~289k tokens ON DISK; ~0 in context |
+| CLAUDE.md, the core | Every session, automatically | ~3.5k tokens (was ~10k before the core diet) |
+| The standup digest | Once, at session start / after /clear | ~3.4k tokens |
+| The wiki (45 files) | NEVER whole. A section at a time, on demand | ~289k tokens ON DISK; ~0 in context |
 | Skills | Only the one invoked, when invoked | a few hundred tokens each |
 | Hooks | Never (they are scripts; only their one-line output enters) | ~0 |
 
-So a session opens at roughly 12k tokens of context for a project whose
-written knowledge is ~289k. The core is 3% of the wiki, and a linter
+So a session opens at roughly 7k tokens of context for a project whose
+written knowledge is ~289k. The core is about 1% of the wiki, and a linter
 (`check_claude_md.py`) warns when it grows, because THAT is the one file
 that is a standing cost. The rule that keeps it small: CLAUDE.md is an
 INDEX (laws, process, one line per topic file); knowledge lives in the
-topic files.
+topic files. Since v1.22 the budget is in tokens and a script (the core
+diet, below) moves what falls out of use, so the number cannot drift up
+again unnoticed.
 
 The rest is reachable, not loaded. Claude greps a file's `## ` headings
 (~50 tokens, the file itself never loads), then reads the one section it
@@ -63,6 +65,27 @@ The honest caveat: dump everything into CLAUDE.md and yes, every session
 pays for all of it. That is exactly the failure Rootstock is built
 against, and the reason the core is guarded by a linter rather than by
 willpower.
+
+### The installed CLAUDE.md: what it holds and how big it is
+
+An installed project's core carries only: the project in a paragraph; the
+wiki convention in short form; one line per topic file and per sub-index;
+every law as a one-line stub pointing at its sub-index; the active
+cross-machine notes; and the process every session runs (the non-negotiable
+code rules, how to verify, the player-text rules). Everything else is read
+by section, on demand, from the topic files the stubs point at.
+
+The target is ~1.5k-3k tokens fresh off an install; the origin project's
+own core sits at ~3.5k after three weeks of live notes accumulating on top
+of a fresh install. It stays that size on its own: the token-budget lint
+(`check_claude_md.py`) fails past budget and the budget is never raised,
+and the core diet (`core_diet.py`, kit v1.22) runs before it, moving the
+coldest routed sections VERBATIM out to their `docs/index/` sub-index,
+leaving one stub line behind, reversible with `--restore`.
+
+The honest line: the origin's own core had drifted to ~10k tokens before
+any of this existed. The ruling that built the mechanism was the CEO's,
+made after a reader measured the front door file and called the kit slop.
 
 ### The receipts: 44 metered days of the origin project
 
@@ -492,7 +515,7 @@ never restructures a live repo unasked.
 ## Quick start
 
 1. Give this repo's contents to Claude (Claude Code, any capable model).
-2. Say: **read "0 - READ ME FIRST, CLAUDE.md" and install the kit.**
+2. Say: **read "0 - READ ME FIRST.md" and install the kit.**
 3. Answer its STEP 0 questions: project, engine and repo; who manages and
    which employee models are available; one workstation or several; which
    domain-notes files apply; and your update policy (ask, auto, relevant
@@ -506,7 +529,9 @@ never restructures a live repo unasked.
    commit is in.
 
 That is the whole handoff. The front-door file exists precisely so that a
-stranger's Claude needs no other instructions.
+stranger's Claude needs no other instructions. The front door is an
+install runbook read once (~1.8k tokens); it is not a CLAUDE.md and never
+loads per session.
 
 ## Updating an installed project
 
@@ -555,6 +580,14 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   project instructions point at the front door; the day files, ledgers
   and brief rules carry as method; the skills carry where the client runs
   skills, though ours shell out to Python; the hooks do not carry at all.
+- **Isn't a 5k-token CLAUDE.md the opposite of lean?** It would be, and it
+  is not one: the file a reader measured was the install runbook, since
+  renamed ("0 - READ ME FIRST.md") so the name cannot mislead. The
+  per-session CLAUDE.md Rootstock builds is the hot core: laws as
+  one-line stubs, one line per knowledge file, the process every session
+  needs, ~1.5k-3k tokens fresh, budgeted in tokens by a lint that fails
+  and never raises, with a script that moves cold sections out. See "The
+  installed CLAUDE.md: what it holds and how big it is" above.
 - **Does it improve my prompts?** No, and that is the point. It moves
   the CONTEXT (wiki, ledgers, day files) and the INTERPRETATION (laws,
   hooks, the process registry) out of the prompt and into files read
@@ -582,7 +615,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 
 | File | What it is |
 |---|---|
-| `0 - READ ME FIRST, CLAUDE.md` | The front door: install order, STEP 0 questions, definition of done |
+| `0 - READ ME FIRST.md` | The front door: an install runbook read once (STEP 0 questions, the install order as pointers, definition of done); not a CLAUDE.md |
 | `WIKI_METHOD.md` | The knowledge wiki: token mechanics, conventions, bootstrap |
 | `REPORTING_METHOD.md` | Scripts + ledgers: the three rules, runner spec, bootstrap |
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, seven laws, assignments table, scorecard, bootstrap |
@@ -593,7 +626,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |
-| `reference tools/` | 26 working scripts to adapt, not rewrite. Day one: standup, checkpoint, lint, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), trust the ledger for the check scripts |
+| `reference tools/` | 27 working scripts to adapt, not rewrite. Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), trust the ledger for the check scripts |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `CONTRIBUTING.md` | The format law and the purpose audit: the one header every thing carries, the read-only flag ritual, what a contributed update looks like |
 | `FLAGS.md` | The flag ledger: every kit thing's latest GREEN / YELLOW / RED, hashed to the version reviewed, tallied, append-only |

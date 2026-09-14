@@ -53,7 +53,8 @@ PY = sys.executable
 LOOP_LEDGER = os.path.join(ROOT, "docs", "history", "loop_runs.txt")
 
 GROUPS = {
-    "check":   [["tools/check_claude_md.py"],
+    "check":   [["tools/core_diet.py", "--move"],   # THE CORE DIET (2026-09-14): moves cold/over-budget routed CLAUDE.md sections BEFORE the lint judges the size
+                ["tools/check_claude_md.py"],
                 ["tools/workstation_survey.py"],
                 ["tools/check_wiki_links.py"],
                 ["tools/readme_lint.py"],

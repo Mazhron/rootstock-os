@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.21** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.22** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -759,4 +759,58 @@ Seed open_questions.txt with whatever your owner has not answered yet.
 README: "The intent loop" (the first audit's outcome paragraph), "What
 is in the box" (26 scripts, the parent loop, open questions, trust the
 ledger).
+
+### v1.22 - 2026-09-14 - The core diet (CLAUDE.md is the hot core; cold sections move by script to sub-indexes; the front door renamed)
+WHAT: (1) A Reddit reader measured the kit's front door, then named
+"0 - READ ME FIRST, CLAUDE.md", at ~5k tokens and called the kit slop.
+The file was an install runbook, never a per-session CLAUDE.md, but the
+name invited the misread and the origin's real CLAUDE.md had drifted to
+~10k tokens while its own law said "index only". The CEO's ruling: the
+core keeps the most-used information and what falls out of the heat map
+moves BY SCRIPT into named, growable sub-indexes. (2) THE HOT CORE: the
+core lint (check_claude_md.py) now FAILS on a TOKEN budget (bytes/4;
+TOKEN_BUDGET, origin 3,500) and requires every docs/index/ sub-index to be
+named in the core. (3) THE MOVER: reference tools/core_diet.py measures
+every core section's heat (explicit reads of its lines from the
+transcript cache, reads of the wiki files it points at, git recency
+inside `core_cold_days`), moves COLD routed sections (`Index: <name>`;
+`Index: core` pins) verbatim into docs/index/<name>.md with a provenance
+comment and, while still over budget, the coldest routed sections next;
+each move leaves ONE stub line (`- heading -> docs/index/x.md | brief`,
+the brief from the section's Tags line) in the core's "## The
+sub-indexes" block. Unrouted cold sections are only PROPOSED.
+`--move-section` is the explicit call, `--restore` reverses, `--selftest`
+proves the round trip. It runs in the check group BEFORE the lint. (4)
+The scanners (wiki_heat, check_wiki_links, export_tag_index,
+export_wiki_view, cold_shelf) discover docs/index/*.md as wiki files.
+(5) THE FRONT DOOR is renamed "0 - READ ME FIRST.md" and cut to
+pointers (~1.8k tokens from ~4.5k): each step points at its method
+file's bootstrap section instead of restating it. (6) THE DIGEST DIET:
+standup prints the day file's STATE/NEXT lines but not its copy of the
+exchange when the transcript block already replayed it, and one tail
+line per ledger instead of two. (7) The origin's CLAUDE.md went from
+~10k tokens to ~3.5k: the standing rules to docs/index/laws.md, the
+long-form library + kit rules to library.md, versioning/changelog to
+process.md, engine gotchas to gotchas.md, the folder map to code.md.
+CARRIES: reference tools/core_diet.py (new); reference tools/
+check_claude_md.py, run_all.py, standup.py, wiki_heat.py,
+check_wiki_links.py, export_tag_index.py, cold_shelf.py;
+hooks/hygiene_guard.py (the front door's name); WIKI_METHOD.md "The hot
+core and the sub-indexes" + the architecture layer 1; the front door
+"0 - READ ME FIRST.md" (renamed, rewritten); this entry.
+GRAFT: give your core lint a TOKEN budget (bytes/4) and fail on it; copy
+core_diet.py, adapt CORE_NAME / INDEX_DIRNAME / the trend-limits key,
+run `--selftest`, put it in the check group BEFORE the lint; stamp your
+core's sections with `Index: <name>` (laws, library, process, gotchas,
+code are the origin's names - use your own) and `Tags: ... | brief`;
+run `--move-section` for what should leave now and let the loop handle
+the rest; teach your wiki scanners the docs/index/ folder; if your
+project's install file carries "CLAUDE.md" in its name and is not one,
+rename it. Trim your standup the same two ways if its digest passes
+~24k bytes.
+README: "Doesn't a wiki make the context HEAVIER?" (the table's core and
+digest rows), the new "The installed CLAUDE.md: what it holds and how
+big it is" subsection, "Quick start" (the front door's name), "Questions
+people ask" (the Reddit question), "What is in the box" (the front door
+row, 27 scripts, core_diet).
 

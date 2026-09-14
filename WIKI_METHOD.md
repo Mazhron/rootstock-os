@@ -38,11 +38,13 @@ of thousands.
 
 ## The architecture (three layers, one home per fact)
 
-1. **THE LEAN CORE - CLAUDE.md** (always loaded): laws, process,
-   active/handoff notes, and THE INDEX - one descriptive line per library
-   file. Budget it (Everwood: ~250 lines, hard alarm at 700 via a lint
-   script). Knowledge that is read every session (ship process, test
-   commands, standing rules) lives here; everything else does not.
+1. **THE HOT CORE - CLAUDE.md** (always loaded): the laws in one line
+   each, the process every session needs, active/handoff notes, and THE
+   INDEX - one line per library file and per sub-index. Budget it IN
+   TOKENS (Everwood: 3,500, ~300 lines, the lint fails past it; a fresh
+   install lands at ~1.5k-3k). What falls out of daily use moves BY
+   SCRIPT to a docs/index/ sub-index (the section below); everything
+   else lives in a topic file.
 2. **THE TOPIC LIBRARY - docs/systems/*.md** (read on demand): one file
    per subject (soil, fauna, ui, performance...). Read ONLY when touching
    that subject. Grows without limit; the core never grows with it.
@@ -281,6 +283,70 @@ See also: the learning loop -> this file (next section); THE PRESERVATION
 LAW -> SUBAGENT_METHOD.md law 7 | HOOKS_METHOD.md Tier 2d; the mover ->
 tools/cold_shelf.py; the candidates -> tools/wiki_heat.py.
 
+## The hot core and the sub-indexes (the core diet: CLAUDE.md never bloats again)
+Tags: architecture, economy, lessons | CLAUDE.md is the hot core inside a TOKEN budget; sections that fall out of use move by script into docs/index/ sub-indexes, one stub line each, verbatim and reversible
+
+The origin project's CLAUDE.md grew from ~250 lines to ~10k tokens in
+three weeks while its own law said "index only" - laws were promoted in
+full text, index lines became paragraphs, and nothing measured it. A
+Reddit reader measured the kit's front door instead (it was named
+"...CLAUDE.md") and called the whole thing slop. The CEO's ruling
+(2026-09-14): "CLAUDE.md is the main index that keeps the most used
+information (similar to your heatmap concept) and once they fall out of
+the high-use heatmap, they get moved (by script) to the appropriate index
+out of CLAUDE.md ... These indexes can grow much more than the CLAUDE.md
+file. They will need to have appropriate names for the files and sections
+inside that connect to the appropriate knowledge txt files."
+
+THE LAW:
+1. CLAUDE.md is THE HOT CORE, budgeted IN TOKENS (bytes/4): the lint
+   (check_claude_md.py TOKEN_BUDGET, Everwood 3,500) FAILS past it and the
+   answer is never a raised budget. What it holds: the project in a
+   paragraph, the wiki convention in short form, ONE line per topic file
+   and per sub-index, the laws as one-line stubs, the active notes, and
+   the process every session runs (perf rules, verifying, player-text
+   rules). A fresh install lands at ~1.5k-3k tokens.
+2. Every `## `/`### ` section of the core is a UNIT. A unit that should
+   be movable carries `Index: <name>` (its sub-index); `Index: core` pins
+   it. A hard-won unit carries `Tags: ... | brief` - the brief becomes
+   its stub, so the core still states the law in one sentence.
+3. HEAT (tools/core_diet.py, the check group, BEFORE the lint): explicit
+   reads of the unit's lines (the transcript cache wiki_heat keeps), reads
+   of the wiki files the unit points at (its follows), and whether git
+   touched it inside the window (`core_cold_days`, trend_limits.json,
+   30). A unit with none of the three is COLD.
+4. THE MOVE (by script, in the loop): `--move` moves every COLD routed
+   unit VERBATIM into docs/index/<name>.md (a wiki file: headings are
+   search keys, each section keeps its Tags and See-also lines that
+   connect it to its knowledge files, a provenance comment records the
+   origin) and, while the core is still over budget, the coldest routed
+   units next. Each move leaves ONE line in the core's "## The
+   sub-indexes" block: `- <heading> -> docs/index/<name>.md | <brief>`.
+   A COLD unit with no Index line is only PROPOSED - a human names its
+   home. `--move-section` is the manager's explicit call; `--restore`
+   reverses a move (the unit returns after the unit it followed).
+5. THE SUB-INDEXES grow without limit (docs/index/laws.md, library.md,
+   process.md, gotchas.md, code.md in the origin) and are read like any
+   wiki file: `Grep "^## "` then the section. The scanners (wiki_heat,
+   check_wiki_links, export_tag_index, export_wiki_view, cold_shelf)
+   discover docs/index/ as wiki files; the lint requires every sub-index
+   to be named in the core.
+6. NOTHING IS DELETED (the preservation law): a move is verbatim,
+   stubbed, ledgered (docs/history/core_diet.txt regenerated,
+   core_diet_runs.txt appended) and reversible. The laws that matter most
+   are HOOKS anyway (the hooks rule) - the prose in the core is a pointer,
+   the guard is the law.
+
+What this is NOT: the cold shelf. The cold shelf takes rarely-READ topic
+sections out of hot topic files, by a human's choice. The core diet takes
+sections out of the one ALWAYS-LOADED file, by script, on heat and budget,
+because that file's size is the only standing cost in the system.
+
+See also: the architecture (layer 1) above; the cold shelf below;
+tools/core_diet.py; tools/check_claude_md.py; WORKFLOWS.md "Diet the
+core (move a CLAUDE.md section to a sub-index)"; INTENT.md "The core
+diet"; the hooks rule -> HOOKS_METHOD.md.
+
 ## The learning loop (ledgers measure, scripts propose, the owner rules)
 Tags: architecture, process | Three read-only scripts close the loop: dead links, section heat, and ledger trends turned into PROPOSE lines at standup
 
@@ -315,4 +381,4 @@ the ledgers discipline -> REPORTING_METHOD.md; the escalation rule ->
 SUBAGENT_METHOD.md law 5.
 
 Search keys: wiki method, knowledge library, three-hop lookup, CLAUDE.md
-  core, docs systems library
+  core, hot core, sub-index, core diet, token budget, docs systems library

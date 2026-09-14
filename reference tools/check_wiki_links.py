@@ -5,6 +5,7 @@
     python tools/check_wiki_links.py --quiet      # print only the summary line
 
 THE WIKI: repo-root *.md (non-recursive) + docs/systems/*.md + docs/cold/*.md
++ docs/index/*.md (the core diet's sub-indexes, 2026-09-14)
 (skipped if absent). Cross-references come in four forms:
 
   (a) "See also:" paragraphs - a line starting "See also:" plus continuation
@@ -29,7 +30,7 @@ its own two output files (docs/history/wiki_links.txt overwritten each run,
 docs/history/wiki_link_runs.txt appended to).
 
 PURPOSE: Warn-only link checker for the knowledge wiki: scan repo-root,
-  docs/systems and docs/cold markdown for the four cross-reference forms,
+  docs/systems, docs/cold and docs/index markdown for the four cross-reference forms,
   resolve each against the repo, and report dead links plus See-also
   hygiene.
 INTENT: keeps the wiki's cross-reference web honest as it grows without
@@ -87,6 +88,11 @@ def wiki_files():
         for name in sorted(os.listdir(colddir)):
             if name.endswith(".md"):
                 files.append(os.path.join(colddir, name))
+    indexdir = os.path.join(ROOT, "docs", "index")  # the core diet's sub-indexes (2026-09-14)
+    if os.path.isdir(indexdir):
+        for name in sorted(os.listdir(indexdir)):
+            if name.endswith(".md"):
+                files.append(os.path.join(indexdir, name))
     return files
 
 
@@ -220,10 +226,10 @@ def scan_file(path, bmap, wiki_basenames, is_claude_md):
                 continue
             record(idx, token)
 
-    # (d) CLAUDE.md: every docs/systems/<name>.md mention
+    # (d) CLAUDE.md: every docs/systems/<name>.md and docs/index/<name>.md mention
     if is_claude_md:
         for idx, ln in enumerate(lines, start=1):
-            for m in re.finditer(r"docs/systems/[\w-]+\.md", ln):
+            for m in re.finditer(r"docs/(?:systems|index)/[\w-]+\.md", ln):
                 record(idx, m.group(0))
 
     # HYGIENE: sections without a See also: line (docs/systems/*.md only)

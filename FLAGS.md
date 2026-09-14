@@ -33,11 +33,11 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-14 02:00 | items 61 | GREEN 61 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
+Updated 2026-09-14 15:42 | items 62 | GREEN 62 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST, CLAUDE.md | GREEN | ok | sonnet-fd1 | 2026-09-13 12:20 |
+| 0 - READ ME FIRST.md | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
@@ -46,8 +46,8 @@ Updated 2026-09-14 02:00 | items 61 | GREEN 61 | YELLOW 0 | RED 0 | unflagged 0 
 | REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
-| UPGRADES.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
-| WIKI_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
+| UPGRADES.md | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| WIKI_METHOD.md | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | WORKSTATION_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | hooks/README.txt | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
@@ -56,7 +56,7 @@ Updated 2026-09-14 02:00 | items 61 | GREEN 61 | YELLOW 0 | RED 0 | unflagged 0 
 | hooks/diet_guard.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
-| hooks/hygiene_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
+| hooks/hygiene_guard.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-13 12:21 |
@@ -65,13 +65,14 @@ Updated 2026-09-14 02:00 | items 61 | GREEN 61 | YELLOW 0 | RED 0 | unflagged 0 
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/_ledger.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
-| reference tools/check_claude_md.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
-| reference tools/check_wiki_links.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/check_claude_md.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| reference tools/check_wiki_links.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/checkpoint.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
-| reference tools/cold_shelf.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
+| reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| reference tools/core_diet.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | reference tools/correction_log.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
-| reference tools/export_tag_index.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
+| reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/format_lint.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
@@ -83,11 +84,11 @@ Updated 2026-09-14 02:00 | items 61 | GREEN 61 | YELLOW 0 | RED 0 | unflagged 0 
 | reference tools/refresh_kit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/run_all.py | GREEN | ok | fable | 2026-09-14 01:01 |
-| reference tools/standup.py | GREEN | ok | fable | 2026-09-14 01:01 |
+| reference tools/run_all.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| reference tools/standup.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-14 01:01 |
-| reference tools/wiki_heat.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/checkpoint/SKILL.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
@@ -98,6 +99,7 @@ Updated 2026-09-14 02:00 | items 61 | GREEN 61 | YELLOW 0 | RED 0 | unflagged 0 
 | skills/runaway/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/ship/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/standup/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
+| 0 - READ ME FIRST, CLAUDE.md | GREEN | GONE | sonnet-fd1 | 2026-09-13 12:20 |
 <!-- tally:end -->
 
 ## The flags (append-only, newest last)
@@ -611,3 +613,78 @@ FLAG: PURPOSE amended 2026-09-14 to name the two new ledgers the yellow named; m
 SAYS: Chain habitual scripts by named group (check/regen/tests/metrics/ probes/builds/session/standup) and ledger every group run so staleness is visible instead of silent.
 DOES: runs the named groups in order, appends one loop_runs.txt line per group, and a composite (session) also logs its members; --stale prints each group's age
 FLAG: re-flag after the composite-member logging patch of 2026-09-14; header names the ledger and the flag
+
+### 2026-09-14 15:40 | 0 - READ ME FIRST.md | GREEN | sonnet-cd1 | WS1 | c9205c6c
+SAYS: The kit's front door: walks a receiving Claude through the install in order (ask the CEO first, then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: Walks a receiving Claude through install order (ask CEO, wiki, reporting, delegation, skills/hooks, optional boards), pointing at each method file's bootstrap section; states it is not a CLAUDE.md and loads once at install
+FLAG: Body matches PURPOSE exactly: STEP 0-5 plus DEFINITION OF DONE and the update-existing-install section all point outward as described, no restated content found
+
+### 2026-09-14 15:40 | UPGRADES.md | GREEN | sonnet-cd1 | WS1 | 654539f1
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: Append-only graft log; CURRENT KIT VERSION bumped to v1.22 and a new dated entry (the core diet) appended with WHAT/CARRIES/GRAFT/README fields intact
+FLAG: Matches PURPOSE (graft log, never overwritten files); v1.22 entry follows the established WHAT/CARRIES/GRAFT/README shape
+
+### 2026-09-14 15:40 | WIKI_METHOD.md | GREEN | sonnet-cd1 | WS1 | ba864436
+SAYS: A portable system for organizing a project's knowledge (a lean CLAUDE.md core, a docs/systems topic library, portable root notes) so an AI assistant finds anything in three cheap hops, Glob, Grep for headings, then a targeted Read, without wasting tokens.
+DOES: New section 'The hot core and the sub-indexes' fully specifies the core-diet law (units, Index: routing, heat, moves, sub-indexes, nothing deleted); architecture layer 1 reworded to describe the token-budgeted hot core and docs/index fallout
+FLAG: Text matches core_diet.py's actual behavior verified separately; See-also links point at core_diet.py, check_claude_md.py, WORKFLOWS.md, INTENT.md
+
+### 2026-09-14 15:40 | hooks/hygiene_guard.py | GREEN | sonnet-cd1 | WS1 | 4977f284
+SAYS: PostToolUse guard on Write, Edit and MultiEdit that, after an edit lands, hands the manager one line of context per applicable law: KIT REFRESH when a portable original changed, SEE-ALSO when a touched docs/systems section has no See also line, DASH when player-facing text received an em or en dash (this one BLOCKS), and IMPORT when a new asset needs the engine import run; stateless pattern matching only.
+DOES: PostToolUse guard on Write/Edit/MultiEdit; KIT_ONLY set lists '0 - READ ME FIRST.md' (with a comment noting the 2026-09-14 rename) alongside UPGRADES.md/CONTRIBUTING.md/FLAGS.md as kit-only files with no repo-root original
+FLAG: Matches PURPOSE; KIT_MDS/KIT_ONLY/CORE_FILE config block is consistent with the renamed front door and triggers KIT REFRESH guidance correctly
+
+### 2026-09-14 15:40 | reference tools/check_claude_md.py | GREEN | sonnet-cd1 | WS1 | ae5a2bf7
+SAYS: Read CLAUDE.md and fail with exit 1 when the lean core exceeds its token or line budget or when the docs/systems library index or the docs/index sub-index list in CLAUDE.md drifts from the files on disk.
+DOES: TOKEN_BUDGET=3500 constant added and enforced (bytes/4) with FAIL past it; checks docs/index sub-index list in CLAUDE.md against files on disk both directions; body executes under an if __name__ == '__main__' guard
+FLAG: Matches PURPOSE exactly: token budget, docs/index drift check, and main-guard all verified in code
+
+### 2026-09-14 15:40 | reference tools/cold_shelf.py | GREEN | sonnet-cd1 | WS1 | b3d21559
+SAYS: Move a rarely used ## wiki section out of a hot file to the cold shelf verbatim, restore one back, list the cold shelf index, or check that every stub still points at an existing cold file and heading.
+DOES: hot_files() now globs docs/index/*.md alongside repo-root and docs/systems, so --check verifies stubs there too; --move/--restore/--list logic unchanged and still contains no deletion calls
+FLAG: PURPOSE stays generic (hot wiki file, cold shelf, stub check) so the docs/index addition is a compatible extension, not a contradiction
+
+### 2026-09-14 15:40 | reference tools/core_diet.py | GREEN | sonnet-cd1 | WS1 | f7e93c5d
+SAYS: Measure the heat of every CLAUDE.md section from the transcript read cache, git recency and pointer follows, report it, and move cold or over-budget routed sections verbatim into named sub-index files under docs/index/ leaving a one-line stub, with an explicit move and a restore, so the always-loaded core stays inside its token budget by script.
+DOES: New heat-based mover, read whole: measures each CLAUDE.md unit's heat from wiki_heat's transcript cache (reads+follows) plus git-blame recency; --move moves cold routed units then coldest-until-budget verbatim into docs/index/<name>.md with a provenance comment and a stub line in the ## The sub-indexes block; --move-section, --restore and --selftest all implemented and wired; writes docs/history/core_diet.txt report and core_diet_runs.txt ledger
+FLAG: Every claim in the PURPOSE and the manager's context note checked against code line by line and confirmed; no os.remove/unlink/rmtree calls anywhere, selftest proves the move+restore round trip
+
+### 2026-09-14 15:40 | reference tools/run_all.py | GREEN | sonnet-cd1 | WS1 | afe11490
+SAYS: Chain habitual scripts by named group (check/regen/tests/metrics/ probes/builds/session/standup) and ledger every group run so staleness is visible instead of silent.
+DOES: GROUPS['check'] list's first element is ['tools/core_diet.py', '--move'], running before check_claude_md so cold sections move before the lint judges size
+FLAG: Matches PURPOSE and the CARRIES claim in UPGRADES.md v1.22
+
+### 2026-09-14 15:40 | reference tools/standup.py | GREEN | sonnet-cd1 | WS1 | 29a42fe0
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, WS notes, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: print_last_exchange sets a 'replayed' flag; the WHERE WE LEFT OFF block then skips reprinting the quoted prompt/response lines when already replayed, printing an omitted-here note instead; the ledger tails section prints only lines[-1] per docs/history/*.txt file
+FLAG: Matches PURPOSE and the digest-diet comments in the code; verified both the no-duplicate-exchange logic and the one-tail-line-per-ledger logic directly
+
+### 2026-09-14 15:40 | reference tools/check_wiki_links.py | YELLOW | sonnet-cd1 | WS1 | 1c3cf977
+SAYS: Warn-only link checker for the knowledge wiki: scan repo-root, docs/systems and docs/cold markdown for the four cross-reference forms, resolve each against the repo, and report dead links plus See-also hygiene.
+DOES: wiki_files() now also lists docs/index/*.md, and the CLAUDE.md mention-check regex covers both docs/systems and docs/index tokens, so docs/index sub-indexes are fully scanned for dead links
+FLAG: Drift: the PURPOSE line and the 'THE WIKI:' docstring definition still say only repo-root, docs/systems and docs/cold markdown; docs/index is a found feature not stated. Fix: add docs/index to the PURPOSE line and THE WIKI definition
+
+### 2026-09-14 15:40 | reference tools/export_tag_index.py | YELLOW | sonnet-cd1 | WS1 | d8a73453
+SAYS: Sweep repo-root and docs/systems markdown for Tags lines under headings and compile KNOWLEDGE_INDEX.md, one section per tag with links to each section's true home.
+DOES: main() now also lists docs/index/*.md and appends them to the sweep with a 'docs/index/<name>' label, so Tags lines inside sub-indexes are compiled into KNOWLEDGE_INDEX.md too
+FLAG: Drift: the PURPOSE line and the opening docstring both say it sweeps only repo-root and docs/systems markdown; docs/index is a found feature not stated. Fix: mention docs/index in the PURPOSE line
+
+### 2026-09-14 15:40 | reference tools/wiki_heat.py | YELLOW | sonnet-cd1 | WS1 | 0eb142d6
+SAYS: Mines the harness transcripts for read events against wiki markdown files and sections, reports file and section read counts plus hot and cold sections, and classifies cold sections by why they are cold using git activity in their code areas; it never moves anything.
+DOES: discover_wiki_files adds docs/index/*.md under a 'docs/index/' id prefix and match_wiki_file categorizes it, so sub-index reads are tracked and reported
+FLAG: Drift: the docstring's explicit 'THE WIKI = ...' definition near the top lists only repo-root, docs/systems and docs/cold, omitting docs/index even though the code discovers it; the PURPOSE line itself is vague enough to not directly contradict. Fix: add docs/index to THE WIKI definition
+
+### 2026-09-14 15:42 | reference tools/check_wiki_links.py | GREEN | fable | WS1 | 927f4401
+SAYS: Warn-only link checker for the knowledge wiki: scan repo-root, docs/systems, docs/cold and docs/index markdown for the four cross-reference forms, resolve each against the repo, and report dead links plus See-also hygiene.
+DOES: discovers docs/index/*.md alongside repo-root, docs/systems and docs/cold; header now says so
+FLAG: the yellow named the header prose omitting docs/index; the THE WIKI / PURPOSE lines were amended 2026-09-14 and re-read against the discovery code
+
+### 2026-09-14 15:42 | reference tools/export_tag_index.py | GREEN | fable | WS1 | fc517f23
+SAYS: Sweep repo-root, docs/systems and docs/index markdown for Tags lines under headings and compile KNOWLEDGE_INDEX.md, one section per tag with links to each section's true home.
+DOES: discovers docs/index/*.md alongside repo-root, docs/systems and docs/cold; header now says so
+FLAG: the yellow named the header prose omitting docs/index; the THE WIKI / PURPOSE lines were amended 2026-09-14 and re-read against the discovery code
+
+### 2026-09-14 15:42 | reference tools/wiki_heat.py | GREEN | fable | WS1 | faa038d8
+SAYS: Mines the harness transcripts for read events against wiki markdown files and sections, reports file and section read counts plus hot and cold sections, and classifies cold sections by why they are cold using git activity in their code areas; it never moves anything.
+DOES: discovers docs/index/*.md alongside repo-root, docs/systems and docs/cold; header now says so
+FLAG: the yellow named the header prose omitting docs/index; the THE WIKI / PURPOSE lines were amended 2026-09-14 and re-read against the discovery code
