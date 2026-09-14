@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-14 16:56 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 | stale 1
+Updated 2026-09-14 16:56 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -46,7 +46,7 @@ Updated 2026-09-14 16:56 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 
 | REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
-| UPGRADES.md | GREEN | STALE | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
+| UPGRADES.md | GREEN | ok | fable | 2026-09-14 16:56 |
 | WIKI_METHOD.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | WORKSTATION_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
@@ -754,3 +754,8 @@ FLAG: PC-FLAG-1 yellow: the PURPOSE list did not mention the core lint line; hea
 SAYS: keep the kit's flag ledger (FLAGS.md in the kit folder): every kit thing's latest flag (GREEN / YELLOW / RED), who gave it and when, whether the thing changed since (STALE), the ones nobody has audited yet (UNFLAGGED), and the tally - regenerated in place from the entries; `--flag` appends one entry (SAYS = the thing's own PURPOSE line, DOES = what the reviewer found it actually does, FLAG = why the color).
 DOES: keeps FLAGS.md: status regenerates the tally in place, --flag appends one entry, STALE/UNFLAGGED listed, one runs-ledger line per status run; since Q0003 option 2 the regenerate step compares the fresh tally block to the one in the file with the Updated stamp masked and skips the write when nothing else changed, so the stamp means last changed, not last run
 FLAG: does what the PURPOSE says and nothing more; the no-change skip narrows a side effect (a timestamp rewrite every loop run) that the purpose never asked for; selftest covers both branches
+
+### 2026-09-14 16:56 | UPGRADES.md | GREEN | fable | WS1 | 051849d8
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: the graft log: the current kit version line and one WHAT/CARRIES/GRAFT/README entry per concept, newest v1.24 the quiet audit; append-only, read by the README lint for the version and the README field
+FLAG: matches its purpose; the v1.24 entry follows the entry shape and names its README section
