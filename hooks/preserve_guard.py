@@ -169,7 +169,7 @@ GIT = [
     (r"\bgit\s+gc\b[^|;&\n]*(?P<verb>--prune)", "erases history"),
     # 2026-09-20 hardening.
     (r"\bgit\s+checkout\s+(?P<verb>\.|-f|--force)(\s|$)", "discards working-tree changes"),
-    (r"\bgit\s+checkout\s+(?!-[bBt]\b|--orphan|--track)(\S+\s+)+(?P<verb>[^\s-]\S*)(\s|$)",
+    (r"\bgit\s+checkout\s+(?!-[bBt]\b|--orphan|--track)(\S+\s+)+(?P<verb>[^\s-]\S*[/.]\S*)(\s|$)",
      "checkout of a path discards working-tree changes"),
     (r"\bgit\s+checkout\s+(?P<verb>[^\s-]\S*\.(gd|py|md|txt|tres|tscn|json|cfg|csv|ps1|sh|godot|import|png|html|js|css))(\s|$)",
      "checkout of a file discards working-tree changes"),
