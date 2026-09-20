@@ -90,3 +90,14 @@ prompt_gauge.py carries the other end (THE LESSON LINE): a prompt whose
 words hit an entry's Keys line gets the entry named before the first
 tool call. Pipe-test once for real: echo '{"transcript_path": "<a
 transcript .jsonl>"}' | python tools/hooks/lesson_advisor.py.
+
+session_end.py (Tier 1 #6, kit v1.28, THE AUTO-CHECKPOINT): nothing to
+fill in. Wire its SessionEnd entry (settings.json has it; timeout 55 -
+the harness caps SessionEnd at 60 s total). It needs checkpoint.py and
+standup.py in tools/ (the reference tools) and, for the mirror push,
+tools/backup_push.py with a `backup` remote on each repo (optional: a
+missing remote is a skip). Test: `python tools/hooks/session_end.py
+--selftest` (18 checks in a throwaway repo under the OS temp folder),
+then `echo {"reason":"clear"} | python tools/hooks/session_end.py` on
+a clean pushed tree and read docs/history/session_end_runs.txt's tail:
+"already checkpointed".

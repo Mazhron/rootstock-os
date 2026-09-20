@@ -67,7 +67,7 @@ and an UPGRADES entry.
   prompt, stop, compact and shell-command hooks; a PostToolUse hook on
   every Write/Edit must stay a pattern match with no heavy imports.
 
-## The kit hooks (hooks/ - eleven scripts + _hooklib + settings.json)
+## The kit hooks (hooks/ - twelve scripts + _hooklib + settings.json)
 
 TIER 1 - the resumption + checkpoint loop:
 1. `session_start.py` (SessionStart, all sources): runs the standup
@@ -120,6 +120,33 @@ TIER 1 - the resumption + checkpoint loop:
    the first tool call). Ledger: docs/history/lesson_runs.txt; the
    check loop lints the book and ledger_trends proposes when advised
    lines pile up unwritten. State file: gitignore it.
+
+6. `session_end.py` (SessionEnd; kit v1.28, THE AUTO-CHECKPOINT, the
+   CEO's ask 2026-09-20: "Can we make /clear automatically check for a
+   checkpoint, and if none was done, perform a checkpoint before
+   clearing?"): fires when the session ends (clear, logout, stdin
+   closed, other; a `resume` suspension is ignored). It cannot hold the
+   clear back and the manager is gone, so it does the MECHANICS alone
+   and only when work is UNBANKED (a change outside the ledger folder,
+   or a commit not on origin): mines the final prompt + reply verbatim
+   from the session's transcript (transcript_path; the standup miner),
+   writes them into today's day file as an AUTO `## WHERE WE LEFT OFF`
+   (the old section stays above it under a SUPERSEDED heading, the
+   file and its index line are created if missing, NEXT LIKELY says
+   "not written"), `git add -A` + a "Checkpoint (auto)" commit, a push
+   to origin and to the local mirror (backup_push.py), then the counter
+   reset with the fingerprint stored. Nothing unbanked = one ledger
+   line (docs/history/session_end_runs.txt) and nothing else. Never
+   raises: an exception is a ledger line and exit 0. Budget: the
+   harness caps SessionEnd at 60 s total, so the settings timeout is
+   55 and every git call has its own. What it is NOT: the manager's
+   checkpoint - the judgment paragraphs (STATE in prose, OPEN QUEUE,
+   NEXT LIKELY) are still written at the next real one, and ADVISED
+   MEANS DO IT still stands; this is the net under it. `--selftest`
+   builds a throwaway repo with its own bare origin in the OS temp
+   folder and runs the real path (18 checks); the sandbox is left for
+   the OS, because the preserve guard refuses a script that removes
+   its own sandbox and the lesson says reword, never route around.
 
 TIER 2 - shell guards (`bash_guard.py`, PreToolUse on Bash|PowerShell):
 generic rules - no `--no-verify`, no plain force push - plus a PROJECT
@@ -541,3 +568,10 @@ the manager waits on permission or idles after a long employee run.
   reaches the user, its block reason reaches the manager; an instruction
   to the manager must be a block, guarded so it can never trap (once per
   slice signature, stop_hook_active, WRITTEN passes).
+- 2026-09-20 WS1 PM (kit v1.28): Tier 1 #6, the SessionEnd auto-checkpoint
+  (session_end.py) - the CEO's ask the same evening, after the mirror
+  question: /clear checks for a checkpoint and does the mechanics itself
+  when none was done. Twelve scripts now. The local mirror
+  (backup_push.py, a reference tool) pushes every ref to a bare repo on
+  another drive; the hook, the ship and checkpoint skills and run_all's
+  session group all call it.

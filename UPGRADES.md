@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.27** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.28** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1038,3 +1038,52 @@ the verb as r[m].
 README: "The hooks" (the preserve guard bullet: bare names, pipelines,
 mirror verbs, every force push, executed scripts read first, .git and
 variable targets, fail closed); no count changed.
+
+### v1.28 - 2026-09-20 - The auto-checkpoint on session end, and the local mirror
+WHAT: two asks the same evening. (1) The CEO: "Can we make /clear
+automatically check for a checkpoint, and if none was done, perform a
+checkpoint before clearing?" The harness fires SessionEnd at /clear
+(and logout, stdin closed, other; resume is a suspension) with the
+transcript path and a 60 s budget; it cannot hold the clear back and
+the manager is gone. So a twelfth hook does the MECHANICS alone, only
+when work is unbanked (a change outside the ledger folder or a commit
+off origin): the final exchange mined verbatim from the transcript into
+the day file as an AUTO section (the old one kept as SUPERSEDED), a
+"Checkpoint (auto)" commit, a push to origin and the mirror, the
+counter reset. Nothing unbanked = one ledger line. The judgment
+paragraphs are still the manager's, at the next real checkpoint. (2)
+After the 48,000-file report the CEO asked what a bare mirror is and
+named a drive: a reference tool pushes every branch and tag of the
+project and the kit repo to bare repos on another disk, from the ship
+and checkpoint rituals, the session loop and the new hook. Branches
+were assessed the same day as not the safeguard for that failure.
+Also in this version: the second README audit (four read-only lanes,
+T-0920-RA-1..4) - twelve prose slips fixed, nine new CLAIMS rows so
+they cannot recur, six mechanics the README never said.
+CARRIES: hooks/session_end.py (new); hooks/settings.json (the
+SessionEnd block, timeout 55); hooks/README.txt (the line);
+HOOKS_METHOD.md (Tier 1 #6, the heading's count, the change log);
+reference tools/backup_push.py (new); reference tools/run_all.py (the
+backup group inside session); reference tools/format_lint.py (the
+SAFETY row); reference tools/readme_lint.py (nine CLAIMS rows);
+skills/ship + skills/checkpoint (the mirror step, the net paragraph);
+this entry.
+GRAFT: copy hooks/session_end.py whole and merge the SessionEnd block
+into .claude/settings.json (timeout 55; the harness's SessionEnd
+budget is 60 s); it imports checkpoint.py and standup.py from tools/,
+so both reference tools must be installed. Run `--selftest` (18
+checks; the throwaway repo stays in the OS temp folder - the preserve
+guard refuses a script that removes its own sandbox). For the mirror:
+`git init --bare <other drive>/<name>.git`, `git remote add backup
+<that path>` in each repo, copy backup_push.py and set its REPOS list,
+add the backup group to run_all's GROUPS and the session composite,
+add the step to the ship and checkpoint skills. Add session_end.py to
+format_lint's SAFETY table so unwiring it is refused. Expect the first
+/clear after installing to write "already checkpointed" to
+docs/history/session_end_runs.txt when the tree was clean.
+README: "The hooks" (Twelve, the Session end bullet); "4. Lossless
+Sessions" (the checkpoint thresholds, the net bullet, the standup
+miner); "What is in the box" (hooks/ row names _hooklib.py and
+README.txt, 29 reference tools, the local mirror); plus the audit's
+fixes across pillars 1-3, the hooks, the intent loop, the companions,
+Quick start and Updating.

@@ -26,7 +26,8 @@ too: changed only to add or fix):
            + the usage sheet (harness-metered tokens per model/tool/day)
   probes   the pacing + stability probes (progression 12 rebirths, 5-min soak)
   builds   export + zip both release builds (refuses same-version overwrite)
-  session  = regen + check + metrics (the typical pre-push chain)
+  backup   every branch + tag to the bare mirrors on J: (THE LOCAL MIRROR, 2026-09-20)
+  session  = regen + check + metrics + backup (the typical pre-push chain)
 
 Each child script keeps its own ledger (REPORTING_METHOD.md); this runner
 just chains them, prints each one's tail, and stops on the first failure.
@@ -76,10 +77,11 @@ GROUPS = {
     "probes":  [["tools/progression_report.py", "-n", "12"],
                 ["tools/soak_report.py", "-m", "5"]],
     "builds":  [["tools/make_builds.py"]],
+    "backup":  [["tools/backup_push.py"]],   # THE LOCAL MIRROR (the CEO 2026-09-20): J:\Claude Project Backups
     "standup": [["tools/standup.py"]],
 }
-GROUPS["session"] = GROUPS["regen"] + GROUPS["check"] + GROUPS["metrics"]
-COMPOSITES = {"session": ("regen", "check", "metrics")}
+GROUPS["session"] = GROUPS["regen"] + GROUPS["check"] + GROUPS["metrics"] + GROUPS["backup"]
+COMPOSITES = {"session": ("regen", "check", "metrics", "backup")}
 
 
 def which_ws():
@@ -99,7 +101,7 @@ def _append_loop_line(group, seconds, failed_script=""):
         stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
         fh.write("%s | %s | %s | %.1f | %s\n" % (
             stamp, which_ws(), group, seconds, result))
-        # A composite group (session = regen + check + metrics) counts as a
+        # A composite group (session = regen + check + metrics + backup) counts as a
         # run of each member, so --stale, standup and ledger_trends rule 13
         # never call a member stale that the composite just ran.
         for member in COMPOSITES.get(group, ()):

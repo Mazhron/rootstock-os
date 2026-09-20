@@ -33,7 +33,8 @@ SEQUENCE
    pushing. Ask a second time: was anything this arc learned by trial and
    error, or corrected? Then it is a LESSON (THE LESSON LAW, 2026-09-20):
    write or amend the LESSONS.md entry before pushing.
-1. Push everything (tree clean, remote up to date).
+1. Push everything (tree clean, remote up to date), then
+   `python tools/backup_push.py` (THE LOCAL MIRROR).
 2. Refresh the NEWEST day file's `## WHERE WE LEFT OFF` section
    (docs/history/days/YYYY-MM-DD-WS#.md; create today's file + a
    days_index.txt line if it does not exist). The section carries:
@@ -70,6 +71,14 @@ is closed (ADVISED MEANS DO IT); under 30% remaining, treat it as
 URGENT and checkpoint before taking new work. Auto-compact is a lossy summary - the day file + standup are
 lossless, so clearing early is always the cheaper path. Relay the
 gauge line and its warnings verbatim, like the task warnings.
+
+THE NET UNDER THIS RITUAL (the owner's ask 2026-09-20): the SessionEnd
+hook (tools/hooks/session_end.py) runs at /clear. With nothing unbanked
+it writes one ledger line; with unbanked work it does steps 1-4 by
+itself, mechanically (the exchange mined from the transcript, an AUTO
+section, a "Checkpoint (auto)" commit, origin + mirror, the reset) and
+leaves NEXT LIKELY unwritten. It exists so a forgotten checkpoint loses
+nothing; it is not a reason to skip this ritual.
 
 IF THE SCRIPTS/DAY FILES ARE MISSING (new project): bootstrap them per
 REPORTING_METHOD.md, or ask the user for their future-project kit.

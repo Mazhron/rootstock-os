@@ -84,6 +84,7 @@ SAFETY = {
     "hygiene_guard.py":  [("PostToolUse", {"Write", "Edit"})],
     "format_guard.py":   [("PreToolUse", {"Write", "Edit"}), ("PostToolUse", {"Write", "Edit"})],
     "stop_tick.py":      [("Stop", set())],
+    "session_end.py":    [("SessionEnd", set())],  # the auto-checkpoint net (2026-09-20)
 }
 PLACEHOLDER = "(unfilled - a read-only audit fills this; see FLAGS.md)"
 MIN_TEXT = 12

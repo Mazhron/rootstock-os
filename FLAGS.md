@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-20 17:37 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 | stale 5
+Updated 2026-09-20 18:13 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 | stale 11
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -62,10 +62,12 @@ Updated 2026-09-20 17:37 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/preserve_guard.py | GREEN | STALE | fable-ws1 | 2026-09-20 17:37 |
 | hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| hooks/session_end.py | - | UNFLAGGED | - | - |
 | hooks/session_start.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
-| hooks/settings.json | GREEN | ok | fable | 2026-09-20 03:21 |
+| hooks/settings.json | GREEN | STALE | fable | 2026-09-20 03:21 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| reference tools/backup_push.py | - | UNFLAGGED | - | - |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/check_claude_md.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/check_wiki_links.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
@@ -75,7 +77,7 @@ Updated 2026-09-20 17:37 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 
 | reference tools/correction_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
-| reference tools/format_lint.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/format_lint.py | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/ledger_trends.py | GREEN | ok | fable | 2026-09-20 03:21 |
@@ -83,11 +85,11 @@ Updated 2026-09-20 17:37 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-09-14 16:55 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/readme_lint.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/readme_lint.py | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/refresh_kit.py | GREEN | ok | fable | 2026-09-14 16:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/run_all.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| reference tools/run_all.py | GREEN | STALE | fable | 2026-09-20 03:21 |
 | reference tools/standup.py | GREEN | ok | fable | 2026-09-14 19:02 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-14 01:01 |
@@ -95,13 +97,13 @@ Updated 2026-09-20 17:37 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
-| skills/checkpoint/SKILL.md | GREEN | ok | fable | 2026-09-20 03:21 |
+| skills/checkpoint/SKILL.md | GREEN | STALE | fable | 2026-09-20 03:21 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/flag/SKILL.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/preserve/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/runaway/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
-| skills/ship/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
+| skills/ship/SKILL.md | GREEN | STALE | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/standup/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | 0 - READ ME FIRST, CLAUDE.md | GREEN | GONE | sonnet-fd1 | 2026-09-13 12:20 |
 <!-- tally:end -->

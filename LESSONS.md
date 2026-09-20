@@ -88,6 +88,11 @@ never bypass the guard to land the edit.
 - NUANCE: a PreToolUse guard fires on the settings.json edit that wires it
   (the live watcher), so pipe-test with synthesized stdin first, then
   wire, then trigger once for real.
+- NUANCE (2026-09-20, session_end.py): a selftest that builds a sandbox
+  repo and removes it afterwards is a script that deletes; the guard
+  refused the Write. DO INSTEAD: build the sandbox with tempfile.mkdtemp,
+  print its path, and leave it for the OS - a test never needs to clean
+  up to be a test.
 
 See also: docs/systems/tooling.md "The hooks"; WORKFLOWS.md "Add or
 change a harness hook"; HOOKS_METHOD.md.
