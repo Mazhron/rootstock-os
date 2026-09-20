@@ -221,14 +221,40 @@ and like it aimed at the cliff edge only:
   checkout -- path, restore path, branch -d/-D, push --delete, stash
   drop/clear, worktree remove, tag -d, reflog expire, gc --prune), and
   deletion CALLS inside a one-liner or an executed heredoc.
+  HARDENED (kit v1.27, 2026-09-20) after a public report - an agent's
+  throwaway remover, written to Temp and run in a later command, walked
+  a tree through Windows directory junctions (os.walk and islink() do
+  not stop at a junction) and emptied a repo's .git, 48,000 files: a
+  bare-name target (rm build), a pipeline or foreach body feeding a
+  delete verb, find -exec, the mirror verbs (robocopy /MIR or /PURGE,
+  rsync --delete), git checkout of a path or `.`, switch
+  --discard-changes, every force push (the grant is the go-ahead),
+  branch -f/-M, filter-branch, prune. A variable target ($DIR, %X%) is
+  refused outright: the guard cannot read it, so no grant can cover it.
+- RUN: every script a command EXECUTES (python x.py, pwsh -File, bash
+  x.sh, node, `&`, a script that starts a command; flags or a runner
+  like timeout in between) is read and scanned before it runs - the
+  whole file when git does not track it, only the uncommitted ADDED
+  lines when it does. Whatever wrote the script (a Write the guard saw,
+  a heredoc, an editor, another agent), it cannot delete when it runs.
+  grep, cat or diff of a script is reading, not running, and passes.
 - WRITE: content that adds deletion calls to a non-prose file (the
-  os/shutil/pathlib calls, the engine's file removal, fs.rm, File.Delete,
-  a Remove-Item or rm -rf line in a script). Prose files pass: a law
-  written down names the verbs it bans, and the guard refused its own
-  author's documentation twice before that exemption existed.
+  os/shutil/pathlib calls, the engine's file removal, fs.rm and
+  fs.promises.rm, rimraf, File.Delete, a subprocess or os.system that
+  names a delete verb, a Remove-Item, rm -rf, rd /s, robocopy /MIR,
+  rsync --delete, find -delete or git clean line in a script). Prose
+  files pass: a law written down names the verbs it bans, and the guard
+  refused its own author's documentation twice before that exemption
+  existed (and its own hardening five times: two-letter helper variables
+  that read as verbs, pattern sources that matched themselves - reword,
+  never route around).
 - PASSES: every path inside the session scratchpad (the harness's own
-  per-session junk); a heredoc body fed to cat/tee; ONE command matching
-  a live GRANT.
+  per-session junk); a heredoc body fed to cat/tee whose target is a
+  PROSE file (a body aimed at a script file is scanned like code); ONE
+  command matching a live GRANT.
+- FAILS CLOSED: a crash inside the guard falls back to a crude substring
+  check of the obvious verbs and refuses on a hit; a guard bug never
+  becomes an open door.
 - THE GRANT (tools/delete_grant.py, reference tools/): the manager asks
   naming the exact target, the CEO says yes, the manager restates, the
   CEO says yes again, and the four texts are recorded VERBATIM in

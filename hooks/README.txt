@@ -31,8 +31,11 @@ preserve_guard.py (Tier 2d, kit v1.14, a REFUSAL): nothing to fill in.
 Wire its Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit PreToolUse
 entry (settings.json has it), run `python tools/hooks/preserve_guard.py
 --selftest`, gitignore .claude/delete_grant.json. It refuses delete
-verbs, work-discarding git verbs and deletion calls written into
-scripts; the session scratchpad and prose files pass; one command
+verbs (bare names, pipelines, mirror verbs included), work-discarding
+git verbs (force pushes included), deletion calls written into scripts,
+and (v1.27) any untracked script a command executes that carries a
+deletion shape - read before it runs, whatever wrote it; a variable
+target is refused outright; the session scratchpad and prose files pass; one command
 passes per grant recorded by reference tools/delete_grant.py (the
 CEO's two acknowledgments, verbatim). Movers that replace deletion:
 reference tools/retire.py (files) and reference tools/cold_shelf.py

@@ -128,6 +128,53 @@ or fewer.
 See also: WORKFLOWS.md "Add or change a harness hook" (the settings.json
 rule); tools/hooks/bash_guard.py (rule 5).
 
+## Harden a guard against a public incident (audit a safeguard)
+Tags: lessons, process | Write the incident's exact shapes as probe cases before reading the guard; a selftest only proves the shapes its author imagined
+Keys: guard, hook, harden, audit, safeguard, incident, catastrophe, deletion, robust, preserve guard, prevent this, pitfall
+
+THE ONE RIGHT WAY: take the incident apart into the literal commands and
+files it used (what wrote the deleter, what ran it, what it walked, what
+it touched), write each as a pipe-test case BEFORE reading the guard's
+code, run them all, and only then read the guard to see why each ALLOW
+happened. Fix by shape, add every probe to the selftest, and write the
+guard's prose (docstring, wiki row, kit tier text) with the verbs split
+or reworded so the guard never refuses its own author.
+
+- TRIED (2026-09-20, preserve_guard): trusted the 35-check selftest as
+  proof of coverage. FAILED BECAUSE: every check was a shape the author
+  had imagined; the incident's shape (a remover written to Temp through
+  a heredoc, run in a LATER command) sat in the one exemption the guard
+  had - a cat heredoc body - and in the one thing it never looked at -
+  a script file being executed. Fourteen of twenty-nine probes passed
+  straight through. DO INSTEAD: probe with the incident first; the
+  selftest is the floor, not the ceiling.
+- TRIED (2026-09-20): scanning every script a command NAMES. FAILED
+  BECAUSE: grep, cat and diff name scripts too; reading is not running.
+  DO INSTEAD: scan a script only when it starts its command segment or
+  a runner word (python, pwsh, bash, node, &, timeout ...) precedes it.
+- TRIED (2026-09-20): scanning a tracked script whole. FAILED BECAUSE:
+  three committed exporters unlink their own temp file, so every run of
+  them would have needed a grant. DO INSTEAD: a tracked script is judged
+  on its uncommitted ADDED lines only; an untracked one on its whole
+  body.
+- NUANCE: a guard that scans scripts scans ITSELF while it is modified
+  and uncommitted; two-letter helper names in its selftest (the verb
+  aliases) and regex sources that contain their own verbs read as
+  deletion shapes. Name helpers with four letters, write verbs in
+  pattern sources as r[m] / r[i] so the source never matches itself,
+  and split string literals ("rm " + "-rf").
+- NUANCE: a guard must never crash the turn, but "never crash" was
+  implemented as "allow on exception" - fail open. A crude substring
+  fallback that refuses on the obvious verbs keeps both.
+- NUANCE (Windows): os.walk(followlinks=False) and os.path.islink() do
+  NOT stop at a directory junction; a walker deletes through it into
+  the target. No script deletes here, so the guard, not the walker, is
+  the defence; a script that only walks is fine.
+
+See also: tools/hooks/preserve_guard.py (docstring: HARDENED
+2026-09-20); docs/systems/tooling.md "The hooks"; WORKFLOWS.md "Delete
+something"; HOOKS_METHOD.md Tier 2d.
+
 ## Cut and wire new art from a sheet
 Tags: lessons, art | Montage the slices and look at the picture before wiring a single species; some sheets interleave stages and a bad grid is only visible as an image
 Keys: slice, sheet, sprite, art, cut, wire art, montage, growth stages, sprites, spritesheet, animal art, plant art

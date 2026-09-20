@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.26** (2026-09-20). The graft log `UPGRADES.md` is the
+Kit version: **v1.27** (2026-09-20). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -396,11 +396,14 @@ reminder. Eleven ship in `hooks/`, wired by one settings file:
   the decision; the first whole read of a big file per session is
   refused with the file's own index in the refusal, and the same call
   repeated passes.
-- **The preserve guard** refuses delete verbs, work-discarding git verbs
-  and deletion calls written into scripts. The session scratchpad and
-  prose files pass; one command passes per delete grant the owner
-  acknowledged twice. A drive root, the home folder or the repo root pass
-  never.
+- **The preserve guard** refuses delete verbs (bare names, pipelines and
+  the mirror verbs included), work-discarding git verbs (every force
+  push included) and deletion calls written into scripts, and reads
+  every untracked script a command executes before it runs, whatever
+  wrote it, refusing one that deletes. The session scratchpad and prose
+  files pass; one command passes per delete grant the owner acknowledged
+  twice. A drive root, the home folder, the repo root, any .git folder
+  or a variable target pass never, and a crash in the guard fails closed.
 - **The hygiene guard** runs AFTER every file edit and says the law that
   applies to that file: refresh the kit copy (and this README) when a
   portable original changes, add the missing See-also line to a wiki

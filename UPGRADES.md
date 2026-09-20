@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.26** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.27** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -992,3 +992,49 @@ README: "The hooks" (the eleventh hook, the count), "What is in the box"
 (the LESSONS.md row, the hooks count, the reference tools count and the
 lesson loop in the adopt list), and the new bullet "The lessons book (the
 lesson loop)" under the wiki pillar.
+
+### v1.27 - 2026-09-20 - The preserve guard hardened (the 48,000-file report: the script that runs is read first)
+WHAT: a public report the same day - an agent asked to rebuild a mirror
+wrote a remover to Temp, ran it in a later command, and its os.walk went
+through Windows directory junctions (islink() is False for a junction)
+into the live tree and the repo's .git: 48,000 files, the object store
+emptied, git unable to restore anything. The CEO: "We need to prevent
+this at all costs ... make sure what we have is robust enough". Probed
+with the incident's own shapes before reading the guard, fourteen of
+twenty-nine passed straight through: a heredoc body written to a
+SCRIPT file was exempt (the cat/tee exemption), a script being EXECUTED
+was never looked at, a bare-name target (rm build) needed a path
+character, a pipeline into the remove cmdlet had no argument to match,
+robocopy /MIR and rsync --delete were unknown, git checkout of a path,
+switch --discard-changes, force-with-lease, branch -f and filter-branch
+were open, .git/objects and a variable target ($DIR) were grantable, and
+a crash in the guard allowed the call. All closed: the guard now reads
+every script a command executes (the whole file when git does not track
+it, the uncommitted added lines when it does; grep/cat/diff is reading,
+not running), scans heredoc bodies aimed at script files, takes bare
+names and pipelines, knows the mirror verbs and the remaining git
+shapes, refuses any .git folder and any variable target with no grant
+possible, and falls back to a crude substring check on a crash (fail
+closed). Seventy-two selftest checks. The guard refused its own
+hardening five times (two-letter helper names that read as verbs,
+pattern sources that matched themselves) - reworded every time, never
+routed around; that is the new LESSONS.md entry.
+CARRIES: hooks/preserve_guard.py (the whole hardening); hooks/README.txt
+(the line); HOOKS_METHOD.md (Tier 2d: HARDENED, RUN, FAILS CLOSED);
+LESSONS.md ("Harden a guard against a public incident"); the origin's
+docs/systems/tooling.md row and WORKFLOWS.md "Delete something" NEVER
+line (project-side, described here so a graft knows to mirror them);
+this entry.
+GRAFT: take the new hooks/preserve_guard.py whole (no project-specific
+lines in it; the never-list reads the repo root from _hooklib) and run
+`python tools/hooks/preserve_guard.py --selftest`; note that a tracked
+script with an uncommitted diff that ADDS a deletion call is refused
+when run until committed or granted, and a committed script that
+cleans its own temp file is untouched; add the NEVER line to the
+project's delete workflow entry and the tooling row; copy the LESSONS.md
+entry if the project keeps a lessons book. Expect the guard to refuse
+edits to itself whose new text names a verb: split the literal or write
+the verb as r[m].
+README: "The hooks" (the preserve guard bullet: bare names, pipelines,
+mirror verbs, every force push, executed scripts read first, .git and
+variable targets, fail closed); no count changed.

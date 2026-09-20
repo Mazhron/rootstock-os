@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-20 03:22 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
+Updated 2026-09-20 17:37 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 | stale 4
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -41,17 +41,17 @@ Updated 2026-09-20 03:22 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | fable | 2026-09-20 03:22 |
+| HOOKS_METHOD.md | GREEN | STALE | fable | 2026-09-20 03:22 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
-| LESSONS.md | GREEN | ok | fable | 2026-09-20 03:21 |
+| LESSONS.md | GREEN | STALE | fable | 2026-09-20 03:21 |
 | REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
-| UPGRADES.md | GREEN | ok | fable | 2026-09-20 03:22 |
+| UPGRADES.md | GREEN | STALE | fable | 2026-09-20 03:22 |
 | WIKI_METHOD.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | WORKSTATION_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
-| hooks/README.txt | GREEN | ok | fable | 2026-09-20 03:21 |
+| hooks/README.txt | GREEN | STALE | fable | 2026-09-20 03:21 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/diet_guard.py | GREEN | ok | fable | 2026-09-13 12:21 |
@@ -60,7 +60,7 @@ Updated 2026-09-20 03:22 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 
 | hooks/hygiene_guard.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/lesson_advisor.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
-| hooks/preserve_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
+| hooks/preserve_guard.py | GREEN | ok | fable-ws1 | 2026-09-20 17:37 |
 | hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/session_start.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | hooks/settings.json | GREEN | ok | fable | 2026-09-20 03:21 |
@@ -852,3 +852,8 @@ FLAG: wording-level; the install order is unchanged
 SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
 DOES: the graft log: CURRENT KIT VERSION v1.26 and the v1.26 entry (WHAT/CARRIES/GRAFT/README) for the lesson loop; append-only
 FLAG: matches its purpose; the entry names its README sections and the lint accepts it
+
+### 2026-09-20 17:37 | hooks/preserve_guard.py | GREEN | fable-ws1 | WS1 | 405b21e5
+SAYS: PreToolUse guard on Bash, PowerShell, Write, Edit, MultiEdit and NotebookEdit implementing the preservation law: refuses shell delete verbs with a path, git verbs that discard work or history, and deletion calls written into a file, with narrow exceptions for the session scratchpad, prose files, and one command consumed against a twice-acknowledged delete grant; a drive root, the home folder, the repo root or a bare wildcard are refused even with a grant.
+DOES: PreToolUse guard on Bash, PowerShell and the write tools: refuses shell delete verbs (bare names, pipelines, foreach bodies, find -exec, robocopy mirror, rsync delete), the work-discarding and history-rewriting git verbs (every force push included), deletion calls written into non-prose files, and any script a command executes whose untracked body or uncommitted added lines carry a deletion shape; passes the session scratchpad, prose files, heredoc bodies aimed at prose, permission-rule strings in a settings file, and one command per twice-acknowledged grant; a drive root, the home folder, the repo root, any .git folder, a bare wildcard, a .. climb or a variable target are refused with no grant possible; a crash falls back to a crude substring check and refuses on a hit
+FLAG: Hardened 2026-09-20 after the 48,000-file public report; probed with the incident's shapes first (14 of 29 passed the old guard), all closed, 74 selftest checks green; the guard refused its own hardening five times and was reworded each time, never routed around
