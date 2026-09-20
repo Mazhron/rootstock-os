@@ -73,3 +73,17 @@ CHANGELOG UNEXPORTED when commits sit past a changelog anchor (silent
 without one). A project without run_all.py gets a one-line note, never a
 failure. Both hooks' --selftest cover the new paths.
 
+lesson_advisor.py (Tier 1, kit v1.26, THE LESSON LOOP, a once-per-slice
+REFUSAL): nothing to fill in. Copy LESSONS.md to the project root (keep
+the law and the entry shape at its top; retire the origin's entries or
+keep the ones that carry), copy reference tools/lesson_log.py to tools/,
+wire its Stop entry (settings.json has it, beside stop_tick.py), gitignore
+.claude/lesson_state.json, run `python tools/hooks/lesson_advisor.py
+--selftest` and `python tools/lesson_log.py --selftest`, add
+`["tools/lesson_log.py", "--check"]` to run_all's check group. After a
+turn that showed trial and error it refuses to end the turn once with
+LESSON ADVISED; the manager writes the LESSONS.md entry and ends the turn.
+prompt_gauge.py carries the other end (THE LESSON LINE): a prompt whose
+words hit an entry's Keys line gets the entry named before the first
+tool call. Pipe-test once for real: echo '{"transcript_path": "<a
+transcript .jsonl>"}' | python tools/hooks/lesson_advisor.py.

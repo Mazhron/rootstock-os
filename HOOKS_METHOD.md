@@ -67,7 +67,7 @@ and an UPGRADES entry.
   prompt, stop, compact and shell-command hooks; a PostToolUse hook on
   every Write/Edit must stay a pattern match with no heavy imports.
 
-## The kit hooks (hooks/ - ten scripts + _hooklib + settings.json)
+## The kit hooks (hooks/ - eleven scripts + _hooklib + settings.json)
 
 TIER 1 - the resumption + checkpoint loop:
 1. `session_start.py` (SessionStart, all sources): runs the standup
@@ -100,6 +100,26 @@ TIER 1 - the resumption + checkpoint loop:
 4. `pre_compact.py` (PreCompact): one ledger line per compaction
    (when/WS/version/manual-auto/context/unbanked tasks) in
    docs/history/compact_runs.txt; a system message on auto.
+5. `lesson_advisor.py` (Stop; kit v1.26, THE LESSON LOOP, the CEO's ask
+   2026-09-20: "something to push you to write what you learned, as
+   well as push you to add to the knowledge base"): the checkpoint
+   counter's twin for learning. It reads the turn's transcript slice
+   (since the last Stop, a line pointer per transcript in .claude/
+   lesson_state.json) through reference tools/lesson_log.py and, on a
+   trial-and-error signal - the same command run again after an error,
+   repeated edit misses, a FAIL followed by a PASS, an intent claim
+   resolved DIFFERENT, an employee briefed twice, a prompt that reads as
+   a correction - REFUSES to end the turn once with LESSON ADVISED, and
+   ADVISED MEANS DO IT: the manager writes or amends the LESSONS.md
+   entry for the task shape (or the wiki fact under a Tags line, or one
+   line saying why there is no lesson) before the turn ends. A block is
+   used, not a systemMessage, because only a block's reason reaches the
+   manager. Never the same slice twice; a turn that edited the book is
+   ledgered WRITTEN and passes. The prompt end lives in prompt_gauge.py
+   (THE LESSON LINE: the entries whose Keys hit the prompt, read before
+   the first tool call). Ledger: docs/history/lesson_runs.txt; the
+   check loop lints the book and ledger_trends proposes when advised
+   lines pile up unwritten. State file: gitignore it.
 
 TIER 2 - shell guards (`bash_guard.py`, PreToolUse on Bash|PowerShell):
 generic rules - no `--no-verify`, no plain force push - plus a PROJECT
@@ -487,3 +507,11 @@ the manager waits on permission or idles after a long employee run.
   exists). Both selftests extended. The systems audit that asked for
   this is in INTENT_METHOD.md "The loop law".
 
+- 2026-09-20 WS1: Tier 1 gains the lesson advisor (kit v1.26), THE LESSON
+  LOOP's stop end, with the prompt end in prompt_gauge.py and the book in
+  LESSONS.md. The CEO's ask: a system that learns HOW, not only what -
+  the one right way first, then the pitfalls as headlines, so trial and
+  error is paid for once. Design note: a Stop hook's systemMessage
+  reaches the user, its block reason reaches the manager; an instruction
+  to the manager must be a block, guarded so it can never trap (once per
+  slice signature, stop_hook_active, WRITTEN passes).

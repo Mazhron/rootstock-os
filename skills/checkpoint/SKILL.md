@@ -30,7 +30,9 @@ SEQUENCE
    Stop hook said CHANGELOG UNEXPORTED, run `python tools/export_changelog.py`
    now. Ask once: was anything this arc done by hand twice? Then it is a
    WORKFLOW GAP - write the WORKFLOWS.md entry (or brief a haiku) before
-   pushing.
+   pushing. Ask a second time: was anything this arc learned by trial and
+   error, or corrected? Then it is a LESSON (THE LESSON LAW, 2026-09-20):
+   write or amend the LESSONS.md entry before pushing.
 1. Push everything (tree clean, remote up to date).
 2. Refresh the NEWEST day file's `## WHERE WE LEFT OFF` section
    (docs/history/days/YYYY-MM-DD-WS#.md; create today's file + a

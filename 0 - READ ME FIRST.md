@@ -102,7 +102,11 @@ STEP 0 laws, run every --selftest, pipe-test one real call
 CEO edits safety wiring). Then the loops that measure the loop, each in
 its method file: the learning loop (WIKI_METHOD.md), the intent loop
 (INTENT_METHOD.md), the format law + the purpose audit (CONTRIBUTING.md),
-the README gate (only if this project publishes a fact-derived README).
+the README gate (only if this project publishes a fact-derived README),
+and the lesson loop (LESSONS.md at the root, hooks/lesson_advisor.py,
+reference tools/lesson_log.py: the one right way is read before the
+first try and a lesson is asked for the moment a turn shows trial and
+error; hooks/README.txt has the steps).
 
 ## STEP 5 - optional boards (adopt when the CEO wants them)
 
@@ -135,4 +139,4 @@ project's own files in its own names, bump the stamp.
 See also: UPGRADES.md (the graft protocol); CONTRIBUTING.md (the format
   law); WIKI_METHOD.md, REPORTING_METHOD.md, SUBAGENT_METHOD.md, SKILLS.md,
   HOOKS_METHOD.md, WORKFLOW_METHOD.md, WORKSTATION_METHOD.md,
-  INTENT_METHOD.md (the files this door points at).
+  INTENT_METHOD.md, LESSONS.md (the files this door points at).

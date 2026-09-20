@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.25** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.26** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -936,3 +936,59 @@ installed CLAUDE.md: what it holds and how big it is" (rewritten for the
 three homes), "Quick start" (the core lands under Anthropic's target),
 "What is in the box" (the rules/ row, 27 scripts), "Questions people ask"
 (the size question answered with Anthropic's number).
+
+### v1.26 - 2026-09-20 - The lesson loop (LESSONS.md, the one right way first; LESSON ADVISED)
+WHAT: the kit learned WHAT (the wiki, the tag index) and captured HOW in
+steps (WORKFLOW_METHOD.md), but judgment - do this first, here is what
+looked right and was not, here is what changes when A differs from B -
+had no home and nothing pushed the manager to write it. The CEO's ask:
+"something to push you to write what you learned, as well as push you to
+add to the knowledge base ... so in the future you don't make the same
+mistakes and just do the one correct way first". THE LESSON LAW: one
+book, LESSONS.md, one entry per task shape (heading in a prompt's words;
+Tags + Keys lines; THE ONE RIGHT WAY; dated TRIED / FAILED BECAUSE / DO
+INSTEAD; NUANCE lines; See also to the detail's home), grepped before any
+task the way the process registry is. Both ends are mechanical: the
+prompt hook names the entries whose Keys hit the prompt (THE LESSON
+LINE, at most three, with line numbers); the new Stop hook scans the
+turn's transcript slice for trial-and-error signals (the same command run
+again after an error, repeated edit misses, a FAIL then a PASS, an intent
+claim resolved DIFFERENT, an employee briefed twice, a correction prompt)
+and refuses to end the turn once with LESSON ADVISED (a block reaches the
+manager; a systemMessage does not); never the same slice twice; a turn
+that edited the book passes as WRITTEN. The correction ledger prints
+LESSON ADVISED after a DIFFERENT. Measured: lesson_runs.txt (MATCHED /
+ADVISED / WRITTEN / CHECK); `lesson_log.py --check` in the check group
+lints the entries; ledger_trends rule 14 proposes when advised lines pile
+up with no entry written. Origin lesson on the first day: a long heredoc
+through the shell tool fails on Windows past ~100 lines; the Write tool
+and a scratchpad edit script are the one right way.
+CARRIES: LESSONS.md (new: the law, the entry shape, the origin's first
+five entries); hooks/lesson_advisor.py (new); hooks/prompt_gauge.py (THE
+LESSON LINE); hooks/settings.json (the second Stop entry); hooks/
+README.txt; reference tools/lesson_log.py (new); reference tools/
+correction_log.py (the LESSON ADVISED print); reference tools/
+ledger_trends.py (rule 14 + lesson_advised_unwritten); reference tools/
+run_all.py (check group); reference tools/_ledger.py (the ledger name);
+hooks/hygiene_guard.py (LESSONS.md in KIT_MDS); HOOKS_METHOD.md (Tier 1
+item 5 + change log); skills/checkpoint/SKILL.md (step 0 asks for the
+lesson); the front door STEP 4; this entry.
+GRAFT: copy LESSONS.md to the project root and keep its top (the law and
+the entry shape); retire the origin's entries to a cold shelf or keep
+the ones that carry (the heredoc one carries to any Windows project);
+copy lesson_log.py to tools/ and lesson_advisor.py to tools/hooks/; take
+the new prompt_gauge.py or graft its LESSON LINE block (six lines in
+main, two selftest lines); add the Stop entry beside stop_tick's; add
+`.claude/lesson_state.json` to .gitignore; add `["tools/lesson_log.py",
+"--check"]` to run_all's check group and `lesson_runs.txt` to _ledger's
+LEDGER_BASENAMES; graft rule 14 and the `lesson_advised_unwritten` key
+into ledger_trends (and trend_limits.json if the project has one); add
+LESSONS.md to the hygiene guard's KIT_MDS if the project keeps a kit; add
+the LESSON ADVISED print to correction_log's DIFFERENT path; add the
+read-cheap line and the law line to the core (two lines each); add the
+"Write or amend a lesson" workflow entry and the checkpoint step 0
+sentence; run every --selftest and pipe-test the Stop hook once for real.
+README: "The hooks" (the eleventh hook, the count), "What is in the box"
+(the LESSONS.md row, the hooks count, the reference tools count and the
+lesson loop in the adopt list), and the new bullet "The lessons book (the
+lesson loop)" under the wiki pillar.

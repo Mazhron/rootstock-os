@@ -30,6 +30,11 @@
             "type": "command",
             "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/stop_tick.py\"",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/lesson_advisor.py\"",
+            "timeout": 30
           }
         ]
       }

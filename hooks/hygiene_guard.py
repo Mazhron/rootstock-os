@@ -58,7 +58,8 @@ from _hooklib import ROOT, read_input, emit
 KIT_MDS = {
     "GODOT_FIELD_NOTES.md", "CLICKER_DESIGN_NOTES.md", "WIKI_METHOD.md",
     "SUBAGENT_METHOD.md", "REPORTING_METHOD.md", "WORKFLOW_METHOD.md",
-    "SKILLS.md", "HOOKS_METHOD.md", "WORKSTATION_METHOD.md",
+    "SKILLS.md", "HOOKS_METHOD.md", "WORKSTATION_METHOD.md", "INTENT_METHOD.md",
+    "LESSONS.md",
 }
 KIT_DIR = "Future Project MDs"           # the grab-copy folder (repo root)
 KIT_ONLY = {"0 - READ ME FIRST.md", "UPGRADES.md",  # no repo-root original (front door renamed 2026-09-14: it is an install runbook, not a CLAUDE.md)

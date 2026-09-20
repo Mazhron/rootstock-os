@@ -33,50 +33,53 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-14 19:02 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
+Updated 2026-09-20 03:22 | items 66 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
+| 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-09-20 03:22 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
+| HOOKS_METHOD.md | GREEN | ok | fable | 2026-09-20 03:22 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
+| LESSONS.md | GREEN | ok | fable | 2026-09-20 03:21 |
 | REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
-| UPGRADES.md | GREEN | ok | fable | 2026-09-14 19:02 |
+| UPGRADES.md | GREEN | ok | fable | 2026-09-20 03:22 |
 | WIKI_METHOD.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | WORKSTATION_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
-| hooks/README.txt | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
+| hooks/README.txt | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/diet_guard.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
-| hooks/hygiene_guard.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
+| hooks/hygiene_guard.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| hooks/lesson_advisor.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
-| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-13 12:21 |
+| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/session_start.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
-| hooks/settings.json | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
+| hooks/settings.json | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
-| reference tools/_ledger.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/check_claude_md.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/check_wiki_links.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/checkpoint.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
-| reference tools/correction_log.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/correction_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/format_lint.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
-| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-09-14 19:02 |
+| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-09-14 16:55 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
@@ -84,7 +87,7 @@ Updated 2026-09-14 19:02 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 
 | reference tools/refresh_kit.py | GREEN | ok | fable | 2026-09-14 16:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/run_all.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| reference tools/run_all.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/standup.py | GREEN | ok | fable | 2026-09-14 19:02 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-14 01:01 |
@@ -92,7 +95,7 @@ Updated 2026-09-14 19:02 | items 63 | GREEN 63 | YELLOW 0 | RED 0 | unflagged 0 
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
-| skills/checkpoint/SKILL.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| skills/checkpoint/SKILL.md | GREEN | ok | fable | 2026-09-20 03:21 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/flag/SKILL.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
@@ -774,3 +777,78 @@ FLAG: unchanged in behavior; one default lowered to match the smaller digest
 SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
 DOES: the graft log: the current kit version line and one WHAT/CARRIES/GRAFT/README entry per concept, newest v1.25 the digest diet; append-only, read by the README lint
 FLAG: matches its purpose; the v1.25 entry names its README section
+
+### 2026-09-20 03:21 | LESSONS.md | GREEN | fable | WS1 | 4b7dee43
+SAYS: One entry per task shape: THE ONE RIGHT WAY first, then what was tried, why it failed and what to do instead, then nuance headlines as they accumulate, so a future session does the correct thing first instead of repeating trial and error.
+DOES: the one-right-way book: the law and the entry shape at the top, then five entries, each with Tags, Keys, THE ONE RIGHT WAY, dated TRIED / FAILED BECAUSE / DO INSTEAD bullets and a See also to the detail's home; read by lesson_log.py for the prompt match and the lint
+FLAG: does what the PURPOSE says; the Keys line is the one addition the purpose implies (the prompt hook needs match terms); every entry is a recorded event, none invented
+
+### 2026-09-20 03:21 | hooks/lesson_advisor.py | GREEN | fable | WS1 | aca625cd
+SAYS: Stop hook that scans the turn's transcript slice for trial-and- error signals and refuses to end the turn once with LESSON ADVISED when it finds one, so the manager captures the lesson in LESSONS.md or the wiki before the turn ends; silent otherwise, never the same slice twice.
+DOES: Stop hook: reads the transcript slice since the last Stop (line pointer per transcript in .claude/lesson_state.json), asks lesson_log.signals(), refuses once per slice signature with LESSON ADVISED, passes a slice that edited LESSONS.md as WRITTEN, ledgers ADVISED/WRITTEN, exits 0 on every failure path; --selftest covers decide() and the state round trip
+FLAG: does what the PURPOSE says and nothing more; the refusal is once per signature and guarded by stop_hook_active, so it cannot trap; pipe-tested for real on the live transcript (blocked once, silent on the rerun)
+
+### 2026-09-20 03:21 | reference tools/lesson_log.py | GREEN | fable | WS1 | 2a232079
+SAYS: Serve the lesson loop's three ends: match a prompt against the Keys lines of LESSONS.md entries and name the ones to read first; scan a transcript slice for trial-and-error signals so the Stop hook can advise a lesson; lint the entries' shape and ledger the counts for the check loop.
+DOES: three ends in one script: --match scores a prompt's stemmed words against each entry's Keys (multi-word 2, single 1, named at 2+, cap 3, prompts under four content words skipped); --scan finds six trial-and-error signals in a transcript slice; --check lints Tags/Keys/THE ONE RIGHT WAY/See also and appends a CHECK line through _ledger; record() appends MATCHED/ADVISED/WRITTEN; 16 selftests
+FLAG: matches its purpose; the DIFFERENT signal was narrowed before wiring to intent_log's exact resolve line after a quoted digest line read as a false positive
+
+### 2026-09-20 03:21 | hooks/prompt_gauge.py | GREEN | fable | WS1 | 6b896181
+SAYS: UserPromptSubmit hook that stays silent on a normal turn and, when a threshold is crossed, prints the checkpoint counter warning (8 tasks advised, 15 dire) and the context-remaining warning, plus since 2026-09-13 a KIT UNSYNCED line when a portable original is newer than its kit copy, and since 2026-09-20 the LESSONS line naming the LESSONS.md entries whose Keys match the prompt, so the one right way is read before the first tool call.
+DOES: the counter and context lines as before, THE KIT LINE, and since 2026-09-20 THE LESSON LINE: lesson_log.match_lines() on the prompt, at most three entries with line numbers, one MATCHED ledger line per hit, silent on no match; selftest gained the two lesson cases
+FLAG: purpose amended to name the lessons line; behavior on a normal prompt unchanged (silent, zero tokens)
+
+### 2026-09-20 03:21 | hooks/hygiene_guard.py | GREEN | fable | WS1 | 33912ad4
+SAYS: PostToolUse guard on Write, Edit and MultiEdit that, after an edit lands, hands the manager one line of context per applicable law: KIT REFRESH when a portable original changed, SEE-ALSO when a touched docs/systems section has no See also line, DASH when player-facing text received an em or en dash (this one BLOCKS), and IMPORT when a new asset needs the engine import run; stateless pattern matching only.
+DOES: unchanged behavior; KIT_MDS gained INTENT_METHOD.md (it was already a kit MD, an omission) and LESSONS.md so an edit to either gets the kit-refresh line
+FLAG: config-only change inside the stated purpose
+
+### 2026-09-20 03:21 | hooks/settings.json | GREEN | fable | WS1 | d9956742
+SAYS: (no PURPOSE line)
+DOES: the settings template now carries two Stop entries, stop_tick.py and lesson_advisor.py, beside the existing wiring; parses
+FLAG: wording-level change to the template; every SAFETY hook stays wired
+
+### 2026-09-20 03:21 | hooks/README.txt | GREEN | fable | WS1 | 196a5393
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: install notes gained the lesson_advisor.py paragraph: copy LESSONS.md and lesson_log.py, wire the Stop entry, gitignore the state file, run both selftests, add the check-group line, pipe-test once
+FLAG: does what its purpose says: per-hook setup steps, now for eleven hooks
+
+### 2026-09-20 03:21 | reference tools/_ledger.py | GREEN | fable | WS1 | 676f9073
+SAYS: One append_unless_identical() call site for the check-script ledgers (format_lint, purpose_audit, readme_lint, check_wiki_links and, since 2026-09-20, lesson_log's CHECK line) so a rerun at an unchanged tree does not grow duplicate rows.
+DOES: unchanged behavior; LEDGER_BASENAMES gained lesson_runs.txt so the lesson ledger's own append does not dirty the tree it checks; purpose header now names lesson_log as the fifth caller
+FLAG: config-only change; header amended to stay honest about the caller count
+
+### 2026-09-20 03:21 | reference tools/correction_log.py | GREEN | fable | WS1 | 3b8d1a81
+SAYS: Record the correction ledger: a RECORD line the moment a correction is understood in the CEO's own words, a FIXED line when the fix ships, and resolve the named intent claim as DIFFERENT in the intent log when one is given.
+DOES: unchanged recording; after a correction resolves a claim DIFFERENT it now also prints LESSON ADVISED naming the claim, so the lesson is written in the same batch as the fix
+FLAG: one extra output line inside the stated purpose (the correction ritual is the feedback loop; the lesson is its capture)
+
+### 2026-09-20 03:21 | reference tools/ledger_trends.py | GREEN | fable | WS1 | b7b0d9f4
+SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop, the lesson loop), compares them against tunable thresholds, and prints proposed rule changes; it applies nothing itself.
+DOES: rule 14 added: ADVISED lines in the last 7 days at or past lesson_advised_unwritten (3) with no WRITTEN line and no entry growth across the CHECK lines proposes a look; DEFAULTS gained the key; nothing applied
+FLAG: purpose header amended to list the lesson loop among the ledgers read; still propose-only
+
+### 2026-09-20 03:21 | reference tools/run_all.py | GREEN | fable | WS1 | 25f6247c
+SAYS: Chain habitual scripts by named group (check/regen/tests/metrics/ probes/builds/session/standup) and ledger every group run so staleness is visible instead of silent.
+DOES: the check group gained [tools/lesson_log.py, --check] as its last step; the group comment names it
+FLAG: add-only change per the Script Rule (changed only to add or fix)
+
+### 2026-09-20 03:21 | skills/checkpoint/SKILL.md | GREEN | fable | WS1 | 6e721ed2
+SAYS: Close an arc safely: push, refresh the day file's WHERE WE LEFT OFF section with both sides of the final exchange verbatim, reset the task counter, and emit the safe-to-clear marker.
+DOES: step 0 asks a second question: was anything learned by trial and error or corrected this arc; then the LESSONS.md entry is written before pushing
+FLAG: one sentence inside the ritual's purpose (close the arc losslessly; a lesson left unwritten is a loss)
+
+### 2026-09-20 03:22 | HOOKS_METHOD.md | GREEN | fable | WS1 | 2b0c8332
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: Tier 1 gained item 5, the lesson advisor, with the block-not-systemMessage design note; the kit hooks heading says eleven; the change log has the 2026-09-20 entry
+FLAG: matches its purpose; counts agree with the folder (readme_lint PASS at 11 hooks)
+
+### 2026-09-20 03:22 | 0 - READ ME FIRST.md | GREEN | fable | WS1 | f54b98cd
+SAYS: The kit's front door: walks a receiving Claude through the install in order (ask the CEO first, then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: STEP 4 names the lesson loop among the loops that measure the loop and points at hooks/README.txt for the steps; the See also list names LESSONS.md
+FLAG: wording-level; the install order is unchanged
+
+### 2026-09-20 03:22 | UPGRADES.md | GREEN | fable | WS1 | 86b972a4
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: the graft log: CURRENT KIT VERSION v1.26 and the v1.26 entry (WHAT/CARRIES/GRAFT/README) for the lesson loop; append-only
+FLAG: matches its purpose; the entry names its README sections and the lint accepts it

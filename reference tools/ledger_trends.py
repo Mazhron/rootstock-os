@@ -49,7 +49,8 @@ source (default/json) for every key.
 PURPOSE: Reads the tails of the project's history ledgers (usage, tests,
   wiki links, wiki heat, employee corrections, compactions, README audit,
   intent claims, corrections, systems audit, open questions, digest size,
-  the run_all loop), compares them against tunable thresholds, and prints
+  the run_all loop, the lesson loop), compares them against tunable
+  thresholds, and prints
   proposed rule changes; it applies nothing itself.
 INTENT: the CEO's ask 2026-09-10: 'Is Rootstock implementing learning
   loops?' Extended 2026-09-14: open questions get a nudge past N days, and
@@ -90,6 +91,7 @@ DEFAULTS = {
     "systems_audit_days": 30,        # days since the last systems audit
     "systems_audit_day_files": 10,   # day files written since the last systems audit
     "open_question_days": 7,         # an OPEN question waited this many days
+    "lesson_advised_unwritten": 3,    # ADVISED lines in 7 d with no WRITTEN line and no new entry (THE LESSON LOOP, 2026-09-20)
     "digest_warn_bytes": 12000,      # the standup digest's byte size (24000 before THE DIGEST DIET, 2026-09-14: ~6-8k after it)
     "loop_stale_days": {             # per run_all group: days since last run
         "session": 2, "metrics": 2, "check": 2, "regen": 7, "probes": 14, "tests": 7,
@@ -365,6 +367,23 @@ def proposals(th=None):
         if last is not None and (now - last).days > max_days:
             out.append("PROPOSE (loop_runs.txt): %s last ran %d d ago - the loop law says the "
                        "main loop calls it; check the session_start hook." % (group, (now - last).days))
+    # 14. lesson_runs.txt (THE LESSON LOOP, the CEO 2026-09-20): the Stop hook
+    # kept advising a lesson and none was written - either the signals are
+    # noise (tune lesson_log.py) or the law is being skipped; the owner decides.
+    lessons = data_lines("lesson_runs.txt")
+    cut = (datetime.datetime.now() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
+    week = [ln for ln in lessons if ln[:10] >= cut]
+    advised = sum(1 for ln in week if "| ADVISED |" in ln)
+    written = sum(1 for ln in week if "| WRITTEN |" in ln)
+    checks = [ln for ln in week if "| CHECK |" in ln]
+    ents = [re.search(r"entries (\d+)", ln) for ln in checks]
+    ents = [int(m.group(1)) for m in ents if m]
+    grew = len(ents) >= 2 and ents[-1] > ents[0]
+    if advised >= th["lesson_advised_unwritten"] and not written and not grew:
+        out.append("PROPOSE (lesson_runs.txt): LESSON ADVISED %d time(s) in 7 d and LESSONS.md "
+                   "gained no entry - either the signals are noise (tune tools/lesson_log.py) "
+                   "or the lesson law is being skipped; read the ADVISED lines and decide."
+                   % advised)
     return out
 
 

@@ -114,6 +114,11 @@ def record(actor, shipped, wrong, intent_id="", ref=""):
                             "--source", "correction"] + (["--intent-ref", ref] if ref else []),
                            cwd=ROOT, capture_output=True, text=True)
         print((r.stdout or r.stderr).strip())
+        # THE LESSON LOOP (the CEO 2026-09-20): a correction that resolves a claim
+        # DIFFERENT is the strongest lesson signal there is - say so here too, so
+        # the entry is written in the same batch as the fix, not remembered later.
+        print("LESSON ADVISED: a correction resolved %s DIFFERENT - write or amend the LESSONS.md "
+              "entry for this task shape in the same batch (THE LESSON LAW)" % intent_id)
     return i
 
 

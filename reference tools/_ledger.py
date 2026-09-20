@@ -1,8 +1,9 @@
 """Shared helper: append a ledger line unless it duplicates the last one.
 
-PURPOSE: One append_unless_identical() call site for the four check-script
-  ledgers (format_lint, purpose_audit, readme_lint, check_wiki_links) so a
-  rerun at an unchanged tree does not grow duplicate rows.
+PURPOSE: One append_unless_identical() call site for the check-script
+  ledgers (format_lint, purpose_audit, readme_lint, check_wiki_links and, since
+  2026-09-20, lesson_log's CHECK line) so a rerun at an unchanged tree does not
+  grow duplicate rows.
 INTENT: 2026-09-14 owner ruling, on duplicate ledger rows appearing minutes
   apart (once via `python tools/run_all.py check`, again inside
   tools/sync_kit_repo.py's push gates, at an unchanged kit version): "How
@@ -34,7 +35,7 @@ STATE_PATH = os.path.join(ROOT, "docs", "history", "ledger_heads.txt")
 # no rerun could ever be trusted as "unchanged" again.
 LEDGER_BASENAMES = {
     "format_lint_runs.txt", "purpose_audit_runs.txt", "readme_lint_runs.txt",
-    "wiki_link_runs.txt", "ledger_heads.txt",
+    "wiki_link_runs.txt", "ledger_heads.txt", "lesson_runs.txt",
 }
 
 

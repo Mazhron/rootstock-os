@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.25** (2026-09-14). The graft log `UPGRADES.md` is the
+Kit version: **v1.26** (2026-09-20). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -246,6 +246,14 @@ make it work:
   look; cold by read count is never a reason to shelve), and a trends
   script turns ledger tails into PROPOSE lines at standup when a threshold
   crosses. Nothing is applied by itself; the owner decides.
+- **The lessons book (the lesson loop).** Steps live in the process
+  registry; judgment lives in LESSONS.md: one entry per task shape, THE
+  ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, then
+  nuance lines as they accumulate. The prompt hook names the entry to
+  read before the first tool call; the Stop hook asks for the entry the
+  moment a turn shows trial and error; a check script lints the shape
+  and a ledger counts advised against written. The origin's first
+  entry: read the existing spread before briefing a numbers task.
 - **Index first.** The first whole read of a big file in a session is
   refused, and the refusal carries the file's own index (headings or
   function lines with line numbers) so the next call reads one section.
@@ -358,7 +366,7 @@ changed, and export the changelog unprompted.
 
 A skill runs when invoked; a hook runs when the harness reaches a moment.
 Anything a law can enforce mechanically becomes a hook, not a longer
-reminder. Ten ship in `hooks/`, wired by one settings file:
+reminder. Eleven ship in `hooks/`, wired by one settings file:
 
 - **Session start** injects the standup digest by itself - after a /clear
   the manager has everything back before anyone types a word.
@@ -366,6 +374,15 @@ reminder. Ten ship in `hooks/`, wired by one settings file:
   threshold is crossed; **every reply** ticks the checkpoint counter when
   work actually happened, and refuses to end the turn once it is dire.
 - **Before compaction** a ledger line records what was at stake.
+- **The lesson advisor** reads each finished turn for trial and error -
+  the same command run again after an error, repeated edit misses, a
+  FAIL followed by a PASS, a claim resolved DIFFERENT, an employee
+  briefed twice, a prompt that reads as a correction - and refuses to end
+  the turn once with LESSON ADVISED, so the lesson lands in LESSONS.md
+  before the arc moves on. Never the same turn twice; a turn that wrote
+  the lesson passes. The prompt gauge carries the other end: a prompt
+  whose words hit an entry's Keys line gets that entry named before the
+  first tool call.
 - **The shell guard** refuses what the CEO's laws forbid (no force push, no
   skipped hooks, plus the project's own rules).
 - **The fan-out guard** is catastrophe-only: it refuses a burst or flood of
@@ -684,17 +701,18 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 |---|---|
 | `0 - READ ME FIRST.md` | The front door: an install runbook read once (STEP 0 questions, the install order as pointers, definition of done); not a CLAUDE.md |
 | `WIKI_METHOD.md` | The knowledge wiki: token mechanics, conventions, bootstrap |
+| `LESSONS.md` | The one-right-way book: the lesson law, the entry shape, and the origin's first entries; grepped before any task, fed by the lesson advisor hook |
 | `REPORTING_METHOD.md` | Scripts + ledgers: the three rules, runner spec, bootstrap |
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, seven laws, assignments table, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
 | `skills/` | The nine skills, ready to drop into `.claude/skills/` |
 | `rules/` | The first path-scoped rule, `wiki.md`: drop into `.claude/rules/`, loads only while a markdown file is open; write your own game and text rules beside it |
-| `HOOKS_METHOD.md` | The hooks: the contract, the ten kit hooks, tiers, bootstrap |
-| `hooks/` | The ten hook scripts (drop into `tools/hooks/`) plus the settings template (merge into `.claude/settings.json`) |
+| `HOOKS_METHOD.md` | The hooks: the contract, the eleven kit hooks, tiers, bootstrap |
+| `hooks/` | The eleven hook scripts (drop into `tools/hooks/`) plus the settings template (merge into `.claude/settings.json`) |
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |
-| `reference tools/` | 27 working scripts to adapt, not rewrite. Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), trust the ledger for the check scripts |
+| `reference tools/` | 28 working scripts to adapt, not rewrite. Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), trust the ledger for the check scripts, the lesson loop (lesson_log.py: the prompt match, the trial-and-error scan, the lint) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `CONTRIBUTING.md` | The format law and the purpose audit: the one header every thing carries, the read-only flag ritual, what a contributed update looks like |
 | `FLAGS.md` | The flag ledger: every kit thing's latest GREEN / YELLOW / RED, hashed to the version reviewed, tallied, append-only |

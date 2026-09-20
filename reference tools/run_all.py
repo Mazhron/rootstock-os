@@ -19,7 +19,7 @@ group ran by hand). tools/hooks/session_start.py reads this ledger's
 
 Groups (edit GROUPS to add a script - the Script Rule applies to this file
 too: changed only to add or fix):
-  check    library/index sanity (check_claude_md)
+  check    library/index sanity (check_claude_md) + the lesson lint (lesson_log --check)
   regen    every generated design artifact (sheets + all webs + wiki view)
   tests    the full sweepable test roster (run_tests --all; slow, ~25 min)
   metrics  the company scorecard (parses SUBAGENTS.md, appends its ledger)
@@ -59,7 +59,8 @@ GROUPS = {
                 ["tools/check_wiki_links.py"],
                 ["tools/readme_lint.py"],
                 ["tools/format_lint.py", "--quiet"],
-                ["tools/purpose_audit.py", "--pending"]],
+                ["tools/purpose_audit.py", "--pending"],
+                ["tools/lesson_log.py", "--check"]],   # THE LESSON LOOP (2026-09-20): entry shape + advised/written counts
     "regen":   [["tools/export_upgrades.py"],
                 ["tools/export_upgrade_web.py"],
                 ["tools/export_species_web.py"],
