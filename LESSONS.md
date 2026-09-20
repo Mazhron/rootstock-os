@@ -191,3 +191,30 @@ one glance and the wiring is not redone.
 
 See also: ART_METHOD.md; docs/systems/art-pipeline.md "Gemini growth
 sheets"; WORKFLOWS.md "Cut and wire new creature or plant art".
+
+## Apply an audit's findings with a batch edit script (anchors quoted from a report)
+Tags: lessons, process | An employee quotes a README sentence on one line but the file wraps it; grep every anchor before the script runs and make each replacement skip itself when its new text is already present, so a mid-way failure resumes instead of forcing a split
+Keys: batch edit, edit script, anchor, assert count, wrapped line, audit findings, apply findings, readme audit, rep(), resumable, idempotent
+
+THE ONE RIGHT WAY: before writing the edit script, `grep -n` every anchor
+in the target file as it is wrapped on disk (an employee's quote joins
+lines); write the replacement helper so a call whose NEW text is already
+present is skipped, not asserted; then a failed assert halfway costs one
+rerun of the same script, not a hand-split second script.
+
+- TRIED (2026-09-20, the second README audit): forty replacements in one
+  scratchpad script, each asserting its anchor count. FAILED BECAUSE: one
+  anchor ("No hook has state that survives being unwired.") was quoted by
+  the employee on one line and wrapped across two in the README; the
+  assert stopped the script with half the edits applied, and the same
+  script could not rerun because the applied anchors now counted zero.
+  DO INSTEAD: grep the anchors first; skip-if-done in the helper.
+- NUANCE (the same evening, session_end.py): a live pipe-test of a hook
+  that ACTS on unbanked work fires for real - the kit sync had restamped
+  FLAGS.md after the commit, so the "clear" test made an auto commit.
+  Pipe-test such a hook last, after every companion script has run and
+  `git status` outside docs/history/ is empty, or feed it a sandbox root.
+
+See also: LESSONS.md "Write a long file or script through the shell";
+WORKFLOWS.md "Audit the public README (Rootstock)" and "Add or change a
+harness hook"; tools/hooks/session_end.py.
