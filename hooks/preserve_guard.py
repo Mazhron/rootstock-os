@@ -55,11 +55,16 @@ thing (retire / cold shelf) or ask the CEO twice and record the grant.
 
 PURPOSE: PreToolUse guard on Bash, PowerShell, Write, Edit, MultiEdit and
   NotebookEdit implementing the preservation law: refuses shell delete verbs
-  with a path, git verbs that discard work or history, and deletion calls
-  written into a file, with narrow exceptions for the session scratchpad,
-  prose files, and one command consumed against a twice-acknowledged delete
-  grant; a drive root, the home folder, the repo root or a bare wildcard are
-  refused even with a grant.
+  (bare names, pipelines, foreach bodies, find -exec and the mirror verbs
+  included), git verbs that discard work or rewrite history (every force
+  push included), deletion calls written into a non-prose file, and any
+  script a command executes whose untracked body or uncommitted added lines
+  carry a deletion shape; narrow exceptions for the session scratchpad,
+  prose files, heredoc bodies aimed at prose, permission-rule strings in a
+  settings file, and one command consumed against a twice-acknowledged
+  delete grant; a drive root, the home folder, the repo root, any .git
+  folder, a bare wildcard, a .. climb or a variable target are refused even
+  with a grant; a crash falls back to a crude check that refuses.
 INTENT: stops the manager or an employee from deleting anything without the
   owner's express, double-acknowledged permission, after public reports of
   an agent's script that deleted personal files and another that wiped a
