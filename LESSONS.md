@@ -364,3 +364,36 @@ class after the switch back (expected 0), not only inside the new view.
 
 See also: tools/probe_species_web.py; tools/export_upgrade_web.py "THE
 MEMORIES LAYER"; docs/systems/tooling.md "The Memories chain table".
+
+---
+## Some of the chips are cut off, I need the ability to scroll more to the right (a generated page's canvas clipped at the window edge)
+Tags: lessons, tooling | A scroller inside a flex wrapper needs min-width:0 on the wrapper or the wrapper grows to the content and the body clips it; a probe measures geometry only after render() in the view that shows it, since a hidden element reads 0 for every offset
+Keys: cut off, clipped, cannot scroll right, horizontal scroll, flex item min-width auto, overflow auto, treewrap, scrollWidth clientWidth, offsetTop 0, display none, hidden view, render vs renderTree, probe geometry, upgrade web, species web
+
+THE ONE RIGHT WAY: when a generated page clips content at the window edge,
+measure in headless Chrome first (scroller clientWidth vs scrollWidth,
+the wrapper's width vs its parent's): a wrapper equal to the content and
+wider than its parent is the flex min-width:auto trap, fixed by
+`min-width:0` on the wrapper, never by resizing the content. Any probe
+that reads offsets or scroll ranges switches views with the page's own
+render() (the function that flips display), then measures, and asserts
+the wrapper is no wider than its parent.
+
+- TRIED (2026-09-21, the Memories layer's right edge): assumed the canvas
+  width was short and looked for a missing +margin. FAILED BECAUSE: the
+  canvas and scroller were sized right (2593 of 2593); #treewrap, a flex
+  item of #main with min-width:auto, had grown to 2758px in a 764px window
+  and body overflow:hidden clipped it - no scrollbar could exist. DO
+  INSTEAD: measure wrapper vs parent before touching sizes; one line of
+  CSS (`min-width:0`) was the whole fix.
+- TRIED (same day, the probe's four new geometry lines): called
+  renderTree() after the card-editor step and every reading was 0
+  (treewrap 0, chain 2 moved 0). FAILED BECAUSE: the previous step had
+  left state.view on cards, so the tree was display:none and hidden
+  elements read 0 for offsetTop, clientWidth and scrollWidth. DO INSTEAD:
+  switch with render() (it flips the display) and keep the "wrapper <=
+  parent" line as a standing check so a regression reads ERR, not 0.
+
+See also: LESSONS.md "Add a new kind of element to a shared canvas";
+WORKFLOWS.md "Probe the upgrade web page after regenerating it";
+tools/probe_upgrade_web.py.
