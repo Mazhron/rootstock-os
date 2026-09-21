@@ -63,6 +63,7 @@ GROUPS = {
                 ["tools/purpose_audit.py", "--pending"],
                 ["tools/lesson_log.py", "--check"]],   # THE LESSON LOOP (2026-09-20): entry shape + advised/written counts
     "regen":   [["tools/export_upgrades.py"],
+                ["tools/memory_chains.py"],   # THE MEMORIES SHOP's chain table (2026-09-21)
                 ["tools/export_upgrade_web.py"],
                 ["tools/export_species_web.py"],
                 ["tools/export_cloud_web.py"],
