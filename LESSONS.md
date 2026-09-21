@@ -172,6 +172,17 @@ or fewer.
   DO INSTEAD: a multi-line edit script is a .py file in the scratchpad,
   written with the Write tool and run by path; commands with quoted
   prose go in their own call, never after a heredoc.
+- TRIED (2026-09-21 evening, the records script): the same 120-line
+  quoted heredoc ALONE in its call, with only `echo written` after it,
+  written under the auto-mode instruction to prefer Bash. FAILED
+  BECAUSE: bash still reported "unexpected EOF while looking for
+  matching `'" at the heredoc's last line; the body carried apostrophes
+  in prose and a `%s`-formatted string, and the Bash tool's layer does
+  not deliver a long quoted heredoc intact whatever follows it. DO
+  INSTEAD: the auto-mode "prefer Bash" instruction does not cover this
+  case; a scratchpad script is the Write tool, full stop, and the first
+  attempt is the Write tool. Two identical failures a day apart is the
+  proof.
 
 See also: WORKFLOWS.md "Add or change a harness hook" (the settings.json
 rule); tools/hooks/bash_guard.py (rule 5).
