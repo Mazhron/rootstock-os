@@ -434,3 +434,32 @@ the wrapper is no wider than its parent.
 See also: LESSONS.md "Add a new kind of element to a shared canvas";
 WORKFLOWS.md "Probe the upgrade web page after regenerating it";
 tools/probe_upgrade_web.py.
+
+---
+## A ruling about the parts is not a ruling about the whole (widening a chain ruling to the line gate)
+Tags: lessons, design, intent | When a ruling names the parts of a thing (the chains), do not extend it to the thing itself (the line's gate) without asking; state the widening as an assumption in the reply and let the owner rule
+Keys: widen a ruling, generalize a ruling, the parts and the whole, chain ruling, line gate, over-read, contradiction rule, memories gate, from the start, rebirth gate
+
+THE ONE RIGHT WAY: when a ruling is phrased about the parts ("the chain
+keeps the gates of rebirths"), build exactly that and name any wider
+reading as an assumption in the reply: "I read this as also covering the
+line's own gate; say if not." The owner answers in a line and the build
+is right the first time. If the wider reading changes what a player sees
+(a line moving from "from the start" to a gate line), it is a ruling of
+its own and waits for a yes under THE CONTRADICTION RULE.
+
+- TRIED (2026-09-21, v0.99.31): read "the chain keeps the gates of
+  rebirths (permanent) OR the memory unlock" as covering the LINE's
+  requires_rebirths too, and put chain 1 of every gated line behind its
+  Classic gate under Memories. FAILED BECAUSE: the ruling was about the
+  chains; the line gate is the price of taking the line whole, and a
+  split line is not taken whole. Tilling Grasp jumped from "from the
+  start" to the 10-rebirth band and Mazhron caught it in the web the same
+  afternoon (correction C0001). DO INSTEAD: keep the ruling's scope, and
+  where a line is ONE chain (a tool, a Will) it IS the whole, so the
+  chain ruling and the line gate coincide there without any widening.
+
+See also: INTENT.md "The split line starts from the beginning";
+docs/systems/meta.md "The Memories shop" (THE SPLIT LINE paragraph);
+LESSONS.md "Give a system a second face"; docs/index/laws.md "The
+contradiction rule".
