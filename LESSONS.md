@@ -99,13 +99,27 @@ change a harness hook"; HOOKS_METHOD.md.
 
 ## Write an engine resource file (.tres, .tscn) from a script or shell
 Tags: lessons, gotchas | A shell write puts a BOM or CRLF in a .tres and Godot's parser fails; write engine resources from Python with utf-8 and newline "\n", never from PowerShell redirection
-Keys: tres, tscn, resource file, write species file, species files, data/species, powershell write, redirect, bom
+Keys: tres, tscn, resource file, write species file, species files, data/species, powershell write, redirect, bom, project.godot, comments stripped, editor rewrote
 
 THE ONE RIGHT WAY: edit or write a .tres/.tscn from Python (or the Edit
 tool) with encoding utf-8 and newline "\n"; the shell guard refuses a
 shell redirect into a .tres for this reason. A hand-written .tscn with a
 typed node export needs the node_paths entry in its header or the export
 silently stays null. Run `--import` headless after any new asset.
+
+- NUANCE (2026-09-21, project.godot): the Godot editor rewrites
+  project.godot whenever it saves settings (Mazhron playing in the
+  editor is enough): every `;` comment is stripped, sections are
+  reordered, and lines equal to the engine default are dropped
+  (renderer/rendering_method went, then came back on restore). A
+  comment there is a note that lives until the next editor save. Its
+  durable home is the topic file (the FRAME LAW in GODOT_FIELD_NOTES.md,
+  testing.md and ui.md; the no-physics law in lag-and-latency.md);
+  project.godot carries the values. When the editor has rewritten it: `git show
+  <last-good>:project.godot` with the version line carried forward,
+  never a hand re-type, and commit it as its own batch so the diff
+  shows only the restore. The editor keeps its in-memory copy, so a
+  version bump written while it is open shows only after a restart.
 
 See also: docs/index/gotchas.md "Gotcha: writing .tres from PowerShell",
 "Gotcha: hand-written .tscn node exports"; .claude/rules/game-code.md.
