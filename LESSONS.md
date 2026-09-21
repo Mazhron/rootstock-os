@@ -472,3 +472,28 @@ See also: INTENT.md "The split line starts from the beginning";
 docs/systems/meta.md "The Memories shop" (THE SPLIT LINE paragraph);
 LESSONS.md "Give a system a second face"; docs/index/laws.md "The
 contradiction rule".
+
+## Read the screenshot against the data before asking the owner to export (an arrow's target)
+Tags: lessons, tooling, web | When a screenshot shows a number the data seems to lack, find which link on disk carries that number before calling it a browser-only edit; a labelled arrow's target is easy to misread in a crowded layer
+Keys: screenshot, arrow, export, browser edit, browser-only edit, requires_levels, link label, upgrade web, misread, prerequisite, threshold
+
+THE ONE RIGHT WAY: when the owner's screenshot shows a value the data
+"does not have", grep the data for that value first (requires_levels,
+thresholds, gates) and name the link that carries it; only when nothing
+on disk carries it ask for an export. Say which link you read the arrow
+as, so the owner can correct the reading in a line.
+
+- TRIED (2026-09-21, v0.99.31 to .32): read the ">=10" arrow leaving
+  Stronger Pulse in the web's Memories layer as the Tilling Grasp link,
+  found no threshold on that link, and asked Mazhron at two checkpoints
+  to export a browser edit. FAILED BECAUSE: the ">=10" was the Auto
+  Click link (click_auto requires_levels = [10], on disk since the gating
+  build); the Tilling Grasp link has no threshold on purpose, it opens
+  once Stronger Pulse has any level. The owner spent a turn explaining
+  data that was already right. DO INSTEAD: `grep -rn "requires_levels"
+  data/upgrades/` before the reply; when the value exists on disk, the
+  arrow is that link.
+
+See also: docs/systems/tooling.md "The Memories chain table";
+WORKFLOWS.md "Probe the upgrade web page after regenerating it";
+LESSONS.md "A ruling about the parts is not a ruling about the whole".
