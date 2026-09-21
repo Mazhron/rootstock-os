@@ -295,3 +295,37 @@ eater; leave the rule that caught it alone.
 See also: docs/systems/testing.md "The long-soak stability probe";
 docs/systems/perf.md "The water redraw cadence"; tools/soak_report.py;
 scripts/core/spike_tracer.gd.
+
+---
+## Give a system a second face the player can switch back to (keep the old system as an option)
+Tags: lessons, design | A second presentation of the same progression is a VIEW over the one data set, never a generated copy; then the switch is free, the save needs no mapping, and a retune of the original moves both faces
+Keys: second system, switch back, keep the current, option to swap, new system, two systems, classic, alternate shop, alternate mode, view not copy, memories
+
+THE ONE RIGHT WAY: when Mazhron wants the current system kept as an
+option beside a new one built "on the same concepts", find the one
+statement of the data both must share (the upgrade levels, the cost
+curve) and build the new face as functions over it: new fields on the
+same resource for what the new face adds, a Settings switch that only
+changes presentation and gates, and per-run state kept beside the shared
+save. Never generate a second data folder from the first.
+
+- TRIED (2026-09-21, the Memories shop): the first plan was a generator
+  writing chain .tres files into a second folder chosen by the setting.
+  FAILED BECAUSE: Mazhron's aside ("if I change the costs of the original
+  upgrade in the chain, the others should adjust") cannot hold for
+  copies, the save would need a level mapping at every switch, and two
+  folders drift. DO INSTEAD: chains as a view over one UpgradeData
+  (chain_of(level), the same cost_at), three fields on the resource, the
+  gates in UpgradeManager reading Settings, Classic answering "usable"
+  for every chain so the old shop is byte for byte the old shop. Three of
+  Mazhron's questions (curve continuity, level equivalence, seamless
+  switch) answered themselves.
+- NUANCE: a rule priced off one example (10,000 for a 127-vitality
+  chain) must be checked across the whole table before baking: the
+  linear 80x gave a 3.7 billion price on the dearest line; a sub-linear
+  power (264 x total^0.75) kept the example and the median sane. Print
+  the min / median / max before writing a single .tres.
+
+See also: docs/systems/meta.md "The Memories shop"; NEXT_STEPS.md
+"[NS-2]"; tools/memory_chains.py; WORKFLOWS.md "Retune the Memories
+chains".
