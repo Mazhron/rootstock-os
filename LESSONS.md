@@ -336,3 +336,31 @@ save. Never generate a second data folder from the first.
 See also: docs/systems/meta.md "The Memories shop"; NEXT_STEPS.md
 "[NS-2]"; tools/memory_chains.py; WORKFLOWS.md "Retune the Memories
 chains".
+
+---
+## Add a new kind of element to a shared canvas (a second layer on a generated web page)
+Tags: lessons, tooling | A canvas that several render functions share is cleared by each one's own selector list; a new element class must join EVERY clear list the same edit, and a headless probe that switches views both ways is the check
+Keys: shared canvas, new layer, render path, leftover elements, clear list, querySelectorAll remove, generated page, upgrade web, species web, second view, toggle view, probe both ways
+
+THE ONE RIGHT WAY: when a generated page gains a new kind of element
+(a band, a cluster, a chain box) on a canvas that other render functions
+also draw on, grep every `querySelectorAll(...).forEach(e => e.remove())`
+on that canvas and add the new class to each in the same edit; then the
+headless probe switches INTO the new view and BACK OUT and counts the new
+class after the switch back (expected 0), not only inside the new view.
+
+- TRIED (2026-09-21, the Memories layer on the upgrade web's tree): the
+  layer cleared ".tbox, .gate, .cluster, .clustertitle, .memband" for
+  itself and the first probe read 44 boxes and 10 bands, all correct.
+  FAILED BECAUSE: the Classic tree and View All kept their own older
+  clear lists, so switching back left the ten Rebirth bands drawn under
+  the Classic boxes; only the probe's "switch back and count" line saw
+  it. DO INSTEAD: one grep for the clear lists before adding the class,
+  and the probe's round trip as a standing line (probe_species_web.py's
+  shape: the page plus a probe script in headless Chrome, out[] to the
+  title).
+- NUANCE: node --check proves nothing here; the bug is a missing string
+  in a selector, visible only by rendering.
+
+See also: tools/probe_species_web.py; tools/export_upgrade_web.py "THE
+MEMORIES LAYER"; docs/systems/tooling.md "The Memories chain table".
