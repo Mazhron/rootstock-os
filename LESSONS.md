@@ -151,9 +151,46 @@ or fewer.
   as the fallback after the heredoc fails. (Python parses the whole
   script first, so the failed heredoc applied nothing - check with
   `git status` before rerunning, then rerun the scratchpad script.)
+- NUANCE (2026-09-21, the line-gate road): a SHORT heredoc is not safe
+  either when the text carries a backslash at a line's end (GDScript
+  line continuations). The Bash tool's own layer turns the doubled
+  backslash into one before Python sees it, so backslash-newline inside
+  the Python string becomes a line join: the OLD text never matches
+  (count 0) and a NEW text that lands writes the two lines as one, a
+  silent parse error in the .gd file. The Write tool passes the script
+  verbatim, so any edit whose old or new text holds a backslash goes
+  through a scratchpad script, whatever its length. Add to the same
+  rule: the .gd files here carry mixed CRLF and LF, so an edit script
+  reads with newline="" and normalises CRLF to LF before matching
+  (git stores LF; the working copy's CRs are noise).
 
 See also: WORKFLOWS.md "Add or change a harness hook" (the settings.json
 rule); tools/hooks/bash_guard.py (rule 5).
+
+## Write a self-test for a shop purchase (a FAIL that was the test's own assumption)
+Tags: lessons, testing | A test that buys one level compares against the level BEFORE the buy, never against 1: profiles carry meta start levels, and the same process may run another test's fixture first; GDScript maxi/mini take exactly two arguments
+Keys: self-test, MEMTEST, REBIRTHTEST, level_of, meta floor, start level, buy one level, maxi, mini, too many arguments, parse error, FAIL then PASS, test assumption
+
+THE ONE RIGHT WAY: read the level first (`var lv0 := level_of(id)`), buy,
+then assert `level_of(id) == lv0 + 1`; pick the fixture line by its data
+shape (gated, no requires, a biomass category), never by a name whose
+start level you assume. A compound assertion that fails gets split into
+named parts with one detail print before the second run, not guessed at.
+maxi / mini are two-argument: nest them.
+
+- TRIED (2026-09-21, the line-gate road): asserted the gated line ended at
+  level 1 after one buy. FAILED BECAUSE: the fixture (bushes_broad_leaves)
+  carries a meta start level of 3 in the test profile, so the buy landed
+  on 4; every other part of the step was true. DO INSTEAD: lv0 + 1, and
+  the split-and-print step the first time a compound assertion fails.
+- TRIED (same batch): `maxi(a, b, 0)` in UpgradeData. FAILED BECAUSE: the
+  parse error broke the whole resource script, so MEMTEST read MISSING and
+  a REBIRTHTEST check that only touches UpgradeData read false, a failure
+  two tests away from its cause. DO INSTEAD: `--verbose` on the first
+  MISSING (the parse error is the first SCRIPT ERROR line); nest maxi.
+
+See also: docs/systems/testing.md (the roster); WORKFLOWS.md "Run tests
+or probes".
 
 ## Harden a guard against a public incident (audit a safeguard)
 Tags: lessons, process | Write the incident's exact shapes as probe cases before reading the guard; a selftest only proves the shapes its author imagined
