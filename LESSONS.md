@@ -291,6 +291,13 @@ eater; leave the rule that caught it alone.
   _draw that no tick owned, invisible until it reported cost() itself.
   A system missing from the culprit line is the first suspect when the
   named ones do not add up to the window.
+- NUANCE (2026-09-21, the .25 build soak): a FAIL whose EVERY window sits
+  at ~4x with a tiny board (plants 5, window 2012 ms, clouds the eater)
+  while `tasklist | grep -i godot` shows the editor open is the machine,
+  not the build: Mazhron's editor instance shares the GPU. Two idle
+  reruns at the same version read the old baseline (473 / 498 ms). The
+  tell is the shape: a real eater plateaus in some windows; contention
+  lifts all of them. Rerun idle before reading anything else.
 
 See also: docs/systems/testing.md "The long-soak stability probe";
 docs/systems/perf.md "The water redraw cadence"; tools/soak_report.py;
