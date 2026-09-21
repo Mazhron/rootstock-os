@@ -164,6 +164,15 @@ or fewer.
   reads with newline="" and normalises CRLF to LF before matching
   (git stores LF; the working copy's CRs are noise).
 
+- TRIED (2026-09-21, the C0001 doc edits): a 120-line Python edit script
+  in a quoted heredoc followed by a second command on the same line whose
+  arguments carried apostrophes ("it's", "Classic's"). FAILED BECAUSE:
+  bash reported "unexpected EOF while looking for matching `'" and ran
+  nothing, so no edit landed and the failure had to be diagnosed twice.
+  DO INSTEAD: a multi-line edit script is a .py file in the scratchpad,
+  written with the Write tool and run by path; commands with quoted
+  prose go in their own call, never after a heredoc.
+
 See also: WORKFLOWS.md "Add or change a harness hook" (the settings.json
 rule); tools/hooks/bash_guard.py (rule 5).
 
