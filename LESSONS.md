@@ -210,10 +210,15 @@ category it sits beside.
   Mazhron saw the flowers as "lower resolution than the small plants
   and grass". Ten times the detail had been in the 800 px panels. DO
   INSTEAD: a per-category mature height in extract_gemini_sheets.py
-  (a category drawn at 0.75 gets 108 or 144 px, one drawn at 0.3 keeps
-  72), art_scale set so every category lands at the same rendered
-  height per source pixel, and the montage compared at in-game scale
-  (resize NEAREST by art_scale, then magnify) before wiring.
+  (FLOWER_MATURE_H 108 beside TARGET_MATURE_H 72; `--only <category>`
+  re-cuts one family), art_scale set so every category lands at the
+  same rendered height per source pixel, and the montage compared at
+  in-game scale (resize NEAREST by art_scale, then magnify) before
+  wiring. Landed 2026-09-21 as v0.99.24: flowers 108 px at 0.5, same
+  screen size, montage clean, flora green, build soak PASS.
+- NUANCE: 0.5 is the clean factor under the nearest filter (every other
+  pixel); a category that must render bigger gets a taller CUT, never
+  a bigger art_scale.
 
 See also: ART_METHOD.md; docs/systems/art-pipeline.md "Gemini growth
 sheets"; WORKFLOWS.md "Cut and wire new creature or plant art".
