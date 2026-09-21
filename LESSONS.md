@@ -129,6 +129,14 @@ or fewer.
   both landed first time.
 - NUANCE: the shell guard refuses shell writes into settings.json in any
   case, so a settings edit is always the Edit tool after a Read.
+- NUANCE (2026-09-20 evening, a 180-line heredoc died the same way with
+  "here-document delimited by end-of-file"): reading this file's INDEX
+  at session start did not stop the repeat; the entry applies at the
+  moment of writing. The rule is mechanical: an edit script over ten
+  lines is the Write tool + scratchpad, before the first attempt, never
+  as the fallback after the heredoc fails. (Python parses the whole
+  script first, so the failed heredoc applied nothing - check with
+  `git status` before rerunning, then rerun the scratchpad script.)
 
 See also: WORKFLOWS.md "Add or change a harness hook" (the settings.json
 rule); tools/hooks/bash_guard.py (rule 5).
@@ -218,3 +226,35 @@ rerun of the same script, not a hand-split second script.
 See also: LESSONS.md "Write a long file or script through the shell";
 WORKFLOWS.md "Audit the public README (Rootstock)" and "Add or change a
 harness hook"; tools/hooks/session_end.py.
+
+## Read a failing probe or a frame-cost spike (a soak, a ledger FAIL, "transient spikes")
+Tags: lessons, testing | A ledger's FAIL with the final figure at baseline is not "transient" until the per-sample series is seen; run the probe short with the machine idle, make it NAME the eater, and fix the eater - never loosen the check to pass it
+Keys: soak, soak fail, spike, spikes, transient, window cost, frame cost, probe fail, ledger fail, culprit, slow window, performance, perf
+
+THE ONE RIGHT WAY: a probe that fails on cost is rerun SHORT (2 min)
+with nothing else running, and its output must name the system that ate
+the time (SpikeTracer's probe ledger; every system reports cost()). Read
+the per-sample series, not the ledger's final figure. Fix the named
+eater; leave the rule that caught it alone.
+
+- TRIED (2026-09-20, three builds of soak FAILs): read the ledger tails -
+  "1, 3, 2 violations, final window at baseline" - and called it
+  transient spikes three times, with "one more build's eye" as the plan
+  and "flag sustained degradation only" as the proposed fix. FAILED
+  BECAUSE: the ledger line carries only the LAST window and a count; the
+  violations were a plateau (windows at 4x for 3-6 samples in a row)
+  that had drained by the run's end, and the proposed rule change would
+  have hidden a real 10 ms/frame cost in play. DO INSTEAD: the culprit
+  line (testing.md) - a slow window prints its three biggest eaters;
+  the first run with it named water_tiles in every slow window and the
+  fix took one @export (perf.md "The water redraw cadence").
+- NUANCE: a heartbeat every 20 samples hides a 3-sample plateau; the
+  heartbeat now carries winmax= (the slowest of its 20) for exactly this.
+- NUANCE: the eater need not be in the sim - here it was a CanvasItem
+  _draw that no tick owned, invisible until it reported cost() itself.
+  A system missing from the culprit line is the first suspect when the
+  named ones do not add up to the window.
+
+See also: docs/systems/testing.md "The long-soak stability probe";
+docs/systems/perf.md "The water redraw cadence"; tools/soak_report.py;
+scripts/core/spike_tracer.gd.

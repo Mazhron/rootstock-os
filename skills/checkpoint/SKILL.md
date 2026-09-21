@@ -34,7 +34,7 @@ SEQUENCE
    error, or corrected? Then it is a LESSON (THE LESSON LAW, 2026-09-20):
    write or amend the LESSONS.md entry before pushing.
 1. Push everything (tree clean, remote up to date), then
-   `python tools/backup_push.py` (THE LOCAL MIRROR).
+   `python tools/backup_push.py` (THE LOCAL MIRROR + THE BROWSABLE COPY).
 2. Refresh the NEWEST day file's `## WHERE WE LEFT OFF` section
    (docs/history/days/YYYY-MM-DD-WS#.md; create today's file + a
    days_index.txt line if it does not exist). The section carries:

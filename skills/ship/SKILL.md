@@ -24,7 +24,9 @@ Run after EVERY completed batch of work; the user should never have to ask.
    text, including commit subjects).
 4. Push, then `python tools/backup_push.py` (THE LOCAL MIRROR: every
    branch and tag to the bare `backup` remote of this repo and the kit
-   repo, on another drive; a missing remote or drive is a skip line).
+   repo, on another drive, then THE BROWSABLE COPY: the working folder
+   robocopied beside the mirror, add/update only; a missing remote or
+   drive is a skip line).
 5. Builds (projects that ship binaries): run the build script
    (`python tools/make_builds.py` in Everwood). NEVER delete older build
    zips - old versions are the "before" side of dev-log comparisons.
