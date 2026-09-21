@@ -190,12 +190,30 @@ something"; HOOKS_METHOD.md Tier 2d.
 
 ## Cut and wire new art from a sheet
 Tags: lessons, art | Montage the slices and look at the picture before wiring a single species; some sheets interleave stages and a bad grid is only visible as an image
-Keys: slice, sheet, sprite, art, cut, wire art, montage, growth stages, sprites, spritesheet, animal art, plant art
+Keys: slice, sheet, sprite, art, cut, wire art, montage, growth stages, sprites, spritesheet, animal art, plant art, resolution, lower resolution, pixelated, blurry, art_scale, chunky
 
 THE ONE RIGHT WAY: slice, then build one montage of every cut cell and
 read it as an image, then wire. A grid cut that looks right in numbers
 can interleave stages or catch a black border; the montage shows it in
-one glance and the wiring is not redone.
+one glance and the wiring is not redone. Pick the sliced mature height
+FROM the on-screen size, not from one flat number: source height x
+art_scale x zoom_max must not exceed the source height (nearest filter),
+and the cut height should be the same multiple of art_scale as the
+category it sits beside.
+
+- TRIED (2026-09-20, the 24-flower batch): every category cut to
+  TARGET_MATURE_H 72, then flowers wired at art_scale 0.75 beside
+  plants at 0.5 and grass at 0.3. FAILED BECAUSE: the same 72 px were
+  stretched 1.5x to 2.5x further on screen than the neighbours', past
+  native at zoom 3.0, and 0.75 under a nearest filter drops one pixel
+  in four (ragged petal edges) where 0.5 drops every other one cleanly;
+  Mazhron saw the flowers as "lower resolution than the small plants
+  and grass". Ten times the detail had been in the 800 px panels. DO
+  INSTEAD: a per-category mature height in extract_gemini_sheets.py
+  (a category drawn at 0.75 gets 108 or 144 px, one drawn at 0.3 keeps
+  72), art_scale set so every category lands at the same rendered
+  height per source pixel, and the montage compared at in-game scale
+  (resize NEAREST by art_scale, then magnify) before wiring.
 
 See also: ART_METHOD.md; docs/systems/art-pipeline.md "Gemini growth
 sheets"; WORKFLOWS.md "Cut and wire new creature or plant art".
