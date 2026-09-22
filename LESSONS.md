@@ -534,3 +534,30 @@ construction. Both pre-merge sides live in git history; nothing is lost.
 See also: WORKFLOWS.md "Leave a note for the other workstation";
 docs/index/laws.md (the preservation law); tools/usage_report.py
 (keep_other_ws).
+
+## Leave the cross-workstation note the moment the need is spoken (never wait to be told)
+Tags: lessons, process, cross-workstation | The instant the manager knows the OTHER machine must do or know something, the note goes in docs/index/notes.md in the SAME batch; telling the owner about the need without writing the note is the failure
+Keys: leave a note, WS1, WS2, other workstation, relay, handoff, notes.md, proactive note, unprompted note, next tasks, courier
+
+THE ONE RIGHT WAY: the test lives in the reply itself: any sentence
+shaped "WS1 will need to...", "remember for the other machine...", "ask
+the manager there to..." is a note that ALREADY EXISTS in
+docs/index/notes.md before that reply is sent, committed and pushed with
+the batch. The owner never couriers a message between machines and never
+has to say "leave a note" - the relay is the manager's own memory across
+machines, and standup reads it out on the other side.
+
+- TRIED (2026-09-22, the memory trim): shipped the kit v1.29 batch and
+  ended the reply with "ask the manager there to run the trim" - handing
+  Mazhron the job of carrying the task to WS1. Mazhron had to say "leave
+  a note" as a separate instruction, then ruled: "I shouldn't have to
+  tell you to leave a note for WS1 ... If you know WS1 needs to do
+  something, you should leave the note for yourself. If WS1 needs to
+  know something, you should make the note yourself." FAILED BECAUSE:
+  the manager treated the relay as the owner's channel instead of its
+  own cross-machine memory. DO INSTEAD: write the note in the same batch
+  that created the need; the reply then says "noted for WS1" instead of
+  assigning the owner homework.
+
+See also: docs/index/notes.md (the relay); WORKFLOWS.md "Leave a note
+for the other workstation"; docs/index/laws.md (the workflow rule).
