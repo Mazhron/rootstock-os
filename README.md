@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.28** (2026-09-20). The graft log `UPGRADES.md` is the
+Kit version: **v1.29** (2026-09-22). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -220,6 +220,14 @@ make it work:
   related topics WITH their file, so a hop needs no search.
 - **One home per fact.** Engine lessons, genre lessons, and project details
   each live in exactly one layer, because split homes drift.
+- **The harness memory stays machine-local (the trim ruling).** The
+  harness's own per-machine auto-memory never holds a fact the repo can
+  own: it does not travel between machines, is never pulled, reviewed or
+  linted, so it drifts stale invisibly. It keeps only this machine's exe
+  paths, installs and quirks. Repo-shaped memories are banked verbatim
+  into a topic file, superseded in place with a stub, and a tally ledger
+  counts every later need of a banked fact - enough hits proposes a
+  restore, and the owner decides.
 - **Incremental growth.** Every file touched during normal work gains
   proper headings and links then and there. No stop-the-world passes.
 - **Size before you read (the 10k rule).** A whole-file read past ~10k

@@ -57,6 +57,28 @@ of thousands.
    notes; project detail -> topic library. ONE home per fact - split homes
    drift.
 
+## The harness memory (machine-local facts only; the trim ruling)
+
+The harness keeps its own per-machine, per-folder auto-memory OUTSIDE the
+repo (in Claude Code: %USERPROFILE%\.claude\projects\<slug>\memory\ - an
+always-loaded MEMORY.md index over bodies read on demand). It looks like a
+fourth knowledge layer; the rule (the CEO's trim ruling, 2026-09-22) is
+that it never holds a fact the repo can own. It does not travel between
+machines, is never pulled, reviewed or linted, and drifts stale invisibly
+- the repo is the shared, versioned home. Auto-memory keeps ONLY
+machine-local facts the repo cannot carry: this machine's exe paths,
+installs, PATH quirks. (The workstation file's per-machine inventory is
+the repo-side record of the same ground; the two must agree.)
+THE TRIM, when auto-memory has grown repo-shaped facts: bank each body
+VERBATIM into a topic file (provenance line + a pointer to the repo file
+that owns the LIVE fact), rewrite the memory file as a superseded stub
+pointing at the bank, and open a tally ledger in the history folder - one
+line each time a banked fact is needed again (date | machine | section |
+what needed it). A threshold (first pass: 3 hits on one fact, or 5 total,
+inside 30 days) raises a PROPOSE to restore that fact to auto-memory; the
+owner decides (the learning loop). Nothing is deleted - the preservation
+law covers memories too; a wrong memory is marked superseded in place.
+
 ## The three-hop lookup
 
 1. The CORE's index line picks the FILE (no file is opened).

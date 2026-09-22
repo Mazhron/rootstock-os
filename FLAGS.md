@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-20 18:13 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 | stale 11
+Updated 2026-09-22 17:11 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 | stale 11
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -48,9 +48,9 @@ Updated 2026-09-20 18:13 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
 | UPGRADES.md | GREEN | STALE | fable | 2026-09-20 03:22 |
-| WIKI_METHOD.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
+| WIKI_METHOD.md | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:11 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
-| WORKSTATION_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
+| WORKSTATION_METHOD.md | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:11 |
 | hooks/README.txt | GREEN | STALE | fable | 2026-09-20 03:21 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
@@ -859,3 +859,13 @@ FLAG: matches its purpose; the entry names its README sections and the lint acce
 SAYS: PreToolUse guard on Bash, PowerShell, Write, Edit, MultiEdit and NotebookEdit implementing the preservation law: refuses shell delete verbs with a path, git verbs that discard work or history, and deletion calls written into a file, with narrow exceptions for the session scratchpad, prose files, and one command consumed against a twice-acknowledged delete grant; a drive root, the home folder, the repo root or a bare wildcard are refused even with a grant.
 DOES: PreToolUse guard on Bash, PowerShell and the write tools: refuses shell delete verbs (bare names, pipelines, foreach bodies, find -exec, robocopy mirror, rsync delete), the work-discarding and history-rewriting git verbs (every force push included), deletion calls written into non-prose files, and any script a command executes whose untracked body or uncommitted added lines carry a deletion shape; passes the session scratchpad, prose files, heredoc bodies aimed at prose, permission-rule strings in a settings file, and one command per twice-acknowledged grant; a drive root, the home folder, the repo root, any .git folder, a bare wildcard, a .. climb or a variable target are refused with no grant possible; a crash falls back to a crude substring check and refuses on a hit
 FLAG: Hardened 2026-09-20 after the 48,000-file public report; probed with the incident's shapes first (14 of 29 passed the old guard), all closed, 74 selftest checks green; the guard refused its own hardening five times and was reworded each time, never routed around
+
+### 2026-09-22 17:11 | WIKI_METHOD.md | GREEN | Fable (WS2 manager) | WS2 | b5db5849
+SAYS: A portable system for organizing a project's knowledge (a lean CLAUDE.md core, a docs/systems topic library, portable root notes) so an AI assistant finds anything in three cheap hops, Glob, Grep for headings, then a targeted Read, without wasting tokens.
+DOES: Teaches the three-layer knowledge architecture and cheap lookup; v1.29 adds The harness memory section ruling that per-machine auto-memory holds machine-local facts only, with the bank, stub and tally protocol for repo-shaped memories.
+FLAG: The new section is a knowledge-home boundary, squarely inside the stated purpose of organizing where facts live; no side effects, no new tools, read-only doctrine.
+
+### 2026-09-22 17:11 | WORKSTATION_METHOD.md | GREEN | Fable (WS2 manager) | WS2 | 76fe2cd7
+SAYS: The machine inventory method: one workstation file records what every script, hook and ritual needs, why, what the origin machine has, and how to install it, so any Claude can get a new machine up to par and write back what it adds.
+DOES: The machine inventory method; v1.29 adds one closing paragraph extending the Claude-side settings section: harness auto-memory keeps machine-local facts only, pointing to WIKI_METHOD.md for the full trim ruling.
+FLAG: Matches the purpose (what is per-machine and how a machine gets up to par); a pointer paragraph, nothing beyond the stated scope.

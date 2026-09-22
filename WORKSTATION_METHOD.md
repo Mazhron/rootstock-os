@@ -87,6 +87,13 @@ with the repo (the hooks), what is per-machine and gitignored (hook
 state), and where the harness keeps transcripts. A new machine that has
 the code but not the harness setup is not up to par.
 
+The harness's per-machine auto-memory obeys the same split: it holds
+machine-local facts ONLY (exe paths, installs, PATH quirks - the facts
+this file's per-machine sections record on the repo side); any fact the
+repo can own lives in the repo. Repo-shaped memories get banked and
+tallied, not deleted - WIKI_METHOD.md "The harness memory" carries the
+full trim ruling.
+
 ## BOOTSTRAP (new project)
 
 1. Day one, right after the wiki: create WORKSTATION.md (or your name for

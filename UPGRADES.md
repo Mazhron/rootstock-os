@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.28** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.29** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1087,3 +1087,36 @@ miner); "What is in the box" (hooks/ row names _hooklib.py and
 README.txt, 29 reference tools, the local mirror); plus the audit's
 fixes across pillars 1-3, the hooks, the intent loop, the companions,
 Quick start and Updating.
+
+### v1.29 - 2026-09-22 - The memory trim (harness auto-memory is machine-local only)
+WHAT: the CEO, told that the harness's per-machine auto-memory "costs
+tokens every session", asked whether it fights the kit: "Doesn't that go
+against the concept of Rootstock?" Mostly no - only the memory INDEX
+loads each session and the bodies read on demand, which is the kit's own
+shape. The real conflict found: auto-memory is per-machine and
+per-folder, never pulled, reviewed or linted, so any cross-machine
+project fact stored there is a shadow copy of what the repo owns,
+drifting stale invisibly (the origin's copy still said a version 76
+releases old). THE TRIM RULING: auto-memory keeps ONLY machine-local
+facts the repo cannot carry (exe paths, installs, PATH quirks);
+repo-shaped memories are banked VERBATIM into a topic file with
+provenance, superseded in place with stubs (the preservation law covers
+memories too), and a tally ledger counts every later need of a banked
+fact - the CEO's condition: "I want a ledger of what we're losing and if
+we reference them enough, we'll rethink our strategy." A threshold
+(first pass: 3 hits on one fact, or 5 total, inside 30 days) raises a
+PROPOSE to restore; the owner decides (the learning loop).
+CARRIES: WIKI_METHOD.md ("The harness memory" section, after the
+architecture); WORKSTATION_METHOD.md (the closing paragraph of the
+Claude-side settings section); this entry.
+GRAFT: read the project's MEMORY.md index and split its entries:
+machine-local (keep; verify the paths still hold) versus repo-shaped
+(bank the body VERBATIM into a topic file + its master-index line, with
+a provenance line naming the repo file that owns the LIVE fact; rewrite
+the memory file as a SUPERSEDED stub pointing at the bank; open a
+history ledger - memory_bank_refs or your name for it - whose header
+carries the line format and the rethink threshold; register the
+reference-or-restore steps in the process registry). Run it once per
+machine - each workstation has its own memory store; the repo carries
+the ruling so the other machine's manager can follow it.
+README: "1. The Knowledge Wiki" (the harness-memory bullet).
