@@ -1106,9 +1106,14 @@ fact - the CEO's condition: "I want a ledger of what we're losing and if
 we reference them enough, we'll rethink our strategy." A threshold
 (first pass: 3 hits on one fact, or 5 total, inside 30 days) raises a
 PROPOSE to restore; the owner decides (the learning loop).
+Also in this version: the link checker skips fenced code blocks - banked
+memory bodies quote [[links]] to files that never were wiki pages, and
+quoted text is not a live link (found the day the first bank shipped:
+seven false DEADs).
 CARRIES: WIKI_METHOD.md ("The harness memory" section, after the
 architecture); WORKSTATION_METHOD.md (the closing paragraph of the
-Claude-side settings section); this entry.
+Claude-side settings section); reference tools/check_wiki_links.py (the
+fenced-block skip in passes b and c); this entry.
 GRAFT: read the project's MEMORY.md index and split its entries:
 machine-local (keep; verify the paths still hold) versus repo-shaped
 (bank the body VERBATIM into a topic file + its master-index line, with

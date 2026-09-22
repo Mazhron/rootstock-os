@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-22 17:11 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 | stale 11
+Updated 2026-09-22 17:37 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 | stale 11
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -70,7 +70,7 @@ Updated 2026-09-22 17:11 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 
 | reference tools/backup_push.py | - | UNFLAGGED | - | - |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/check_claude_md.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
-| reference tools/check_wiki_links.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
+| reference tools/check_wiki_links.py | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:37 |
 | reference tools/checkpoint.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
@@ -869,3 +869,8 @@ FLAG: The new section is a knowledge-home boundary, squarely inside the stated p
 SAYS: The machine inventory method: one workstation file records what every script, hook and ritual needs, why, what the origin machine has, and how to install it, so any Claude can get a new machine up to par and write back what it adds.
 DOES: The machine inventory method; v1.29 adds one closing paragraph extending the Claude-side settings section: harness auto-memory keeps machine-local facts only, pointing to WIKI_METHOD.md for the full trim ruling.
 FLAG: Matches the purpose (what is per-machine and how a machine gets up to par); a pointer paragraph, nothing beyond the stated scope.
+
+### 2026-09-22 17:37 | reference tools/check_wiki_links.py | GREEN | Fable (WS2 manager) | WS2 | 1b459474
+SAYS: Warn-only link checker for the knowledge wiki: scan repo-root, docs/systems, docs/cold and docs/index markdown for the four cross-reference forms, resolve each against the repo, and report dead links plus See-also hygiene.
+DOES: Checks See-also blocks, wiki links and markdown links across the wiki; v1.29 adds a fenced-code-block skip so quoted text (banked memories, code samples) is not counted as live links.
+FLAG: The skip narrows the scan to real links, exactly the stated purpose; no new writes or side effects.

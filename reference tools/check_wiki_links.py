@@ -199,8 +199,21 @@ def scan_file(path, bmap, wiki_basenames, is_claude_md):
             lineno = start_line + block.count("\n", 0, offset)
             record(lineno, m.group(0))
 
+    # fenced code blocks are quoted text (banked memories, samples), not
+    # live links - collect their line numbers so (b) and (c) skip them
+    fenced = set()
+    in_fence = False
+    for idx, ln in enumerate(lines, start=1):
+        if ln.lstrip().startswith("```"):
+            in_fence = not in_fence
+            fenced.add(idx)
+        elif in_fence:
+            fenced.add(idx)
+
     # (b) [[name]] wiki links - resolve against wiki basenames only
     for idx, ln in enumerate(lines, start=1):
+        if idx in fenced:
+            continue
         for m in WIKILINK_RE.finditer(ln):
             name = strip_punct(m.group(1))
             if not name:
@@ -216,6 +229,8 @@ def scan_file(path, bmap, wiki_basenames, is_claude_md):
 
     # (c) markdown [text](path) links
     for idx, ln in enumerate(lines, start=1):
+        if idx in fenced:
+            continue
         for m in MDLINK_RE.finditer(ln):
             target = m.group(1)
             if target.startswith("#"):
