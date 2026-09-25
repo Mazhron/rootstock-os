@@ -608,3 +608,38 @@ directly and the window-close notification never fires.
 See also: docs/systems/meta.md "THE PLAY CLOCK"; scripts/core/balance_log.gd;
 docs/history/open_questions.txt (Q0005); WORKFLOWS.md "Track an open
 question to Mazhron".
+
+## Anything that can be pressed should wear the new frames (style every Button, or every control of one type, at once)
+Tags: lessons, ui, godot | Fill the PROJECT theme at boot; a root-window theme stops at a CanvasLayer and a per-script override is one place per button forever
+Keys: theme, Button, stylebox, every button, all buttons, CanvasLayer, project theme, wood_theme.tres, ThemeDB, install_theme, press feedback, pressed, hover, disabled
+
+THE ONE RIGHT WAY: project.godot names an empty Theme .tres
+(gui/theme/custom = assets/ui/wood_theme.tres, written with the Write
+tool, never a shell redirect) and one static installer (WoodBox.
+install_theme, from Settings._ready before any scene builds) fills its
+Button styleboxes for normal / hover / pressed / hover_pressed / disabled
+/ focus. Every Button in the game changes at once, CheckBox and the touch
+keys inherit the Button type, and a control's own override (map tiles)
+still wins. Press feedback is three tints and a 1 px content-margin sink
+on the pressed box, not per-button code. Probe the lookup headless first
+(a SceneTree script under --script: add a Button under a CanvasLayer and
+compare get_theme_stylebox to the box you set) - it takes ten seconds and
+settles the question before any wiring.
+
+- TRIED (2026-09-25, the wood buttons): `get_tree().root.theme = theme`
+  on the root Window. FAILED BECAUSE: theme lookup walks parent Controls
+  and Windows only - it stops at a CanvasLayer - and the HUD, the badges
+  and the footer all live under one, so the probe printed false; and
+  ThemeDB has no set_project_theme to fall back on at runtime. DO
+  INSTEAD: the empty project-theme .tres named in project.godot, filled at
+  boot through ThemeDB.get_project_theme() - the probe printed true under
+  the CanvasLayer, true for CheckBox, and the override still won.
+- NUANCE: one shared StyleBox instance serves every button, so a Random
+  wood must roll PER CONTROL (seed = the canvas item id + a generation
+  counter), or hover and press would each re-roll the frame under the
+  mouse.
+- NUANCE (the cut, same day): a hollow frame taken apart by geometry
+  measures its border as the MEDIAN opaque run across hollow rows, never
+  the max (a bark nub at an inner corner read as a border half the frame
+  wide) and never a fixed middle band (the bar's underside is thicker
+  than its top); see art-pipeline.md "The wood UI frames".
