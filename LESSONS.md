@@ -290,6 +290,13 @@ category it sits beside.
 - NUANCE: 0.5 is the clean factor under the nearest filter (every other
   pixel); a category that must render bigger gets a taller CUT, never
   a bigger art_scale.
+- NUANCE (2026-09-25, the wood planks): read the montage for the FILL
+  art as hard as for the sprites. The Cherry and Dark Oak plank tiles
+  showed a thin white stripe at their edges in the montage; wired as
+  they were, drawn dimmed under a window, the stripe was a grey band
+  beside the frame that Mazhron had to point at. A generated background
+  can carry a white margin: tools/cut_ui_borders.py now trims it
+  (trim_white) - a stripe in a montage is never "just the tile edge".
 
 See also: ART_METHOD.md; docs/systems/art-pipeline.md "Gemini growth
 sheets"; WORKFLOWS.md "Cut and wire new creature or plant art".
