@@ -561,3 +561,43 @@ machines, and standup reads it out on the other side.
 
 See also: docs/index/notes.md (the relay); WORKFLOWS.md "Leave a note
 for the other workstation"; docs/index/laws.md (the workflow rule).
+
+## Keep track of real time between saves (a telemetry clock that spans sessions)
+Tags: lessons, telemetry, persistence | A persisted log's real-time deltas come from its own play clock, never from wall-clock stamps; the log flushes at the world save, not at the window-close notification
+Keys: telemetry, real seconds, real_s, wall-clock, unix, play clock, quit, save and exit, resume, next day, several days, flush, WM_CLOSE_REQUEST, get_tree().quit, balance log, run spans sessions
+
+THE ONE RIGHT WAY: when a log measures "real time" between events and
+its baseline is persisted, the time source is a counter the log owns
+and saves (ticks only while recording is enabled), never a unix stamp
+in the baseline. And the log banks itself inside the same function the
+world save goes through, because a menu quit calls the engine quit
+directly and the window-close notification never fires.
+
+- TRIED (2026-08-24 to 2026-09-24): BalanceLog stamped unix time into
+  each segment's baseline and measured the next event from it; the
+  flush hung on NOTIFICATION_WM_CLOSE_REQUEST.
+  FAILED BECAUSE: a run played over several days put the whole night
+  into the first event after the resume (only the day baseline was
+  rebased on arrival, not the unix one), and Save & Exit quits through
+  get_tree().quit(), which sends no close notification, so the last
+  minute of the zone ledger was dropped. Found when Mazhron asked
+  whether a run could be played across days (2026-09-24).
+  DO INSTEAD: a play clock on the log (Time.get_ticks_msec deltas while
+  enabled, baseline dropped when disabled, saved in the log JSON) feeds
+  the real_s delta; SaveManager.save_campaign calls BalanceLog.flush()
+  so every save path banks the log. Prove it with a save + reload check
+  in the self-test.
+- NUANCE: any other counter the deltas read must live in the world
+  save (RunStats, lifetime vitality and biomass, the day clock do), or
+  a reload reads it as fresh from zero.
+- RULED (Q0005, Mazhron 2026-09-24): the log LIVES AND DIES WITH THE
+  WORLD SAVE. Its only disk write is flush() from save_campaign; no
+  per-event, timer or close-notification writes; load_log always reads
+  the disk on every world load. A quit without a save then reverts the
+  log to the same moment the world reverts to, and the stretch since is
+  nixed. Test both halves: resume (flush, reload, next delta) and
+  discard (event, no flush, reload, event gone).
+
+See also: docs/systems/meta.md "THE PLAY CLOCK"; scripts/core/balance_log.gd;
+docs/history/open_questions.txt (Q0005); WORKFLOWS.md "Track an open
+question to Mazhron".
