@@ -611,7 +611,7 @@ question to Mazhron".
 
 ## Anything that can be pressed should wear the new frames (style every Button, or every control of one type, at once)
 Tags: lessons, ui, godot | Fill the PROJECT theme at boot; a root-window theme stops at a CanvasLayer and a per-script override is one place per button forever
-Keys: theme, Button, stylebox, every button, all buttons, CanvasLayer, project theme, wood_theme.tres, ThemeDB, install_theme, press feedback, pressed, hover, disabled
+Keys: theme, Button, stylebox, every button, all buttons, CanvasLayer, project theme, wood_theme.tres, ThemeDB, install_theme, press feedback, pressed, hover, disabled, rebuild, in place, queue_free, canvas item, badge, footer, changing constantly, flicker
 
 THE ONE RIGHT WAY: project.godot names an empty Theme .tres
 (gui/theme/custom = assets/ui/wood_theme.tres, written with the Write
@@ -638,6 +638,19 @@ settles the question before any wiring.
   wood must roll PER CONTROL (seed = the canvas item id + a generation
   counter), or hover and press would each re-roll the frame under the
   mouse.
+- TRIED (2026-09-25 evening, Mazhron: "they shouldn't be changing
+  constantly"): leaving the badge strips and the footer as they were -
+  queue_free every Button and make new ones on the half-second poll and
+  on every tool switch. FAILED BECAUSE: a re-made Button is a NEW canvas
+  item, and the per-control seed IS the canvas item; the roll held per
+  control exactly as designed while the controls were replaced under it,
+  so the HUD wore new woods twice a second. DO INSTEAD: a HUD control that
+  lives the whole run updates its Buttons IN PLACE - one Button per key,
+  hidden when not shown, text/tip/icon/visibility refreshed - and only a
+  window that opens and closes may rebuild, because that is the moment a
+  fresh wood is wanted. WOODTEST's `held` check compares the Buttons'
+  instance ids across a refresh. The general form: any "seeded by the
+  node" look breaks the moment a refresh path re-creates the node.
 - NUANCE (the cut, same day): a hollow frame taken apart by geometry
   measures its border as the MEDIAN opaque run across hollow rows, never
   the max (a bark nub at an inner corner read as a border half the frame
