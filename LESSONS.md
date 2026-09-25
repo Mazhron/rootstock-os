@@ -643,3 +643,7 @@ settles the question before any wiring.
   the max (a bark nub at an inner corner read as a border half the frame
   wide) and never a fixed middle band (the bar's underside is thicker
   than its top); see art-pipeline.md "The wood UI frames".
+
+See also: docs/systems/ui.md "The wood frames" (THE BUTTONS AND THE BAR);
+docs/systems/art-pipeline.md "The wood UI frames"; WORKFLOWS.md "Cut and
+wire the wood UI frames"; scripts/ui/wood_box.gd (install_theme).
