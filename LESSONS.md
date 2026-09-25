@@ -660,3 +660,32 @@ settles the question before any wiring.
 See also: docs/systems/ui.md "The wood frames" (THE BUTTONS AND THE BAR);
 docs/systems/art-pipeline.md "The wood UI frames"; WORKFLOWS.md "Cut and
 wire the wood UI frames"; scripts/ui/wood_box.gd (install_theme).
+
+## A test that clicks the screen fails headless and passes in a window (FOOTERTEST through --test, 2026-09-25)
+Tags: lessons, testing, godot | A synthesized mouse click has nowhere to land without a window; the runner must know which tests are windowed-only, not the person typing the command
+Keys: headless, windowed, --windowed, WINDOWED_ONLY, FOOTERTEST, parse_input_event, mouse click, synthesized click, probe FAIL, run_tests, adhoc, --test, capture, _SHOT
+
+THE ONE RIGHT WAY: a test that drives the game through real input (a
+synthesized InputEventMouseButton, a screenshot capture, a tutorial
+highlight) is listed in tools/run_tests.py WINDOWED_ONLY, and the runner
+drops --headless by itself for any batch that holds one; `--windowed`
+forces a window for anything else. testing.md names the test as windowed
+next to its command. A FAIL line that came from a headless run of a
+windowed test stays in the ledger - the fix line follows it.
+
+- TRIED (2026-09-25, after the footer refactor): `python tools/run_tests.py
+  --test FOOTERTEST`, trusting that any test the runner lists can run the
+  way the groups run. FAILED BECAUSE: the runner passed --headless as it
+  does for every group, testing.md called the test "windowed" in prose
+  only, and the click on the Upgrades button landed nowhere: "window
+  open=false". Nothing in the footer was wrong. DO INSTEAD: put the
+  knowledge in the runner (WINDOWED_ONLY), not in prose - the hook forbids
+  setting EVERWOOD_*TEST by hand, so the runner is the only door and must
+  know the shape of every test it can open.
+- NUANCE: a FAIL right after a code change is not evidence against the
+  change until the test has run the way it was designed to run. Read
+  the FAIL text for what it actually measured (here: the window state,
+  not the button) before touching the code.
+
+See also: docs/systems/testing.md (the probes paragraph); tools/run_tests.py
+(WINDOWED_ONLY); LESSONS.md "Read a failing probe or a frame-cost spike".
