@@ -290,6 +290,13 @@ category it sits beside.
 - NUANCE: 0.5 is the clean factor under the nearest filter (every other
   pixel); a category that must render bigger gets a taller CUT, never
   a bigger art_scale.
+- NUANCE (2026-09-25, the wood planks): read the montage for the FILL
+  art as hard as for the sprites. The Cherry and Dark Oak plank tiles
+  showed a thin white stripe at their edges in the montage; wired as
+  they were, drawn dimmed under a window, the stripe was a grey band
+  beside the frame that Mazhron had to point at. A generated background
+  can carry a white margin: tools/cut_ui_borders.py now trims it
+  (trim_white) - a stripe in a montage is never "just the tile edge".
 
 See also: ART_METHOD.md; docs/systems/art-pipeline.md "Gemini growth
 sheets"; WORKFLOWS.md "Cut and wire new creature or plant art".
@@ -561,3 +568,152 @@ machines, and standup reads it out on the other side.
 
 See also: docs/index/notes.md (the relay); WORKFLOWS.md "Leave a note
 for the other workstation"; docs/index/laws.md (the workflow rule).
+
+## Keep track of real time between saves (a telemetry clock that spans sessions)
+Tags: lessons, telemetry, persistence | A persisted log's real-time deltas come from its own play clock, never from wall-clock stamps; the log flushes at the world save, not at the window-close notification
+Keys: telemetry, real seconds, real_s, wall-clock, unix, play clock, quit, save and exit, resume, next day, several days, flush, WM_CLOSE_REQUEST, get_tree().quit, balance log, run spans sessions
+
+THE ONE RIGHT WAY: when a log measures "real time" between events and
+its baseline is persisted, the time source is a counter the log owns
+and saves (ticks only while recording is enabled), never a unix stamp
+in the baseline. And the log banks itself inside the same function the
+world save goes through, because a menu quit calls the engine quit
+directly and the window-close notification never fires.
+
+- TRIED (2026-08-24 to 2026-09-24): BalanceLog stamped unix time into
+  each segment's baseline and measured the next event from it; the
+  flush hung on NOTIFICATION_WM_CLOSE_REQUEST.
+  FAILED BECAUSE: a run played over several days put the whole night
+  into the first event after the resume (only the day baseline was
+  rebased on arrival, not the unix one), and Save & Exit quits through
+  get_tree().quit(), which sends no close notification, so the last
+  minute of the zone ledger was dropped. Found when Mazhron asked
+  whether a run could be played across days (2026-09-24).
+  DO INSTEAD: a play clock on the log (Time.get_ticks_msec deltas while
+  enabled, baseline dropped when disabled, saved in the log JSON) feeds
+  the real_s delta; SaveManager.save_campaign calls BalanceLog.flush()
+  so every save path banks the log. Prove it with a save + reload check
+  in the self-test.
+- NUANCE: any other counter the deltas read must live in the world
+  save (RunStats, lifetime vitality and biomass, the day clock do), or
+  a reload reads it as fresh from zero.
+- RULED (Q0005, Mazhron 2026-09-24): the log LIVES AND DIES WITH THE
+  WORLD SAVE. Its only disk write is flush() from save_campaign; no
+  per-event, timer or close-notification writes; load_log always reads
+  the disk on every world load. A quit without a save then reverts the
+  log to the same moment the world reverts to, and the stretch since is
+  nixed. Test both halves: resume (flush, reload, next delta) and
+  discard (event, no flush, reload, event gone).
+
+See also: docs/systems/meta.md "THE PLAY CLOCK"; scripts/core/balance_log.gd;
+docs/history/open_questions.txt (Q0005); WORKFLOWS.md "Track an open
+question to Mazhron".
+
+## Anything that can be pressed should wear the new frames (style every Button, or every control of one type, at once)
+Tags: lessons, ui, godot | Fill the PROJECT theme at boot; a root-window theme stops at a CanvasLayer and a per-script override is one place per button forever
+Keys: theme, Button, stylebox, every button, all buttons, CanvasLayer, project theme, wood_theme.tres, ThemeDB, install_theme, press feedback, pressed, hover, disabled, rebuild, in place, queue_free, canvas item, badge, footer, changing constantly, flicker
+
+THE ONE RIGHT WAY: project.godot names an empty Theme .tres
+(gui/theme/custom = assets/ui/wood_theme.tres, written with the Write
+tool, never a shell redirect) and one static installer (WoodBox.
+install_theme, from Settings._ready before any scene builds) fills its
+Button styleboxes for normal / hover / pressed / hover_pressed / disabled
+/ focus. Every Button in the game changes at once, CheckBox and the touch
+keys inherit the Button type, and a control's own override (map tiles)
+still wins. Press feedback is three tints and a 1 px content-margin sink
+on the pressed box, not per-button code. Probe the lookup headless first
+(a SceneTree script under --script: add a Button under a CanvasLayer and
+compare get_theme_stylebox to the box you set) - it takes ten seconds and
+settles the question before any wiring.
+
+- TRIED (2026-09-25, the wood buttons): `get_tree().root.theme = theme`
+  on the root Window. FAILED BECAUSE: theme lookup walks parent Controls
+  and Windows only - it stops at a CanvasLayer - and the HUD, the badges
+  and the footer all live under one, so the probe printed false; and
+  ThemeDB has no set_project_theme to fall back on at runtime. DO
+  INSTEAD: the empty project-theme .tres named in project.godot, filled at
+  boot through ThemeDB.get_project_theme() - the probe printed true under
+  the CanvasLayer, true for CheckBox, and the override still won.
+- NUANCE: one shared StyleBox instance serves every button, so a Random
+  wood must roll PER CONTROL (seed = the canvas item id + a generation
+  counter), or hover and press would each re-roll the frame under the
+  mouse.
+- TRIED (2026-09-25 evening, Mazhron: "they shouldn't be changing
+  constantly"): leaving the badge strips and the footer as they were -
+  queue_free every Button and make new ones on the half-second poll and
+  on every tool switch. FAILED BECAUSE: a re-made Button is a NEW canvas
+  item, and the per-control seed IS the canvas item; the roll held per
+  control exactly as designed while the controls were replaced under it,
+  so the HUD wore new woods twice a second. DO INSTEAD: a HUD control that
+  lives the whole run updates its Buttons IN PLACE - one Button per key,
+  hidden when not shown, text/tip/icon/visibility refreshed - and only a
+  window that opens and closes may rebuild, because that is the moment a
+  fresh wood is wanted. WOODTEST's `held` check compares the Buttons'
+  instance ids across a refresh. The general form: any "seeded by the
+  node" look breaks the moment a refresh path re-creates the node.
+- NUANCE (the cut, same day): a hollow frame taken apart by geometry
+  measures its border as the MEDIAN opaque run across hollow rows, never
+  the max (a bark nub at an inner corner read as a border half the frame
+  wide) and never a fixed middle band (the bar's underside is thicker
+  than its top); see art-pipeline.md "The wood UI frames".
+
+See also: docs/systems/ui.md "The wood frames" (THE BUTTONS AND THE BAR);
+docs/systems/art-pipeline.md "The wood UI frames"; WORKFLOWS.md "Cut and
+wire the wood UI frames"; scripts/ui/wood_box.gd (install_theme).
+
+## A test that clicks the screen fails headless and passes in a window (FOOTERTEST through --test, 2026-09-25)
+Tags: lessons, testing, godot | A synthesized mouse click has nowhere to land without a window; the runner must know which tests are windowed-only, not the person typing the command
+Keys: headless, windowed, --windowed, WINDOWED_ONLY, FOOTERTEST, parse_input_event, mouse click, synthesized click, probe FAIL, run_tests, adhoc, --test, capture, _SHOT
+
+THE ONE RIGHT WAY: a test that drives the game through real input (a
+synthesized InputEventMouseButton, a screenshot capture, a tutorial
+highlight) is listed in tools/run_tests.py WINDOWED_ONLY, and the runner
+drops --headless by itself for any batch that holds one; `--windowed`
+forces a window for anything else. testing.md names the test as windowed
+next to its command. A FAIL line that came from a headless run of a
+windowed test stays in the ledger - the fix line follows it.
+
+- TRIED (2026-09-25, after the footer refactor): `python tools/run_tests.py
+  --test FOOTERTEST`, trusting that any test the runner lists can run the
+  way the groups run. FAILED BECAUSE: the runner passed --headless as it
+  does for every group, testing.md called the test "windowed" in prose
+  only, and the click on the Upgrades button landed nowhere: "window
+  open=false". Nothing in the footer was wrong. DO INSTEAD: put the
+  knowledge in the runner (WINDOWED_ONLY), not in prose - the hook forbids
+  setting EVERWOOD_*TEST by hand, so the runner is the only door and must
+  know the shape of every test it can open.
+- NUANCE: a FAIL right after a code change is not evidence against the
+  change until the test has run the way it was designed to run. Read
+  the FAIL text for what it actually measured (here: the window state,
+  not the button) before touching the code.
+
+See also: docs/systems/testing.md (the probes paragraph); tools/run_tests.py
+(WINDOWED_ONLY); LESSONS.md "Read a failing probe or a frame-cost spike".
+
+## An append-only tracker is read at its tail, not its first matching line (Q0005 reported open after it was ruled, 2026-09-25)
+Tags: lessons, ledgers, reporting | In a ledger where "a resolution is a new line, never an edit", an id's earlier lines are history; only the LAST line for that id is its state - a diff or grep that surfaces the OPEN line proves nothing about today
+Keys: open questions, Q0005, append-only, tail, RESOLVED, OPEN, tracker state, last line, diff --check, pull summary, misreport, open_questions.txt
+
+THE ONE RIGHT WAY: before telling the owner a tracked item is waiting
+on him (a question, a claim, a flag), read the tracker for EVERY line
+carrying that id and report the last one's status. After a pull, the
+diff shows lines in whatever order the file holds them - an added OPEN
+line in a diff hunk is where the item STARTED, not where it stands.
+One grep answers it: `Grep "Q0005" docs/history/open_questions.txt`,
+state = the final match.
+
+- TRIED (2026-09-25, the WS1 merge): summarized the pull for Mazhron
+  and listed Q0005 as "waiting on you", quoting the OPEN line that had
+  scrolled past in a `git diff --check` result. FAILED BECAUSE: the
+  tracker is append-only by its own header line; WS1 had ruled and
+  logged Q0005 RESOLVED the day it was raised (2026-09-24, the answer
+  verbatim, the fix built and self-tested in v0.99.35) - the OPEN line
+  I quoted was simply the older sibling of the RESOLVED line two rows
+  down. The owner had to point out he had already answered. DO
+  INSTEAD: never report an append-only ledger's state from a diff
+  fragment; grep the id in the file and read the tail before naming
+  anything "open" in a summary.
+
+See also: docs/history/open_questions.txt (the header is the law);
+WORKFLOWS.md "Track an open question to Mazhron"; LESSONS.md "Pull when
+both machines appended the same generated ledgers".
