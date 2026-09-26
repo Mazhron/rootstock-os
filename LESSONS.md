@@ -290,6 +290,14 @@ category it sits beside.
 - NUANCE: 0.5 is the clean factor under the nearest filter (every other
   pixel); a category that must render bigger gets a taller CUT, never
   a bigger art_scale.
+- NUANCE (2026-09-26, the flair sheets): joining the PARTS of one decal
+  (a flower head above its stem) is a PIXEL-distance question, never a
+  bounding-box one. Merging boxes that overlap or sit near each other
+  chains transitively - one dense row of a scatter sheet collapsed into
+  a single 24-item mega-piece the montage caught in one glance. DO:
+  dilate the alpha mask by half the join gap (MaxFilter) and label the
+  DILATED mask, then crop each ORIGINAL component group; the gap that
+  joins a stem (8 px) never reaches the neighbouring tuft (30+ px).
 - NUANCE (2026-09-25, the wood planks): read the montage for the FILL
   art as hard as for the sprites. The Cherry and Dark Oak plank tiles
   showed a thin white stripe at their edges in the montage; wired as
