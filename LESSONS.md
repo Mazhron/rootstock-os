@@ -674,6 +674,21 @@ settles the question before any wiring.
   the max (a bark nub at an inner corner read as a border half the frame
   wide) and never a fixed middle band (the bar's underside is thicker
   than its top); see art-pipeline.md "The wood UI frames".
+- TRIED (2026-09-26, the dresser clicks: "the new buttons randomize
+  everything every time"): detecting "this window just reopened" as
+  frames-since-last-draw inside StyleBox._draw (REROLL_GAP 3): a big gap
+  meant hidden, so the next draw re-rolled woods and dealt fresh flair.
+  FAILED BECAUSE: retained-mode canvas items only redraw when DIRTIED -
+  a visible window sitting STILL also stops drawing, so the first
+  dresser click after 3 quiet frames (its own emit_changed!) read as a
+  reopen and rolled the player's pick away; picking Birch randomized,
+  Randomize flair re-rolled the woods too. DO INSTEAD: wire the real
+  signal - WoodBox.wear(host, pad) connects the host Control's
+  visibility_changed AND its enclosing CanvasLayer's (the big menus
+  toggle the LAYER's visible, which a child Control's signal never
+  fires for), and the draw never guesses state. The general form: "time
+  since last draw" measures DIRTINESS, not visibility; never infer
+  hidden/shown from it in a retained-mode renderer.
 - NUANCE (2026-09-26, the offline card): "every window" means every
   PanelContainer in the GAME, not every file in scripts/ui/ - the
   while-you-were-away card is built inline in main.gd and kept its old

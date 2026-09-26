@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-22 17:37 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 | stale 11
+Updated 2026-09-26 14:53 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 | stale 12
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -95,7 +95,7 @@ Updated 2026-09-22 17:37 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-14 01:01 |
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| rules/wiki.md | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
+| rules/wiki.md | GREEN | STALE | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/checkpoint/SKILL.md | GREEN | STALE | fable | 2026-09-20 03:21 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |

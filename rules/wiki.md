@@ -23,4 +23,10 @@ See also: WIKI_METHOD.md; docs/index/MASTER_INDEX.md; WORKFLOWS.md "Diet the cor
   stop-the-world passes.
 - NOTHING IS DELETED: retire, cold-shelve (docs/cold/INDEX.md) or mark
   superseded; a wiki section moves verbatim with a provenance comment.
+- FEATURE RULINGS LIVE WITH THE FEATURE (Mazhron 2026-09-26: per-feature
+  knowledge accumulates where the feature lives): a ruling about one
+  feature lands in that feature's docs/systems/ topic file under
+  `## Rulings` (date + his verbatim words, newest first); the WHY behind
+  a project-wide or subtle ruling goes to INTENT.md, cross-linked both
+  ways. Before building on a feature, read its Rulings section.
 - Internal docs may use dashes; player-facing text may not (player-text.md).
