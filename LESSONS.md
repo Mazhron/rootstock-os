@@ -674,6 +674,14 @@ settles the question before any wiring.
   the max (a bark nub at an inner corner read as a border half the frame
   wide) and never a fixed middle band (the bar's underside is thicker
   than its top); see art-pipeline.md "The wood UI frames".
+- NUANCE (2026-09-26, the offline card): "every window" means every
+  PanelContainer in the GAME, not every file in scripts/ui/ - the
+  while-you-were-away card is built inline in main.gd and kept its old
+  StyleBoxFlat through the whole NS-30 sweep until Mazhron saw it. When
+  restyling a control type, `Grep "StyleBoxFlat" scripts/` finds the
+  inline stragglers the folder sweep misses; each converted window gets
+  a self-test flag that its stylebox IS the new kind (OFFLINETEST's
+  `card` check is the pattern).
 
 See also: docs/systems/ui.md "The wood frames" (THE BUTTONS AND THE BAR);
 docs/systems/art-pipeline.md "The wood UI frames"; WORKFLOWS.md "Cut and
