@@ -789,3 +789,28 @@ step and stop.
 See also: WORKFLOWS.md "Edit the future-project kit (Rootstock)";
 LESSONS.md "Pull when both machines appended the same generated
 ledgers".
+
+## Never set EVERWOOD_*TEST by hand, even though CLAUDE.md's verify snippet showed how (the runner is the only door, 2026-09-26)
+Tags: lessons, testing, process | A doc snippet that demonstrates a pattern a guard forbids is a stale doc, not a permission; the guard's message names the one right way and the doc is fixed in the same batch
+Keys: EVERWOOD_WOODTEST, EVERWOOD_*TEST, run_tests.py, --group, --list, script rule, hook block, verify snippet, CLAUDE.md Verifying changes, stale doc, env var by hand
+
+THE ONE RIGHT WAY: tests run through `python tools/run_tests.py --group
+<group>` (`--list` shows the groups) - the groups, the don't-combine laws
+and the ledger append live there. The import line (`--headless --path .
+--import`) is still run directly; it is not a test. When a guard blocks a
+command, the block text IS the instruction - follow it, and if a doc
+taught the blocked pattern, fix that doc in the same batch (the workflow
+rule: a stale entry is a bug).
+
+- TRIED (2026-09-26, verifying the flair density change): set
+  `$env:EVERWOOD_WOODTEST = "1"` and launched Godot by hand, copying
+  CLAUDE.md's "Verifying changes" snippet verbatim. FAILED BECAUSE: the
+  script-rule hook forbids hand-set EVERWOOD_*TEST - running outside the
+  runner skips the group laws and the test_runs.txt append - and the
+  CLAUDE.md snippet predated the guard. DO INSTEAD: `python
+  tools/run_tests.py --group ui` (WOODTEST's group) on the first try;
+  the snippet in CLAUDE.md now points at the runner.
+
+See also: docs/systems/testing.md (the full roster); WORKFLOWS.md "Run
+tests or probes"; LESSONS.md "A test that clicks the screen fails
+headless and passes in a window".
