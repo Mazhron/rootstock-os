@@ -537,6 +537,16 @@ construction. Both pre-merge sides live in git history; nothing is lost.
   DO INSTEAD: the write-then-regenerate path above - it is not a
   workaround of the guard, it is the shape the guard wants: a write that
   discards nothing, then the sanctioned script.
+- NUANCE (2026-09-25, the wood-UI pull): three file classes resolve
+  differently. APPEND-ONLY ledgers (*_runs.txt, days_index, digest_size)
+  union-merge: keep ours then theirs inside each conflict hunk, markers
+  dropped - a small Python pass over the markers does 27 files at once.
+  GENERATED reports (usage_* + xlsx, wiki_view.html) take theirs or ours
+  and let the next loop regenerate. STATE files rewritten in place
+  (ledger_heads, checkpoint_state) keep one line per key, newest wins.
+  For binary or single-side files, `git show :2:<path>` (ours) /
+  `:3:<path>` (theirs) written from Python is the guard-compliant read -
+  byte-safe where a PowerShell redirect corrupts and checkout is refused.
 
 See also: WORKFLOWS.md "Leave a note for the other workstation";
 docs/index/laws.md (the preservation law); tools/usage_report.py
