@@ -717,3 +717,34 @@ state = the final match.
 See also: docs/history/open_questions.txt (the header is the law);
 WORKFLOWS.md "Track an open question to Mazhron"; LESSONS.md "Pull when
 both machines appended the same generated ledgers".
+
+## I don't understand what the issue is with git and rootstock (a harness block explained as if it were a repo problem, 2026-09-26)
+Tags: lessons, harness, kit | When the harness's permission layer blocks a sanctioned action, say plainly "the repo is fine; I was not allowed to press the button" and hand the owner the smallest way to unblock; an explanation that mixes the git state with the permission block reads as if something broke
+Keys: rootstock-os, permission classifier, blocked push, kit repo, out of scope, settings.local.json, additionalDirectories, harness block, denied, explanation, correction
+
+THE ONE RIGHT WAY: the kit repo lives OUTSIDE the project working
+directory, so on a machine without an allow rule the harness may block
+git commands aimed at it. Two separate reports, never blended: (1) the
+repo's own state (merged? clean? what commit waits?) and (2) the
+harness block ("the command was refused by my permission layer; the
+repo is healthy"). Both workstations work in both Everwood and
+rootstock-os including push and pull (Mazhron's ruling 2026-09-26), so
+the standing fix is an owner-added allow rule in the machine's
+.claude/settings.local.json (gitignored, per-machine paths) - Claude
+cannot write its own permission rules; that self-granting block is a
+security boundary, so hand the owner the exact rule text or /permissions
+step and stop.
+
+- TRIED (2026-09-26): explained a blocked rootstock-os push by
+  narrating the merge, the sync script's "nothing to push", and the
+  classifier denial in one breath. FAILED BECAUSE: the owner could not
+  tell whether git was broken, the merge had failed, or something
+  needed fixing - the answer was "nothing is wrong; one push needs a
+  hand". A second, two-part explanation (ordinary git, then the
+  permission block) resolved it in one read. DO INSTEAD: separate "what
+  the repos look like" from "what I was allowed to do", and end a
+  permission report with the one action that unblocks it.
+
+See also: WORKFLOWS.md "Edit the future-project kit (Rootstock)";
+LESSONS.md "Pull when both machines appended the same generated
+ledgers".
