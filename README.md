@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.29** (2026-09-22). The graft log `UPGRADES.md` is the
+Kit version: **v1.30** (2026-09-26). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -340,6 +340,15 @@ disposable contexts.
   metered tool count of zero was invented. This is not hypothetical: the
   method exists because a delegated audit once "classified" a file it
   never opened (93k tokens of fiction, caught for about 2k).
+- **The truthfulness hooks** (v1.30) make the mechanical parts of that
+  mechanical: a work brief missing its required lines is refused at
+  dispatch; the moment a result lands, a hook reads the harness-metered
+  figures (the numbers no model can fake), flags a zero-call "success"
+  or a tool count claimed at several times the meter, and appends one
+  pending line per delegation; a Stop hook then refuses to end the turn
+  while a delegation sits unverified and unledgered. What stays
+  judgment - whether the diff matches the claims - stays audited
+  through the ledgers instead.
 - **Verify cheaply, in order.** Tests or probes first, a spot-read of the
   diff second, a full read only when those smell wrong: the manager's
   check never costs more than the task did.
@@ -400,7 +409,7 @@ changed, and export the changelog unprompted.
 
 A skill runs when invoked; a hook runs when the harness reaches a moment.
 Anything a law can enforce mechanically becomes a hook, not a longer
-reminder. Twelve ship in `hooks/`, wired by one settings file:
+reminder. Fifteen ship in `hooks/`, wired by one settings file:
 
 - **Session start** injects the standup digest by itself - after a /clear
   the manager has everything back before anyone types a word.
@@ -450,6 +459,16 @@ reminder. Twelve ship in `hooks/`, wired by one settings file:
   block), run the engine import after a new asset. It exists because
   this README once fell two versions behind while the law to refresh it
   was already written.
+- **The delegation truth set** (v1.30, a trio) watches the Agent
+  tool itself: the brief guard refuses a work dispatch whose brief lacks
+  the stamp template, the intent line, the budget line or the
+  preservation line; the delegation auditor reads the metered tool and
+  token figures out of every result, names a fabricated report (zero
+  metered calls) or an inflated tool count, and appends a pending
+  ledger line; the verify advisor refuses to end a turn while a
+  delegation is pending without a resolution line. It exists because of
+  a public case where a manager said its sub-agents did their job when
+  they had not.
 - **The format guard** runs BEFORE an edit of the settings file and
   refuses one that would unwire, narrow or mis-point a safety hook (or
   not parse), and AFTER every edit of a kit thing, blocking one that
@@ -756,8 +775,8 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
 | `skills/` | The nine skills, ready to drop into `.claude/skills/` |
 | `rules/` | The first path-scoped rule, `wiki.md`: drop into `.claude/rules/`, loads only while a markdown file is open; write your own game and text rules beside it |
-| `HOOKS_METHOD.md` | The hooks: the contract, the twelve kit hooks, tiers, bootstrap |
-| `hooks/` | The twelve hook scripts and `_hooklib.py`, the shared library they import (drop into `tools/hooks/`), `README.txt` with the per-hook setup steps, plus the settings template (merge into `.claude/settings.json`) |
+| `HOOKS_METHOD.md` | The hooks: the contract, the fifteen kit hooks, tiers, bootstrap |
+| `hooks/` | The fifteen hook scripts and `_hooklib.py`, the shared library they import (drop into `tools/hooks/`), `README.txt` with the per-hook setup steps, plus the settings template (merge into `.claude/settings.json`) |
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |

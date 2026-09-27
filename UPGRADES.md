@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.29** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.30** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1125,3 +1125,41 @@ reference-or-restore steps in the process registry). Run it once per
 machine - each workstation has its own memory store; the repo carries
 the ruling so the other machine's manager can follow it.
 README: "1. The Knowledge Wiki" (the harness-memory bullet).
+
+### v1.30 - 2026-09-26 - The delegation truth set (Tier 4a hooks)
+WHAT: three hooks that make the delegation truthfulness rules mechanical,
+born of the CEO's ask ("Can we make these processes more fool proof in
+any way through hooks or are we at maximum hookiness") and the public
+case he relayed: a manager that said its sub-agents did their job when
+they had not. brief_guard.py (PreToolUse on Agent|Task) refuses a work
+dispatch whose brief is missing the stamp template, the intent line, the
+budget line or the preservation line - a malformed brief costs a
+refusal, never a spent employee; read-only searcher types pass.
+delegation_auditor.py (PostToolUse on Agent|Task) reads the
+harness-metered tool/token figures out of every result (the numbers no
+model can fake): 0 metered calls on a work task is the fabrication tell,
+a TOOLS line claiming >3x the meter is a truthfulness signal, a report
+missing its template lines is named; one PENDING line per work
+delegation is appended to docs/history/delegation_pending.txt, resolved
+only by a NEW `RESOLVED | <id>` line (the tail is the state).
+verify_advisor.py (Stop) refuses a turn end once per unresolved set
+while a PENDING id lacks its RESOLVED line. All three sit in the format
+guard's SAFETY table, so unwiring them is refused. The stated ceiling:
+hooks force evidence to exist and numbers to agree; whether the diff
+matches the claims stays the manager's judgment. The SubagentStop stamp
+check stays pinned as ~redundant with the auditor.
+CARRIES: hooks/brief_guard.py, hooks/delegation_auditor.py,
+hooks/verify_advisor.py, hooks/settings.json (the three wirings),
+hooks/README.txt (the Tier 4a install paragraph + the verify_state
+gitignore line), HOOKS_METHOD.md (Tier 4a section + change log),
+reference tools/format_lint.py (the three SAFETY rows); this entry.
+GRAFT: copy the three hook scripts fresh into the project's hooks
+folder, merge the three settings entries, add the SAFETY rows to the
+project's format_lint copy, gitignore .claude/verify_state.json, run
+each script's --selftest, then pipe-test the loop once for real (a
+synthesized Agent result with 0 metered calls through the auditor, watch
+the advisor block, append the RESOLVED line, watch it pass). Name the
+harness backing beside the project's delegation rules (its SUBAGENTS.md
+counterpart) so the manager book and the guards tell one story.
+README: "4. The Sub-Agent Company" (the truthfulness hooks bullet) and
+the hook count in "6. The Hooks".

@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-26 14:53 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 | stale 12
+Updated 2026-09-26 20:28 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 | stale 12
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -54,6 +54,8 @@ Updated 2026-09-26 14:53 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 
 | hooks/README.txt | GREEN | STALE | fable | 2026-09-20 03:21 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
+| hooks/brief_guard.py | - | UNFLAGGED | - | - |
+| hooks/delegation_auditor.py | - | UNFLAGGED | - | - |
 | hooks/diet_guard.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
@@ -66,6 +68,7 @@ Updated 2026-09-26 14:53 | items 68 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 2 
 | hooks/session_start.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-09-20 03:21 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| hooks/verify_advisor.py | - | UNFLAGGED | - | - |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | - | UNFLAGGED | - | - |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |

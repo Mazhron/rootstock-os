@@ -1,4 +1,4 @@
-Rootstock hooks (kit v1.20). Install per HOOKS_METHOD.md 'Bootstrap':
+Rootstock hooks (kit v1.30). Install per HOOKS_METHOD.md 'Bootstrap':
 
 PURPOSE: Installation notes for the Rootstock hooks folder: what each hook
   file needs filled in or wired (bash_guard.py's PROJECT RULES,
@@ -9,7 +9,8 @@ INTENT: gives a receiving project the exact per-hook setup steps so the kit
   tools/hooks/  <- these .py files (bash_guard.py: fill PROJECT RULES)
   .claude/settings.json  <- settings.json (merge if one exists)
   .gitignore  <- .claude/hooks_state.json, .claude/settings.local.json,
-                 .claude/fanout_state.json, .claude/diet_state.json
+                 .claude/fanout_state.json, .claude/diet_state.json,
+                 .claude/verify_state.json
 The scripts import the checkpoint script from the folder above them
 (reference tools/checkpoint.py carries work_fingerprint + hook state).
 fanout_guard.py (Tier 2b, the catastrophe-only circuit breaker): keep
@@ -90,6 +91,26 @@ prompt_gauge.py carries the other end (THE LESSON LINE): a prompt whose
 words hit an entry's Keys line gets the entry named before the first
 tool call. Pipe-test once for real: echo '{"transcript_path": "<a
 transcript .jsonl>"}' | python tools/hooks/lesson_advisor.py.
+
+THE DELEGATION TRUTH SET (Tier 4a, kit v1.30, three hooks): nothing to
+fill in. brief_guard.py (PreToolUse on Agent|Task, a REFUSAL): a dispatch
+to a work agent type whose brief is missing the stamp template, the
+INTENT line, the budget line or the preservation line is refused with
+the pieces named; read-only searcher types (Explore, Plan) pass.
+delegation_auditor.py (PostToolUse on Agent|Task): reads the
+harness-metered tool/token figures out of every sub-agent result - 0
+metered calls on a work task is the fabrication tell, a TOOLS-line
+mismatch and a malformed report warn - and appends one PENDING line per
+work delegation to docs/history/delegation_pending.txt. verify_advisor.py
+(Stop, a once-per-set REFUSAL): a PENDING id with no later `RESOLVED |
+<id>` line refuses the turn end once - verify, ledger, resolve, or say
+why not; gitignore .claude/verify_state.json. Wire all three
+(settings.json has them; the format guard's SAFETY table holds their
+wiring), run each `--selftest`, then pipe-test the loop once for real:
+a synthesized Agent result with totalToolUseCount 0 through
+delegation_auditor.py, watch verify_advisor.py block, append the
+RESOLVED line, watch it pass. The CEO's rule names stay the manager
+book's (SUBAGENT_METHOD.md rules 3, 5, 9, 13, 14).
 
 session_end.py (Tier 1 #6, kit v1.28, THE AUTO-CHECKPOINT): nothing to
 fill in. Wire its SessionEnd entry (settings.json has it; timeout 55 -

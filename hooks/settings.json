@@ -35,6 +35,11 @@
             "type": "command",
             "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/lesson_advisor.py\"",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/verify_advisor.py\"",
+            "timeout": 15
           }
         ]
       }
@@ -103,6 +108,16 @@
         ]
       },
       {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/brief_guard.py\"",
+            "timeout": 15
+          }
+        ]
+      },
+      {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
@@ -114,6 +129,16 @@
       }
     ],
     "PostToolUse": [
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/delegation_auditor.py\"",
+            "timeout": 15
+          }
+        ]
+      },
       {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [

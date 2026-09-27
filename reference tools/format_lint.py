@@ -83,6 +83,9 @@ SAFETY = {
     "diet_guard.py":     [("PreToolUse", {"Read", "Bash"})],
     "hygiene_guard.py":  [("PostToolUse", {"Write", "Edit"})],
     "format_guard.py":   [("PreToolUse", {"Write", "Edit"}), ("PostToolUse", {"Write", "Edit"})],
+    "brief_guard.py":    [("PreToolUse", {"Agent", "Task"})],
+    "delegation_auditor.py": [("PostToolUse", {"Agent", "Task"})],
+    "verify_advisor.py": [("Stop", set())],
     "stop_tick.py":      [("Stop", set())],
     "session_end.py":    [("SessionEnd", set())],  # the auto-checkpoint net (2026-09-20)
 }

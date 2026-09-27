@@ -67,7 +67,7 @@ and an UPGRADES entry.
   prompt, stop, compact and shell-command hooks; a PostToolUse hook on
   every Write/Edit must stay a pattern match with no heavy imports.
 
-## The kit hooks (hooks/ - twelve scripts + _hooklib + settings.json)
+## The kit hooks (hooks/ - fifteen scripts + _hooklib + settings.json)
 
 TIER 1 - the resumption + checkpoint loop:
 1. `session_start.py` (SessionStart, all sources): runs the standup
@@ -411,11 +411,45 @@ rewrite); reference tools/purpose_audit.py + FLAGS.md (the audit the
 PURPOSE line serves); CONTRIBUTING.md (the law for contributors);
 SKILLS.md (/flag); WORKFLOWS "Format-check and rewrite a kit thing".
 
-## Tier 4 (ideas, not built - the origin project pinned them)
+## Tier 4a - THE DELEGATION TRUTH SET (brief_guard.py, delegation_auditor.py, verify_advisor.py)
 
-TIER 4 - the company: SubagentStop refuses an employee's stop when its
-report lacks the stamp / workflow line; Notification -> an OS toast when
-the manager waits on permission or idles after a long employee run.
+Born 2026-09-26 of the CEO's ask ("Can we make these processes more fool
+proof in any way through hooks") and the public case he relayed the same
+day: a manager that said its sub-agents did their job when they had not.
+The manager book's truthfulness rules (SUBAGENT_METHOD.md: the stamp
+template, the metered fabrication check, ledger-every-delegation) were
+discipline; these three make the mechanical parts mechanical, one hook
+per moment:
+- DISPATCH: brief_guard.py (PreToolUse on Agent|Task, a REFUSAL) - a
+  work brief missing the STAMP/TOOLS/WORKFLOW template, the INTENT line,
+  the budget line or the preservation line is refused with the pieces
+  named; a malformed brief costs a refusal, never a spent employee.
+  Read-only searcher agent types pass untouched.
+- RESULT: delegation_auditor.py (PostToolUse on Agent|Task) - reads the
+  harness-metered tool/token figures out of the result (the numbers no
+  model can fake): 0 metered calls on a work task = the fabrication
+  tell; a TOOLS line claiming >3x the meter = a truthfulness signal; a
+  report without its template lines is named. One PENDING line per work
+  delegation lands in docs/history/delegation_pending.txt (id + metered
+  truth) so no delegation vanishes unledgered. Resolution is a NEW
+  `RESOLVED | <id> | OK/CORRECTED - <words>` line, never an edit.
+- STOP: verify_advisor.py (Stop, a once-per-set REFUSAL, the lesson
+  advisor's pattern) - a PENDING id with no later RESOLVED line refuses
+  the turn end once: verify cheap, write the manager-book ledger line,
+  resolve the intent claim, append RESOLVED - or say in one line why
+  verification waits. State: .claude/verify_state.json (gitignored).
+THE CEILING, stated when the set was built: hooks force evidence to
+exist and numbers to agree; whether the diff matches the claims and
+whether an OK verdict is earned stays the manager's judgment, audited
+through the ledgers.
+
+## Tier 4 (still pinned - the origin project's FUTURE_FEATURES.md)
+
+SubagentStop refuses an employee's stop when its report lacks the stamp /
+workflow line (deferred 2026-09-26 as ~90% redundant with
+delegation_auditor, which names a malformed report the moment it lands);
+Notification -> an OS toast when the manager waits on permission or
+idles after a long employee run.
 
 ## Bootstrap (new project)
 
@@ -575,3 +609,18 @@ the manager waits on permission or idles after a long employee run.
   (backup_push.py, a reference tool) pushes every ref to a bare repo on
   another drive; the hook, the ship and checkpoint skills and run_all's
   session group all call it.
+- 2026-09-26 WS2 (kit v1.30): Tier 4a, THE DELEGATION TRUTH SET - the
+  CEO asked "Can we make these processes more fool proof in any way
+  through hooks or are we at maximum hookiness" after relaying a public
+  case (a manager that said its sub-agents did their job when they had
+  not). Three hooks, one per moment of a delegation: brief_guard.py
+  refuses a lawless work brief at dispatch; delegation_auditor.py reads
+  the metered figures out of every result (the fabrication tell, the
+  TOOLS-line cross-check) and appends the PENDING line;
+  verify_advisor.py refuses a turn end while a PENDING id lacks its
+  RESOLVED line. All three in the format guard's SAFETY table. Fifteen
+  scripts now. The fourth idea (the SubagentStop stamp check) stays
+  pinned as ~redundant with the auditor. Lesson from building: the
+  SAFETY table bites the kit template too - three single edits each
+  left the other two unwired and were refused; one whole-file write
+  that adds all three at once is the move.
