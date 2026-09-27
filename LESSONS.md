@@ -849,3 +849,31 @@ See also: HOOKS_METHOD.md (Tier 4a + the v1.30 change-log line);
 tools/format_lint.py (SAFETY); tools/readme_lint.py (the counts);
 LESSONS.md "Harden a guard against a public incident (audit a
 safeguard)".
+
+## A test-runs PROPOSE means read the ledger tail first (the FAIL may already carry its fix, 2026-09-26)
+Tags: lessons, testing, process | The trends proposal counts FAIL lines in a lagging 10-line window; a fix that landed minutes after the failures still trips it at the next standup, so the ledger tail - not the proposal text - says whether anything is broken now
+Keys: test_runs, PROPOSE, FAIL lines, flaky group, quarantine, ledger_trends, lagging window, tail -15, WOODTEST, fix line follows, age out
+
+THE ONE RIGHT WAY: on a "PROPOSE (test_runs.txt): N FAIL lines in the
+last 10 runs" line, `tail -15 docs/history/test_runs.txt` BEFORE hunting
+a flaky group. If every FAIL is followed by a PASS of the same test at
+the same or a later version, the fix already happened (the FAIL lines
+stay in the ledger by law - the fix line follows them) and the proposal
+is the window lagging, not a live problem. The honest close is one
+legitimate run if one is owed - the group at the CURRENT version when
+the version moved past the last green line - never green runs fired to
+flush the window ("never re-run a green group at an unchanged version").
+Only a FAIL with no following PASS is the flaky-or-broken case the
+proposal's "fix or quarantine" words are for.
+
+- TRIED (2026-09-26, standup carried "4 FAIL lines in the last 10 runs
+  (adhoc)"): the tail showed all four were WOODTEST at 10:30 the prior
+  day - dev-loop iterations while WOODTEST gained the layout round-trip
+  flag - with 2/2 PASS at 10:31 and ui 7/7 PASS the same afternoon.
+  Nothing was flaky; ui at the new version (0.99.46, a UI change) was
+  the one run owed, and it passed 7/7.
+
+See also: tools/ledger_trends.py (rule 2, test_fails threshold);
+WORKFLOWS.md "Run tests or probes"; docs/systems/testing.md;
+LESSONS.md "A test that clicks the screen fails headless and passes in
+a window (FOOTERTEST through --test, 2026-09-25)".
