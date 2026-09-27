@@ -814,3 +814,38 @@ rule: a stale entry is a bug).
 See also: docs/systems/testing.md (the full roster); WORKFLOWS.md "Run
 tests or probes"; LESSONS.md "A test that clicks the screen fails
 headless and passes in a window".
+
+## Adding several safety hooks at once: the SAFETY table bites every in-between state (the delegation truth set, 2026-09-26)
+Tags: lessons, hooks, kit | A guard that checks a file's WHOLE resulting state refuses any edit sequence whose intermediate states are illegal, even when the end state is what the guard wants; the counts lint reads prose numbers as claims
+Keys: SAFETY table, format_guard, settings.json, safety wiring, atomic write, intermediate state, Edit refused, whole-file Write, readme_lint, count claim, three hooks, hook count
+
+THE ONE RIGHT WAY: when a batch adds N hooks to format_lint.py's SAFETY
+table, land each settings file's N wirings in ONE call - a whole-file
+Write (or one Edit whose new_string carries all N entries) - because
+format_guard validates the RESULTING file against the FULL table, and
+after the table gains its rows, every partial wiring is a refusable
+state. Order inside the batch: SAFETY rows first is fine, but from that
+moment the settings edit must be atomic. And when the public README
+gains prose about the new set, spell numbers that are not the total
+carefully: readme_lint reads "<number> hooks" as a count claim against
+the real script count ("three hooks" FAILED against truth 15; "a trio"
+passed).
+
+- TRIED (2026-09-26, wiring brief_guard + delegation_auditor +
+  verify_advisor into the kit template): three sequential Edits, one
+  per hook. FAILED BECAUSE: each single edit produced a file where the
+  OTHER two SAFETY hooks were "not wired", and the format guard refuses
+  any edit that leaves a settings file short of the full table - the
+  guard judges states, not intentions. DO INSTEAD: one Write with all
+  three entries; the guard passed it first try. The refusals were the
+  law working (they proved the new rows enforce), never a bug to route
+  around.
+- NUANCE: a guard the manager writes WILL fire on the manager's own
+  next steps (the preserve guard's author history says the same). Plan
+  the batch so the guard lands in its final shape and the guarded files
+  change atomically after it.
+
+See also: HOOKS_METHOD.md (Tier 4a + the v1.30 change-log line);
+tools/format_lint.py (SAFETY); tools/readme_lint.py (the counts);
+LESSONS.md "Harden a guard against a public incident (audit a
+safeguard)".
