@@ -877,3 +877,37 @@ See also: tools/ledger_trends.py (rule 2, test_fails threshold);
 WORKFLOWS.md "Run tests or probes"; docs/systems/testing.md;
 LESSONS.md "A test that clicks the screen fails headless and passes in
 a window (FOOTERTEST through --test, 2026-09-25)".
+
+## If the hook says checkpoint advised, I shouldn't have to type /checkpoint (the ADVISED line is a step in the reply, not a line to relay)
+Tags: lessons, process, checkpoint | The closing check of every reply: did any hook say ADVISED this turn? Each one is work done before the reply ends
+Keys: checkpoint advised, ADVISED MEANS DO IT, hook line, relay verbatim, closing check, end of reply, safe to clear, context gauge, 80% rule, C0002, kit unsynced, lesson advised
+
+THE ONE RIGHT WAY: before sending any reply, run the closing check: (1)
+is the tree committed and pushed, (2) did a hook this turn say ADVISED -
+CHECKPOINT ADVISED, LESSON ADVISED, KIT UNSYNCED - and is the arc closed?
+Each ADVISED is an instruction: the checkpoint sequence (session loop,
+push, WHERE WE LEFT OFF with both sides verbatim, commit, push, reset,
+marker) runs INSIDE that reply, the lesson is written INSIDE that reply,
+the kit is synced INSIDE that reply. Relaying the hook line verbatim is
+part of the reply, never a substitute for the step. Mazhron then simply
+/clears; he never types /checkpoint.
+
+- TRIED (2026-09-28, after shipping v0.99.47): the prompt hook had said
+  KIT UNSYNCED and the context gauge had crossed the 80% line; the reply
+  synced the kit, reported the ship in full and ended. FAILED BECAUSE:
+  the law's text ("ADVISED MEANS DO IT", laws.md since 2026-09-10) lived
+  in a file, not in the reply's closing check - the ship report felt like
+  the end of the work, and the checkpoint was left as something Mazhron
+  would ask for. He had to ask (correction C0002). DO INSTEAD: the
+  closing check above, every reply; when in doubt whether the arc is
+  closed, it is - ship the step, then checkpoint. A checkpoint costs one
+  commit; a missed one costs Mazhron a prompt and a rule restated.
+- NUANCE: mid-arc (uncommitted work, an employee running) the checkpoint
+  waits for the step to ship - but the reply says so in one line and
+  names when it will run, so the advice is answered, not dropped.
+
+See also: docs/index/laws.md "The checkpoint protocol" (REAFFIRMED AS A
+CORE LAW); CLAUDE.md "The checkpoint law"; .claude/skills/checkpoint;
+docs/history/corrections.txt (C0002); LESSONS.md "Anything that can be
+pressed should wear the new frames" (the same evening's ADVISED lesson,
+written on the hook's word).
