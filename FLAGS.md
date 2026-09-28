@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-26 20:28 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 | stale 12
+Updated 2026-09-28 13:59 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 | stale 12
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ Updated 2026-09-26 20:28 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 
 | hooks/session_end.py | - | UNFLAGGED | - | - |
 | hooks/session_start.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-09-20 03:21 |
-| hooks/stop_tick.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| hooks/stop_tick.py | GREEN | ok | fable | 2026-09-28 13:59 |
 | hooks/verify_advisor.py | - | UNFLAGGED | - | - |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | - | UNFLAGGED | - | - |
@@ -877,3 +877,8 @@ FLAG: Matches the purpose (what is per-machine and how a machine gets up to par)
 SAYS: Warn-only link checker for the knowledge wiki: scan repo-root, docs/systems, docs/cold and docs/index markdown for the four cross-reference forms, resolve each against the repo, and report dead links plus See-also hygiene.
 DOES: Checks See-also blocks, wiki links and markdown links across the wiki; v1.29 adds a fenced-code-block skip so quoted text (banked memories, code samples) is not counted as live links.
 FLAG: The skip narrows the scan to real links, exactly the stated purpose; no new writes or side effects.
+
+### 2026-09-28 13:59 | hooks/stop_tick.py | GREEN | fable | WS1 | 43e25a82
+SAYS: Stop hook that ticks the checkpoint counter only when work actually happened (HEAD moved or the tree changed since the last Stop), shows an advised system message at 8 tasks or under 80% context, refuses to end the turn once at 15 tasks or under 30% context (re-blocking every 5 further tasks), refuses once when a safety hook has gone unwired in settings.json, and warns once per unexported commit count when the changelog anchor has fallen behind HEAD.
+DOES: Stop hook: ticks the checkpoint counter on real work, advises at 8 tasks or under 80 percent context, refuses once at 15 or under 30 percent, refuses once when a safety hook is unwired, and warns once per unexported commit count; since kit v1.31 the count skips commits whose subject starts with changelog: (the export's own commit) and the line is worded as an order to the manager (MANAGER: run the export before this reply ends), with the incident shape in the selftest
+FLAG: PURPOSE and INTENT name every side effect; the changelog count change only narrows what is counted and the selftest touches temp anchor files only; the wording change makes the line an instruction to the manager per THE HOOK LAW (C0003)

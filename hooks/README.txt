@@ -74,7 +74,9 @@ THE LOOP LAW (kit v1.21, 2026-09-14): session_start.py runs the parent
 loop's session group (reference tools/run_all.py) once a day before the
 digest and ledgers the digest's size (digest_size.txt); stop_tick.py warns
 CHANGELOG UNEXPORTED when commits sit past a changelog anchor (silent
-without one). A project without run_all.py gets a one-line note, never a
+without one; since v1.31 the export's own "changelog:" commit never
+counts, and the line is an order to the manager - THE HOOK LAW, run the
+export in that reply). A project without run_all.py gets a one-line note, never a
 failure. Both hooks' --selftest cover the new paths.
 
 lesson_advisor.py (Tier 1, kit v1.26, THE LESSON LOOP, a once-per-slice

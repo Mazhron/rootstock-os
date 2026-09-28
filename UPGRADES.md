@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.30** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.31** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1163,3 +1163,35 @@ harness backing beside the project's delegation rules (its SUBAGENTS.md
 counterpart) so the manager book and the guards tell one story.
 README: "4. The Sub-Agent Company" (the truthfulness hooks bullet) and
 the hook count in "6. The Hooks".
+
+### v1.31 - 2026-09-28 - The hook law (a warning from a hook is an order to the manager)
+WHAT: The origin CEO, after the Stop hook's CHANGELOG UNEXPORTED line was
+relayed to him three replies running instead of acted on: "I don't mind
+getting the warning if you forget or something is missed, but I shouldn't
+see it repeatedly, it's something you should be doing consistently. A
+Warning from the hook means do it, not relay the message for the user to
+do. This should be in Rootstock as well." ADVISED MEANS DO IT (v1.13)
+covered the lines tagged ADVISED; this broadens it to EVERY line a hook
+prints that names work (CHECKPOINT ADVISED, LESSON ADVISED, KIT UNSYNCED,
+CHANGELOG UNEXPORTED, LEDGER ADVISED): each is executed inside that reply,
+a hook words its line as an order to the manager and never as a note for
+the CEO, and the same line seen twice is the failure. Two mechanics ship
+with it: stop_tick.py's changelog count now skips commits whose subject
+starts with "changelog:" (the exporter's own commit - before, every export
+left "1 commit unexported" behind it and the warning cried wolf), and its
+line reads "MANAGER: run `python tools/export_changelog.py` and push before
+this reply ends". The selftest carries the incident shape (anchor at the
+export commit's parent, range ending at the export commit, must count 0).
+CARRIES: hooks/stop_tick.py (the count, the wording, the probe),
+HOOKS_METHOD.md (THE HOOK LAW under the checkpoint tier + change log),
+LESSONS.md (the C0002/C0003 entry: the closing check is "did ANY hook
+line name work this turn?"), hooks/README.txt; this entry.
+GRAFT: copy stop_tick.py fresh (or port `_commits_since_anchor`: `git log
+--format=%s anchor..HEAD`, count subjects not starting with "changelog:")
+and run its --selftest; in the project's CLAUDE.md replace the checkpoint
+law line with the hook law in one line ("any ADVISED / UNEXPORTED /
+UNSYNCED line a hook prints is an instruction done inside that reply,
+never relayed for the CEO to do"); add the broadening to the project's
+LESSONS entry for ADVISED.
+README: "The Checkpoint Protocol" bullet in "5. The Reporting Method"
+(ADVISED MEANS DO IT becomes the hook law) and the "Kit version:" line.

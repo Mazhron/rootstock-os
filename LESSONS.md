@@ -891,7 +891,7 @@ a window (FOOTERTEST through --test, 2026-09-25)".
 
 ## If the hook says checkpoint advised, I shouldn't have to type /checkpoint (the ADVISED line is a step in the reply, not a line to relay)
 Tags: lessons, process, checkpoint | The closing check of every reply: did any hook say ADVISED this turn? Each one is work done before the reply ends
-Keys: checkpoint advised, ADVISED MEANS DO IT, hook line, relay verbatim, closing check, end of reply, safe to clear, context gauge, 80% rule, C0002, kit unsynced, lesson advised
+Keys: checkpoint advised, ADVISED MEANS DO IT, hook line, relay verbatim, closing check, end of reply, safe to clear, context gauge, 80% rule, C0002, C0003, kit unsynced, lesson advised, changelog unexported, hook warning, warning means do it, the hook law, repeated warning
 
 THE ONE RIGHT WAY: before sending any reply, run the closing check: (1)
 is the tree committed and pushed, (2) did a hook this turn say ADVISED -
@@ -916,9 +916,24 @@ part of the reply, never a substitute for the step. Mazhron then simply
 - NUANCE: mid-arc (uncommitted work, an employee running) the checkpoint
   waits for the step to ship - but the reply says so in one line and
   names when it will run, so the advice is answered, not dropped.
+- TRIED (2026-09-28 afternoon, the same day): the Stop hook printed
+  CHANGELOG UNEXPORTED after three docs-only commits; the replies
+  relayed the line and ended, three times, until Mazhron asked "Why am I
+  told about the changelog being uncommitted? Should you not just run
+  the script?" FAILED BECAUSE: the closing check above listed three
+  ADVISED names and this line was a fourth; a warn-only line read as
+  information. Half the warnings were also spurious: the hook counted
+  the export's own commit, so every export left "1 commit" behind it.
+  DO INSTEAD (correction C0003, his words: "A Warning from the hook
+  means do it, not relay the message for the user to do"): the closing
+  check is "did ANY hook line name work this turn?" - not a list of
+  names; each one runs inside the reply (the export is one command and a
+  push). A hook's wording is an order to the manager ("MANAGER: run
+  ..."), never a note for him. And a warning seen twice for the same
+  thing is the failure, not the warning itself.
 
 See also: docs/index/laws.md "The checkpoint protocol" (REAFFIRMED AS A
-CORE LAW); CLAUDE.md "The checkpoint law"; .claude/skills/checkpoint;
+CORE LAW, BROADENED TO EVERY HOOK LINE); CLAUDE.md "The hook law"; .claude/skills/checkpoint;
 docs/history/corrections.txt (C0002); LESSONS.md "Anything that can be
 pressed should wear the new frames" (the same evening's ADVISED lesson,
 written on the hook's word).

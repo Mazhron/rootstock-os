@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.30** (2026-09-26). The graft log `UPGRADES.md` is the
+Kit version: **v1.31** (2026-09-28). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -397,7 +397,12 @@ because context lives in files, not in the conversation.
 - **The Checkpoint Protocol.** A counter ticks whenever a reply actually
   changed the tree or the commit (a pure question never ticks) and warns
   at 8 tasks (dire at 15) or when less than 80% of the context budget
-  remains; ADVISED MEANS DO IT, so the owner never has to ask. At an
+  remains; ADVISED MEANS DO IT, so the owner never has to ask - and since
+  v1.31 THE HOOK LAW: every line a hook prints that names work (a
+  checkpoint, a lesson, a kit sync, a changelog export) is an order the
+  manager carries out inside that reply, worded as such, never a note
+  relayed for the owner to act on; the same warning seen twice is the
+  failure. At an
   arc's end the manager runs the session loop, checks for an unlogged
   workflow gap or lesson, pushes, refreshes the day file, and emits the
   marker: "CHECKPOINT - safe to /clear. Nothing in this chat exists only

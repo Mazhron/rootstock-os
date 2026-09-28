@@ -88,7 +88,17 @@ TIER 1 - the resumption + checkpoint loop:
    ADVISED line from either hook is an instruction, not a suggestion -
    the manager runs the checkpoint ritual at the end of that reply if
    the arc is closed and the tree is committed, and the CEO just
-   /clears. Mid-arc: finish the step, ship, then checkpoint. Why the
+   /clears. Mid-arc: finish the step, ship, then checkpoint. THE HOOK
+   LAW (kit v1.31, the origin CEO 2026-09-28, after a warn-only line was
+   relayed to him three replies running: "A Warning from the hook means
+   do it, not relay the message for the user to do"): the rule covers
+   EVERY line a hook prints that names work - CHECKPOINT ADVISED, LESSON
+   ADVISED, KIT UNSYNCED, CHANGELOG UNEXPORTED, LEDGER ADVISED - not only
+   the ones tagged ADVISED. Each is executed inside that reply; a hook
+   words its line as an order to the manager, never as a note for the
+   CEO; the same line seen twice is the failure. stop_tick.py's changelog
+   count also skips the export's own "changelog:" commit (it warned "1
+   commit" after every export before). Why the
    whole thing is not one script: the day file stores both sides of the
    final exchange word for word, and the manager's side is the reply
    being written at that moment - no script can see it before it is
@@ -624,3 +634,10 @@ idles after a long employee run.
   SAFETY table bites the kit template too - three single edits each
   left the other two unwired and were refused; one whole-file write
   that adds all three at once is the move.
+- kit v1.31 (2026-09-28): THE HOOK LAW - every work-naming hook line is
+  an order to the manager, executed in that reply, worded as such;
+  stop_tick.py's changelog count skips "changelog:" commits (the export
+  itself no longer reads as one unexported commit) and its line says
+  MANAGER: run the export before this reply ends. Selftest gained the
+  incident shape (anchor at the export's parent, range to the export
+  commit, must count 0).

@@ -23,7 +23,14 @@ added to whatever this hook already emits (or, if it would otherwise emit
 nothing, its own systemMessage) naming how many commits are unexported.
 Warn-only, never a refusal, and never repeated for the same commit count
 in a session (docs/history/checkpoint_state.txt's hook state carries the
-dedup key, same file the tick counter already uses).
+dedup key, same file the tick counter already uses). The count skips
+commits whose subject starts with "changelog:" - the export's own commit
+(the exporter filters them the same way), so a fresh export is silent
+(the 2026-09-28 fix: it warned "1 commit" after every export). THE
+WARNING IS A STEP (the CEO 2026-09-28, correction C0003: "A Warning from
+the hook means do it, not relay the message for the user to do"): the
+manager runs the export inside that reply; the line is worded as an
+order to the manager, never as a note for the CEO.
 
 PURPOSE: Stop hook that ticks the checkpoint counter only when work actually
   happened (HEAD moved or the tree changed since the last Stop), shows an
@@ -54,18 +61,24 @@ import checkpoint as cp
 CHANGELOG_ANCHOR = os.path.join(cp.ROOT, "tools", ".changelog_anchor")
 
 
-def _commits_since_anchor(anchor_path=CHANGELOG_ANCHOR):
-    """Commit count since the changelog anchor, or None when there is no
-    anchor file (a project without a changelog) or git can't answer."""
+def _commits_since_anchor(anchor_path=CHANGELOG_ANCHOR, head="HEAD"):
+    """Count of UNEXPORTED commits since the changelog anchor - commits
+    whose subject does not start with "changelog:" (the export's own
+    commit, filtered exactly as the exporter filters it) - or None when
+    there is no anchor file (a project without a changelog) or git can't
+    answer. `head` is the range end (tests point it at a known commit)."""
     if not os.path.isfile(anchor_path):
         return None
     anchor = open(anchor_path, encoding="utf-8").read().strip()
     if not anchor:
         return None
     try:
-        r = subprocess.run(["git", "rev-list", "--count", "%s..HEAD" % anchor],
+        r = subprocess.run(["git", "log", "--format=%s", "%s..%s" % (anchor, head)],
                            cwd=cp.ROOT, capture_output=True, text=True, timeout=20)
-        return int(r.stdout.strip()) if r.returncode == 0 else None
+        if r.returncode != 0:
+            return None
+        return sum(1 for line in r.stdout.splitlines()
+                   if line.strip() and not line.strip().lower().startswith("changelog:"))
     except Exception:
         return None
 
@@ -80,8 +93,9 @@ def changelog_note(mine, n_commits):
         return None
     mine["changelog_warned_n"] = n_commits
     return ("[stop_tick] CHANGELOG UNEXPORTED: %d commit(s) since the last "
-            "export - `python tools/export_changelog.py` (make_builds runs "
-            "it itself)" % n_commits)
+            "export - MANAGER: run `python tools/export_changelog.py` and push "
+            "before this reply ends (a step, never a note for the CEO; "
+            "make_builds runs it itself)" % n_commits)
 
 def main():
     data = read_input()
@@ -242,6 +256,25 @@ def _selftest():
     ok = note2 is None
     print(("PASS  " if ok else "FAIL  ") + "changelog: same commit count never warned twice")
     fails += not ok
+
+    # THE INCIDENT SHAPE (2026-09-28): right after an export the anchor sits
+    # at the export's parent and HEAD is the "changelog:" commit itself, so
+    # a raw count said 1 and the hook warned after every export. The range
+    # anchor..<export commit> must count 0.
+    exp = subprocess.run(["git", "log", "-1", "--grep=^changelog:", "--format=%H"],
+                         cwd=cp.ROOT, capture_output=True, text=True, timeout=20).stdout.strip()
+    if exp:
+        parent = subprocess.run(["git", "rev-parse", exp + "^"], cwd=cp.ROOT,
+                                capture_output=True, text=True, timeout=20).stdout.strip()
+        at_parent = os.path.join(tempfile.gettempdir(), "everwood_stop_tick_selftest_export.txt")
+        with open(at_parent, "w", encoding="utf-8") as fh:
+            fh.write(parent)
+        n3 = _commits_since_anchor(at_parent, head=exp)
+        ok = n3 == 0
+        print(("PASS  " if ok else "FAIL  ") + "changelog: the export commit itself never counts (anchor at its parent -> 0)")
+        fails += not ok
+    else:
+        print("SKIP  changelog: no changelog: commit in this repo to test against")
 
     print("stop_tick selftest: %d failed" % fails)
     return 1 if fails else 0
