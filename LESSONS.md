@@ -311,7 +311,7 @@ sheets"; WORKFLOWS.md "Cut and wire new creature or plant art".
 
 ## Apply an audit's findings with a batch edit script (anchors quoted from a report)
 Tags: lessons, process | An employee quotes a README sentence on one line but the file wraps it; grep every anchor before the script runs and make each replacement skip itself when its new text is already present, so a mid-way failure resumes instead of forcing a split
-Keys: batch edit, edit script, anchor, assert count, wrapped line, audit findings, apply findings, readme audit, rep(), resumable, idempotent
+Keys: batch edit, edit script, anchor, assert count, wrapped line, audit findings, apply findings, readme audit, rep(), resumable, idempotent, backslash, line continuation, multi-line anchor, heredoc assert, one file per script
 
 THE ONE RIGHT WAY: before writing the edit script, `grep -n` every anchor
 in the target file as it is wrapped on disk (an employee's quote joins
@@ -331,6 +331,17 @@ rerun of the same script, not a hand-split second script.
   FLAGS.md after the commit, so the "clear" test made an auto commit.
   Pipe-test such a hook last, after every companion script has run and
   `git status` outside docs/history/ is empty, or feed it a sandbox root.
+- NUANCE (2026-09-28, the WOODTEST `travel` check): a multi-line anchor
+  that contains a GDScript line continuation (`\` at the end of a line)
+  failed its assert through the Bash heredoc even though the file matched
+  by eye, and the FIRST two files in the same script were already written
+  when it stopped. DO INSTEAD: one short single-line anchor per
+  replacement (`var all_ok := tooltip_ok and drops_ok and`, `drops=%s)"`,
+  `drops_ok])`), never a block with a backslash in it; and one file per
+  script run, so a stop leaves nothing half-applied. Also: a grep across
+  several files prints the FILE before its hits - `@export var pause_menu`
+  was run_controller.gd's, not main.gd's, so the check reaches it as
+  `$RunController.pause_menu`.
 
 See also: LESSONS.md "Write a long file or script through the shell";
 WORKFLOWS.md "Audit the public README (Rootstock)" and "Add or change a
