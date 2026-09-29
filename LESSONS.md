@@ -937,3 +937,31 @@ CORE LAW, BROADENED TO EVERY HOOK LINE); CLAUDE.md "The hook law"; .claude/skill
 docs/history/corrections.txt (C0002); LESSONS.md "Anything that can be
 pressed should wear the new frames" (the same evening's ADVISED lesson,
 written on the hook's word).
+
+## Apply a long batch of file edits from the shell (the heredoc that fails to parse, 2026-09-28)
+Tags: lessons, tooling, harness | A Python edit script longer than about ninety lines inside a Bash heredoc fails to parse in this harness's Git Bash; write the script to the scratchpad with the Write tool and run it by path
+Keys: heredoc, unexpected EOF, matching quote, bash parse, long script, scratchpad, edit script, batch edit, route_docs, python - <<, Write tool, run by path
+
+THE ONE RIGHT WAY: a multi-file edit that needs more than a screen of
+Python goes into the scratchpad as a .py file through the Write tool,
+then `python <scratchpad>/<name>.py` runs it. Short heredocs (a few
+dozen lines) are fine. A new tool or hook is written with the Write
+tool too, never through a heredoc, because a docstring carries triple
+quotes and apostrophes that a shell will parse before Python sees them.
+
+- TRIED (2026-09-28, the route line batch): `python - <<'EOF' ... EOF`
+  with a 106-line tool body, then again with a 110-line edit script.
+  FAILED BECAUSE: both died with "unexpected EOF while looking for
+  matching `''" at the line just past the heredoc's end; the shell never
+  saw the terminator, nothing ran, and the second failure cost the whole
+  batch of doc edits a rerun. Two shorter heredocs the same hour (about
+  ninety lines) parsed and ran. DO INSTEAD: Write the script as a file,
+  run it by path; the file is also re-runnable and readable if it asserts.
+- NUANCE: the diet guard's OUTPUT DIET line on a command that mentions
+  glob or a listing is advice about limiters, not a failure; the parse
+  error came from the shell, and the fix is the file, not shorter output.
+
+See also: WORKFLOWS.md "Section or split a file the big-reads ledger
+names" (the batch-edit lesson nuance: one anchor per replacement, one
+file per script run); tools/route_index.py (the tool born in this batch);
+docs/systems/self-audit.md "The route line".
