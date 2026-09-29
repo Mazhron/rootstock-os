@@ -32,26 +32,44 @@ the hook means do it, not relay the message for the user to do"): the
 manager runs the export inside that reply; the line is worded as an
 order to the manager, never as a note for the CEO.
 
+THE CHECKPOINT NAMED CHECK (the CEO 2026-09-28, correction C0004, after a
+reply closed with "a checkpoint and clear is the natural next step
+whenever you want to stop": "If this is the case, you should have just
+done a checkpoint. Any reference to a checkpoint from any valid source
+should prompt you to do it."): the hook reads this turn's reply text from
+the transcript (every assistant text block since the last typed prompt);
+if it names a checkpoint as due (the word near next / natural / due /
+advised / ready / time to / should / whenever) and does not carry the
+safe-to-clear marker, the turn is refused once per prompt with CHECKPOINT
+NAMED, and the manager makes the checkpoint before the reply ends. A
+reply that made it ends with the marker and passes; a mention of the
+counter or the state file alone never trips it.
+
 PURPOSE: Stop hook that ticks the checkpoint counter only when work actually
   happened (HEAD moved or the tree changed since the last Stop), shows an
   advised system message at 8 tasks or under 80% context, refuses to end
   the turn once at 15 tasks or under 30% context (re-blocking every 5
   further tasks), refuses once when a safety hook has gone unwired in
-  settings.json, and warns once per unexported commit count when the
-  changelog anchor has fallen behind HEAD.
+  settings.json, warns once per unexported commit count when the
+  changelog anchor has fallen behind HEAD, and since 2026-09-28 refuses
+  once per prompt when the reply names a checkpoint as due without the
+  safe-to-clear marker (the reply text read from the transcript).
 INTENT: makes the checkpoint discipline mechanical rather than a reminder
   the manager can forget, makes the format law's safety wiring impossible
   to quietly drop by refusing to end a turn that broke it, and makes an
   unexported changelog visible without anyone having to remember to check.
 
 Search keys: stop hook, auto tick, checkpoint counter, dire, block stop,
-safety wiring, changelog warning, changelog anchor.
+safety wiring, changelog warning, changelog anchor, checkpoint named,
+reply names a checkpoint.
 See also: tools/checkpoint.py (counter, fingerprint, --reset);
 tools/export_changelog.py (the anchor file); .claude/skills/checkpoint
-(the ritual the warning asks for).
+(the ritual the warning asks for); tools/lesson_log.py (the transcript
+reader the named check borrows).
 """
 import datetime
 import os
+import re
 import subprocess
 import sys
 
@@ -59,6 +77,35 @@ from _hooklib import emit, read_input
 import checkpoint as cp
 
 CHANGELOG_ANCHOR = os.path.join(cp.ROOT, "tools", ".changelog_anchor")
+
+# THE CHECKPOINT NAMED CHECK (C0004): "checkpoint" within a sentence of a
+# due-word, either order; the marker a made checkpoint ends with.
+_DUE = r"(next|natural|due|advised|ready|time to|should|whenever|now)"
+CP_DUE_RE = re.compile(r"checkpoint[^.\n]{0,80}\b" + _DUE + r"\b|\b" + _DUE + r"\b[^.\n]{0,80}checkpoint", re.I)
+CP_MARKER = "safe to /clear"
+
+
+def checkpoint_named(text):
+    """True when the reply names a checkpoint as due and did not make one."""
+    if not text or CP_MARKER in text.lower():
+        return False
+    return bool(CP_DUE_RE.search(text))
+
+
+def reply_text(transcript_path):
+    """(this turn's reply text, index of the prompt it answers): every
+    assistant text block since the last typed prompt. ("", -1) on any trouble."""
+    try:
+        import lesson_log as _ll
+        recs, _ = _ll._records(transcript_path)
+        idx = _ll.user_text_indexes(recs)
+        start = idx[-1] + 1 if idx else 0
+        texts = [b.get("text", "") for r in recs[start:]
+                 if r.get("type") == "assistant" and not r.get("isSidechain")
+                 for b in _ll._blocks(r) if b.get("type") == "text"]
+        return "\n".join(texts), (idx[-1] if idx else -1)
+    except Exception:  # noqa: BLE001 - a hook never crashes the turn
+        return "", -1
 
 
 def _commits_since_anchor(anchor_path=CHANGELOG_ANCHOR, head="HEAD"):
@@ -160,6 +207,27 @@ def main():
                 reason += "\n" + note
             emit({"decision": "block", "reason": reason})
             sys.exit(0)
+
+    # THE CHECKPOINT NAMED CHECK (the CEO 2026-09-28, C0004: "Any reference
+    # to a checkpoint from any valid source should prompt you to do it"):
+    # a reply that calls a checkpoint due and lacks the marker is refused
+    # once per prompt; stop_hook_active above keeps it from looping.
+    _text, _turn = reply_text(data.get("transcript_path") or "")
+    if checkpoint_named(_text) and mine.get("cp_named_turn") != _turn:
+        mine["cp_named_turn"] = _turn
+        state[ws] = mine
+        cp.save_hook_state(state)
+        reason = ("[HOOK stop_tick] CHECKPOINT NAMED (the CEO 2026-09-28, C0004: \"Any "
+                  "reference to a checkpoint from any valid source should prompt you to "
+                  "do it\"): this reply names a checkpoint as due and did not make one. "
+                  "MANAGER: run the checkpoint sequence now (session loop, push, WHERE "
+                  "WE LEFT OFF with both sides verbatim, commit, push, reset) and end "
+                  "with the safe-to-clear marker; if an employee is running or work is "
+                  "uncommitted mid-arc, finish that first and checkpoint in this same reply.")
+        if note:
+            reason += "\n" + note
+        emit({"decision": "block", "reason": reason})
+        sys.exit(0)
 
     if ticked and level == "dire":
         due = (n >= 15 and n - int(mine.get("blocked_n", 0)) >= 5) or \
@@ -275,6 +343,27 @@ def _selftest():
         fails += not ok
     else:
         print("SKIP  changelog: no changelog: commit in this repo to test against")
+
+    # THE CHECKPOINT NAMED CHECK (C0004): the incident sentence trips it, a
+    # made checkpoint (the marker) passes, a bare mention of the counter or
+    # the state file passes, an ADVISED relay without the marker trips it.
+    ok = checkpoint_named("The checkpoint counter has ticked through a full arc tonight, "
+                          "so a checkpoint and clear is the natural next step whenever you want to stop.")
+    print(("PASS  " if ok else "FAIL  ") + "named: the C0004 sentence trips the check")
+    fails += not ok
+    ok = not checkpoint_named("Checkpoint done: the counter reset.\n\nCHECKPOINT - safe to /clear. "
+                              "Nothing in this chat exists only in this chat.")
+    print(("PASS  " if ok else "FAIL  ") + "named: a reply that made the checkpoint (the marker) passes")
+    fails += not ok
+    ok = not checkpoint_named("The only uncommitted file is checkpoint_state.txt, which the loop rewrites.")
+    print(("PASS  " if ok else "FAIL  ") + "named: a bare mention of the state file passes")
+    fails += not ok
+    ok = checkpoint_named("The prompt hook said CHECKPOINT ADVISED at 80% context; I will do it later.")
+    print(("PASS  " if ok else "FAIL  ") + "named: an ADVISED relay without the marker trips it")
+    fails += not ok
+    ok = not checkpoint_named("")
+    print(("PASS  " if ok else "FAIL  ") + "named: empty text passes")
+    fails += not ok
 
     print("stop_tick selftest: %d failed" % fails)
     return 1 if fails else 0

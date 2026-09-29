@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.33** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.34** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1253,3 +1253,32 @@ README: "The lessons book (the lesson loop)" bullet in "1. The Knowledge
 Wiki" (the prompt hook also names the workflow and the script), the
 reference tools count and box line in "What is in the box", and the
 "Kit version:" line.
+
+### v1.34 - 2026-09-28 - The checkpoint named check (naming a checkpoint is making it)
+WHAT: The route line batch's reply closed with "a checkpoint and clear is
+the natural next step whenever you want to stop." The origin CEO: "If
+this is the case, you should have just done a checkpoint. Any reference
+to a checkpoint from any valid source should prompt you to do it"
+(correction C0004). v1.13 made an advised checkpoint a step, v1.31 made
+every hook line an order; this closes the SOURCE: the manager's own
+reply, the counter, the gauge and the roadmap are valid sources like a
+hook line, and a sentence saying a checkpoint is next is an order the
+manager gave itself. Mechanically: stop_tick.py reads the turn's reply
+text from the transcript (every assistant text block since the last
+typed prompt, through lesson_log's reader) and refuses once per prompt
+with CHECKPOINT NAMED when the reply names a checkpoint as due (the word
+within a sentence of next / natural / due / advised / ready / should /
+whenever / now) and lacks the safe-to-clear marker. A reply that made
+the checkpoint ends with the marker and passes; a bare mention of the
+counter or the state file passes; stop_hook_active stops a loop.
+CARRIES: hooks/stop_tick.py (CP_DUE_RE, checkpoint_named, reply_text,
+the block, five selftest cases), HOOKS_METHOD.md (item 2 + change log),
+hooks/README.txt; this entry.
+GRAFT: copy stop_tick.py fresh (or port checkpoint_named + reply_text and
+the block before the dire check; it imports lesson_log, so that
+reference tool must sit in tools/); run --selftest. In the project's
+CLAUDE.md widen the hook law by one clause: "and any reference to a
+checkpoint as due from any valid source (a hook, the manager's own
+reply)". Add the C0004 line to the project's ADVISED lesson.
+README: "The Checkpoint Protocol" bullet in "5. The Reporting Method"
+(the source clause) and the "Kit version:" line.

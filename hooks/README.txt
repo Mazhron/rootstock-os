@@ -78,6 +78,11 @@ without one; since v1.31 the export's own "changelog:" commit never
 counts, and the line is an order to the manager - THE HOOK LAW, run the
 export in that reply). A project without run_all.py gets a one-line note, never a
 failure. Both hooks' --selftest cover the new paths.
+THE CHECKPOINT NAMED CHECK (kit v1.34): stop_tick.py also refuses once
+per prompt when the reply names a checkpoint as due (next / natural /
+due / advised / should / now near the word) without the safe-to-clear
+marker; it reads the reply from the transcript through reference
+tools/lesson_log.py, so copy that beside it. Nothing to fill in.
 
 lesson_advisor.py (Tier 1, kit v1.26, THE LESSON LOOP, a once-per-slice
 REFUSAL): nothing to fill in. Copy LESSONS.md to the project root (keep

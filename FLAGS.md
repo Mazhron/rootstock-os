@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-28 23:37 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 | stale 13
+Updated 2026-09-28 23:44 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 | stale 13
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -67,7 +67,7 @@ Updated 2026-09-28 23:37 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 
 | hooks/session_end.py | - | UNFLAGGED | - | - |
 | hooks/session_start.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-09-20 03:21 |
-| hooks/stop_tick.py | GREEN | ok | fable | 2026-09-28 13:59 |
+| hooks/stop_tick.py | GREEN | ok | fable | 2026-09-28 23:44 |
 | hooks/verify_advisor.py | - | UNFLAGGED | - | - |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | - | UNFLAGGED | - | - |
@@ -898,3 +898,8 @@ FLAG: PURPOSE names the new line; the route block reads WORKFLOWS.md and tool do
 SAYS: Match a prompt against the headings and WHEN lines of WORKFLOWS.md and the Search keys of every tools/ and tools/hooks/ script, and print the ROUTE line the prompt hook relays, so an existing workflow or script is named before the manager re-derives it.
 DOES: Reads WORKFLOWS.md headings and WHEN lines and the Search keys line of every tools/ and tools/hooks/ script, scores them with lesson_log's matcher (workflow 3, tool 2, two of each at most), and prints the ROUTE lines the prompt hook relays; answers --match and --selftest; no writes, no ledger
 FLAG: Matches the purpose exactly: read-only indexing plus a printed pointer; the only side effect is stdout; a project without Search keys or WHEN lines gets silence, not errors
+
+### 2026-09-28 23:44 | hooks/stop_tick.py | GREEN | fable | WS1 | 8b404f83
+SAYS: Stop hook that ticks the checkpoint counter only when work actually happened (HEAD moved or the tree changed since the last Stop), shows an advised system message at 8 tasks or under 80% context, refuses to end the turn once at 15 tasks or under 30% context (re-blocking every 5 further tasks), refuses once when a safety hook has gone unwired in settings.json, warns once per unexported commit count when the changelog anchor has fallen behind HEAD, and since 2026-09-28 refuses once per prompt when the reply names a checkpoint as due without the safe-to-clear marker (the reply text read from the transcript).
+DOES: Stop hook: ticks the counter on real work, advises at 8 or under 80 percent, refuses once at 15 or under 30 percent, refuses once on broken safety wiring, warns once per unexported commit count, and since kit v1.34 reads the turn's reply text from the transcript through lesson_log and refuses once per prompt when it names a checkpoint as due without the safe-to-clear marker (CHECKPOINT NAMED); dedup key per prompt in the hook state, stop_hook_active stops a loop
+FLAG: PURPOSE names the new refusal; the check reads the transcript only, writes the dedup key to the hook state it already owns, and the once-per-prompt key plus stop_hook_active mean it can never trap a turn

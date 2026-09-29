@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.33** (2026-09-28). The graft log `UPGRADES.md` is the
+Kit version: **v1.34** (2026-09-28). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -406,7 +406,10 @@ because context lives in files, not in the conversation.
   checkpoint, a lesson, a kit sync, a changelog export) is an order the
   manager carries out inside that reply, worded as such, never a note
   relayed for the owner to act on; the same warning seen twice is the
-  failure. At an
+  failure; and since v1.34 the SOURCE is closed too: a reply that names
+  a checkpoint as the natural next step has just ordered one, and the
+  Stop hook refuses the reply once until it ends with the safe-to-clear
+  marker (naming a checkpoint is making it). At an
   arc's end the manager runs the session loop, checks for an unlogged
   workflow gap or lesson, pushes, refreshes the day file, and emits the
   marker: "CHECKPOINT - safe to /clear. Nothing in this chat exists only

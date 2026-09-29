@@ -931,6 +931,21 @@ part of the reply, never a substitute for the step. Mazhron then simply
   push). A hook's wording is an order to the manager ("MANAGER: run
   ..."), never a note for him. And a warning seen twice for the same
   thing is the failure, not the warning itself.
+- TRIED (2026-09-28 evening, the same day again): after the route line
+  batch the reply ended "the checkpoint counter has ticked through a full
+  arc tonight, so a checkpoint and clear is the natural next step
+  whenever you want to stop." FAILED BECAUSE: the closing check asked
+  "did a HOOK name work?" and no hook had; the manager's own sentence
+  named the checkpoint as due and was treated as advice to the owner.
+  DO INSTEAD (correction C0004, his words: "If this is the case, you
+  should have just done a checkpoint. Any reference to a checkpoint from
+  any valid source should prompt you to do it."): the closing check is
+  "does ANYTHING in this turn - a hook, my own reply, the counter - name
+  a checkpoint as due?" If the sentence "a checkpoint is the next step"
+  is true, the checkpoint runs before the sentence is sent, and the
+  reply ends with the marker instead. stop_tick.py now refuses once per
+  prompt when a reply names a checkpoint as due without the marker
+  (CHECKPOINT NAMED), so the sentence cannot be sent unmade.
 
 See also: docs/index/laws.md "The checkpoint protocol" (REAFFIRMED AS A
 CORE LAW, BROADENED TO EVERY HOOK LINE); CLAUDE.md "The hook law"; .claude/skills/checkpoint;

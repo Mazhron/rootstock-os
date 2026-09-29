@@ -135,6 +135,14 @@ TIER 1 - the resumption + checkpoint loop:
    the first tool call). Ledger: docs/history/lesson_runs.txt; the
    check loop lints the book and ledger_trends proposes when advised
    lines pile up unwritten. State file: gitignore it.
+   Since kit v1.34 (THE CHECKPOINT NAMED CHECK, 2026-09-28, correction
+   C0004: "Any reference to a checkpoint from any valid source should
+   prompt you to do it") it also reads the turn's reply text from the
+   transcript and refuses once per prompt when the reply names a
+   checkpoint as due (the word within a sentence of next / natural / due
+   / advised / ready / should / whenever / now) without the safe-to-clear
+   marker: naming a checkpoint is making it, and the manager's own reply
+   is a valid source like any hook line.
 
 6. `session_end.py` (SessionEnd; kit v1.28, THE AUTO-CHECKPOINT, the
    CEO's ask 2026-09-20: "Can we make /clear automatically check for a
@@ -657,3 +665,14 @@ idles after a long employee run.
   points, a tool 2, two of each at most). No ledger: a route is a
   pointer, the tool it names keeps the ledger. First eleven real prompts:
   six routed right, five silent, none wrong.
+- 2026-09-28 WS1 (later still): THE CHECKPOINT NAMED CHECK (kit v1.34).
+  The route line batch's reply closed "a checkpoint and clear is the
+  natural next step whenever you want to stop"; the CEO: "If this is the
+  case, you should have just done a checkpoint. Any reference to a
+  checkpoint from any valid source should prompt you to do it" (C0004).
+  C0002 made an advised checkpoint a step, C0003 made every hook line an
+  order; this closes the source: the manager's own reply counts.
+  stop_tick.py reads the reply text since the last typed prompt (the
+  lesson loop's transcript reader) and refuses once per prompt when it
+  names a checkpoint as due without the marker; stop_hook_active keeps
+  it from looping; five selftest cases carry the incident sentence.
