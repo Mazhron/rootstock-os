@@ -1086,3 +1086,30 @@ employee's selftest pins the exact string it was told to print.
 See also: INTENT.md "Everything that can be measured is measured"; tools/
 law_gaps.py (the named corpus comment); "Apply an audit's findings with a
 batch edit script (anchors quoted from a report)".
+
+## Edit the kit's original, never its grab-copy (refresh_kit reverts the copy silently, 2026-09-29)
+Tags: lessons, process, kit, rootstock | A method file exists three times (repo root, the kit folder, the public mirror); only the repo-root original holds an edit, because refresh_kit copies it over the other two on every run
+Keys: kit copy reverted, refresh_kit pairs, Future Project MDs, WIKI_METHOD edit lost, sync_kit_repo, grab-copy, original vs copy, method file fix, README audit fix in a method file
+
+THE ONE RIGHT WAY: before a batch edit touches any file under "Future
+Project MDs/", ask refresh_kit which original owns it (`python -c "import
+sys; sys.path.insert(0,'tools'); import refresh_kit as r; print(r.pairs())"`
+or WORKFLOWS "Edit the future-project kit" step 1) and point the edit at
+THAT path: the repo-root METHOD.md, tools/<script>.py, .claude/skills/,
+.claude/rules/. Then `python tools/refresh_kit.py` carries it to the kit
+folder and `python tools/sync_kit_repo.py` to the mirror. A file with no
+original (UPGRADES.md, the domain notes, the public README) is edited where
+it lives. Check the edit landed with a grep of the ORIGINAL after the
+refresh, not of the copy before it.
+
+- TRIED (2026-09-29, the README audit's WARN_TOKENS catch): the batch edit
+  script pointed at "Future Project MDs/WIKI_METHOD.md", printed "wrote",
+  and the next refresh_kit run copied the untouched repo-root original
+  back over it; the sync pushed a mirror without the fix. FAILED BECAUSE:
+  the kit folder is a grab-copy, not a home; refresh_kit says nothing
+  when it overwrites. DO INSTEAD: the path rule above; the second pass
+  edited WIKI_METHOD.md at the repo root and both copies followed.
+
+See also: WORKFLOWS.md "Edit the future-project kit (Rootstock)";
+tools/refresh_kit.py (pairs); "Apply an audit's findings with a batch edit
+script" above (the anchor rule; add the path rule to it).
