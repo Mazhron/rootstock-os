@@ -953,9 +953,9 @@ docs/history/corrections.txt (C0002); LESSONS.md "Anything that can be
 pressed should wear the new frames" (the same evening's ADVISED lesson,
 written on the hook's word).
 
-## Apply a long batch of file edits from the shell (the heredoc that fails to parse, 2026-09-28)
-Tags: lessons, tooling, harness | A Python edit script longer than about ninety lines inside a Bash heredoc fails to parse in this harness's Git Bash; write the script to the scratchpad with the Write tool and run it by path
-Keys: heredoc, unexpected EOF, matching quote, bash parse, long script, scratchpad, edit script, batch edit, route_docs, python - <<, Write tool, run by path
+## Apply a long batch of file edits from the shell (the heredoc that fails to parse, 2026-09-28; the sed that eats backslashes, 2026-09-29)
+Tags: lessons, tooling, harness | A Python edit script longer than about ninety lines inside a Bash heredoc fails to parse in this harness's Git Bash, and ANY edit whose text carries a backslash (a regex) loses it through sed or a heredoc; write the script to the scratchpad and run it by path, then run the file's selftest before any ledger line
+Keys: heredoc, unexpected EOF, matching quote, bash parse, long script, scratchpad, edit script, batch edit, route_docs, python - <<, Write tool, run by path, backslash, sed -i, regex edit, \b, chr(92), selftest before ledger, false measure
 
 THE ONE RIGHT WAY: a multi-file edit that needs more than a screen of
 Python goes into the scratchpad as a .py file through the Write tool,
@@ -972,6 +972,21 @@ quotes and apostrophes that a shell will parse before Python sees them.
   batch of doc edits a rerun. Two shorter heredocs the same hour (about
   ninety lines) parsed and ran. DO INSTEAD: Write the script as a file,
   run it by path; the file is also re-runnable and readable if it asserts.
+- TRIED (2026-09-29, the fifth digest trim): a ONE-line regex edit in
+  tools/standup.py, first through `python - <<'EOF'` with `\\b` in the
+  match string (the pattern never matched: assertion, nothing written),
+  then through `sed -i '326s/.*/.../'` (the replacement landed with every
+  `\b` turned into `b`; the selftest went 8 FAILED and the digest measured
+  1,300 bytes short because no verdict matched). FAILED BECAUSE: the
+  shell and sed each consume one layer of backslashes before Python or
+  the file sees them, and a regex is nothing but backslashes. Worse,
+  the ledger line was appended between the two tries, so for two
+  minutes digest_size.txt carried a measurement of a broken tool. DO
+  INSTEAD: length is not the test; the CONTENT is. Any edit carrying a
+  backslash, a regex, a docstring or mixed quotes goes to a scratchpad
+  .py file, built with chr(92) or a raw string, run by path. And the
+  order is fixed: edit, selftest, THEN measure and ledger; a ledger
+  line written before the selftest is a guess with a timestamp.
 - NUANCE: the diet guard's OUTPUT DIET line on a command that mentions
   glob or a listing is advice about limiters, not a failure; the parse
   error came from the shell, and the fix is the file, not shorter output.
@@ -1134,3 +1149,8 @@ ends.
   one the rule reads (the HOW line says `standup.py | wc -c`, the script's
   own output). DO INSTEAD: the way above; the second line (10855) closed it
   and both lines say what they measure.
+
+See also: tools/ledger_trends.py (the HOW line under digest_size.txt);
+docs/systems/self-audit.md "The digest size ledger"; "Apply a long
+batch of file edits from the shell" below (the fifth trim's order:
+edit, selftest, then measure and ledger).
