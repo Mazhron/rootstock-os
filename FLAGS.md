@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-29 01:40 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 | stale 18
+Updated 2026-09-29 02:24 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 | stale 19
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -63,7 +63,7 @@ Updated 2026-09-29 01:40 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 
 | hooks/lesson_advisor.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/preserve_guard.py | GREEN | STALE | fable-ws1 | 2026-09-20 17:37 |
-| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-28 23:37 |
+| hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-09-28 23:37 |
 | hooks/session_end.py | - | UNFLAGGED | - | - |
 | hooks/session_start.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-09-20 03:21 |

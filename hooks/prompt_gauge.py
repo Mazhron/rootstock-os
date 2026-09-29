@@ -77,6 +77,12 @@ def gauge_lines(n, load_):
 
 def main():
     data = read_input()
+    # THE KEEP-WARM EXCLUSION (the CEO 2026-09-29, the ping retune): a
+    # cache keep-warm ping is not a turn; every line this hook would print
+    # is context the ping exists to keep small, and the hook law's orders
+    # wait for the next real turn. tools/keepwarm.py owns the marker.
+    if (data.get("prompt") or "").lstrip().startswith("[keep-warm ping"):
+        return
     ws = cp.which_ws()
     n = cp.load().get(ws, (0, ""))[0]
     load_ = cp.context_load()

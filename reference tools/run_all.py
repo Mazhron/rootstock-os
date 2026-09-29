@@ -75,7 +75,8 @@ GROUPS = {
                 ["tools/usage_report.py"],
                 ["tools/wiki_heat.py"],
                 ["tools/big_reads.py"],
-                ["tools/intent_report.py"]],
+                ["tools/intent_report.py"],
+                ["tools/keepwarm.py", "--report"]],   # THE KEEP-WARM TRIAL (2026-09-29): prices the session's ping turns; silent-ish when none
     "probes":  [["tools/progression_report.py", "-n", "12"],
                 ["tools/soak_report.py", "-m", "5"]],
     "builds":  [["tools/make_builds.py"]],
