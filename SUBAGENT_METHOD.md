@@ -77,6 +77,14 @@ Tags: delegation, process, architecture | Seven cardinal laws: brief, stamp, ver
    last ~10 tasks, promote that task type - stronger model or higher
    effort - with a dated, attributed change line in the assignments table.
    The ledger justifies staffing changes; nobody argues from vibes.
+   THE ASSIGNMENT IS THE MANAGER'S (the origin project's owner, 2026-09-29:
+   "You are the manager, you make the decision. You can downgrade or
+   upgrade any task you see fit on a trial basis. If there are enough
+   failures, then it needs to move up again."): the manager moves any task
+   type down a tier on trial without asking; the ledger's correction rate
+   moves it back up; the only fixed line is the owner's (in the origin
+   project the top model is never an employee, to save tokens). A trial is
+   ledgered with "trial" in its line so the rate counts it.
 6. THE FAN-OUT LAW (added 2026-09-10 after a public catastrophe: a
    manager asked to "check my markdown files for consistency" spawned
    821 sub-agents and burned 50M+ tokens in thirty seconds). Employees

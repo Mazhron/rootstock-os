@@ -16,7 +16,9 @@ Run after EVERY completed batch of work; the user should never have to ask.
 
 1. Sanity: tests/checks relevant to the batch are green (trust the ledger -
    do not re-run identical green runs).
-2. Version: bump if the batch warrants it (MINOR for a notable batch, MAJOR
+2. Version: `python tools/version_hint.py` prints the first-pass reading
+   (none / patch / minor from what changed since the last bump; never
+   major, that is the owner's call). Bump if the batch warrants it (MINOR for a notable batch, MAJOR
    for a core-pillar milestone) in the project's single version source.
 3. Commit: subject = one-line player-readable hook (it becomes the public
    changelog); body = player-readable detail bullets, same voice. Follow the

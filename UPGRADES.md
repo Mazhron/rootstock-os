@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.36** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.37** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1353,3 +1353,52 @@ draft the law, then record it with --pattern in the same reply.
 README: "The wiki learns (the learning loop)" bullet in "1. The Knowledge
 Wiki" (one sentence: a done DO proposal clears by its ledger, the
 pattern row being the corrections case) and the "Kit version:" line.
+
+### v1.37 - 2026-09-29 - The manager's model call, the law ledgers, the version hint, the keep-warm trial
+WHAT: One owner message answered seven asks at once, and four of the
+answers were the same sentence: "You are the manager, you make the
+decision." (1) THE MODEL CALL: "You can downgrade or upgrade any task you
+see fit on a trial basis. If there are enough failures, then it needs to
+move up again ... I believe Fable is the only one you cannot use per my
+decision to save on tokens." The escalation rule (v1.x, the ~25% line)
+already said what moves a task type UP; nothing said the manager may move
+one DOWN without asking. Now the rule carries that clause, and the origin
+project ran two haiku trials the same night (one OK, one report-shape
+correction: the script was right, the stamp lines were missing). (2) THE
+LAW LEDGERS: "everything that can be measured should be, or else we can't
+learn from it. It's just dust in the wind. Make the call." Three laws had
+no ledger; two can be read by script (an actioned cross-workstation note
+still in notes.md; a tool changed in 30 days that no runbook, loop group,
+hook setting or skill names) and got reference tools/law_gaps.py, two
+append-only ledgers, WARN lines only, in the check group. The third (the
+contradiction rule) was left out on purpose: only a reader can see a
+contradiction, and a manual row would measure the manager's memory. Its
+first run caught a real unswept note. (3) THE VERSION HINT: "Do it if it
+makes sense": reference tools/version_hint.py prints none / patch / minor
+from what changed since the last version commit (never major, the
+owner's call) as the ship ritual's step 2 first reading. (4) THE KEEP-WARM
+TRIAL: asked whether the between-session cache gap could be prevented at
+all. The cache lives one hour after its last read and no harness setting
+lengthens it; but the miss ledger showed 113 of 146 TTL-gap misses were
+pauses of one to twelve hours inside a session, and a ping re-reads the
+context at about a tenth of a rewrite, so an in-session cron ping every
+30 minutes, capped at 16 pings, is cheaper than the miss for any pause
+under ten hours. Documented as a WORKFLOWS entry with its own retire
+test (the miss buckets must shrink), armed by the manager, measured at
+the next systems audit. Also that day: the warn line of the core lint
+retuned 1000 to 1500 (the 2000 budget untouched) after it fired every
+session with no cold unit to move, and the lesson that an ask put to the
+owner is a numbered question with a recommended answer, never a
+statement under an ASK heading.
+CARRIES: SUBAGENT_METHOD.md rule 5 (the assignment clause), reference
+tools/law_gaps.py (new), reference tools/version_hint.py (new), skills/
+ship/SKILL.md (step 2), reference tools/check_claude_md.py (WARN_TOKENS
+1500 with the reason), LESSONS.md (the ask shape); this entry.
+GRAFT: copy the two new tools; add law_gaps.py to run_all's check group;
+add the version hint to the ship skill's step 2; paste the assignment
+clause into the project's SUBAGENTS.md escalation rule; the keep-warm
+entry is optional and needs a harness with in-session cron (Claude
+Code's CronCreate); write the INTENT sections in the owner's words.
+README: "The scorecard" bullet in "3. The Employee System" (the
+assignment clause), the reference-tools box row (the count and the two
+new names) and the "Kit version:" line.
