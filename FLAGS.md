@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-29 11:16 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 | stale 20
+Updated 2026-09-29 14:23 | items 76 | GREEN 69 | YELLOW 0 | RED 0 | unflagged 7 | stale 20
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -45,6 +45,7 @@ Updated 2026-09-29 11:16 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
 | LESSONS.md | GREEN | STALE | fable | 2026-09-20 03:21 |
 | REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
+| SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:58 |
 | UPGRADES.md | GREEN | STALE | fable | 2026-09-20 03:22 |
@@ -95,6 +96,7 @@ Updated 2026-09-29 11:16 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
 | reference tools/run_all.py | GREEN | STALE | fable | 2026-09-20 03:21 |
+| reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/standup.py | GREEN | STALE | fable | 2026-09-29 10:39 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-29 00:24 |
@@ -935,3 +937,13 @@ FLAG: A dedupe on an append-only ledger; the skipped line is the same reading, n
 SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
 DOES: Prints the session-start digest: the last exchange mined from the newest transcript (now returning its time window), WHERE WE LEFT OFF, the budget tail after a quiet usage_report refresh, THE LOOP grouped by last-run stamp, ledger_trends proposals, version and commits without the auto changelog exports, the core lint line, WS note headlines, ledger tails under the loss test (verdict or new since, minus repeated all-clears and lines the last exchange itself wrote), the roadmap index, open questions and recent days. Every helper is pure and covered by --selftest; the subprocesses are read-only except usage_report --quiet, which writes its own usage sheets.
 FLAG: Matches the PURPOSE line; the fourth trim adds three pure helpers (in_window, loop_rows, keep_commit) with sixteen selftest cases and no new side effect. The one write, the usage-sheet refresh, is stated in the docstring's THE BUDGET paragraph and skippable with --no-usage; the PURPOSE line names only the budget line it prints, which is fine as the refresh is that line's source.
+
+### 2026-09-29 14:23 | SECURITY_METHOD.md | GREEN | fable | WS1 | 40063780
+SAYS: The pre-production security audit: one checklist, one read-only script and one ledger line that every app, SaaS or website with a backend, an API key, an env file or user data passes before it goes public, and again before every public release that touched secrets, auth, headers, config or the database rules.
+DOES: States the pre-production security audit law (the gate, the re-run, the rotation law, the prefix law, the script-and-ledger split, read-only against the owner's own deployment), a nine-class checklist with WHAT / HOW / PASS per class, the ledger line's shape, a WORKFLOWS entry to paste and a four-step bootstrap; a method file, no side effect.
+FLAG: Matches its PURPOSE line: checklist, script and ledger line named and delivered; the origin survey's numbers are quoted with their source; the exemption path for a keyless static export is stated so the rule never fires on nothing.
+
+### 2026-09-29 14:23 | reference tools/security_audit.py | GREEN | fable | WS1 | e01ea5ac
+SAYS: Run the read-only checks SECURITY_METHOD.md's checklist gives a script: grep a production build folder for secret-shaped strings (class 1), read the site's response headers for HSTS, CSP and a frame rule (class 2), request the exposed-file paths and expect 404 or 403 (class 3), and read the CORS header under a foreign Origin (class 4); print one PASS / WARN / FAIL line per check and, with --record, append the counts and a note to docs/history/security_audit_runs.txt.
+DOES: With --dir walks a build folder (node_modules and .git skipped) and prints one FAIL per file and secret shape naming file, line and pattern, never the match; with --url makes GET requests to the given site only: the root's headers against six names, eighteen fixed exposed paths expecting 404 or 403, and one request under a foreign Origin for the CORS answer; --record appends counts and a note to docs/history/security_audit_runs.txt through _ledger's dedup; --selftest runs two localhost servers and sixteen cases. Exit 1 on any FAIL.
+FLAG: Matches its PURPOSE line; the only write is the ledger line under --record, stated in the header; the network calls are the fixed list against the URL the owner gives and nothing else; the printed lines never carry the matched secret (a selftest case checks it).

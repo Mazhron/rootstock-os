@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.38** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.39** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1432,3 +1432,46 @@ print_last_exchange, or pass window=None to keep the previous behaviour;
 no settings change.
 README: the "Kit version:" line only (the reference-tools box row keeps
 its count).
+
+### v1.39 - 2026-09-29 - The pre-production security audit (SECURITY_METHOD.md, security_audit.py)
+WHAT: The kit audited its own process and never the app it builds. A
+Reddit survey (r/claude, u/Donchuan1998, 2026-09-29) of 100 publicly
+launched AI-built apps, checked with what any visitor's browser already
+downloads: 37 had a server-side secret in their frontend JavaScript
+(OpenAI, Stripe, Supabase), 78 were missing a security header, 12 served
+/.git/ or an .env file, 43 answered a wildcard CORS header, 9 were clean.
+The cause it names: an env variable renamed VITE_ or NEXT_PUBLIC_ to make
+a build error go away, which ships the secret to every visitor. Mazhron:
+"important to note inside of Rootstock as part of the audit of an app,
+saas or website where applicable before it goes into production ... to
+help keep users safe who are making them." SECURITY_METHOD.md is the
+new method file: THE SECURITY AUDIT RULE (the gate before the first
+public release and before any release that touched secrets, env, auth,
+headers, CORS, hosting or database rules; the rotation law: a key that
+was ever public is rotated, never merely removed; the prefix law; the
+script-and-ledger split; read-only against your own deployment), the
+nine-class checklist (secrets in the client, headers, exposed files,
+CORS, database rules, auth and rate limits per route, dependencies,
+logs, the game-export note that anything under res:// is public), the
+ledger line, the WORKFLOWS entry to paste, and the bootstrap. The
+reference tool security_audit.py runs the four classes a script can:
+--dir greps a production build for secret shapes (file, line and
+pattern name printed, never the match), --url reads the headers,
+requests the exposed paths expecting 404, and sends a foreign Origin
+to read the CORS answer; --record appends the counts and the hand-
+walked note to docs/history/security_audit_runs.txt through _ledger's
+dedup; --selftest serves a bad and a good site on localhost and checks
+sixteen cases. The origin project (a Godot game with no backend and no
+keys) is exempt by rule 1 and says so in its first ledger line.
+CARRIES: SECURITY_METHOD.md; reference tools/security_audit.py; the
+front door's STEP 5 line; this entry.
+GRAFT: copy SECURITY_METHOD.md and security_audit.py (to tools/); run
+--selftest; paste the method file's WORKFLOWS entry into your registry
+and add the one-line question to your ship ritual ("did this diff touch
+secrets, env, auth, headers, CORS, hosting or database rules? then the
+audit runs first"); add the .env family to .gitignore; if the project
+has no backend and no keys, write the exemption in its systems index
+and stop. No settings change, no hook.
+README: "What is in the box" (the SECURITY_METHOD.md row and the
+reference-tools row's count and list) and "Questions people ask" (the
+new "Does it check the app I build, or only my process?" answer).
