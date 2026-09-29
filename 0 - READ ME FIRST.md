@@ -107,6 +107,9 @@ and the lesson loop (LESSONS.md at the root, hooks/lesson_advisor.py,
 reference tools/lesson_log.py: the one right way is read before the
 first try and a lesson is asked for the moment a turn shows trial and
 error; hooks/README.txt has the steps).
+THE ROUTE LINE (kit v1.33): reference tools/route_index.py beside it; the
+prompt hook then names the WORKFLOWS entry and the tool a prompt already
+has before the first tool call.
 
 ## STEP 5 - optional boards (adopt when the CEO wants them)
 

@@ -106,7 +106,12 @@ TIER 1 - the resumption + checkpoint loop:
    manager writes the two paragraphs.
 3. `prompt_gauge.py` (UserPromptSubmit): silent unless a threshold is
    crossed; then one line the manager relays verbatim. Zero tokens on a
-   normal turn.
+   normal turn. Since kit v1.33 (THE ROUTE LINE, 2026-09-28, after
+   Kelsey Hightower's Zero Token Architecture) it also names the
+   WORKFLOWS.md entries and the reference tools whose heading, WHEN line
+   or Search keys the prompt hits (reference tools/route_index.py, the
+   lesson matcher; at most two of each), so "does software already
+   handle this" is a lookup and not the manager's inference each turn.
 4. `pre_compact.py` (PreCompact): one ledger line per compaction
    (when/WS/version/manual-auto/context/unbanked tasks) in
    docs/history/compact_runs.txt; a system message on auto.
@@ -641,3 +646,14 @@ idles after a long employee run.
   MANAGER: run the export before this reply ends. Selftest gained the
   incident shape (anchor at the export's parent, range to the export
   commit, must count 0).
+- 2026-09-28 WS1 (late): THE ROUTE LINE (kit v1.33). The CEO read Kelsey
+  Hightower's Zero Token Architecture ("infer once, export the logic, run
+  it without inference") and asked which of its gaps Rootstock should
+  close; the one that mattered was the routing: the script rule exports
+  the logic, but WHICH workflow or script handles a prompt was still
+  inferred every turn. prompt_gauge.py now prints ROUTE with the
+  matching WORKFLOWS.md entries and tools (route_index.py: the lesson
+  matcher over headings, WHEN lines and Search keys; a workflow needs 3
+  points, a tool 2, two of each at most). No ledger: a route is a
+  pointer, the tool it names keeps the ledger. First eleven real prompts:
+  six routed right, five silent, none wrong.

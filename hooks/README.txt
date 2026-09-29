@@ -93,6 +93,13 @@ prompt_gauge.py carries the other end (THE LESSON LINE): a prompt whose
 words hit an entry's Keys line gets the entry named before the first
 tool call. Pipe-test once for real: echo '{"transcript_path": "<a
 transcript .jsonl>"}' | python tools/hooks/lesson_advisor.py.
+THE ROUTE LINE (kit v1.33): copy reference tools/route_index.py to
+tools/ beside lesson_log.py; prompt_gauge.py imports it and prints ROUTE
+with the WORKFLOWS.md entries and the tools whose heading, WHEN line or
+Search keys the prompt hits, two of each at most. It needs a WORKFLOWS.md
+whose `## ` entries carry a WHEN: line and tools whose docstrings carry
+Search keys (the format law); silent otherwise. `python
+tools/route_index.py --match "<prompt>"` shows what it would say.
 
 THE DELEGATION TRUTH SET (Tier 4a, kit v1.30, three hooks): nothing to
 fill in. brief_guard.py (PreToolUse on Agent|Task, a REFUSAL): a dispatch

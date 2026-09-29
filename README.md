@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.32** (2026-09-28). The graft log `UPGRADES.md` is the
+Kit version: **v1.33** (2026-09-28). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -267,8 +267,12 @@ that make it work:
   registry; judgment lives in LESSONS.md: one entry per task shape, THE
   ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, then
   nuance lines as they accumulate. The prompt hook names the entry to
-  read before the first tool call; the Stop hook asks for the entry the
-  moment a turn shows trial and error; a check script lints the shape
+  read before the first tool call, and since v1.33 the ROUTE line beside
+  it: the process-registry entry and the script whose heading, WHEN line
+  or search keys the prompt already hits, so "does software already
+  handle this" is a lookup and not an inference (Hightower's "infer once,
+  export, run without inference", applied to the routing itself); the
+  Stop hook asks for the entry the moment a turn shows trial and error; a check script lints the shape
   and a ledger counts advised against written; the enforcing hooks live
   in the hooks section below. The origin's first
   entry: read the existing spread before briefing a numbers task.
@@ -843,7 +847,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `WORKFLOW_METHOD.md` | The process registry: one runbook entry per repeatable task, the capture rule |
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |
-| `reference tools/` | 29 working scripts to adapt, not rewrite. Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), trust the ledger for the check scripts, the lesson loop (lesson_log.py: the prompt match, the trial-and-error scan, the lint), the local mirror (backup_push.py: every branch and tag to a bare repo on another drive) |
+| `reference tools/` | 30 working scripts to adapt, not rewrite. Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), trust the ledger for the check scripts, the lesson loop (lesson_log.py: the prompt match, the trial-and-error scan, the lint), the route line (route_index.py: the registry entry and the script a prompt already has, named before the first tool call), the local mirror (backup_push.py: every branch and tag to a bare repo on another drive) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `CONTRIBUTING.md` | The format law and the purpose audit: the one header every thing carries, the read-only flag ritual, what a contributed update looks like |
 | `FLAGS.md` | The flag ledger: every kit thing's latest GREEN / YELLOW / RED, hashed to the version reviewed, tallied, append-only |

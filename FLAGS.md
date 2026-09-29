@@ -33,11 +33,11 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-28 23:13 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 | stale 12
+Updated 2026-09-28 23:37 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 | stale 13
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-09-20 03:22 |
+| 0 - READ ME FIRST.md | GREEN | STALE | fable | 2026-09-20 03:22 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
@@ -63,7 +63,7 @@ Updated 2026-09-28 23:13 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 
 | hooks/lesson_advisor.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
 | hooks/preserve_guard.py | GREEN | STALE | fable-ws1 | 2026-09-20 17:37 |
-| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-28 23:37 |
 | hooks/session_end.py | - | UNFLAGGED | - | - |
 | hooks/session_start.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-09-20 03:21 |
@@ -92,6 +92,7 @@ Updated 2026-09-28 23:13 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 
 | reference tools/refresh_kit.py | GREEN | ok | fable | 2026-09-14 16:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
 | reference tools/run_all.py | GREEN | STALE | fable | 2026-09-20 03:21 |
 | reference tools/standup.py | GREEN | ok | fable | 2026-09-14 19:02 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
@@ -887,3 +888,13 @@ FLAG: PURPOSE and INTENT name every side effect; the changelog count change only
 SAYS: The machine inventory method: one workstation file records what every script, hook and ritual needs, why, what the origin machine has, and how to install it, so any Claude can get a new machine up to par and write back what it adds.
 DOES: The machine inventory method; v1.32 adds one section under the Claude-side settings: Remote Control pairs the phone to the same local session, the checkpoint clear keeps the link, the phone-typed clear firing the SessionStart hook is recorded as unconfirmed with the one-clear check, and the cloud session is the alternative
 FLAG: Matches the purpose (what the harness setup needs and how a machine is driven); documentation from the harness docs with the unconfirmed point marked, no new side effect
+
+### 2026-09-28 23:37 | hooks/prompt_gauge.py | GREEN | fable | WS1 | 8c1d05c0
+SAYS: UserPromptSubmit hook that stays silent on a normal turn and, when a threshold is crossed, prints the checkpoint counter warning (8 tasks advised, 15 dire) and the context-remaining warning, plus since 2026-09-13 a KIT UNSYNCED line when a portable original is newer than its kit copy, and since 2026-09-20 the LESSONS line naming the LESSONS.md entries whose Keys match the prompt, so the one right way is read before the first tool call, and since 2026-09-28 the ROUTE line naming the WORKFLOWS.md entries and the reference tools whose heading, WHEN line or Search keys the prompt hits.
+DOES: UserPromptSubmit hook: the checkpoint and context threshold lines, the KIT UNSYNCED line, the LESSONS line naming matching LESSONS.md entries, and since kit v1.33 the ROUTE line naming the WORKFLOWS.md entries and reference tools whose heading, WHEN line or Search keys the prompt hits (route_index.match_lines, at most two each, every exception swallowed); selftest covers threshold, lesson and route cases
+FLAG: PURPOSE names the new line; the route block reads WORKFLOWS.md and tool docstrings only, writes nothing, no ledger, silent on a miss; a hook that cannot crash the turn
+
+### 2026-09-28 23:37 | reference tools/route_index.py | GREEN | fable | WS1 | 9f960c3e
+SAYS: Match a prompt against the headings and WHEN lines of WORKFLOWS.md and the Search keys of every tools/ and tools/hooks/ script, and print the ROUTE line the prompt hook relays, so an existing workflow or script is named before the manager re-derives it.
+DOES: Reads WORKFLOWS.md headings and WHEN lines and the Search keys line of every tools/ and tools/hooks/ script, scores them with lesson_log's matcher (workflow 3, tool 2, two of each at most), and prints the ROUTE lines the prompt hook relays; answers --match and --selftest; no writes, no ledger
+FLAG: Matches the purpose exactly: read-only indexing plus a printed pointer; the only side effect is stdout; a project without Search keys or WHEN lines gets silence, not errors

@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.32** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.33** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1218,3 +1218,38 @@ to the project's WORKSTATION.md counterpart once a phone has been paired
 there (which login, whether the clear trigger fired from the phone).
 README: "Questions people ask" (the phone question) and the "Kit
 version:" line.
+
+### v1.33 - 2026-09-28 - The route line (which workflow or script, a lookup not an inference)
+WHAT: The origin CEO read Kelsey Hightower's Zero Token Architecture
+("infer once, export the logic, run it without inference") and asked
+where the article went further than Rootstock. The answer: the script
+rule already exports the logic, hooks already run at zero tokens, but
+WHICH exported thing handles a prompt was still the manager's inference
+every turn. His word: "lets get done what you think should get done."
+prompt_gauge.py now prints a ROUTE line naming the WORKFLOWS.md entries
+and the reference tools whose heading, WHEN line or Search keys the
+prompt hits (reference tools/route_index.py, reusing lesson_log's
+matcher: a multi-word key 2 points, a single word 1, under four content
+words nothing; a workflow needs 3, a tool 2, two of each at most). No
+ledger: a route is a pointer and the tool it names keeps its own. The
+same batch adds THE STEP COUNT to the systems audit's PROCESS lane
+(count the steps a model drives in each ritual and propose which become
+one command) and pins "Rootstock as a Claude Code plugin" on the origin's
+board, unlocked by a second project that wants the kit; a server layer
+(the CEO's Firebase aside) was ruled out as the article's "another system
+to monitor the agent".
+CARRIES: hooks/prompt_gauge.py (the ROUTE block + two selftest cases),
+reference tools/route_index.py (new), HOOKS_METHOD.md (item 3 + change
+log), hooks/README.txt (the route paragraph), 0 - READ ME FIRST.md (the
+lesson-loop step names it); this entry.
+GRAFT: copy route_index.py to tools/ beside lesson_log.py and
+prompt_gauge.py fresh (or port the ROUTE block: import route_index,
+print match_lines(prompt) under the hook tag, swallow every exception);
+run both --selftest. It needs the format law's Search keys on tools and
+a WORKFLOWS.md whose entries carry WHEN: lines; a project without those
+gets silence, not errors. Add the step-count sentence to the project's
+systems-audit workflow entry.
+README: "The lessons book (the lesson loop)" bullet in "1. The Knowledge
+Wiki" (the prompt hook also names the workflow and the script), the
+reference tools count and box line in "What is in the box", and the
+"Kit version:" line.

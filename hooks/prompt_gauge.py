@@ -14,6 +14,15 @@ Since 2026-09-13 it also carries THE KIT LINE: "KIT UNSYNCED" while a
 portable original is newer than its kit copy or the kit folder is ahead
 of the public mirror (tools/refresh_kit.py --check), silent otherwise.
 
+Since 2026-09-28 it also carries THE ROUTE LINE (kit v1.33, after Kelsey
+Hightower's Zero Token Architecture: the script rule exports the logic, but
+WHICH workflow or script handles a prompt was still inferred every turn):
+the prompt's words are matched against every WORKFLOWS.md entry's heading
+and WHEN line and every reference tool's Search keys (tools/route_index.py,
+the lesson matcher) and the hits, at most two of each, are printed under
+ROUTE so the scripted way is checked before it is re-derived. No ledger: a
+route is a pointer; the tool it names keeps its own.
+
 Answers `--selftest` (house pattern: PASS/FAIL lines on the pure line
 builder, never stdin or a real prompt).
 
@@ -22,16 +31,18 @@ PURPOSE: UserPromptSubmit hook that stays silent on a normal turn and, when
   advised, 15 dire) and the context-remaining warning, plus since 2026-09-13
   a KIT UNSYNCED line when a portable original is newer than its kit copy,
   and since 2026-09-20 the LESSONS line naming the LESSONS.md entries whose
-  Keys match the prompt, so the one right way is read before the first tool call.
+  Keys match the prompt, so the one right way is read before the first tool call,
+  and since 2026-09-28 the ROUTE line naming the WORKFLOWS.md entries and the
+  reference tools whose heading, WHEN line or Search keys the prompt hits.
 INTENT: relays the checkpoint and context thresholds and the kit-sync check
   at zero cost on a normal turn, so the manager checkpoints or refreshes the
   kit only when the harness itself has detected the need.
 
 Search keys: prompt hook, context gauge, 80 percent rule, task counter,
-kit unsynced, lessons line, lesson loop.
+kit unsynced, lessons line, lesson loop, route line, which script.
 See also: tools/checkpoint.py (thresholds + the transcript probe);
 tools/hooks/stop_tick.py (the tick that feeds the counter); tools/lesson_log.py
-(match_lines); LESSONS.md.
+(match_lines); tools/route_index.py (the route line); LESSONS.md; WORKFLOWS.md.
 """
 import sys
 
@@ -97,6 +108,16 @@ def main():
             _ll.record("MATCHED", " / ".join(x.strip() for x in _lines[1:]))
         except Exception:  # noqa: BLE001
             pass
+    # THE ROUTE LINE (the CEO 2026-09-28, after the ZTA article): the
+    # WORKFLOWS entry and the tool this prompt already has, so the routing
+    # is a lookup and not an inference. Silent when nothing matches.
+    try:
+        import route_index as _ri
+        _routes = _ri.match_lines(data.get("prompt") or "")
+    except Exception:  # noqa: BLE001 - a hook never crashes the turn
+        _routes = []
+    if _routes:
+        print("[HOOK prompt_gauge] " + "\n".join(_routes))
 
 
 def _selftest():
@@ -130,6 +151,18 @@ def _selftest():
         fails += not ok
     except ImportError:
         print("FAIL  lesson_log.py missing next to checkpoint.py")
+        fails += 1
+    try:
+        import route_index as _ri
+        ok = any("WORKFLOWS.md line" in x for x in _ri.match_lines(
+            "ship this docs-only batch: commit, export the changelog and push, no build"))
+        print(("PASS  " if ok else "FAIL  ") + "a prompt hitting a WORKFLOWS entry gets the route line")
+        fails += not ok
+        ok = _ri.match_lines("the pine tree looks too dark against the winter snow tiles") == []
+        print(("PASS  " if ok else "FAIL  ") + "a game prompt gets no route line")
+        fails += not ok
+    except ImportError:
+        print("FAIL  route_index.py missing next to lesson_log.py")
         fails += 1
     print("prompt_gauge selftest: %d failed" % fails)
     return 1 if fails else 0
