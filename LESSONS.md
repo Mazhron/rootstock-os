@@ -1054,3 +1054,35 @@ this shape by the manager, never pasted as the auditor's finding.
 See also: "A standup proposal is this reply's work" (the DO / ASK split
 this entry gives its voice to); INTENT.md "The proposal law"; the
 WHERE WE LEFT OFF ASK list in the day file, which follows the same shape.
+
+## Widen a proxy after its first real run (the named corpus, and the selftest that pins a phrase, 2026-09-29)
+Tags: lessons, process, learning loop, ledgers | A rule's script proxy must count every home the rule already has, and a verdict phrase changed in the script is changed in its selftest in the same edit
+Keys: law_gaps, workflow gap, proxy, named corpus, first real run, false positives, hooks flagged, run_all scripts flagged, selftest FAIL after edit, verdict wording, pinned phrase, employee script widened
+
+THE ONE RIGHT WAY: when a script stands in for a law (a proxy), list every
+place the law is already satisfied BEFORE the spec is written, and make the
+proxy read all of them: a tool is "named" not only by a WORKFLOWS.md entry
+but by tools/run_all.py (the loop is a loop script's workflow), by
+.claude/settings.json (a hook's wiring) and by any skill. Then run it once
+for real and read the list it produces: every false positive on that first
+run is a home the spec forgot. When the widening changes a verdict's
+wording, grep the selftest for the old phrase in the same edit, because an
+employee's selftest pins the exact string it was told to print.
+
+- TRIED (2026-09-29, tools/law_gaps.py by sonnet, spec by the manager):
+  the workflow-rule proxy was specified as "a changed tool that
+  WORKFLOWS.md does not name". Its first real run listed 17 gaps, and
+  twelve of them were hooks and run_all exporters, which the workflow rule
+  already covers by their wiring. FAILED BECAUSE: the spec named one home
+  for the rule when the rule has four. DO INSTEAD: the corpus above; the
+  list fell to 5, all real.
+- TRIED (the same patch): the verdict text gained ", run_all group, hook
+  setting or skill" in the script alone; the selftest failed once on the
+  old phrase, then passed after the second edit. DO INSTEAD: change the
+  script and its selftest in one edit script, grepping the old phrase
+  first (the "Apply an audit's findings with a batch edit script" entry's
+  anchor rule applies to verdict strings too).
+
+See also: INTENT.md "Everything that can be measured is measured"; tools/
+law_gaps.py (the named corpus comment); "Apply an audit's findings with a
+batch edit script (anchors quoted from a report)".
