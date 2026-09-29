@@ -1113,3 +1113,24 @@ refresh, not of the copy before it.
 See also: WORKFLOWS.md "Edit the future-project kit (Rootstock)";
 tools/refresh_kit.py (pairs); "Apply an audit's findings with a batch edit
 script" above (the anchor rule; add the path rule to it).
+
+## Close a proposal with the number its rule reads (the measure line by the proposal's own formula, 2026-09-29)
+Tags: lessons, process, proposals, ledgers | A "done" the ledger cannot see is not done: the closing measurement is taken exactly the way the trend rule measures, or the proposal fires again
+Keys: proposal still raises, PROPOSAL NAMED, measure line, digest_size, digest_warn_bytes, wc -c, like-for-like, closing a DO proposal, ledger_trends formula, HOW line
+
+THE ONE RIGHT WAY: before appending the line that closes a [DO] proposal,
+read the rule in tools/ledger_trends.py (or the HOW line the digest prints
+for that ledger) for WHAT it measures and HOW, and record that exact
+measurement as the closing line; a second line with a richer like-for-like
+number is welcome but is never the closer. Verify with `python
+tools/ledger_trends.py | grep <ledger>` printing nothing before the reply
+ends.
+
+- TRIED (2026-09-29, the fourth digest trim): the trim was real (14562 ->
+  13415 bytes like-for-like, the injected text with the hook preamble) and
+  the measure line recorded 13415; the rule reads bytes > 12000 on the
+  newest line, so the Stop hook fired PROPOSAL NAMED at the reply's end.
+  FAILED BECAUSE: the number recorded was a different measurement from the
+  one the rule reads (the HOW line says `standup.py | wc -c`, the script's
+  own output). DO INSTEAD: the way above; the second line (10855) closed it
+  and both lines say what they measure.
