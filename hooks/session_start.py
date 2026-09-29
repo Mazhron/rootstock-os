@@ -59,7 +59,10 @@ def header_for(source):
              "fresh session or after /clear, relay THE LAST EXCHANGE block "
              "FIRST and VERBATIM (both sides, in quote blocks), then state + "
              "next-likely, then a brief digest summary, then ask what to work "
-             "on. After a compaction, use it to re-anchor silently unless "
+             "on. THE PROPOSAL LAW (the CEO 2026-09-29, C0005): every PROPOSE "
+             "[DO] line below is work done in this first reply by a script, a "
+             "hook or an employee, never a choice offered; only [ASK] lines are "
+             "questions. After a compaction, use it to re-anchor silently unless "
              "something in it contradicts the summary." % source)
 
 

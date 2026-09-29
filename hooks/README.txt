@@ -83,6 +83,14 @@ per prompt when the reply names a checkpoint as due (next / natural /
 due / advised / should / now near the word) without the safe-to-clear
 marker; it reads the reply from the transcript through reference
 tools/lesson_log.py, so copy that beside it. Nothing to fill in.
+THE PROPOSAL NAMED CHECK (kit v1.35): stop_tick.py also refuses once per
+prompt when the reply names a standup proposal tagged [DO] (the systems
+audit, the README audit, the digest trim, a stale loop group, dead
+links, an unwritten lesson, a stale claim) while reference
+tools/ledger_trends.py still raises it; doing it clears the ledger and
+the second Stop passes. It imports ledger_trends, so copy that beside
+lesson_log.py. session_start.py's preamble names the law ([DO] lines
+are the first reply's work, [ASK] lines are questions). Nothing to fill in.
 
 lesson_advisor.py (Tier 1, kit v1.26, THE LESSON LOOP, a once-per-slice
 REFUSAL): nothing to fill in. Copy LESSONS.md to the project root (keep

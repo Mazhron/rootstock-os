@@ -50,8 +50,9 @@ PURPOSE: Reads the tails of the project's history ledgers (usage, tests,
   wiki links, wiki heat, employee corrections, compactions, README audit,
   intent claims, corrections, systems audit, open questions, digest size,
   the run_all loop, the lesson loop), compares them against tunable
-  thresholds, and prints
-  proposed rule changes; it applies nothing itself.
+  thresholds, and prints proposed rule changes, each tagged [DO] (a
+  script, hook or employee carries it out in the reply that reads it) or
+  [ASK] (only the owner can answer); it applies nothing itself.
 INTENT: the CEO's ask 2026-09-10: 'Is Rootstock implementing learning
   loops?' Extended 2026-09-14: open questions get a nudge past N days, and
   the thresholds move to a data file the owner tunes (security and cost/
@@ -157,6 +158,75 @@ def data_lines(name):
 def workstation():
     home = os.path.expanduser("~").lower()
     return "WS2" if "travis" in home else ("WS1" if "owner" in home else "WS?")
+
+
+# THE PROPOSAL LAW (the CEO 2026-09-29, correction C0005, after a standup
+# relayed four PROPOSE lines and asked which to work on: "If an audit is
+# required, and it can be done with a sub-agent, or a script, it doesn't
+# need my permission. Just do it. If the standup digest requires a trim,
+# it doesn't need my permission. Do it."): every proposal carries its
+# class. DO = a script, a hook, an employee or a diet with a loss test
+# carries it out in the reply that reads it, no permission asked. ASK =
+# only the owner can answer (a game number, a ruling, a question). CLEARS
+# is the DO subset whose proposal disappears once it is done (the ledger
+# moves); stop_tick.py's PROPOSAL NAMED check reads it. HOW names the
+# scripted way for each DO so the reply never re-derives it.
+ACTION = {
+    "usage_daily.txt": "DO",          # the read diet: section reads, the big-reads list
+    "test_runs.txt": "DO",            # rerun the group, fix or quarantine the flake
+    "wiki_link_runs.txt": "DO",       # fix the dead links
+    "wiki_heat_runs.txt": "ASK",      # a shelf is never by read count (the CEO 2026-09-10)
+    "SUBAGENTS.md ledger": "DO",      # escalate the row's model (SUBAGENTS rule 6)
+    "compact_runs.txt": "DO",         # checkpoint earlier
+    "readme_audit_runs.txt": "DO",    # four read-only employees, then --record
+    "intent_runs.txt": "ASK",         # a declining agreement rate is a conversation
+    "intent_log.txt": "DO",           # resolve the stale claims
+    "corrections.txt": "DO",          # name the pattern, draft the law; the owner rules on it
+    "systems_audit_runs.txt": "DO",   # four read-only employees, then --record
+    "open_questions.txt": "ASK",      # only the owner can answer
+    "digest_size.txt": "DO",          # the loss test (INTENT.md "The digest diet"), then measure
+    "loop_runs.txt": "DO",            # run the group, fix the wiring
+    "lesson_runs.txt": "DO",          # write the entry or tune the signal
+}
+CLEARS = {"systems_audit_runs.txt", "readme_audit_runs.txt", "digest_size.txt",
+          "loop_runs.txt", "wiki_link_runs.txt", "lesson_runs.txt", "intent_log.txt"}
+HOW = {
+    "systems_audit_runs.txt": "WORKFLOWS.md 'Audit the operating system': four read-only "
+                              "employees (the /brief skill), then `python tools/systems_audit.py --record`",
+    "readme_audit_runs.txt": "WORKFLOWS.md 'Audit the public README': four read-only employees, "
+                             "then `python tools/readme_audit.py --record`",
+    "digest_size.txt": "tools/standup.py, the loss test (INTENT.md 'The digest diet'), then "
+                       "`python tools/standup.py | wc -c` under digest_warn_bytes",
+    "loop_runs.txt": "`python tools/run_all.py --group <group>`, then fix what bypassed the loop",
+    "wiki_link_runs.txt": "fix the targets listed in docs/history/wiki_links.txt",
+    "lesson_runs.txt": "write the LESSONS.md entry (the /lesson shape) or tune tools/lesson_log.py",
+    "intent_log.txt": "`python tools/intent_log.py --resolve <id> ...` for each stale claim",
+}
+_LEDGER_RE = re.compile(r"^PROPOSE \(([^)]+)\)")
+
+
+def ledger_of(prop):
+    """'systems_audit_runs.txt' from 'PROPOSE (systems_audit_runs.txt): ...'; '' otherwise."""
+    m = _LEDGER_RE.match(prop or "")
+    return m.group(1) if m else ""
+
+
+def action_of(prop):
+    """DO or ASK for a proposal line; an unknown ledger is ASK (never do the unnamed)."""
+    return ACTION.get(ledger_of(prop), "ASK")
+
+
+def tagged(prop):
+    """The proposal line with its class: 'PROPOSE [DO] (ledger): ...'."""
+    return prop.replace("PROPOSE (", "PROPOSE [%s] (" % action_of(prop), 1)
+
+
+def open_do(props=None):
+    """The DO proposals that clear when done - the ones a Stop hook can hold
+    the reply to. `props` defaults to a fresh, unrecorded proposals() call."""
+    if props is None:
+        props = proposals()
+    return [p for p in props if action_of(p) == "DO" and ledger_of(p) in CLEARS]
 
 
 def proposals(th=None):
@@ -314,7 +384,8 @@ def proposals(th=None):
         elif (days or 0) >= th["systems_audit_days"] or dfs >= th["systems_audit_day_files"]:
             out.append("PROPOSE (systems_audit_runs.txt): %s day(s) and %d day file(s) since the "
                        "last systems audit (%s) - run the four-lane audit (tokens, process, "
-                       "knowledge, features) and `--record` it; proposals only, the CEO decides."
+                       "knowledge, features) and `--record` it; its DO proposals are done, its ASK "
+                       "proposals relayed."
                        % (days, dfs, stamp))
     except Exception:  # noqa: BLE001
         pass
@@ -343,7 +414,8 @@ def proposals(th=None):
             m = re.search(r"(\d+)", parts[2])
             if m and int(m.group(1)) > th["digest_warn_bytes"]:
                 out.append("PROPOSE (digest_size.txt): the standup digest is %s bytes (~%s "
-                           "tokens) at every session start - trim a tail or split a block."
+                           "tokens) at every session start - trim by the loss test (INTENT.md 'The "
+                           "digest diet'), then measure."
                            % (m.group(1), parts[3]))
     # 13. loop_runs.txt (THE LOOP LAW): a run_all group whose last run is
     # older than its loop_stale_days entry means the main loop isn't calling
@@ -419,11 +491,12 @@ def main(argv):
         print(limits_table())
         return 0
     props = proposals(load_limits())
-    print("== PROPOSALS (ledger trends vs thresholds; `python tools/ledger_trends.py "
-          "--limits`; NOTHING is applied - the owner decides)")
+    print("== PROPOSALS ([DO] = done in this reply by a script, a hook or an employee, "
+          "THE PROPOSAL LAW 2026-09-29; [ASK] = only the owner can answer; "
+          "`python tools/ledger_trends.py --limits`)")
     if props:
         for p in props:
-            print("  " + p)
+            print("  " + tagged(p))
     else:
         print("  none - every ledger trend is inside its threshold")
     for ln in info_lines():

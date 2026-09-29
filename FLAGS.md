@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-28 23:44 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 | stale 13
+Updated 2026-09-29 00:24 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 | stale 13
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -65,9 +65,9 @@ Updated 2026-09-28 23:44 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 
 | hooks/preserve_guard.py | GREEN | STALE | fable-ws1 | 2026-09-20 17:37 |
 | hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-28 23:37 |
 | hooks/session_end.py | - | UNFLAGGED | - | - |
-| hooks/session_start.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| hooks/session_start.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-09-20 03:21 |
-| hooks/stop_tick.py | GREEN | ok | fable | 2026-09-28 23:44 |
+| hooks/stop_tick.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | hooks/verify_advisor.py | - | UNFLAGGED | - | - |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | - | UNFLAGGED | - | - |
@@ -83,7 +83,7 @@ Updated 2026-09-28 23:44 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 
 | reference tools/format_lint.py | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
-| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-09-14 16:55 |
@@ -94,9 +94,9 @@ Updated 2026-09-28 23:44 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
 | reference tools/run_all.py | GREEN | STALE | fable | 2026-09-20 03:21 |
-| reference tools/standup.py | GREEN | ok | fable | 2026-09-14 19:02 |
+| reference tools/standup.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/usage_report.py | GREEN | ok | fable | 2026-09-14 01:01 |
+| reference tools/usage_report.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | STALE | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
@@ -903,3 +903,28 @@ FLAG: Matches the purpose exactly: read-only indexing plus a printed pointer; th
 SAYS: Stop hook that ticks the checkpoint counter only when work actually happened (HEAD moved or the tree changed since the last Stop), shows an advised system message at 8 tasks or under 80% context, refuses to end the turn once at 15 tasks or under 30% context (re-blocking every 5 further tasks), refuses once when a safety hook has gone unwired in settings.json, warns once per unexported commit count when the changelog anchor has fallen behind HEAD, and since 2026-09-28 refuses once per prompt when the reply names a checkpoint as due without the safe-to-clear marker (the reply text read from the transcript).
 DOES: Stop hook: ticks the counter on real work, advises at 8 or under 80 percent, refuses once at 15 or under 30 percent, refuses once on broken safety wiring, warns once per unexported commit count, and since kit v1.34 reads the turn's reply text from the transcript through lesson_log and refuses once per prompt when it names a checkpoint as due without the safe-to-clear marker (CHECKPOINT NAMED); dedup key per prompt in the hook state, stop_hook_active stops a loop
 FLAG: PURPOSE names the new refusal; the check reads the transcript only, writes the dedup key to the hook state it already owns, and the once-per-prompt key plus stop_hook_active mean it can never trap a turn
+
+### 2026-09-29 00:24 | hooks/stop_tick.py | GREEN | fable | WS1 | e886573b
+SAYS: Stop hook that ticks the checkpoint counter only when work actually happened (HEAD moved or the tree changed since the last Stop), shows an advised system message at 8 tasks or under 80% context, refuses to end the turn once at 15 tasks or under 30% context (re-blocking every 5 further tasks), refuses once when a safety hook has gone unwired in settings.json, warns once per unexported commit count when the changelog anchor has fallen behind HEAD, and since 2026-09-28 refuses once per prompt when the reply names a checkpoint as due without the safe-to-clear marker (the reply text read from the transcript), and since 2026-09-29 refuses once per prompt when the reply names a DO proposal that its ledger still raises (PROPOSAL NAMED).
+DOES: Ticks the checkpoint counter on real work, warns or refuses by task count and context, refuses on broken safety wiring, warns once per unexported commit count, refuses once per prompt when the reply names a checkpoint as due without the marker, and since 2026-09-29 refuses once per prompt when the reply names a DO proposal that ledger_trends still raises; the reply text comes from the transcript, the proposals from ledger_trends.open_do with no ledger write.
+FLAG: PURPOSE names every refusal including the new PROPOSAL NAMED; the check only reads, its state key prop_named_turn keeps it to once per prompt, and stop_hook_active stops a loop; six selftest cases carry the incident reply.
+
+### 2026-09-29 00:24 | hooks/session_start.py | GREEN | fable | WS1 | 8a7f9b93
+SAYS: SessionStart hook that runs tools/standup.py and injects its digest into the manager's context on startup, resume, /clear and after a compaction, with a header telling the manager not to re-run standup and how to relay the last exchange; also runs the session group itself when it has not run today (THE LOOP LAW) and ledgers the digest's byte size.
+DOES: Runs the session group once a day, runs standup.py, injects the digest with a preamble that now names THE PROPOSAL LAW (DO lines are the first reply's work, ASK lines are questions), and ledgers the digest size.
+FLAG: The preamble sentence is text the manager reads, described in PURPOSE by way of the standup relay; no new side effect.
+
+### 2026-09-29 00:24 | reference tools/ledger_trends.py | GREEN | fable | WS1 | b3f73680
+SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop, the lesson loop), compares them against tunable thresholds, and prints proposed rule changes, each tagged [DO] (a script, hook or employee carries it out in the reply that reads it) or [ASK] (only the owner can answer); it applies nothing itself.
+DOES: Reads the ledger tails, compares against the thresholds file, prints each proposal tagged DO or ASK from a fixed ACTION table, exposes open_do and HOW for the Stop hook, and records a proposal_runs line only when the set changed; applies nothing.
+FLAG: PURPOSE updated to name the classes; open_do() calls proposals() without record(), so a hook read never writes the ledger.
+
+### 2026-09-29 00:24 | reference tools/standup.py | GREEN | fable | WS1 | ad3ccd68
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: Prints the standup digest: the last exchange from the transcript, WHERE WE LEFT OFF, the budget, the loop, the proposals, commits, the core check, notes, ledger tails (a moved all-clear that repeats the previous one collapses), the roadmap (long entries as first clause ... last clause), open questions, recent days.
+FLAG: Both trims are loss-test cuts described in the code and self-audit.md; twelve selftest cases; nothing written but the usage refresh it already ran.
+
+### 2026-09-29 00:24 | reference tools/usage_report.py | GREEN | fable | WS1 | bd5f06ac
+SAYS: Mines the Claude Code harness JSONL transcripts for real per model per tool token usage and writes an aggregate usage sheet (CSV, TXT, XLSX, employee runs, and the daily budget line) totaled by day, week and month, plus usage_by_arc.txt (checkpoint to checkpoint) and cache_misses.txt + cache_miss_runs.txt (every miss with its likely cause).
+DOES: Builds the usage sheets and ledgers from the transcripts; the cache-miss run ledger now skips a line whose fields after the stamp equal the previous line's, so two hooks minutes apart ledger one reading.
+FLAG: A dedupe on an append-only ledger; the skipped line is the same reading, not a lost one.

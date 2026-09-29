@@ -45,6 +45,21 @@ NAMED, and the manager makes the checkpoint before the reply ends. A
 reply that made it ends with the marker and passes; a mention of the
 counter or the state file alone never trips it.
 
+THE PROPOSAL NAMED CHECK (the CEO 2026-09-29, correction C0005, after a
+standup reply relayed "The systems audit is 14 days and 10 day files
+overdue ... The standup digest is about 3.2k tokens and wants a trim" and
+asked what to work on: "If an audit is required, and it can be done with
+a sub-agent, or a script, it doesn't need my permission. Just do it. If
+the standup digest requires a trim, it doesn't need my permission. Do
+it."): the hook asks ledger_trends for the DO proposals that clear when
+done (CLEARS: the systems audit, the README audit, the digest trim, a
+stale loop group, dead wiki links, an unwritten lesson, stale intent
+claims); if this turn's reply NAMES one of them (its words or its ledger
+name) while its ledger still raises it, the turn is refused once per
+prompt with PROPOSAL NAMED and the manager does it before the reply ends.
+A reply that did it passes because the ledger no longer proposes; a reply
+that never mentions it passes (mid-arc work is not held hostage).
+
 PURPOSE: Stop hook that ticks the checkpoint counter only when work actually
   happened (HEAD moved or the tree changed since the last Stop), shows an
   advised system message at 8 tasks or under 80% context, refuses to end
@@ -53,7 +68,9 @@ PURPOSE: Stop hook that ticks the checkpoint counter only when work actually
   settings.json, warns once per unexported commit count when the
   changelog anchor has fallen behind HEAD, and since 2026-09-28 refuses
   once per prompt when the reply names a checkpoint as due without the
-  safe-to-clear marker (the reply text read from the transcript).
+  safe-to-clear marker (the reply text read from the transcript), and
+  since 2026-09-29 refuses once per prompt when the reply names a DO
+  proposal that its ledger still raises (PROPOSAL NAMED).
 INTENT: makes the checkpoint discipline mechanical rather than a reminder
   the manager can forget, makes the format law's safety wiring impossible
   to quietly drop by refusing to end a turn that broke it, and makes an
@@ -61,7 +78,7 @@ INTENT: makes the checkpoint discipline mechanical rather than a reminder
 
 Search keys: stop hook, auto tick, checkpoint counter, dire, block stop,
 safety wiring, changelog warning, changelog anchor, checkpoint named,
-reply names a checkpoint.
+reply names a checkpoint, proposal named, the proposal law, do not ask.
 See also: tools/checkpoint.py (counter, fingerprint, --reset);
 tools/export_changelog.py (the anchor file); .claude/skills/checkpoint
 (the ritual the warning asks for); tools/lesson_log.py (the transcript
@@ -90,6 +107,44 @@ def checkpoint_named(text):
     if not text or CP_MARKER in text.lower():
         return False
     return bool(CP_DUE_RE.search(text))
+
+
+# THE PROPOSAL NAMED CHECK (C0005): the words a reply uses when it relays a
+# DO proposal instead of doing it, per ledger, plus the ledger's own name.
+_PROPOSAL_WORDS = {
+    "systems_audit_runs.txt": r"systems.audit|four.lane audit|operating.system audit",
+    "readme_audit_runs.txt": r"readme.audit",
+    "digest_size.txt": r"digest\b[^\n;]{0,100}\b(trim|split|shrink|smaller)|"
+                       r"\b(trim|split|shrink)\w*\b[^\n;]{0,100}digest|digest_size",
+    "loop_runs.txt": r"\b(loop|run_all)\b[^.\n]{0,60}\b(stale|last ran|never|overdue)|loop_runs",
+    "wiki_link_runs.txt": r"dead (wiki )?links?|wiki_link",
+    "lesson_runs.txt": r"lesson advised|unwritten lesson|lessons? (went |left )?unwritten|lesson_runs",
+    "intent_log.txt": r"intent claims? (pending|stale|unresolved)|pending (intent )?claims?|intent_log",
+}
+
+
+def proposal_named(text, open_props):
+    """The ledger names of the still-open DO proposals this reply names.
+    `open_props` are ledger_trends.open_do() lines; [] when nothing is named."""
+    if not text or not open_props:
+        return []
+    hits = []
+    for prop in open_props:
+        m = re.match(r"^PROPOSE \(([^)]+)\)", prop)
+        name = m.group(1) if m else ""
+        pat = _PROPOSAL_WORDS.get(name)
+        if pat and re.search(pat, text, re.I) and name not in hits:
+            hits.append(name)
+    return hits
+
+
+def open_do_proposals():
+    """ledger_trends.open_do() without touching its ledger; [] on any trouble."""
+    try:
+        import ledger_trends as _lt
+        return _lt.open_do()
+    except Exception:  # noqa: BLE001 - a hook never crashes the turn
+        return []
 
 
 def reply_text(transcript_path):
@@ -229,6 +284,32 @@ def main():
         emit({"decision": "block", "reason": reason})
         sys.exit(0)
 
+    # THE PROPOSAL NAMED CHECK (the CEO 2026-09-29, C0005: "it doesn't need
+    # my permission. Just do it."): a reply that names a DO proposal its
+    # ledger still raises is refused once per prompt; doing it clears the
+    # ledger, so the second Stop passes.
+    _hits = proposal_named(_text, open_do_proposals())
+    if _hits and mine.get("prop_named_turn") != _turn:
+        mine["prop_named_turn"] = _turn
+        state[ws] = mine
+        cp.save_hook_state(state)
+        try:
+            import ledger_trends as _lt
+            _how = "; ".join("%s: %s" % (h, _lt.HOW.get(h, "see WORKFLOWS.md")) for h in _hits)
+        except Exception:  # noqa: BLE001
+            _how = ", ".join(_hits)
+        reason = ("[HOOK stop_tick] PROPOSAL NAMED (the CEO 2026-09-29, C0005: \"If an audit "
+                  "is required, and it can be done with a sub-agent, or a script, it doesn't "
+                  "need my permission. Just do it.\"): this reply names a [DO] proposal that "
+                  "its ledger still raises and did not do it. MANAGER: do it in this reply, "
+                  "never offer it as a choice - %s. If an employee is already on it, say so "
+                  "in one line and finish when it returns; this check fires once per prompt."
+                  % _how)
+        if note:
+            reason += "\n" + note
+        emit({"decision": "block", "reason": reason})
+        sys.exit(0)
+
     if ticked and level == "dire":
         due = (n >= 15 and n - int(mine.get("blocked_n", 0)) >= 5) or \
               (ctx_dire and not mine.get("ctx_blocked"))
@@ -363,6 +444,37 @@ def _selftest():
     fails += not ok
     ok = not checkpoint_named("")
     print(("PASS  " if ok else "FAIL  ") + "named: empty text passes")
+    fails += not ok
+
+    # THE PROPOSAL NAMED CHECK (C0005): the incident reply (the standup relay
+    # that asked what to work on) trips it for both DO ledgers it named; the
+    # same words pass once the ledgers no longer propose; a reply that never
+    # names an open proposal passes; a [DO] relay by ledger name trips it.
+    incident = ("Proposals: four corrections in seven days point at a missing law or INTENT "
+                "section. The systems audit is 14 days and 10 day files overdue. Q0001 has waited "
+                "16 days, with Q0002 and Q0004 also open. The standup digest is about 3.2k tokens "
+                "and wants a trim.\n\nWhat do you want to work on: NS-30's flat surfaces, the "
+                "overdue systems audit, the corrections pattern, the core diet, or one of the open questions?")
+    open_ = ["PROPOSE (systems_audit_runs.txt): 14 day(s) and 10 day file(s) since the last systems audit",
+             "PROPOSE (digest_size.txt): the standup digest is 13655 bytes (~3413 tokens) at every session start"]
+    hits = proposal_named(incident, open_)
+    ok = hits == ["systems_audit_runs.txt", "digest_size.txt"]
+    print(("PASS  " if ok else "FAIL  ") + "proposal named: the C0005 reply trips both DO ledgers it named")
+    fails += not ok
+    ok = proposal_named(incident, []) == []
+    print(("PASS  " if ok else "FAIL  ") + "proposal named: the same words pass once nothing is proposed (it was done)")
+    fails += not ok
+    ok = proposal_named("Shipped v0.99.49: the touch toolbar wears wood.", open_) == []
+    print(("PASS  " if ok else "FAIL  ") + "proposal named: a reply that never names an open proposal passes")
+    fails += not ok
+    ok = proposal_named("PROPOSE [DO] (systems_audit_runs.txt): 14 day(s) ...", open_) == ["systems_audit_runs.txt"]
+    print(("PASS  " if ok else "FAIL  ") + "proposal named: a relay by ledger name trips it")
+    fails += not ok
+    ok = proposal_named("The README audit ran on 09-26; nothing else moved.", open_) == []
+    print(("PASS  " if ok else "FAIL  ") + "proposal named: naming a ledger that is NOT open passes")
+    fails += not ok
+    ok = proposal_named("", open_) == []
+    print(("PASS  " if ok else "FAIL  ") + "proposal named: empty text passes")
     fails += not ok
 
     print("stop_tick selftest: %d failed" % fails)

@@ -143,6 +143,17 @@ TIER 1 - the resumption + checkpoint loop:
    / advised / ready / should / whenever / now) without the safe-to-clear
    marker: naming a checkpoint is making it, and the manager's own reply
    is a valid source like any hook line.
+   Since kit v1.35 (THE PROPOSAL NAMED CHECK, 2026-09-29, correction
+   C0005: "If an audit is required, and it can be done with a sub-agent,
+   or a script, it doesn't need my permission. Just do it.") the same
+   reader holds the reply to the standup's proposals: ledger_trends.py
+   tags every PROPOSE line [DO] or [ASK] and exposes the DO ones that
+   clear when done (the systems audit, the README audit, the digest trim,
+   a stale loop group, dead links, an unwritten lesson, a stale claim);
+   a reply that names one of them while its ledger still raises it is
+   refused once per prompt with PROPOSAL NAMED, and the block's reason
+   carries the scripted way (HOW). A reply that did it passes because
+   the ledger no longer proposes; a reply that never mentions it passes.
 
 6. `session_end.py` (SessionEnd; kit v1.28, THE AUTO-CHECKPOINT, the
    CEO's ask 2026-09-20: "Can we make /clear automatically check for a
@@ -676,3 +687,15 @@ idles after a long employee run.
   lesson loop's transcript reader) and refuses once per prompt when it
   names a checkpoint as due without the marker; stop_hook_active keeps
   it from looping; five selftest cases carry the incident sentence.
+- 2026-09-29 WS1: THE PROPOSAL NAMED CHECK (kit v1.35). The first reply
+  after /clear relayed the digest's four PROPOSE lines and asked what
+  to work on; the CEO: "If an audit is required, and it can be done with
+  a sub-agent, or a script, it doesn't need my permission. Just do it.
+  If the standup digest requires a trim, it doesn't need my permission.
+  Do it." (C0005, the fourth relay of the week: C0002 a hook's ADVISED,
+  C0003 a hook's warning, C0004 the manager's own sentence, C0005 a
+  standup proposal - one law, a line that names work is an order).
+  ledger_trends.py tags every proposal [DO] / [ASK]; session_start.py's
+  preamble says the DO lines are the first reply's work; stop_tick.py
+  refuses once per prompt when the reply names a [DO] proposal its
+  ledger still raises; six selftest cases carry the incident reply.

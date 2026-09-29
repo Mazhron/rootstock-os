@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.34** (2026-09-28). The graft log `UPGRADES.md` is the
+Kit version: **v1.35** (2026-09-29). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -262,7 +262,13 @@ that make it work:
   (code moved after the doc was last opened is the only kind worth a
   look; cold by read count is never a reason to shelve), and a trends
   script turns ledger tails into PROPOSE lines at standup when a threshold
-  crosses. Nothing is applied by itself; the owner decides.
+  crosses. Nothing is applied by a script; and since v1.35 every line
+  carries its class: a [DO] proposal (an audit, a digest trim, a stale
+  loop group, dead links, an unwritten lesson: anything a script, a hook
+  or an employee carries) is done in the reply that reads it, never
+  offered as a choice, while an [ASK] proposal (an open question, a
+  shelf, a game number) waits for the owner. "The owner decides" names
+  the ASK class, not the mechanics.
 - **The lessons book (the lesson loop).** Steps live in the process
   registry; judgment lives in LESSONS.md: one entry per task shape, THE
   ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, then
@@ -409,7 +415,10 @@ because context lives in files, not in the conversation.
   failure; and since v1.34 the SOURCE is closed too: a reply that names
   a checkpoint as the natural next step has just ordered one, and the
   Stop hook refuses the reply once until it ends with the safe-to-clear
-  marker (naming a checkpoint is making it). At an
+  marker (naming a checkpoint is making it); and since v1.35 a standup
+  proposal is a source of the same kind: a reply that names a [DO]
+  proposal its ledger still raises is refused once until it is done
+  (PROPOSAL NAMED). At an
   arc's end the manager runs the session loop, checks for an unlogged
   workflow gap or lesson, pushes, refreshes the day file, and emits the
   marker: "CHECKPOINT - safe to /clear. Nothing in this chat exists only
@@ -573,8 +582,10 @@ last thing needs correcting, records your words verbatim, marks the
 claim DIFFERENT, then asks "What was the intent?" and `/intent` files
 the why while the mismatch is fresh. A systems audit, ledgered and
 proposed on a cadence, has read-only employees look at tokens, process,
-knowledge and shipped features and return proposals only. Nothing in
-this loop applies anything by itself; the owner decides.
+knowledge and shipped features and return proposals only. No employee
+applies anything; since v1.35 the manager does the audit's [DO]
+proposals in the batch and relays its [ASK] proposals, and the audit
+itself runs in the reply whose standup proposed it.
 
 The first systems audit ran on 2026-09-14 (kit v1.21). Four read-only
 employees returned 26 proposals; the owner ruled on every one. What it

@@ -1324,10 +1324,21 @@ def main():
         datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), ws, miss_n,
         ktok(int(miss_wasted)), dominant)
     need_header = not os.path.isfile(MISS_RUNS_OUT)
+    # THE REPEATED RUN (systems audit 2026-09-29, TOKENS T1): two hooks run
+    # this report minutes apart and the same misses were ledgered twice,
+    # doubling the "wasted" figure the daily CHECK quotes. A line whose
+    # fields after the stamp equal the previous line's is the same reading.
+    prev = ""
+    if not need_header:
+        with open(MISS_RUNS_OUT, encoding="utf-8") as fh:
+            data = [ln.rstrip() for ln in fh if ln.strip() and not ln.startswith("#")]
+        prev = data[-1] if data else ""
+    same = prev.split(" | ", 1)[-1] == run_line.split(" | ", 1)[-1]
     with open(MISS_RUNS_OUT, "a", encoding="utf-8") as fh:
         if need_header:
             fh.write(run_header + "\n")
-        fh.write(run_line + "\n")
+        if not same:
+            fh.write(run_line + "\n")
 
     xlsx_note = write_xlsx(rows, emp)
     if quiet:

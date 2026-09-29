@@ -980,3 +980,40 @@ See also: WORKFLOWS.md "Section or split a file the big-reads ledger
 names" (the batch-edit lesson nuance: one anchor per replacement, one
 file per script run); tools/route_index.py (the tool born in this batch);
 docs/systems/self-audit.md "The route line".
+
+## A standup proposal is this reply's work (the PROPOSE line is an order, not a menu, 2026-09-29)
+Tags: lessons, process, learning loop | A [DO] proposal at standup (an audit, a trim, a loop run) is done in the first reply by a script or an employee; only an [ASK] line is a question for Mazhron
+Keys: proposal, PROPOSE, standup proposals, what to work on, learning loop, owner decides, systems audit overdue, digest trim, do it, permission, ask permission, proposal named, DO ASK, C0005, four corrections, name the pattern
+
+THE ONE RIGHT WAY: the first reply after standup relays the digest, then
+DOES every PROPOSE [DO] line in that same reply: the systems audit is four
+read-only employees plus --record, the digest trim is the loss test plus
+a measurement, a stale loop group is one run_all call, dead links are
+fixed, an unwritten lesson is written, a stale claim is resolved, a
+corrections pattern is named and its law drafted. Only the [ASK] lines
+(an open question, a shelf, a declining agreement rate, a game number)
+are put to Mazhron, and the reply ends with what was done, not with a
+menu. "The owner decides" names the ASK class, never the mechanics.
+
+- TRIED (2026-09-29, the first reply after /clear): the digest carried
+  four PROPOSE lines; the reply summarized them under "Proposals" and
+  closed with "What do you want to work on: NS-30's flat surfaces, the
+  overdue systems audit, the corrections pattern, the core diet, or one
+  of the open questions?" FAILED BECAUSE: the learning-loop law's closing
+  words, "Mazhron decides", were read as "every proposal is a question";
+  an audit an employee runs and a trim a loss test governs carry no
+  decision, only work, so offering them was the fourth relay of the week
+  (C0002, C0003, C0004 were the same shape with a hook line or the
+  manager's own sentence as the source). Mazhron: "If an audit is
+  required, and it can be done with a sub-agent, or a script, it doesn't
+  need my permission. Just do it." DO INSTEAD: the way above; the tags
+  now say which is which, and the Stop hook refuses a reply that names a
+  [DO] proposal its ledger still raises (PROPOSAL NAMED).
+- NUANCE: an audit's own proposals follow the same split: its DO items
+  the manager does in the batch (or briefs next), its ASK items are
+  relayed verbatim; an employee still applies nothing.
+
+See also: INTENT.md "The proposal law"; "If the hook says checkpoint
+advised, I shouldn't have to type /checkpoint" (the same law, the hook
+and the reply as sources); tools/ledger_trends.py (ACTION); tools/hooks/
+stop_tick.py (PROPOSAL NAMED); WORKFLOWS.md "Audit the operating system".

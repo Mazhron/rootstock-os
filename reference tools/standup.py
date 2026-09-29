@@ -325,18 +325,29 @@ def last_standup_stamp(ledger_text):
 
 
 def tails_plan(ledgers, since):
-    """ledgers: [(name, newest_line)] -> (full: [(name, line)], quiet: [name date]).
-    Full when the line has a verdict or is newer than `since`; quiet otherwise."""
+    """ledgers: [(name, newest_line[, previous_line])] -> (full: [(name, line)],
+    quiet: [name date]). Full when the line has a verdict or is newer than
+    `since`; quiet otherwise. THE REPEATED ALL-CLEAR (2026-09-29, the second
+    trim, the loss test): a new line that only says all is well, after a
+    previous line that said the same, duplicates it - it collapses to
+    'name date ok' and stays one `tail -1` away."""
     full, quiet = [], []
-    for name, line in ledgers:
+    for row in ledgers:
+        name, line = row[0], row[1]
+        prev = row[2] if len(row) > 2 else ""
         if name in SHOWN_ELSEWHERE:
             continue
         st = line_stamp(line)
-        if has_verdict(line) or (st and since and st > since):
+        short = name[:-4] if name.endswith(".txt") else name
+        if has_verdict(line):
             full.append((name, line))
+        elif st and since and st > since:
+            if prev and all_clear(line) and all_clear(prev):
+                quiet.append("%s %s ok" % (short, st[5:10]))
+            else:
+                full.append((name, line))
         else:
-            quiet.append("%s %s" % (name[:-4] if name.endswith(".txt") else name,
-                                    st[5:10] if st else "-"))
+            quiet.append("%s %s" % (short, st[5:10] if st else "-"))
     return full, quiet
 
 
@@ -352,6 +363,41 @@ def wrap_names(names, width=96, indent="    "):
     if cur:
         out.append(indent + cur)
     return out
+
+
+_ALL_CLEAR = re.compile(r"\b(PASS|clean|ok|none|OK|WRITTEN|already checkpointed|no verdict)\b")
+
+
+def all_clear(line):
+    """True when a ledger line says only that nothing is wrong."""
+    return bool(_ALL_CLEAR.search(line)) and not has_verdict(line)
+
+
+def roadmap_line(line, cap=200, head_cap=110, tail_cap=200):
+    """THE DIGEST DIET (2026-09-29, the second trim): a roadmap line longer
+    than `cap` prints as its first clause and its last clause (the NEXT /
+    status clause), joined by ' ... '; the whole line stays in NEXT_STEPS.md,
+    and WHERE WE LEFT OFF carries the next step in full."""
+    line = line.strip()
+    if len(line) <= cap:
+        return line
+    m = re.match(r"(- \[NS-\d+\]\s*)(.*)", line, flags=re.S)
+    prefix, body = (m.group(1), m.group(2)) if m else ("", line)
+    head = re.split(r";| \(", body, maxsplit=1)[0].strip().rstrip(",:")
+    if len(head) > head_cap:
+        head = head[:head_cap].rstrip() + "..."
+    nxt = body.rfind("NEXT")
+    if nxt > 0:
+        tail = body[nxt:]
+    elif ";" in body:
+        tail = body.rsplit(";", 1)[-1].strip()
+    else:  # one long clause: the head alone, the file has the rest
+        return line[:cap].rstrip() + "..."
+    if len(tail) > tail_cap:
+        tail = tail[:tail_cap].rstrip() + "..."
+    if tail.startswith(head):
+        return prefix + tail
+    return "%s%s ... %s" % (prefix, head, tail)
 
 
 def first_clause(summary, cap=150):
@@ -393,6 +439,33 @@ def selftest():
     check("first_clause cuts at ' then '", first_clause("I0002 explained then THE AUDIT") == "I0002 explained")
     check("first_clause caps long text", first_clause("x" * 200).endswith("..."))
     check("wrap_names wraps", len(wrap_names(["n%02d 09-14" % i for i in range(30)])) > 1)
+    # THE SECOND TRIM (2026-09-29): the repeated all-clear and the roadmap line.
+    check("all_clear: PASS clean is", all_clear("2026-09-28 23:45 | WS1 | 139 | 0 | PASS | clean"))
+    check("all_clear: a CHECK is not", not all_clear("2026-09-28 | WS1 | CHECK: spend +30%"))
+    check("all_clear: numbers alone are not", not all_clear("2026-09-28 23:45 | WS1 | 15 | 2.1 | x.md (3)"))
+    full, quiet = tails_plan([("f_runs.txt", "2026-09-28 23:45 | WS1 | PASS | clean",
+                               "2026-09-28 21:02 | WS1 | PASS | clean"),
+                              ("g_runs.txt", "2026-09-28 23:45 | WS1 | PASS | clean",
+                               "2026-09-28 21:02 | WS1 | FAIL | 2"),
+                              ("h_runs.txt", "2026-09-28 23:45 | WS1 | 15 | 2.1", "")],
+                             "2026-09-28 21:02")
+    check("a repeated all-clear collapses to name date ok", quiet == ["f_runs 09-28 ok"])
+    check("an all-clear after a verdict prints in full", any(n == "g_runs.txt" for n, _ in full))
+    check("a new line with numbers prints in full", any(n == "h_runs.txt" for n, _ in full))
+    short = "- [NS-7] itch upload automation via butler (ON HOLD - the CEO 2026-08-31: holding off for now)"
+    check("roadmap_line keeps a short entry whole", roadmap_line(short) == short)
+    long_ = ("- [NS-30] The Everwood UI theme: wood borders BUILT 2026-09-25 (v0.99.36: five woods); "
+             "wood BUTTONS BUILT (v0.99.38); the flair decals BUILT by WS2 2026-09-26; the HUD hover "
+             "popups BUILT 2026-09-28 (v0.99.47); NEXT (the CEO 2026-09-28: \"add the UI to everything "
+             "except the world map zone tiles\") the wood on every other still-flat surface")
+    rl = roadmap_line(long_)
+    check("roadmap_line keeps the id and the first clause", rl.startswith("- [NS-30] The Everwood UI theme: wood borders BUILT 2026-09-25"))
+    check("roadmap_line keeps the NEXT clause", "NEXT (the CEO 2026-09-28" in rl and rl.endswith("still-flat surface"))
+    check("roadmap_line drops the middle", "flair decals" not in rl and " ... " in rl)
+    nonext = "- [NS-2] Vitality gates: per-run purchase (BUILT 2026-09-21 as the road; " + "x" * 150 + "; first-pass prices await the retune)"
+    check("roadmap_line without NEXT keeps the last clause", roadmap_line(nonext).endswith("first-pass prices await the retune)"))
+    oneclause = "- [NS-8] First-pass numbers to retune: " + "y" * 250
+    check("roadmap_line caps a single long clause", roadmap_line(oneclause).endswith("...") and len(roadmap_line(oneclause)) <= 204)
     print("standup selftest: %d failed" % len(fails))
     return 1 if fails else 0
 
@@ -525,7 +598,8 @@ def main():
             lines = [ln.rstrip() for ln in fh if ln.strip()
                      and not ln.startswith("#")]
         if lines:
-            ledgers.append((os.path.basename(path), lines[-1]))
+            ledgers.append((os.path.basename(path), lines[-1],
+                            lines[-2] if len(lines) > 1 else ""))
     full, quiet = tails_plan(ledgers, since)
     print("== LEDGER TAILS (docs/history/; full line = a verdict or new since the last standup%s; `tail -3 <ledger>` for a trend)"
           % (" " + since if since else ""))
@@ -536,12 +610,12 @@ def main():
         for ln in wrap_names(quiet):
             print(ln)
 
-    print("== OPEN ROADMAP (NEXT_STEPS index)")
+    print("== OPEN ROADMAP (NEXT_STEPS.md; a long entry prints first clause ... last clause)")
     try:
         with open(os.path.join(ROOT, "NEXT_STEPS.md"), encoding="utf-8") as fh:
             for ln in fh:
                 if ln.startswith("- [NS-"):
-                    print("  " + ln.strip())
+                    print("  " + roadmap_line(ln))
     except OSError:
         print("  (no NEXT_STEPS.md)")
 

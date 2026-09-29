@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.34** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.35** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1282,3 +1282,47 @@ checkpoint as due from any valid source (a hook, the manager's own
 reply)". Add the C0004 line to the project's ADVISED lesson.
 README: "The Checkpoint Protocol" bullet in "5. The Reporting Method"
 (the source clause) and the "Kit version:" line.
+
+### v1.35 - 2026-09-29 - The proposal law (a DO proposal is done, never asked)
+WHAT: The first reply after a /clear relayed the digest's four PROPOSE
+lines ("the systems audit is 14 days overdue ... the digest wants a
+trim") and asked what to work on. The origin CEO: "If an audit is
+required, and it can be done with a sub-agent, or a script, it doesn't
+need my permission. Just do it. If the standup digest requires a trim,
+it doesn't need my permission. Do it. These need to be added to
+rootstock." (correction C0005, the fourth relay of one week: v1.13 an
+ADVISED checkpoint, v1.31 a hook warning, v1.34 the manager's own
+sentence, now a standup proposal - one law: a line that names work as
+due, from any valid source, is an order done in that reply; the owner is
+asked only what only the owner can answer). The learning loop's "the
+owner decides" names the ASK class, never the mechanics. Mechanically:
+ledger_trends.py tags every PROPOSE line [DO] (a script, hook, employee
+or diet carries it) or [ASK] (an open question, a shelf, a declining
+rate, a game number), exposes the DO ones that clear when done and a HOW
+line per ledger; session_start.py's preamble says the DO lines are the
+first reply's work; stop_tick.py refuses once per prompt with PROPOSAL
+NAMED when the reply names a [DO] proposal its ledger still raises. The
+same batch ran the overdue systems audit (four read-only lanes, their
+DO items done or briefed, their ASK items relayed) and the second digest
+trim under the loss test (a moved line that only repeats the previous
+all-clear collapses; a long roadmap entry prints first clause ... last).
+CARRIES: reference tools/ledger_trends.py (ACTION, CLEARS, HOW, tagged,
+open_do, the header line), hooks/stop_tick.py (_PROPOSAL_WORDS,
+proposal_named, open_do_proposals, the block, six selftest cases),
+hooks/session_start.py (the preamble sentence), reference tools/
+standup.py (all_clear, roadmap_line, the tails plan, twelve selftest
+cases), HOOKS_METHOD.md (item 2 + change log), hooks/README.txt; this
+entry.
+GRAFT: copy the four scripts fresh or port: in ledger_trends add ACTION /
+CLEARS / HOW and print tagged lines; in stop_tick add proposal_named +
+the block after the checkpoint-named block (it imports ledger_trends, so
+that reference tool sits in tools/); in session_start extend the
+preamble; in standup add all_clear + roadmap_line. Run every --selftest.
+In the project's CLAUDE.md rewrite the learning-loop law: "a [DO]
+proposal is done in the reply that reads it, never asked; the owner
+decides only [ASK] ones". Add the lesson (a standup proposal is this
+reply's work) and the INTENT section in the CEO's words.
+README: "The wiki learns (the learning loop)" bullet in "1. The Knowledge
+Wiki" (the DO / ASK classes), "The Checkpoint Protocol" bullet in "4.
+Lossless Sessions" (the proposal source), the systems-audit paragraph in
+"The intent loop", and the "Kit version:" line.
