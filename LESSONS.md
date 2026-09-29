@@ -1182,3 +1182,28 @@ See also: tools/ledger_trends.py (the HOW line under digest_size.txt);
 docs/systems/self-audit.md "The digest size ledger"; "Apply a long
 batch of file edits from the shell" below (the fifth trim's order:
 edit, selftest, then measure and ledger).
+
+## Trim every auto-memory store, not just the one that loads (the harness keys a store by the folder a session opens in, 2026-09-29)
+Tags: lessons, memory, workstations | One machine can hold several auto-memory stores for one project; a trim that reads only the loaded MEMORY.md misses the others
+Keys: auto-memory, memory trim, memory store, MEMORY.md, second store, parent folder, current-state-and-next-steps, banked memory, stub superseded
+
+THE ONE RIGHT WAY: before a memory trim (or any claim about what
+auto-memory holds), list every store for the project:
+`ls ~/.claude/projects/ | grep -i everwood`, then each one's memory/
+folder. A session opened at the repo folder and one opened at its parent
+folder read different stores. Bank and stub each store the same way
+(WORKFLOWS.md "Reference or restore a banked auto-memory"; WIKI_METHOD.md
+"The harness memory").
+
+- TRIED (2026-09-22 to 09-29): WS1's trim task sat open for a week while
+  the loaded store (the repo folder's) already looked trimmed: two small
+  entries. FAILED BECAUSE: the 14 untrimmed memories, including the
+  current-state-and-next-steps.md the 09-29 systems audit named, lived in
+  the parent-folder store (slug ...Everwood---Idle-Clicker, no repo
+  suffix), which no repo session loads. DO INSTEAD: the listing above; the
+  2026-09-29 trim banked all 14 plus the index into docs/systems/
+  memory-bank.md.
+
+See also: docs/systems/memory-bank.md "What stayed in auto-memory";
+WORKFLOWS.md "Reference or restore a banked auto-memory"; docs/index/
+notes.md (WS2's task to check its own stores).

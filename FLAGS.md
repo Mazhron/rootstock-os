@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-29 16:36 | items 76 | GREEN 70 | YELLOW 0 | RED 0 | unflagged 6 | stale 20
+Updated 2026-09-29 16:38 | items 76 | GREEN 70 | YELLOW 0 | RED 0 | unflagged 6 | stale 20
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -107,7 +107,7 @@ Updated 2026-09-29 16:36 | items 76 | GREEN 70 | YELLOW 0 | RED 0 | unflagged 6 
 | skills/brief/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/checkpoint/SKILL.md | GREEN | STALE | fable | 2026-09-20 03:21 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
-| skills/flag/SKILL.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| skills/flag/SKILL.md | GREEN | ok | fable-manager | 2026-09-29 16:38 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/preserve/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/runaway/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
@@ -957,3 +957,8 @@ FLAG: Matches in substance. Off: the PURPOSE line and CHECK B text say named in 
 SAYS: Ledger two proxies for laws no other script measures: notes.md entries actioned but not swept to history.md, and tools changed in 30 days that no WORKFLOWS.md entry, run_all group, hook setting or skill names.
 DOES: Appends one line each to sweep_audit_runs.txt and workflow_gap_runs.txt: notes.md bullets whose status parenthesis holds the whole word actioned, done, closed or resolved, and tools changed in 30 days of git log named in none of WORKFLOWS.md, tools/run_all.py, .claude/settings.json or a skill file. Writes nothing else, deletes nothing.
 FLAG: The 16:36 YELLOW's two fixes landed: PURPOSE and CHECK B now name the full named corpus, and the actioned test matches whole words (selftest case added). Does what it says, nothing more.
+
+### 2026-09-29 16:38 | skills/flag/SKILL.md | GREEN | fable-manager | WS1 | 7ffcc2f5
+SAYS: the ritual behind FLAGS.md - one kit thing at a time, the auditor reads it, compares the stated purpose with the behaviour, gives it a color, explains the color in the entry, and never touches the thing.
+DOES: Instructs a read-only purpose audit of one kit thing: pick from purpose_audit --pending, read, compare PURPOSE with the body, file a green, yellow or red entry via purpose_audit --flag. Step 6 now splits a missing header (format_lint --rewrite) from a wrong existing line (edited in the original after the flag, then re-flagged).
+FLAG: Does what it says. The 2026-09-29 amendment fixes a stale step: --rewrite only fills gaps, so the old never-by-hand rule could not be followed for a stale PURPOSE.

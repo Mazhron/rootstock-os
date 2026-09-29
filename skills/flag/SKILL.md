@@ -47,10 +47,14 @@ INTENT: Mazhron 2026-09-13: "Claude MUST compare the purpose and intent of
    --note "<why this color; for yellow/red, what would fix it>"`
    The script fills SAYS from the PURPOSE line, hashes the exact version
    reviewed, appends the entry and regenerates the tally.
-6. AFTER, NOT DURING: a missing or wrong header is rewritten by the script
-   (`python tools/format_lint.py --rewrite <original path> --purpose ...
-   --intent ...`) in a later step, never by hand and never in the audit
-   turn; a RED goes to the owner as a question, with the entry quoted.
+6. AFTER, NOT DURING: a MISSING header (or a placeholder) is written by
+   the script (`python tools/format_lint.py --rewrite <original path>
+   --purpose ... --intent ...`) in a later step, never in the audit turn.
+   A WRONG line that exists (a stale PURPOSE) the script cannot replace -
+   --rewrite only fills gaps - so it is edited in the ORIGINAL after the
+   flag is filed, then format_lint and refresh_kit run and the thing is
+   flagged again on its new version (2026-09-29, law_gaps.py). A RED goes
+   to the owner as a question, with the entry quoted.
 7. Ship with the batch: FLAGS.md is kit content and syncs to the public
    repo with everything else. A contributor files the same entry by pull
    request.
