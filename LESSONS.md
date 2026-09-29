@@ -953,7 +953,7 @@ docs/history/corrections.txt (C0002); LESSONS.md "Anything that can be
 pressed should wear the new frames" (the same evening's ADVISED lesson,
 written on the hook's word).
 
-## Apply a long batch of file edits from the shell (the heredoc that fails to parse, 2026-09-28; the sed that eats backslashes, 2026-09-29)
+## Apply a long batch of file edits from the shell (the heredoc that fails to parse, 2026-09-28 and twice 2026-09-29; the sed that eats backslashes)
 Tags: lessons, tooling, harness | A Python edit script longer than about ninety lines inside a Bash heredoc fails to parse in this harness's Git Bash, and ANY edit whose text carries a backslash (a regex) loses it through sed or a heredoc; write the script to the scratchpad and run it by path, then run the file's selftest before any ledger line
 Keys: heredoc, unexpected EOF, matching quote, bash parse, long script, scratchpad, edit script, batch edit, route_docs, python - <<, Write tool, run by path, backslash, sed -i, regex edit, \b, chr(92), selftest before ledger, false measure
 
@@ -987,6 +987,17 @@ quotes and apostrophes that a shell will parse before Python sees them.
   .py file, built with chr(92) or a raw string, run by path. And the
   order is fixed: edit, selftest, THEN measure and ledger; a ledger
   line written before the selftest is a guess with a timestamp.
+- TRIED (2026-09-29, the security audit batch, the third time the same
+  day): a 13 KB method file with apostrophes, double quotes and
+  backticks, wrapped in a Python raw string, sent through a quoted
+  heredoc anyway because the session's auto-mode note prefers Bash.
+  FAILED BECAUSE: the same "unexpected EOF while looking for matching
+  `''" as 09-28; the shell parsed the body before Python saw it. The
+  Write tool wrote the same script to the scratchpad and it ran by
+  path on the first try. DO INSTEAD: a harness preference for Bash is
+  not a reason; this lesson is the reason. Any file of prose or code
+  longer than a screen, or carrying mixed quotes, is a Write-tool
+  script run by path, and the heredoc is never the first try.
 - NUANCE: the diet guard's OUTPUT DIET line on a command that mentions
   glob or a listing is advice about limiters, not a failure; the parse
   error came from the shell, and the fix is the file, not shorter output.
