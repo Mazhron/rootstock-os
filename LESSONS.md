@@ -66,7 +66,8 @@ first, one question, before anyone proposes a number.
   count) is judged by the product on one cell, not by each value alone.
 
 See also: docs/systems/flora.md "THE LANES SPREAD"; SUBAGENTS.md (the
-brief shape); INTENT.md (I0048); WORKFLOWS.md "Delegate a task to an
+brief shape); INTENT.md "A new stat band starts inside the existing
+spread" (I0048); WORKFLOWS.md "Delegate a task to an
 employee".
 
 ## Write a guard that names forbidden verbs or calls

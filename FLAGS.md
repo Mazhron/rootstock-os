@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-29 14:23 | items 76 | GREEN 69 | YELLOW 0 | RED 0 | unflagged 7 | stale 20
+Updated 2026-09-29 16:36 | items 76 | GREEN 70 | YELLOW 0 | RED 0 | unflagged 6 | stale 20
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -84,7 +84,7 @@ Updated 2026-09-29 14:23 | items 76 | GREEN 69 | YELLOW 0 | RED 0 | unflagged 7 
 | reference tools/format_lint.py | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
-| reference tools/law_gaps.py | - | UNFLAGGED | - | - |
+| reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
 | reference tools/ledger_trends.py | GREEN | STALE | fable | 2026-09-29 00:24 |
 | reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
@@ -947,3 +947,13 @@ FLAG: Matches its PURPOSE line: checklist, script and ledger line named and deli
 SAYS: Run the read-only checks SECURITY_METHOD.md's checklist gives a script: grep a production build folder for secret-shaped strings (class 1), read the site's response headers for HSTS, CSP and a frame rule (class 2), request the exposed-file paths and expect 404 or 403 (class 3), and read the CORS header under a foreign Origin (class 4); print one PASS / WARN / FAIL line per check and, with --record, append the counts and a note to docs/history/security_audit_runs.txt.
 DOES: With --dir walks a build folder (node_modules and .git skipped) and prints one FAIL per file and secret shape naming file, line and pattern, never the match; with --url makes GET requests to the given site only: the root's headers against six names, eighteen fixed exposed paths expecting 404 or 403, and one request under a foreign Origin for the CORS answer; --record appends counts and a note to docs/history/security_audit_runs.txt through _ledger's dedup; --selftest runs two localhost servers and sixteen cases. Exit 1 on any FAIL.
 FLAG: Matches its PURPOSE line; the only write is the ledger line under --record, stated in the header; the network calls are the fixed list against the URL the owner gives and nothing else; the printed lines never carry the matched secret (a selftest case checks it).
+
+### 2026-09-29 16:36 | reference tools/law_gaps.py | YELLOW | fable-manager | WS1 | 9ddfe65c
+SAYS: Ledger two proxies for laws no other script measures: notes.md entries actioned but not swept to history.md, and tools changed in 30 days that no WORKFLOWS.md entry names.
+DOES: Appends one line each to sweep_audit_runs.txt and workflow_gap_runs.txt: notes.md bullets whose status parenthesis holds actioned, done, closed or resolved, and tools changed in 30 days of git log whose basename appears in none of WORKFLOWS.md, tools/run_all.py, .claude/settings.json or any skill file. Writes nothing else, deletes nothing.
+FLAG: Matches in substance. Off: the PURPOSE line and CHECK B text say named in WORKFLOWS.md only, but since 2026-09-29 the corpus also counts run_all.py, settings.json and the skills (the verdict string already says so). The actioned test is a substring match on the status parenthesis, so a status that merely contains done (2026-09-29, a new open note) counts as actioned. Fix: rewrite PURPOSE via format_lint --rewrite to name the full corpus, and match whole words at the status start.
+
+### 2026-09-29 16:36 | reference tools/law_gaps.py | GREEN | fable-manager | WS1 | 4f112ffc
+SAYS: Ledger two proxies for laws no other script measures: notes.md entries actioned but not swept to history.md, and tools changed in 30 days that no WORKFLOWS.md entry, run_all group, hook setting or skill names.
+DOES: Appends one line each to sweep_audit_runs.txt and workflow_gap_runs.txt: notes.md bullets whose status parenthesis holds the whole word actioned, done, closed or resolved, and tools changed in 30 days of git log named in none of WORKFLOWS.md, tools/run_all.py, .claude/settings.json or a skill file. Writes nothing else, deletes nothing.
+FLAG: The 16:36 YELLOW's two fixes landed: PURPOSE and CHECK B now name the full named corpus, and the actioned test matches whole words (selftest case added). Does what it says, nothing more.

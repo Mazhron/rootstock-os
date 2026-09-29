@@ -11,14 +11,16 @@ significant amount, yes."
 CHECK A, THE ARCHIVE SWEEP: parses docs/index/notes.md for actioned notes
 that have not yet moved to docs/systems/history.md.
 CHECK B, THE WORKFLOW RULE (a proxy): parses 30 days of git log for changed
-tool files not named anywhere in WORKFLOWS.md.
+tool files named nowhere in WORKFLOWS.md, tools/run_all.py (a loop script's
+workflow is its group), .claude/settings.json (a hook's wiring) or a skill.
 
 The manager's call left a third candidate, the contradiction rule, out on
 purpose: it cannot be measured cheaply by script.
 
 PURPOSE: Ledger two proxies for laws no other script measures: notes.md
   entries actioned but not swept to history.md, and tools changed in 30
-  days that no WORKFLOWS.md entry names.
+  days that no WORKFLOWS.md entry, run_all group, hook setting or skill
+  names.
 INTENT: the CEO's ruling 2026-09-29 (quoted above): measure what can be
   measured cheaply, so it teaches instead of being dust in the wind; the
   contradiction rule is left out on purpose because it cannot be measured
@@ -56,6 +58,8 @@ GAP_HEADER = (
 
 NOTE_RE = re.compile(r"^-\s*\*\*→\s*(?P<target>.+?)\s*\((?P<status>.+?)\):\*\*", re.MULTILINE)
 ACTIONED_WORDS = ("actioned", "done", "closed", "resolved")
+# whole words only, so "undone" or "reclosed" never reads as actioned
+ACTIONED_RE = re.compile(r"\b(?:%s)\b" % "|".join(ACTIONED_WORDS))
 DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}|\d{2}-\d{2}")
 
 TOOL_PATH_RE = re.compile(
@@ -80,7 +84,7 @@ def parse_notes(text):
         target = m.group("target").strip()
         status_text = m.group("status").strip()
         low = status_text.lower()
-        actioned = any(word in low for word in ACTIONED_WORDS)
+        actioned = ACTIONED_RE.search(low) is not None
         date_m = DATE_RE.search(status_text)
         date = date_m.group(0) if date_m else ""
         notes.append({
@@ -216,29 +220,17 @@ def run_gap(ws, stamp):
     text = proc.stdout
     commits = parse_log(text)
     # THE NAMED CORPUS (manager, 2026-09-29, after the first run flagged hooks and loop
-
     # scripts): a tool is 'named' when WORKFLOWS.md, tools/run_all.py (the loop is the
-
     # workflow of a loop script), .claude/settings.json (a hook's wiring) or any
-
     # .claude/skills/*/SKILL.md mentions its basename.
-
     workflows_text = ""
-
     for _p in [WORKFLOWS_PATH, os.path.join(ROOT, "tools", "run_all.py"),
-
                os.path.join(ROOT, ".claude", "settings.json")] + sorted(
-
             glob.glob(os.path.join(ROOT, ".claude", "skills", "*", "SKILL.md"))):
-
         try:
-
             with open(_p, encoding="utf-8") as fh:
-
                 workflows_text += fh.read() + "\n"
-
         except OSError:
-
             pass
     tools_changed, unnamed = find_candidates(commits, workflows_text)
     verdict = gap_verdict(unnamed)
@@ -303,6 +295,9 @@ def selftest():
     )
     _, _, _, old_open_older = sweep_counts(old_notes, today)
     _check("sweep_counts: old open note counted older than 21d", old_open_older == 1, results)
+    _check("parse_notes: a word that only contains 'done' is not actioned",
+           parse_notes("- **→ WS2, from WS1 (open - 2026-09-29, the undone list):** x.\n")[0]["actioned"] is False,
+           results)
 
     # parse_log: at least 3 cases, including two commits, one touching
     # tools/x.py and WORKFLOWS.md together
