@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.31** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.32** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1195,3 +1195,26 @@ never relayed for the CEO to do"); add the broadening to the project's
 LESSONS entry for ADVISED.
 README: "The Checkpoint Protocol" bullet in "5. The Reporting Method"
 (ADVISED MEANS DO IT becomes the hook law) and the "Kit version:" line.
+
+### v1.32 - 2026-09-28 - Remote Control: the phone drives the same session
+WHAT: The origin CEO asked whether Claude Code on a phone could attach to
+a running session and ask the manager to do things, and whether the
+checkpoint /clear ritual survives it; then "document this somewhere in
+Rootstock for future use and understanding if I or another user is
+interested." The answer, from the harness docs: Remote Control
+(`/remote-control`, alias `/rc`) pairs the Claude mobile app to the SAME
+local session (same context, files, tools, hooks) through a QR code; the
+workstation must stay on; a /clear resets the conversation on the phone
+too, so a checkpoint clear needs no re-pairing; /clear, /compact,
+/context and /usage work from the phone while resume and plugin stay
+local; whether a phone-typed /clear fires the SessionStart hook's clear
+trigger is not stated in the docs and is recorded as unconfirmed with
+the one-clear check that settles it. A cloud session is the alternative
+when the machine must go off, without the workstation's tooling.
+CARRIES: WORKSTATION_METHOD.md ("Drive a session from a phone (Remote
+Control)" under the Claude-side settings section); this entry.
+GRAFT: nothing to install; read the section, then add one instance line
+to the project's WORKSTATION.md counterpart once a phone has been paired
+there (which login, whether the clear trigger fired from the phone).
+README: "Questions people ask" (the phone question) and the "Kit
+version:" line.

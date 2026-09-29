@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.31** (2026-09-28). The graft log `UPGRADES.md` is the
+Kit version: **v1.32** (2026-09-28). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -808,6 +808,16 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 - **Can I take part of it?** Yes; see "What you need" above. The wiki
   conventions alone are the biggest single saving.
 - **Can I use it commercially?** MIT. Yes.
+- **Can I drive it from my phone?** Yes, through Claude Code's Remote
+  Control: `/remote-control` in a running session prints a QR code, the
+  Claude app's Code tab scans it, and the phone becomes a second keyboard
+  for that SAME session, with its files, tools and hooks. The workstation
+  stays on. A checkpoint `/clear` resets the phone's view too and needs
+  no re-pairing. Whether a `/clear` typed on the phone fires the
+  session-start hook is not stated in Anthropic's docs; the kit records
+  it as unconfirmed until one clear from the phone prints the standup
+  digest. `WORKSTATION_METHOD.md` "Drive a session from a phone" has the
+  requirements and limits.
 - **Can I contribute?** Yes, by pull request, under two guardrails that
   apply to the kit's own authors too: every new or changed thing carries
   the header (`PURPOSE:`, `INTENT:`, search keys, see also) or the lint

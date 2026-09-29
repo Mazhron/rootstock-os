@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-28 13:59 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 | stale 12
+Updated 2026-09-28 23:13 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 | stale 12
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -50,7 +50,7 @@ Updated 2026-09-28 13:59 | items 71 | GREEN 66 | YELLOW 0 | RED 0 | unflagged 5 
 | UPGRADES.md | GREEN | STALE | fable | 2026-09-20 03:22 |
 | WIKI_METHOD.md | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:11 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
-| WORKSTATION_METHOD.md | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:11 |
+| WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
 | hooks/README.txt | GREEN | STALE | fable | 2026-09-20 03:21 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
@@ -882,3 +882,8 @@ FLAG: The skip narrows the scan to real links, exactly the stated purpose; no ne
 SAYS: Stop hook that ticks the checkpoint counter only when work actually happened (HEAD moved or the tree changed since the last Stop), shows an advised system message at 8 tasks or under 80% context, refuses to end the turn once at 15 tasks or under 30% context (re-blocking every 5 further tasks), refuses once when a safety hook has gone unwired in settings.json, and warns once per unexported commit count when the changelog anchor has fallen behind HEAD.
 DOES: Stop hook: ticks the checkpoint counter on real work, advises at 8 tasks or under 80 percent context, refuses once at 15 or under 30 percent, refuses once when a safety hook is unwired, and warns once per unexported commit count; since kit v1.31 the count skips commits whose subject starts with changelog: (the export's own commit) and the line is worded as an order to the manager (MANAGER: run the export before this reply ends), with the incident shape in the selftest
 FLAG: PURPOSE and INTENT name every side effect; the changelog count change only narrows what is counted and the selftest touches temp anchor files only; the wording change makes the line an instruction to the manager per THE HOOK LAW (C0003)
+
+### 2026-09-28 23:13 | WORKSTATION_METHOD.md | GREEN | fable | WS1 | 33973747
+SAYS: The machine inventory method: one workstation file records what every script, hook and ritual needs, why, what the origin machine has, and how to install it, so any Claude can get a new machine up to par and write back what it adds.
+DOES: The machine inventory method; v1.32 adds one section under the Claude-side settings: Remote Control pairs the phone to the same local session, the checkpoint clear keeps the link, the phone-typed clear firing the SessionStart hook is recorded as unconfirmed with the one-clear check, and the cloud session is the alternative
+FLAG: Matches the purpose (what the harness setup needs and how a machine is driven); documentation from the harness docs with the unconfirmed point marked, no new side effect

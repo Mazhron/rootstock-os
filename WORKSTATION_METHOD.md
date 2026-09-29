@@ -24,7 +24,8 @@ setup from error messages. This file makes the setup a document that a
 Claude can read and act on.
 
 Search keys: workstation, new machine, setup, install, prerequisites,
-inventory, survey, up to par, second workstation, onboarding.
+inventory, survey, up to par, second workstation, onboarding, remote
+control, phone.
 See also: WIKI_METHOD.md (where the doc lives in the library),
 REPORTING_METHOD.md (the survey is a scripted run with a ledger),
 HOOKS_METHOD.md (the hooks are the first thing that breaks on a bare
@@ -93,6 +94,52 @@ this file's per-machine sections record on the repo side); any fact the
 repo can own lives in the repo. Repo-shaped memories get banked and
 tallied, not deleted - WIKI_METHOD.md "The harness memory" carries the
 full trim ruling.
+
+## Drive a session from a phone (Remote Control)
+
+Tags: remote control, phone, mobile, clear | the phone attaches to the SAME local session; a checkpoint /clear keeps the link
+
+Claude Code's Remote Control attaches the Claude mobile app (iOS or
+Android; there is no separate mobile Claude Code) to a session already
+running on the workstation: same conversation, same context, same local
+files, tools and hooks. The phone is a second keyboard, not a second
+session; the workstation does the work. Recorded 2026-09-28 from the
+harness docs (code.claude.com/docs/en/remote-control.md and /mobile.md)
+after the origin CEO asked whether a phone could ask the manager to run
+things, and whether the checkpoint ritual survives it.
+
+- START: type `/remote-control` (alias `/rc`) in the running session
+  (terminal or the VS Code extension). It prints a session link and a
+  QR code. On the phone: the Claude app, the Code tab, scan the code or
+  pick the session from the list. Type `/remote-control` again to end
+  the link and keep the session.
+- THE PHONE CAN: read the conversation live, send prompts, send photos
+  or files (they arrive as attachments), switch model or effort, run
+  most slash commands. Terminal-bound commands (resume, plugin) stay on
+  the workstation.
+- NEEDS: a Pro, Max, Team or Enterprise login through /login (an API
+  key alone, Bedrock, Vertex, Foundry or a custom ANTHROPIC_BASE_URL rule
+  it out; CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC turns it off). The
+  workstation stays on, awake and online: a sleep reconnects on wake, a
+  closed window ends the link. One link per running session.
+- THE CHECKPOINT RITUAL IS UNCHANGED: the docs say "When you run /clear,
+  the conversation resets on connected devices too", so the link
+  survives a checkpoint clear and the phone shows the fresh session
+  without re-pairing. /clear, /compact, /context and /usage are on the
+  docs' list of commands that work from the phone. UNCONFIRMED (the
+  hooks page names the terminal, IDE extensions, the desktop app and
+  cloud sessions, not Remote Control by name): whether the SessionStart
+  hook's clear trigger fires for a /clear typed on the phone. The check
+  is one clear from the phone: the standup digest arriving proves it;
+  until then a clear typed on the workstation is the certain path.
+- THE ALTERNATIVE when the workstation must go off: a cloud session
+  (claude.ai/code) clones the git remote and runs on Anthropic's
+  machines. It has none of the workstation's engine, hooks or test
+  runners, so it suits reading and planning, not building.
+
+See also: HOOKS_METHOD.md (the SessionStart hook and its clear trigger),
+REPORTING_METHOD.md (the checkpoint protocol the clear belongs to), the
+project's WORKSTATION.md counterpart (its per-machine instance line).
 
 ## BOOTSTRAP (new project)
 
