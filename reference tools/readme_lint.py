@@ -119,6 +119,15 @@ CLAIMS = [
      None, r"a design question for the CEO"),
     ("the employee's file map has no fixed line count",
      None, r"a ten-line map"),
+    # 2026-09-29 audit (T-0929-RA-1..4): the prose slips the count check cannot see
+    ("the core lint warns past 1,500 tokens (v1.37), not 1,000",
+     None, r"warns past (WARN_TOKENS )?1,000"),
+    ("the proposal law covers every standup DO line, not the audit's alone",
+     None, r"does the audit's \[DO\]"),
+    ("the ordering law names the fan-out guard as its ruled exception",
+     r"fan-out guard's numbers\s+are the ruled exception", None),
+    ("the top-model line is the origin project's choice, not a kit law",
+     r"in the origin\s+project the top model is never an employee", None),
 ]
 NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven",
                 "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen",

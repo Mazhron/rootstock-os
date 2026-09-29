@@ -49,7 +49,9 @@ What guards the shape:
 
 - **The token-budget lint** (`check_claude_md.py`) fails past LINE_BUDGET
   200 (Anthropic's own number) or TOKEN_BUDGET 2,000 (the owner's action
-  line), and WARNS past WARN_TOKENS 1,000. It also requires CLAUDE.md to
+  line), and WARNS past WARN_TOKENS 1,500 (retuned from 1,000 in v1.37,
+  after it fired every session with no cold unit to move). It also
+  requires CLAUDE.md to
   name the master index, the master index to list every topic file,
   sub-index and rule, and it fails a rule file that has no `paths:` field,
   because such a rule would load every session and its tokens belong to
@@ -60,7 +62,9 @@ What guards the shape:
   CLAUDE.md, the master index or a rule is edited.
 - **The core diet** (`core_diet.py`) moves a cold section out of the core
   by script, verbatim and reversibly, leaving one stub line in the master
-  index.
+  index. Cold is three signals at once, not a read count: no explicit
+  read of the section's lines, no read of the wiki files it points at,
+  and no git touch inside the window (30 days by default).
 
 Anthropic's own guidance: https://code.claude.com/docs/en/memory. Its
 words: target under 200 lines per CLAUDE.md file, longer files consume
@@ -176,7 +180,7 @@ And the before/after, same model, same project, from the sheet:
   days averaged ~267k per request - a 69% cut against that peak - while
   Sep 3 did three times the requests of an Aug 26-27 day.
 
-### The weighted receipts (50 days, 2026-09-10)
+### The weighted receipts (the same window six days on: 50 days, 2026-09-10)
 
 Raw token counts flatter the wrong column. What counts against a plan is
 WEIGHTED: input x1, cache write x1.25 (x2 on a one-hour cache), cache read
@@ -219,7 +223,9 @@ that make it work:
 - **Headings are search keys.** Every section is named for what a search
   would look for, never "Misc" or "More fixes".
 - **Cross-references.** Sections end with "See also" lines pointing at
-  related topics WITH their file, so a hop needs no search.
+  related topics WITH their file, so a hop needs no search. Moving a
+  section updates every See also that pointed at it; two files that
+  grow overlapping coverage merge to one home and leave a pointer.
 - **One home per fact.** Engine lessons, genre lessons, and project details
   each live in exactly one layer, because split homes drift.
 - **Tags and the knowledge index.** A hard-won section (a lesson, a trap,
@@ -280,11 +286,12 @@ that make it work:
   it: the process-registry entry and the script whose heading, WHEN line
   or search keys the prompt already hits, so "does software already
   handle this" is a lookup and not an inference (Hightower's "infer once,
-  export, run without inference", applied to the routing itself); the
-  Stop hook asks for the entry the moment a turn shows trial and error; a check script lints the shape
-  and a ledger counts advised against written; the enforcing hooks live
-  in the hooks section below. The origin's first
-  entry: read the existing spread before briefing a numbers task.
+  export, run without inference", applied to the routing itself). The
+  Stop hook asks for the entry the moment a turn shows trial and error;
+  a check script lints the shape and a ledger counts advised against
+  written; the enforcing hooks live in the hooks section below. The
+  origin's first entry: read the existing spread before briefing a
+  numbers task.
 - **The whole-read ledger.** Beyond the 10k rule above, a per-file ledger
   names which files were read whole and the fix each needs; the manager
   sections or splits them unasked. Pictures are priced by pixels, never
@@ -315,9 +322,12 @@ Anything repeatable becomes a SCRIPT; every result lands in a LEDGER.
   baseline recorded in its ledger; a regression is then a visible line
   flip, never a memory.
 - **Ledgers.** Every run appends one labeled line to a history file: date
-  and time, machine (or agent), project version, what ran, the result,
+  and time, machine (or agent, identified automatically from hostname or
+  user path, never typed), project version, what ran, the result,
   and the failures if any. You read the TAIL, never the whole file, and
-  runs compare across versions without re-reading anything.
+  runs compare across versions without re-reading anything. The test
+  for a new kind of run: a number that matters enough to mention in a
+  conversation matters enough to append.
 - **Sheets a human opens get a spreadsheet twin.** The CSV and TXT stay
   for grep and git diffs; the .xlsx has a frozen header, thousands
   separators and a bold total per period - because a sheet nobody can
@@ -394,8 +404,10 @@ asked at setup and revisited as models change - never assumed.
   task type's corrections pass ~25% of its last ~10 tasks, that task type
   is promoted to a stronger model, with a dated line saying so. The
   assignment itself is the manager's (v1.37): any task type may drop a
-  tier on trial without asking, and the rate moves it back up; the only
-  fixed line is the owner's (the top model is never an employee). Catches -
+  tier on trial without asking, and the rate moves it back up (a trial
+  is ledgered with "trial" in its line, so the rate counts it); the only
+  fixed line is the owner's choice for their project (in the origin
+  project the top model is never an employee, to save tokens). Catches -
   real problems an employee flagged that everyone else missed - are
   tallied too, the strongest signal a tier earns its keep. Models
   move on data, not impressions.
@@ -421,14 +433,20 @@ because context lives in files, not in the conversation.
   failure; and since v1.34 the SOURCE is closed too: a reply that names
   a checkpoint as the natural next step has just ordered one, and the
   Stop hook refuses the reply once until it ends with the safe-to-clear
-  marker (naming a checkpoint is making it); and since v1.35 a standup
-  proposal is a source of the same kind: a reply that names a [DO]
-  proposal its ledger still raises is refused once until it is done
-  (PROPOSAL NAMED). At an
-  arc's end the manager runs the session loop, checks for an unlogged
-  workflow gap or lesson, pushes, refreshes the day file, and emits the
-  marker: "CHECKPOINT - safe to /clear. Nothing in this chat exists only
-  in this chat." It refuses with an employee running or work uncommitted.
+  marker (naming a checkpoint is making it). Under 30% of the context
+  budget the checkpoint is urgent and comes before any new work. At an
+  arc's end the manager runs the session loop, then asks two questions
+  before pushing: was anything this arc done by hand twice (then it is a
+  process-registry entry, the loop law), and was anything learned by
+  trial and error or corrected (then it is a lesson, the lesson law);
+  then pushes, refreshes the day file, and emits the marker:
+  "CHECKPOINT - safe to /clear. Nothing in this chat exists only in this
+  chat." It refuses with an employee running or work uncommitted. A
+  checkpoint is where the method learns, not only where it saves.
+- **The proposal law (v1.35).** A standup proposal is a source of the
+  same kind as a named checkpoint: a reply that names a [DO] proposal
+  its ledger still raises is refused once until the proposal is done
+  (PROPOSAL NAMED); only an [ASK] proposal is a question for the owner.
 - **The net under it (v1.28).** A session end (/clear, a closed window)
   runs a hook that checks for unbanked work. Nothing unbanked: one ledger
   line. Otherwise it banks the bytes itself - both sides of the final
@@ -450,11 +468,14 @@ Nine rituals ship as Claude Code skills, invocable as slash commands:
 front (retire a file, shelve a wiki section, or walk the twice-acknowledged
 delete grant, in that order); `/flag` is the purpose audit (green, yellow
 or red, filed in FLAGS.md); `/intent` records the why of a ruling in the
-owner's words; `/correct` walks a correction and then asks for the intent;
+owner's words; `/correct` walks a correction, asks for the intent, then
+makes the fix and logs it;
 `/runaway` shows and tunes the fan-out guard's numbers, owner only;
 `/brief` composes an employee's work order by the delegation laws. `/ship`
-is the one you will use most: sanity-check tests (trusting the ledger), bump the
-version if warranted, commit with a player-readable subject, push, run
+is the one you will use most: sanity-check tests (trusting the ledger),
+read the scripted version hint (none, patch or minor from what changed
+since the last bump; never major) and bump if warranted, commit with a
+player-readable subject, push, run
 the build script without deleting old builds, sync the kit if kit files
 changed, and export the changelog unprompted.
 
@@ -467,7 +488,9 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
 - **Session start** injects the standup digest by itself - after a /clear
   the manager has everything back before anyone types a word.
 - **Every prompt** carries a silent context gauge that speaks only when a
-  threshold is crossed; **every reply** ticks the checkpoint counter when
+  threshold is crossed, and since v1.33 the ROUTE line: the registry
+  entries and reference tools the prompt already hits, named before the
+  first tool call; **every reply** ticks the checkpoint counter when
   work actually happened, and refuses to end the turn once it is dire.
 - **Before compaction** a ledger line records what was at stake.
 - **Session end** is the checkpoint's net (v1.28): with nothing unbanked
@@ -526,10 +549,10 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
   refuses one that would unwire, narrow or mis-point a safety hook (or
   not parse), and AFTER every edit of a kit thing, blocking one that
   leaves the thing without its header (PURPOSE, INTENT, search keys, see
-  also) with the rewrite command in the reason. The shell guard refuses
-  shell writes into a settings file and the Stop hook refuses to end a
-  turn while the live wiring is broken, so no prompt, brief or contributed
-  patch switches a guard off quietly. It exists because a community kit
+  also) with the rewrite command in the reason. Two more hooks back it
+  up: the shell guard refuses shell writes into a settings file, and the
+  Stop hook refuses to end a turn while the live wiring is broken, so no
+  prompt, brief or contributed patch switches a guard off quietly. It exists because a community kit
   needs a guardrail that does not depend on the reader's good faith.
 
 The contract, plainly, because a worried reader asks these first:
@@ -550,7 +573,9 @@ The contract, plainly, because a worried reader asks these first:
   guard. The fix is one line in settings.json; every kit hook answers
   `--selftest` and is tested by piping a fake event into it before it is
   wired.
-- **Turning one off** is removing its line from settings.json. No hook keeps
+- **Turning one off** is removing its line from settings.json, for every
+  hook outside the safety tier; unwiring a safety hook is exactly the
+  edit the format guard refuses. No hook keeps
   state a project must migrate: the gitignored state files age out on
   their own.
 - **Cost.** Tokens: none (a hook is a script; only its one-line verdict
@@ -581,7 +606,8 @@ and calls the trend improving, steady or declining. The owner's reason, in the o
 against present, and a trend that says whether the feedback loop works.
 One ordering law rides with the audits - security first, then cost, then
 efficiency: a number behind a REFUSAL stays in code; a number behind a
-PROPOSAL may live in a tunable data file.
+PROPOSAL may live in a tunable data file. The fan-out guard's numbers
+are the ruled exception, the owner's by name, tuned through `/runaway`.
 
 `/correct` closes the loop from the other side: it asks what about the
 last thing needs correcting, records your words verbatim, marks the
@@ -589,9 +615,11 @@ claim DIFFERENT, then asks "What was the intent?" and `/intent` files
 the why while the mismatch is fresh. A systems audit, ledgered and
 proposed on a cadence, has read-only employees look at tokens, process,
 knowledge and shipped features and return proposals only. No employee
-applies anything; since v1.35 the manager does the audit's [DO]
-proposals in the batch and relays its [ASK] proposals, and the audit
-itself runs in the reply whose standup proposed it.
+applies anything; since v1.35 the manager does every standup [DO]
+proposal in the reply that reads it (the systems audit's own included,
+with the README audit, the digest trim, a stale loop group, dead
+links, an unwritten lesson, a stale claim) and relays only the [ASK]
+ones; the audit itself runs in the reply whose standup proposed it.
 
 The first systems audit ran on 2026-09-14 (kit v1.21). Four read-only
 employees returned 26 proposals; the owner ruled on every one. What it
@@ -635,7 +663,8 @@ yours:
   references every flag, hashed to the exact version reviewed, tallied at
   the top, and open to any reviewer's findings by pull request. The
   tally's stamp moves only when a flag moves, never on a no-change run,
-  so the mirror check never warns over noise. `/flag`
+  so the mirror check never warns over noise. A thing with no PURPOSE
+  line cannot be GREEN. `/flag`
   walks the ritual; `purpose_audit.py --pending` lists what needs one.
   The kit's own first audit (v1.19) flagged 58 things: 53 green, 5
   yellow, 0 red. v1.20 closed all five the next morning, one of them by
@@ -662,11 +691,16 @@ directly; both stop a kind of amnesia.
   the registry first; a stale entry is a bug fixed in the same batch; a
   missing entry is a gap the manager files in the same batch, or hands to
   the cheapest model as transcription work. Employees never edit it; they
-  report gaps on their stamp line.
+  report gaps on their stamp line. Since v1.37 a script (`law_gaps.py`)
+  reads the rule's shadow too: a tool changed in 30 days that no
+  registry entry, loop group, hook setting or skill names is a WARN line
+  at standup.
 - **The workstation inventory.** One document listing every package,
   tool, path and setting the project's scripts and hooks depend on, split
   REQUIRED and OPTIONAL, with the need, the why, and the install command
-  for each (WORKSTATION.md), plus a survey script
+  for each (WORKSTATION.md), the harness's own settings included (user
+  level, project level, what is per-machine and gitignored), plus a
+  survey script
   (`workstation_survey.py`) that proves a machine up to par. A second
   machine, a reinstall or a collaborator sets up from a document instead
   of from error messages. The rule: a new dependency goes into the
@@ -735,7 +769,7 @@ yes. It never restructures a live repo unasked.
    session rituals and the workstation inventory, delegation, skills,
    hooks, then the loops that measure the loop: the learning loop, the
    intent loop, the format law and purpose audit, the README gate, the
-   lesson loop.
+   lesson loop, and the route line beside it.
 5. It finishes with a definition of done you can verify yourself: the
    standup script runs clean, the lint passes, the format lint passes and
    FLAGS.md flags every kit thing, the resulting CLAUDE.md
@@ -765,7 +799,8 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 - This page is checked, not trusted. A parity lint derives every count on
   it (laws, skills, hooks, scripts, the box table, the version line) from
   the kit's own files, and the kit's publish script refuses to push while
-  any of them disagree. A ledgered audit cadence proposes a fresh
+  any of them disagree. A ledgered README audit cadence (distinct from
+  the purpose audit below) proposes a fresh
   cross-reference (four read-only employees, one lane each, reading every
   method file against this page) once the kit has taken more commits or
   days than the owner's thresholds allow since the last one; the trend
@@ -816,7 +851,8 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   figure. The 1,000-token number that circulates online is a community
   estimate, not Anthropic's. The origin project's installed core is 68
   lines, about 900 tokens, guarded by a lint that fails past 2,000 tokens
-  or 200 lines and warns past 1,000 tokens.
+  or 200 lines and warns past 1,500 tokens (v1.37; it warned at 1,000
+  until the warning fired every session with nothing left to move).
 - **Does it improve my prompts?** No, and that is the point. It moves
   the CONTEXT (wiki, ledgers, day files) and the INTERPRETATION (laws,
   hooks, the process registry) out of the prompt and into files read
@@ -833,14 +869,20 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   conventions alone are the biggest single saving.
 - **Can I use it commercially?** MIT. Yes.
 - **Can I drive it from my phone?** Yes, through Claude Code's Remote
-  Control: `/remote-control` in a running session prints a QR code, the
+  Control: `/remote-control` (alias `/rc`) in a running session prints a
+  QR code, the
   Claude app's Code tab scans it, and the phone becomes a second keyboard
   for that SAME session, with its files, tools and hooks. The workstation
   stays on. A checkpoint `/clear` resets the phone's view too and needs
   no re-pairing. Whether a `/clear` typed on the phone fires the
   session-start hook is not stated in Anthropic's docs; the kit records
   it as unconfirmed until one clear from the phone prints the standup
-  digest. `WORKSTATION_METHOD.md` "Drive a session from a phone" has the
+  digest. It needs a Pro, Max, Team or Enterprise login; an API key
+  alone, Bedrock, Vertex, Foundry or a custom base URL rule it out. When
+  the workstation must go off, a cloud session (claude.ai/code) clones
+  the remote and runs on Anthropic's machines, without the engine, hooks
+  or test runners, so it suits reading and planning, not building.
+  `WORKSTATION_METHOD.md` "Drive a session from a phone" has the
   requirements and limits.
 - **Can I contribute?** Yes, by pull request, under two guardrails that
   apply to the kit's own authors too: every new or changed thing carries

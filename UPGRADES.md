@@ -1393,7 +1393,9 @@ statement under an ASK heading.
 CARRIES: SUBAGENT_METHOD.md rule 5 (the assignment clause), reference
 tools/law_gaps.py (new), reference tools/version_hint.py (new), skills/
 ship/SKILL.md (step 2), reference tools/check_claude_md.py (WARN_TOKENS
-1500 with the reason), LESSONS.md (the ask shape); this entry.
+1500 with the reason), WIKI_METHOD.md (the two warn-threshold mentions,
+caught by the 2026-09-29 README audit), LESSONS.md (the ask shape); this
+entry.
 GRAFT: copy the two new tools; add law_gaps.py to run_all's check group;
 add the version hint to the ship skill's step 2; paste the assignment
 clause into the project's SUBAGENTS.md escalation rule; the keep-warm
