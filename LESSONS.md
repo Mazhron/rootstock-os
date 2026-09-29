@@ -1012,6 +1012,15 @@ menu. "The owner decides" names the ASK class, never the mechanics.
 - NUANCE: an audit's own proposals follow the same split: its DO items
   the manager does in the batch (or briefs next), its ASK items are
   relayed verbatim; an employee still applies nothing.
+- NUANCE (the guard's probe case, 2026-09-29): the incident reply was
+  written into stop_tick's selftest BEFORE the pattern, per "Harden a
+  guard against a public incident", and it failed first: the sentence
+  span `[^.
+]{0,80}` stopped at the "3.2k" in "about 3.2k tokens and
+  wants a trim". A sentence span in a guard regex must not treat every
+  full stop as a sentence end; `[^
+;]{0,100}` passed. The probe case
+  earned its keep in the first minute.
 
 See also: INTENT.md "The proposal law"; "If the hook says checkpoint
 advised, I shouldn't have to type /checkpoint" (the same law, the hook
