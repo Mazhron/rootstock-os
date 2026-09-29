@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-29 02:24 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 | stale 19
+Updated 2026-09-29 10:39 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 | stale 19
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -95,7 +95,7 @@ Updated 2026-09-29 02:24 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
 | reference tools/run_all.py | GREEN | STALE | fable | 2026-09-20 03:21 |
-| reference tools/standup.py | GREEN | ok | fable | 2026-09-29 00:24 |
+| reference tools/standup.py | GREEN | ok | fable | 2026-09-29 10:39 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | reference tools/version_hint.py | - | UNFLAGGED | - | - |
@@ -930,3 +930,8 @@ FLAG: Both trims are loss-test cuts described in the code and self-audit.md; twe
 SAYS: Mines the Claude Code harness JSONL transcripts for real per model per tool token usage and writes an aggregate usage sheet (CSV, TXT, XLSX, employee runs, and the daily budget line) totaled by day, week and month, plus usage_by_arc.txt (checkpoint to checkpoint) and cache_misses.txt + cache_miss_runs.txt (every miss with its likely cause).
 DOES: Builds the usage sheets and ledgers from the transcripts; the cache-miss run ledger now skips a line whose fields after the stamp equal the previous line's, so two hooks minutes apart ledger one reading.
 FLAG: A dedupe on an append-only ledger; the skipped line is the same reading, not a lost one.
+
+### 2026-09-29 10:39 | reference tools/standup.py | GREEN | fable | WS1 | 0c1edbb0
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: Prints the session-start digest: the last exchange mined from the newest transcript (now returning its time window), WHERE WE LEFT OFF, the budget tail after a quiet usage_report refresh, THE LOOP grouped by last-run stamp, ledger_trends proposals, version and commits without the auto changelog exports, the core lint line, WS note headlines, ledger tails under the loss test (verdict or new since, minus repeated all-clears and lines the last exchange itself wrote), the roadmap index, open questions and recent days. Every helper is pure and covered by --selftest; the subprocesses are read-only except usage_report --quiet, which writes its own usage sheets.
+FLAG: Matches the PURPOSE line; the fourth trim adds three pure helpers (in_window, loop_rows, keep_commit) with sixteen selftest cases and no new side effect. The one write, the usage-sheet refresh, is stated in the docstring's THE BUDGET paragraph and skippable with --no-usage; the PURPOSE line names only the budget line it prints, which is fine as the refresh is that line's source.

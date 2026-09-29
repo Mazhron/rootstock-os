@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.37** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.38** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1404,3 +1404,31 @@ Code's CronCreate); write the INTENT sections in the owner's words.
 README: "The scorecard" bullet in "3. The Employee System" (the
 assignment clause), the reference-tools box row (the count and the two
 new names) and the "Kit version:" line.
+
+### v1.38 - 2026-09-29 - The fourth digest trim (a ledger line the last exchange wrote is a duplicate)
+WHAT: The 10:29 standup read 14515 bytes and proposed the trim; the 00:41
+third trim had found nothing fixed to cut, so the question was where the
+overage lived. It lived in the "new since the last standup" rule doubling
+THE LAST EXCHANGE: the largest tail line (the keep-warm REPORT, 1.1 KB)
+was written by the manager one minute before the /clear, and the exchange
+that wrote it is replayed verbatim at the top of the same digest. Three
+loss-test cuts in standup.py: a no-verdict ledger line stamped inside the
+last exchange's window (user prompt time to manager reply time, both from
+the transcript) collapses to `name date ^exchange` (a verdict inside the
+window still prints in full; print_last_exchange returns the window in
+place of True); THE LOOP prints the run_all groups that share a last-run
+stamp on one line (seven lines to three); the auto "changelog: export"
+commits leave the commit list, git log has them. 14562 to 13415 bytes
+like-for-like on the same session; 12086 for the next standup, the rest
+being 01:37 audit lines that expire. Sixteen new selftest cases; the
+measure line closes the proposal (v1.36). The lever left is the number
+of ledgers, not the digest.
+CARRIES: reference tools/standup.py (in_window, tails_plan's window
+argument, loop_rows, keep_commit, the docstring paragraph, the selftest
+cases); this entry.
+GRAFT: copy standup.py; if your standup's last exchange comes from another
+source than the transcript, return its (first, last) stamps from
+print_last_exchange, or pass window=None to keep the previous behaviour;
+no settings change.
+README: the "Kit version:" line only (the reference-tools box row keeps
+its count).

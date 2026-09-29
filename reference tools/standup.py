@@ -19,7 +19,12 @@ only when it carries a verdict (CHECK, FAIL, RED, STALE, WARN, UNSYNCED,
 a cliff) or is newer than the previous standup (digest_size.txt's last
 line); the rest collapse to name + date on shared lines; ledgers another
 block already shows are skipped. Commits default to 5; RECENT DAYS prints
-each day's first clause.
+each day's first clause. THE FOURTH TRIM (2026-09-29, the proposal law):
+a no-verdict ledger line stamped inside THE LAST EXCHANGE's window was
+written by the exchange the digest already replays verbatim, so it
+collapses to `name date ^exchange`; THE LOOP groups the run_all groups
+that share a last-run stamp on one line; the auto "changelog: export"
+commits are skipped (git log has them).
 
 THE BUDGET (the CEO 2026-09-10, TOKEN_IDEAS 20): the digest refreshes the
 usage sheet silently (tools/usage_report.py --quiet, incremental, ~2 s)
@@ -176,7 +181,7 @@ def print_last_exchange():
     if not best:
         print("== THE LAST EXCHANGE: no harness transcripts found - falling "
               "back to the day file's WHERE WE LEFT OFF below.")
-        return False
+        return None
     asst_ts, user_ts, user_txt, imgs, asst_txt = best
     sess = os.path.basename(best_file).split(".")[0][:8]
     print("== THE LAST EXCHANGE (harness transcript = ground truth; "
@@ -195,7 +200,9 @@ def print_last_exchange():
         body = body[:_CAP] + "\n[truncated - full text in the transcript]"
     for ln in body.splitlines():
         print("  > " + ln)
-    return True
+    # THE FOURTH TRIM: the window a ledger line must fall in to count as
+    # written by this exchange (tails_plan collapses those - a duplicate).
+    return (_local_stamp(user_ts), _local_stamp(asst_ts))
 
 
 def print_budget():
@@ -274,17 +281,35 @@ def print_loop():
                 latest[parts[2]] = parts[0]
     except OSError:
         pass
+    for row in loop_rows(latest, datetime.datetime.now()):
+        print("  " + row)
+
+
+def loop_rows(latest, now):
+    """THE FOURTH TRIM (2026-09-29): the run_all groups that share a last-run
+    stamp print on one line (`check, regen | last run ... | 0 d`), in
+    LOOP_GROUPS order of first appearance; the never-run groups share the
+    last line."""
+    import datetime
+    order, members = [], {}
     for g in LOOP_GROUPS:
-        when = latest.get(g)
-        if not when:
-            print("  %-8s | never" % g)
+        when = latest.get(g) or "never"
+        if when not in members:
+            order.append(when)
+            members[when] = []
+        members[when].append(g)
+    rows = []
+    for when in sorted(order, key=lambda w: w == "never"):  # never-run last
+        names = ", ".join(members[when])
+        if when == "never":
+            rows.append("%s | never" % names)
             continue
         try:
             dt = datetime.datetime.strptime(when, "%Y-%m-%d %H:%M")
-            age = (datetime.datetime.now() - dt).days
-            print("  %-8s | last run %s | %d d" % (g, when, age))
+            rows.append("%s | last run %s | %d d" % (names, when, (now - dt).days))
         except ValueError:
-            print("  %-8s | last run %s" % (g, when))
+            rows.append("%s | last run %s" % (names, when))
+    return rows
 
 
 # ---- THE DIGEST DIET helpers (pure; covered by --selftest) -----------------
@@ -324,13 +349,24 @@ def last_standup_stamp(ledger_text):
     return ""
 
 
-def tails_plan(ledgers, since):
+def in_window(stamp, window):
+    """True when 'YYYY-MM-DD HH:MM' `stamp` lies inside (first, last), both
+    inclusive, minute granularity; a bare date never does."""
+    return bool(window and stamp and len(stamp) > 10
+                and window[0] <= stamp <= window[1])
+
+
+def tails_plan(ledgers, since, window=None):
     """ledgers: [(name, newest_line[, previous_line])] -> (full: [(name, line)],
     quiet: [name date]). Full when the line has a verdict or is newer than
     `since`; quiet otherwise. THE REPEATED ALL-CLEAR (2026-09-29, the second
     trim, the loss test): a new line that only says all is well, after a
     previous line that said the same, duplicates it - it collapses to
-    'name date ok' and stays one `tail -1` away."""
+    'name date ok' and stays one `tail -1` away. THE EXCHANGE WINDOW (the
+    fourth trim, same day): `window` = (user stamp, assistant stamp) of THE
+    LAST EXCHANGE; a no-verdict line stamped inside it was written by that
+    exchange, which the digest replays verbatim above - a duplicate, so it
+    collapses to 'name date ^exchange'."""
     full, quiet = [], []
     for row in ledgers:
         name, line = row[0], row[1]
@@ -342,7 +378,9 @@ def tails_plan(ledgers, since):
         if has_verdict(line):
             full.append((name, line))
         elif st and since and st > since:
-            if prev and all_clear(line) and all_clear(prev):
+            if in_window(st, window):
+                quiet.append("%s %s ^exchange" % (short, st[5:10]))
+            elif prev and all_clear(line) and all_clear(prev):
                 quiet.append("%s %s ok" % (short, st[5:10]))
             else:
                 full.append((name, line))
@@ -366,6 +404,12 @@ def wrap_names(names, width=96, indent="    "):
 
 
 _ALL_CLEAR = re.compile(r"\b(PASS|clean|ok|none|OK|WRITTEN|already checkpointed|no verdict)\b")
+
+
+def keep_commit(line):
+    """THE FOURTH TRIM: the auto 'changelog: export vX (n changes)' commits
+    carry no context the version line lacks; git log has them."""
+    return not re.search(r"\bchangelog: export\b", line)
 
 
 def all_clear(line):
@@ -466,6 +510,34 @@ def selftest():
     check("roadmap_line without NEXT keeps the last clause", roadmap_line(nonext).endswith("first-pass prices await the retune)"))
     oneclause = "- [NS-8] First-pass numbers to retune: " + "y" * 250
     check("roadmap_line caps a single long clause", roadmap_line(oneclause).endswith("...") and len(roadmap_line(oneclause)) <= 204)
+    # THE FOURTH TRIM (2026-09-29): the exchange window, loop rows, commits.
+    win = ("2026-09-29 10:23", "2026-09-29 10:25")
+    check("in_window: inside", in_window("2026-09-29 10:24", win))
+    check("in_window: the edges are inside", in_window("2026-09-29 10:23", win) and in_window("2026-09-29 10:25", win))
+    check("in_window: before is not", not in_window("2026-09-29 10:22", win))
+    check("in_window: a bare date is not", not in_window("2026-09-29", win))
+    check("in_window: no window is not", not in_window("2026-09-29 10:24", None))
+    full, quiet = tails_plan([("k_runs.txt", "2026-09-29 10:24 | WS1 | REPORT | T1 | long prose", ""),
+                              ("v_runs.txt", "2026-09-29 10:24 | WS1 | FAIL | 1", ""),
+                              ("n_runs.txt", "2026-09-29 09:00 | WS1 | 15 | 2.1", "")],
+                             "2026-09-29 01:25", win)
+    check("a line written by the exchange collapses to ^exchange", quiet == ["k_runs 09-29 ^exchange"])
+    check("a verdict inside the window still prints in full", any(n == "v_runs.txt" for n, _ in full))
+    check("a new line outside the window prints in full", any(n == "n_runs.txt" for n, _ in full))
+    check("tails_plan without a window is unchanged",
+          tails_plan([("k_runs.txt", "2026-09-29 10:24 | x", "")], "2026-09-29 01:25")[0]
+          == [("k_runs.txt", "2026-09-29 10:24 | x")])
+    import datetime as _dt
+    now = _dt.datetime(2026, 9, 29, 12, 0)
+    rows = loop_rows({"check": "2026-09-29 02:25", "regen": "2026-09-29 02:25", "metrics": "2026-09-29 02:25",
+                      "session": "2026-09-29 02:25", "probes": "2026-09-28 13:39"}, now)
+    check("loop_rows groups a shared stamp", rows[0] == "check, regen, metrics, session | last run 2026-09-29 02:25 | 0 d")
+    check("loop_rows keeps a lone group", rows[1] == "probes | last run 2026-09-28 13:39 | 0 d")
+    check("loop_rows shares one never line", rows[2] == "tests, builds | never")
+    check("loop_rows: empty ledger = all never",
+          loop_rows({}, now) == ["check, regen, tests, metrics, probes, builds, session | never"])
+    check("keep_commit drops a changelog export", not keep_commit("140ef83c changelog: export v0.99.48-alpha (1 changes)"))
+    check("keep_commit keeps a patch note", keep_commit("a0de4403 The keep-warm ping retuned on three fixes"))
     print("standup selftest: %d failed" % len(fails))
     return 1 if fails else 0
 
@@ -541,7 +613,7 @@ def main():
     if out:
         print(out.rstrip())
 
-    print("== VERSION + RECENT COMMITS")
+    print("== VERSION + RECENT COMMITS (auto changelog exports skipped)")
     # Version source is per-project: Everwood reads project.godot. In a
     # non-Godot install, adapt this block (package.json, pyproject.toml,
     # a VERSION file...) - a missing source degrades to "?", never crashes.
@@ -554,7 +626,8 @@ def main():
     log = sh(["git", "log", "--oneline", "-%d" % args.commits])
     if log:
         for ln in log.splitlines():
-            print("  " + ln)
+            if keep_commit(ln):
+                print("  " + ln)
     else:
         print("  (no git history - not a git repo, or git unavailable)")
 
@@ -600,13 +673,15 @@ def main():
         if lines:
             ledgers.append((os.path.basename(path), lines[-1],
                             lines[-2] if len(lines) > 1 else ""))
-    full, quiet = tails_plan(ledgers, since)
+    full, quiet = tails_plan(ledgers, since, replayed if isinstance(replayed, tuple) else None)
     print("== LEDGER TAILS (docs/history/; full line = a verdict or new since the last standup%s; `tail -3 <ledger>` for a trend)"
           % (" " + since if since else ""))
     for name, line in full:
         print("  %s: %s" % (name, line))
     if quiet:
-        print("  quiet (no verdict, unchanged; name + last date):")
+        legend = ("; ^exchange = written by THE LAST EXCHANGE above"
+                  if any(q.endswith("^exchange") for q in quiet) else "")
+        print("  quiet (no verdict, unchanged; name + last date%s):" % legend)
         for ln in wrap_names(quiet):
             print(ln)
 

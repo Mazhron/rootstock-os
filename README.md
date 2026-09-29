@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.37** (2026-09-29). The graft log `UPGRADES.md` is the
+Kit version: **v1.38** (2026-09-29). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -31,7 +31,7 @@ session's context.
 |---|---|---|
 | CLAUDE.md, the pointer core | Every session, automatically | ~900 tokens, 68 lines |
 | A path-scoped rule (`.claude/rules/*.md`) | Only while a matching file is open | a few hundred tokens each |
-| The standup digest | Once, at session start / after /clear | ~1.6k-2k tokens (was ~4.3k before the digest diet the same evening: only verdicts and moved ledgers print in full) |
+| The standup digest | Once, at session start / after /clear | ~2.5k-3.5k tokens (was ~4.3k before the digest diet: only verdicts, moved ledgers and the last exchange print in full; four loss-test trims since, the last on 2026-09-29) |
 | The master index / wiki (47 files) | NEVER whole. A section at a time, on demand | ~289k tokens on disk, ~0 by default |
 | The front door `0 - READ ME FIRST.md` | Once, at install | ~1.8k tokens |
 
@@ -95,7 +95,7 @@ nothing in Rootstock rides in the context by default:
 |---|---|---|
 | CLAUDE.md, the pointer core | Every session, automatically | ~900 tokens, 68 lines (was ~3.5k that same morning, ~10k before the core diet) |
 | A path-scoped rule (`.claude/rules/*.md`) | Only while a matching file is open | a few hundred tokens each |
-| The standup digest | Once, at session start / after /clear | ~1.6k-2k tokens (was ~4.3k before the digest diet the same evening: only verdicts and moved ledgers print in full) |
+| The standup digest | Once, at session start / after /clear | ~2.5k-3.5k tokens (was ~4.3k before the digest diet: only verdicts, moved ledgers and the last exchange print in full; four loss-test trims since, the last on 2026-09-29) |
 | The wiki (47 files) | NEVER whole. A section at a time, on demand | ~289k tokens ON DISK; ~0 in context |
 | Skills | Only the one invoked, when invoked | a few hundred tokens each |
 | Hooks | Never (they are scripts; only their one-line output enters) | ~0 |
