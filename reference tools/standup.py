@@ -323,7 +323,10 @@ SHOWN_ELSEWHERE = {
     "intent_metrics.txt", "usage_metrics.txt", "cache_misses.txt", "core_diet.txt",
     "ledger_heads.txt",
 }
-_VERDICT = re.compile(r"\b(CHECK|FAIL|RED [1-9]|STALE|WARN|UNSYNCED|ERROR|STALL|MISSING|missing required: (?!none))")
+# THE FIFTH TRIM (2026-09-29): a trailing word boundary, so a constant name such
+# as WARN_TOKENS in a ledger's prose is not a verdict; the readme_audit line
+# (600 bytes, 01:37) printed in full on that false match.
+_VERDICT = re.compile(r"\b(CHECK|FAIL|STALE|WARN|UNSYNCED|ERROR|STALL|MISSING)\b|\bRED [1-9]|\bmissing required: (?!none)")
 _DATE = re.compile(r"(\d{4}-\d{2}-\d{2})(?: (\d{2}:\d{2}))?")  # first date in the line
 
 
@@ -464,6 +467,8 @@ def selftest():
     check("PROPOSE: none is not", not has_verdict("== PROPOSE: none"))
     check("a cliff is", has_verdict("cliffs: r8 LIFT STALL (<+5%)"))
     check("missing required: none is not", not has_verdict("20/20 present | missing required: none"))
+    check("a constant name is not (WARN_TOKENS)", not has_verdict("3 WRONG applied (WARN_TOKENS 1,000 to 1,500 at two README lines"))
+    check("WARN: still is", has_verdict("| WARN: 5 tool(s) changed in 30d"))
     check("line_stamp reads date+time", line_stamp("2026-09-14 16:35 | WS1 | x") == "2026-09-14 16:35")
     check("line_stamp reads a bare date", line_stamp("2026-09-14 | WS1 | x") == "2026-09-14")
     check("line_stamp empty without a date", line_stamp("files 47 | sections 687") == "")
