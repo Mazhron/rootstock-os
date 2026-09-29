@@ -305,6 +305,22 @@ category it sits beside.
   beside the frame that Mazhron had to point at. A generated background
   can carry a white margin: tools/cut_ui_borders.py now trims it
   (trim_white) - a stripe in a montage is never "just the tile edge".
+- NUANCE (2026-09-29, the nineteen bushes): a new sheet family breaks
+  the slicer in ways only the montage and the blob list show, three in
+  one batch. TRIED: the existing reading-order pass. FAILED BECAUSE: (1)
+  rows by CENTROID misplace a tall mature plant set beside two stacked
+  stages (its centre sits between their rows); (2) the grey-junk filter
+  meant for grid lines dropped Brittlebush's silver sprout ("only 6
+  blobs"); (3) choosing the N largest blobs BEFORE joining parts let half
+  of Scarlet Quince's two-piece twig outrank the sprout, and the sprout,
+  now a "fragment", welded onto a later stage (taller than the mature).
+  DO INSTEAD: rows by BASELINE (bottom edge); join a plant's parts by
+  pixel distance (MaxFilter) FIRST and only then pick the N plants;
+  strip thin border rules before dilating; fragments to the nearest BOX;
+  and SWEEP the join size across every sheet (5..11 all clean, 13 welded
+  two Buttonbush panels) and take the middle. When a count fails, dump
+  the blob list (area + bbox) before touching a threshold: it names the
+  cause in one read. Landed as panels_from_sheet's baseline_gap mode.
 
 See also: ART_METHOD.md; docs/systems/art-pipeline.md "Gemini growth
 sheets"; WORKFLOWS.md "Cut and wire new creature or plant art".
