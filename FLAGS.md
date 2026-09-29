@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-29 01:12 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 | stale 17
+Updated 2026-09-29 01:40 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 | stale 18
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -48,7 +48,7 @@ Updated 2026-09-29 01:12 | items 74 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 7 
 | SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:58 |
 | UPGRADES.md | GREEN | STALE | fable | 2026-09-20 03:22 |
-| WIKI_METHOD.md | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:11 |
+| WIKI_METHOD.md | GREEN | STALE | Fable (WS2 manager) | 2026-09-22 17:11 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
 | hooks/README.txt | GREEN | STALE | fable | 2026-09-20 03:21 |

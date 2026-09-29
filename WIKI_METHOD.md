@@ -42,7 +42,8 @@ of thousands.
    paragraph, how to read, how to verify, the laws no hook enforces, and
    ONE pointer to the master index. Under Anthropic's 200-line target
    (the lint fails past LINE_BUDGET 200 / TOKEN_BUDGET 2,000, warns past
-   1,000; the origin lands ~900 tokens, a fresh install lower). Rules that
+   1,500 since 2026-09-29, 1,000 before; the origin lands ~900 tokens, a
+   fresh install lower). Rules that
    only matter for part of the codebase live in .claude/rules/ with
    `paths:` front matter and load only while a matching file is read.
    Everything else is one line in docs/index/MASTER_INDEX.md, the one
@@ -355,7 +356,8 @@ THE LAW:
 1. CLAUDE.md is THE POINTER CORE, budgeted in lines AND tokens: the lint
    (check_claude_md.py) FAILS past LINE_BUDGET (200, Anthropic's target)
    or TOKEN_BUDGET (bytes/4; 2,000, the owner's action line), WARNS past
-   WARN_TOKENS (1,000), requires CLAUDE.md to name the master index and
+   WARN_TOKENS (1,500; 1,000 until 2026-09-29), requires CLAUDE.md to
+   name the master index and
    the master index to list every docs/systems and docs/index file and
    every rule, and fails on a rule with no `paths:` field. The answer is
    never a raised budget. standup prints the OK/WARN line every session
