@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-29 00:24 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 | stale 13
+Updated 2026-09-29 00:42 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 | stale 15
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -77,13 +77,13 @@ Updated 2026-09-29 00:24 | items 72 | GREEN 67 | YELLOW 0 | RED 0 | unflagged 5 
 | reference tools/checkpoint.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
-| reference tools/correction_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| reference tools/correction_log.py | GREEN | STALE | fable | 2026-09-20 03:21 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/format_lint.py | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
-| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-09-29 00:24 |
+| reference tools/ledger_trends.py | GREEN | STALE | fable | 2026-09-29 00:24 |
 | reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-09-14 16:55 |

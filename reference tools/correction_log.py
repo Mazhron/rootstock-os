@@ -9,6 +9,7 @@ needs correcting, then you would ask 'What was the intent?'")
         --wrong "<the CEO's words, verbatim>" \\
         [--intent-id I0007] [--intent-ref "<INTENT.md heading>"]
     python tools/correction_log.py --fixed C0003 --fix "<commit subject or note>"
+    python tools/correction_log.py --pattern C0002-C0005 --law "<the one law behind them>"
     python tools/correction_log.py --last      # newest record
     python tools/correction_log.py --open      # corrections without a FIXED line
 
@@ -25,6 +26,13 @@ proposes a law or an INTENT.md entry when corrections cluster.
 The /correct skill walks the ritual: ask what needs correcting -> record
 -> ask "what was the intent?" -> the /intent skill files the why and
 resolves the claim -> fix -> --fixed.
+
+THE PATTERN ROW (2026-09-29, the first reply after the proposal law): when
+corrections cluster, ledger_trends.py proposes naming the pattern and
+drafting its law; --pattern appends a PATTERN line (ids, the law's name,
+the INTENT.md ref) so the proposal stops re-firing on a count that stays
+high for seven days. It fires again only when a RECORD lands after the
+newest PATTERN line - a new correction reopens the question.
 
 PURPOSE: Record the correction ledger: a RECORD line the moment a correction
   is understood in the CEO's own words, a FIXED line when the fix ships, and
@@ -130,6 +138,12 @@ def fixed(i, fix):
     print("%s fixed: %s" % (i, clean(fix)))
 
 
+def pattern(ids, law, ref=""):
+    """THE PATTERN ROW: 'PATTERN | C0002-C0005 | when | ws | | | | | ref | law'."""
+    append(["PATTERN", clean(ids), now(), workstation(), "", "", "", "", clean(ref), clean(law)])
+    print("pattern named over %s: %s" % (clean(ids), clean(law)))
+
+
 def open_ones():
     done = {r["id"] for r in records() if r["kind"] == "FIXED"}
     rows = [r for r in records() if r["kind"] == "RECORD" and r["id"] not in done]
@@ -195,6 +209,14 @@ def _selftest():
         print(("PASS  " if ok else "FAIL  ") + "fixed() appends a FIXED line for a known id")
         fails += not ok
 
+        pattern("C0001-C0002", "the selftest law", ref="Some Heading")
+        text_p = open(LEDGER, encoding="utf-8").read()
+        prow = [ln for ln in text_p.splitlines() if ln.startswith("PATTERN | ")]
+        ok = (len(prow) == 1 and len(prow[0].split(" | ")) == 10 and next_id() == "C0003"
+              and prow[0].endswith(" | Some Heading | the selftest law"))
+        print(("PASS  " if ok else "FAIL  ") + "pattern() appends a 10-column PATTERN row that next_id ignores")
+        fails += not ok
+
         # a pre-existing header-only ledger must not get a second header
         LEDGER = os.path.join(tmp, "preexisting_ledger.txt")
         with open(LEDGER, "w", encoding="utf-8") as fh:
@@ -233,6 +255,12 @@ def main(argv):
         if not (i and fix):
             sys.exit("--fixed <id> needs --fix")
         fixed(i, fix)
+        return 0
+    if "--pattern" in argv:
+        ids, law = opt("--pattern"), opt("--law")
+        if not (ids and law):
+            sys.exit("--pattern <ids> needs --law")
+        pattern(ids, law, opt("--intent-ref", ""))
         return 0
     if "--open" in argv:
         open_ones()

@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.35** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.36** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1326,3 +1326,30 @@ README: "The wiki learns (the learning loop)" bullet in "1. The Knowledge
 Wiki" (the DO / ASK classes), "The Checkpoint Protocol" bullet in "4.
 Lossless Sessions" (the proposal source), the systems-audit paragraph in
 "The intent loop", and the "Kit version:" line.
+
+### v1.36 - 2026-09-29 - The pattern row (a named corrections pattern stops re-proposing)
+WHAT: The first standup after v1.35 raised the same two [DO] proposals
+the previous reply had already done: "4 corrections in the last 7 days -
+name the pattern" (named in laws.md the night before) and "the digest is
+13655 bytes - trim" (trimmed; the 00:38 measure was inflated by ~2 KB of
+new-since ledger lines that print in full by the loss test and expire at
+the next standup). A proposal that was done must not fire again until
+its ledger moves: the corrections count stays high for seven days by
+design, so the ledger needed a row that says "named". correction_log.py
+gains --pattern <ids> --law "..." [--intent-ref ...], which appends a
+PATTERN line (ten columns, the id field holds the range, next_id ignores
+it); ledger_trends.py raises the corrections proposal only when no
+PATTERN line is newer than the newest RECORD in the window, and its text
+now names the recording command. The digest proposal stays as it is: it
+reads the newest measurement, and a "measure" trigger line appended
+after a trim is the honest way to close it.
+CARRIES: reference tools/correction_log.py (pattern(), --pattern, the
+docstring paragraph, one selftest case), reference tools/ledger_trends.py
+(the PATTERN check in the corrections block); this entry.
+GRAFT: copy both reference tools fresh, or port pattern() + the CLI
+branch and the four-line check. In the project's WORKFLOWS.md "Correct a
+mistake" add the step: when ledger_trends proposes a pattern, name it,
+draft the law, then record it with --pattern in the same reply.
+README: "The wiki learns (the learning loop)" bullet in "1. The Knowledge
+Wiki" (one sentence: a done DO proposal clears by its ledger, the
+pattern row being the corrections case) and the "Kit version:" line.

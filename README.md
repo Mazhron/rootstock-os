@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.35** (2026-09-29). The graft log `UPGRADES.md` is the
+Kit version: **v1.36** (2026-09-29). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -268,7 +268,10 @@ that make it work:
   or an employee carries) is done in the reply that reads it, never
   offered as a choice, while an [ASK] proposal (an open question, a
   shelf, a game number) waits for the owner. "The owner decides" names
-  the ASK class, not the mechanics.
+  the ASK class, not the mechanics. A done [DO] clears by its own
+  ledger, never by memory: since v1.36 a named corrections pattern is a
+  PATTERN row in the corrections ledger, and the proposal stays quiet
+  until a new correction lands.
 - **The lessons book (the lesson loop).** Steps live in the process
   registry; judgment lives in LESSONS.md: one entry per task shape, THE
   ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, then

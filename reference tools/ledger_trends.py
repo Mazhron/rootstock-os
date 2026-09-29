@@ -370,10 +370,16 @@ def proposals(th=None):
     week = (datetime.date.today() - datetime.timedelta(days=7)).isoformat()
     corr = [ln for ln in data_lines("corrections.txt") if ln.startswith("RECORD | ")
             and ln.split(" | ")[2][:10] >= week]
-    if len(corr) >= th["corrections_7d"]:
+    # THE PATTERN ROW (2026-09-29): a PATTERN line newer than the newest RECORD
+    # means the pattern was named and its law drafted (correction_log.py
+    # --pattern); the proposal is done and stays quiet until a new correction.
+    named = [ln.split(" | ")[2] for ln in data_lines("corrections.txt") if ln.startswith("PATTERN | ")]
+    newest_record = max((ln.split(" | ")[2] for ln in corr), default="")
+    if len(corr) >= th["corrections_7d"] and not (named and max(named) > newest_record):
         out.append("PROPOSE (corrections.txt): %d corrections in the last 7 days - a law or an "
-                   "INTENT.md section is missing; read their 'what was wrong' words together "
-                   "and name the pattern to the CEO." % len(corr))
+                   "INTENT.md section is missing; read their 'what was wrong' words together, "
+                   "name the pattern to the CEO and record it (`python tools/correction_log.py "
+                   "--pattern <ids> --law \"...\"`)." % len(corr))
     try:
         import systems_audit  # noqa: E402
         stamp, days, dfs, commits = systems_audit.status()
