@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.39** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.40** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1475,3 +1475,67 @@ and stop. No settings change, no hook.
 README: "What is in the box" (the SECURITY_METHOD.md row and the
 reference-tools row's count and list) and "Questions people ask" (the
 new "Does it check the app I build, or only my process?" answer).
+
+### v1.40 - 2026-09-30 - Four takes from serio-focus (the re-read dedup, the employee model rule, the live usage window, the guard replay) and the secret-file deny list
+WHAT: Mazhron asked for a discovery read of serio-focus
+(github.com/serio-ngo/serio-focus, Apache-2.0, a Claude Code plugin that
+governs tokens and fan-out) against Rootstock: "see what it does in
+comparison to Rootstock, same, similar, different, better or worse. Do
+not install anything." The verdict: a different animal (a token governor
+next to an operating system), the same one-home-per-fact law arrived at
+independently, and four places where it was ahead. Mazhron: "I want to
+add the things you suggest we add and edit it to Rootstock. Always should
+make things better if we can." Credit to its author for all four ideas.
+(1) THE RE-READ RULE in diet_guard.py: a later whole Read of a big file
+(the 10k line) that this session already read whole and that is unchanged
+since (mtime + size fingerprint) is refused once with "RE-READ (diet
+guard): ... already in context; Grep the section or Read with
+offset/limit; if the context was compacted since, repeat once", and the
+repeat passes; pre_compact.py calls forget_session_reads() so the marks
+never outlive a compaction. serio-focus applies it to every file; the kit
+keeps it to big files, where the waste is. (2) THE EMPLOYEE MODEL RULE in
+brief_guard.py: a work dispatch whose tool_input.model is missing, or
+names Fable, is refused with the other brief gaps. The harness fact that
+made it urgent: an Agent call with no model inherits the parent's model,
+so every model-less dispatch had been running on the manager's own tier
+against Mazhron's ruling ("Fable is the only one you cannot use"). (3)
+THE USAGE WINDOW (reference tools/usage_window.py + one line in
+prompt_gauge.py): the budget line was retrospective (the next standup's
+"+150%"); the plan's own limits are rolling five-hour and seven-day
+windows. The tool mines the same transcripts as usage_report.py,
+incrementally (a gitignored cache; 0.1s warm), and prints last 5h, the
+peak 5h inside the last 7 days, the share, and 7d; the gauge prints it
+only when the last 5h is already most of the 7-day peak (owner-tuned:
+window_warn_share 0.8 and window_floor_weighted 1000000 in
+.claude/fanout_limits.json) and ledgers that reading in
+docs/history/usage_window_runs.txt. (4) THE GUARD REPLAY (reference
+tools/guard_replay.py): the hooks' selftests check invented cases; this
+replays the last N days of recorded tool calls, employee transcripts
+included, through the four PreToolUse guards' pure judge functions in a
+sandbox (a fresh state per session, no ledger append, no command run)
+and prints per rule: replayed, would refuse now, refused live, NEW
+CATCHES and LOST; --record ledgers it in docs/history/guard_replay_runs.txt
+with WARN when anything was lost. Its first true run: 1261 calls in 7
+days, INDEX FIRST 9 would / 10 live / 1 lost (a shell read judged at
+today's file size), everything else exact. Also: the settings template
+gains a permissions.deny block (the destructive shell rules the origin
+project already carried plus Read/Edit of .env files, key material and
+credentials), zero runtime cost. Not taken, and why: the commit/push
+hold (the ship-every-batch ruling stands), the first-N-lines read cap
+(INDEX FIRST is the better answer), the flat deny list without a grant
+path, the output style.
+CARRIES: hooks/diet_guard.py, hooks/brief_guard.py, hooks/pre_compact.py,
+hooks/prompt_gauge.py, hooks/settings.json (the permissions.deny block);
+reference tools/usage_window.py, reference tools/guard_replay.py;
+HOOKS_METHOD.md (the settings note); this entry.
+GRAFT: copy the four hooks over yours and run each --selftest; copy the
+two tools to tools/ and run their --selftest; merge the permissions.deny
+block into your .claude/settings.json (validate with python -m json.tool);
+add the two window keys to .claude/fanout_limits.json only if the
+defaults are wrong for your plan; add `.claude/usage_window_state.json`
+to .gitignore; run `python tools/guard_replay.py --days 7 --record` once
+and read the LOST column before trusting a guard change; put the replay
+in your check loop.
+README: "The hooks" (the diet guard and brief guard sentences), "What is
+in the box" (the reference-tools row's count and list, the hooks row's
+settings-template words).

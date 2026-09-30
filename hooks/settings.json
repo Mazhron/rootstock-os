@@ -1,4 +1,44 @@
 {
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~)",
+      "Bash(rm -rf ~/*)",
+      "Bash(rm -rf *)",
+      "Bash(rm -rf .)",
+      "Bash(rm -rf ./*)",
+      "Bash(rm -rf .git)",
+      "Bash(rm -rf .git/*)",
+      "Bash(rm -rf ..)",
+      "Bash(git filter-branch:*)",
+      "Bash(git reflog expire:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*credential*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Read(**/id_rsa*)",
+      "Read(**/id_ed25519*)",
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(**/secrets/**)",
+      "Edit(**/*credential*)",
+      "Edit(**/*.pem)",
+      "Edit(**/*.key)",
+      "Edit(**/id_rsa*)",
+      "Edit(**/id_ed25519*)"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {

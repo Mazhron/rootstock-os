@@ -13,17 +13,27 @@ untouched - they edit nothing and their fan-out is fanout_guard's job.
 PURPOSE: PreToolUse guard that refuses an Agent/Task dispatch to a work
   agent type when the brief is missing the stamp template (STAMP/TOOLS/
   WORKFLOW), the INTENT line ask, the budget line or THE PRESERVATION LAW
-  line; silent for read-only agent types and complete briefs.
+  line; also refuses THE EMPLOYEE MODEL RULE (SUBAGENTS.md rule 6): a
+  dispatch whose tool_input.model is missing/empty, or matches Fable
+  (case-insensitive, even inside a longer id like "claude-fable-5-1"),
+  since a model-less dispatch inherits the parent model (Fable), and
+  Fable is never an employee; silent for read-only agent types and
+  complete briefs.
 INTENT: the CEO 2026-09-26: "Can we make these processes more fool proof
   in any way through hooks" - the brief laws existed, nothing enforced
-  them at the dispatch moment.
+  them at the dispatch moment. Extended 2026-09-30 per the CEO's rule 6
+  ruling (2026-09-29): "You are the manager, you make the decision... I
+  believe Fable is the only one you cannot use per my decision to save on
+  tokens" - the harness inherits Fable silently when no model is passed.
 
 Search keys: brief guard, delegation, stamp line, budget line,
-preservation line, intent line, Agent tool, dispatch refusal.
-See also: SUBAGENTS.md (rules 3, 13, 14); .claude/skills/brief;
+preservation line, intent line, Agent tool, dispatch refusal, employee
+model rule, fable, model field, rule 6.
+See also: SUBAGENTS.md (rules 3, 6, 13, 14); .claude/skills/brief;
 tools/hooks/delegation_auditor.py (the result end);
 tools/hooks/fanout_guard.py (spawn rate, a different law).
 """
+import re
 import sys
 
 from _hooklib import deny, read_input
@@ -43,12 +53,31 @@ REQUIRED = {
 }
 
 
-def missing_pieces(prompt, subagent_type):
-    """The REQUIRED pieces absent from this brief; [] for read-only types."""
+# THE EMPLOYEE MODEL RULE (the CEO 2026-09-29, SUBAGENTS.md rule 6): a
+# dispatch with no `model` field inherits the parent's model, and the
+# parent is Fable - who is never an employee. _MODEL_UNCHECKED is the
+# sentinel default so the existing 2-arg callers keep working unchanged.
+_MODEL_UNCHECKED = object()
+_FABLE_RE = re.compile(r"fable", re.I)
+MODEL_RULE_MSG = ("THE EMPLOYEE MODEL RULE (the CEO 2026-09-29, SUBAGENTS.md rule 6): "
+                  "Fable is never an employee, and a dispatch with no model inherits "
+                  "Fable. Pass model=haiku|sonnet|opus per SUBAGENTS.md THE ASSIGNMENTS.")
+
+
+def missing_pieces(prompt, subagent_type, model=_MODEL_UNCHECKED):
+    """The REQUIRED pieces absent from this brief; [] for read-only types.
+    `model` is optional: pass the dispatch's tool_input.model to also check
+    THE EMPLOYEE MODEL RULE (a missing or Fable-inheriting model is reported
+    as one more named piece, MODEL_RULE_MSG); the sentinel default leaves it
+    unchecked, so existing 2-arg callers are unaffected."""
     if (subagent_type or "").strip().lower() in READONLY_TYPES:
         return []
     text = prompt or ""
-    return [name for name, token in REQUIRED.items() if token not in text]
+    gaps = [name for name, token in REQUIRED.items() if token not in text]
+    if model is not _MODEL_UNCHECKED:
+        if not (model or "").strip() or _FABLE_RE.search(model or ""):
+            gaps.append(MODEL_RULE_MSG)
+    return gaps
 
 
 def main():
@@ -56,11 +85,11 @@ def main():
     if data.get("tool_name") not in ("Agent", "Task"):
         sys.exit(0)
     ti = data.get("tool_input") or {}
-    gaps = missing_pieces(ti.get("prompt", ""), ti.get("subagent_type", ""))
+    gaps = missing_pieces(ti.get("prompt", ""), ti.get("subagent_type", ""), ti.get("model", ""))
     if gaps:
         deny("[HOOK brief_guard] BRIEF INCOMPLETE - this dispatch would start an "
              "employee without its laws. Missing: %s. Compose the brief through the "
-             "/brief skill (SUBAGENTS.md rules 3, 11, 13, 14 paste the exact lines); "
+             "/brief skill (SUBAGENTS.md rules 3, 6, 11, 13, 14 paste the exact lines); "
              "read-only searches go to the Explore or Plan agent type instead."
              % "; ".join(gaps))
     sys.exit(0)
@@ -87,6 +116,20 @@ def _selftest():
        gaps == ["the budget line (rule 3: ~30 tool calls, STOP and report)"])
     ok("an Explore search passes with no template", missing_pieces("find X", "Explore") == [])
     ok("a Plan agent passes with no template", missing_pieces("plan X", "plan") == [])
+
+    # THE EMPLOYEE MODEL RULE (rule 6): checked only when a third arg is given.
+    ok("a complete brief with model=sonnet passes",
+       missing_pieces(full, "general-purpose", "sonnet") == [])
+    ok("model=fable is refused naming the model rule alone",
+       missing_pieces(full, "general-purpose", "fable") == [MODEL_RULE_MSG])
+    ok("model=claude-fable-5-1 is refused (fable inside a longer id)",
+       missing_pieces(full, "general-purpose", "claude-fable-5-1") == [MODEL_RULE_MSG])
+    ok("a missing model is refused",
+       missing_pieces(full, "general-purpose", "") == [MODEL_RULE_MSG])
+    ok("an Explore search with no model still passes (the exemption stands)",
+       missing_pieces("find X", "Explore", "") == [])
+    ok("two-arg callers are unaffected (model left unchecked by default)",
+       missing_pieces(full, "general-purpose") == [])
     print("brief_guard selftest: %d failed" % fails)
     return 1 if fails else 0
 

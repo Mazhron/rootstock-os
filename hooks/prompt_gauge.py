@@ -23,6 +23,15 @@ the lesson matcher) and the hits, at most two of each, are printed under
 ROUTE so the scripted way is checked before it is re-derived. No ledger: a
 route is a pointer; the tool it names keeps its own.
 
+Since 2026-09-30 it also carries THE USAGE WINDOW LINE (Rootstock
+T-0930-RS-2, the CEO's ask: the standup's budget line is retrospective, but
+the plan's own limits are rolling five-hour and seven-day windows):
+tools/usage_window.py's gauge_line() (--advise --record, in-process) runs
+on every prompt and is printed only when the last 5 hours are already most
+of the last 7 days' worst 5-hour stretch; an ADVISED reading is also
+ledgered there. Silent otherwise, same zero-cost rule as the rest of this
+hook.
+
 Answers `--selftest` (house pattern: PASS/FAIL lines on the pure line
 builder, never stdin or a real prompt).
 
@@ -33,16 +42,20 @@ PURPOSE: UserPromptSubmit hook that stays silent on a normal turn and, when
   and since 2026-09-20 the LESSONS line naming the LESSONS.md entries whose
   Keys match the prompt, so the one right way is read before the first tool call,
   and since 2026-09-28 the ROUTE line naming the WORKFLOWS.md entries and the
-  reference tools whose heading, WHEN line or Search keys the prompt hits.
+  reference tools whose heading, WHEN line or Search keys the prompt hits,
+  and since 2026-09-30 a live USAGE WINDOW line (tools/usage_window.py)
+  when the rolling five-hour spend is already most of the seven-day peak.
 INTENT: relays the checkpoint and context thresholds and the kit-sync check
   at zero cost on a normal turn, so the manager checkpoints or refreshes the
   kit only when the harness itself has detected the need.
 
 Search keys: prompt hook, context gauge, 80 percent rule, task counter,
-kit unsynced, lessons line, lesson loop, route line, which script.
+kit unsynced, lessons line, lesson loop, route line, which script, usage
+window, live budget, rolling window.
 See also: tools/checkpoint.py (thresholds + the transcript probe);
 tools/hooks/stop_tick.py (the tick that feeds the counter); tools/lesson_log.py
-(match_lines); tools/route_index.py (the route line); LESSONS.md; WORKFLOWS.md.
+(match_lines); tools/route_index.py (the route line); tools/usage_window.py
+(the five-hour/seven-day window line); LESSONS.md; WORKFLOWS.md.
 """
 import sys
 
@@ -124,6 +137,18 @@ def main():
         _routes = []
     if _routes:
         print("[HOOK prompt_gauge] " + "\n".join(_routes))
+    # THE USAGE WINDOW LINE (the CEO's ask 2026-09-30, Rootstock T-0930-RS-2):
+    # a live rolling five-hour read instead of the next morning's standup
+    # line. tools/usage_window.py owns the numbers, the owner-tuned share/
+    # floor and the ADVISED ledger; this is silent on a normal turn and a
+    # slow cold cache or any exception must never break the gauge.
+    try:
+        import usage_window as _uw
+        _uw_line = _uw.gauge_line()
+    except Exception:  # noqa: BLE001 - a hook never crashes the turn
+        _uw_line = None
+    if _uw_line:
+        print("[HOOK prompt_gauge] " + _uw_line)
 
 
 def _selftest():

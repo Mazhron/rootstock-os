@@ -13,14 +13,18 @@ PURPOSE: PreCompact hook that appends one ledger line per compaction (when,
   workstation, version, manual or auto trigger, context load, unbanked task
   count) to docs/history/compact_runs.txt, and on an auto trigger tells the
   manager the session_start hook will re-inject the standup digest right
-  after.
+  after; also clears diet_guard's RE-READ marks for this session (via
+  forget_session_reads(), imported defensively) since a compaction empties
+  what was "already in context."
 INTENT: keeps a receipt of how often the harness's lossy auto-compact fires
   versus the project's lossless checkpoints, so the pattern is visible
   without re-reading anything.
 
-Search keys: compact hook, auto compact ledger, compaction count.
+Search keys: compact hook, auto compact ledger, compaction count, re-read
+marks, forget_session_reads.
 See also: docs/history/compact_runs.txt (the ledger); tools/hooks/
-session_start.py (the recovery); REPORTING_METHOD.md (the Ledger rule).
+session_start.py (the recovery); REPORTING_METHOD.md (the Ledger rule);
+tools/hooks/diet_guard.py (the RE-READ marks this hook clears).
 """
 import datetime
 import os
@@ -28,6 +32,11 @@ import sys
 
 from _hooklib import ROOT, emit, project_version, read_input
 import checkpoint as cp
+
+try:
+    from diet_guard import forget_session_reads  # RE-READ marks don't outlive a compaction
+except Exception:
+    forget_session_reads = None  # diet_guard missing or broken - this hook must never crash
 
 DEFAULT_LEDGER = os.path.join(ROOT, "docs", "history", "compact_runs.txt")
 
@@ -51,6 +60,11 @@ def append_ledger(ws, version, trigger, ctx, n, now, ledger=DEFAULT_LEDGER):
 def main():
     data = read_input()
     trigger = data.get("trigger", "?")
+    if forget_session_reads:
+        try:
+            forget_session_reads(data.get("session_id") or "unknown")
+        except Exception:
+            pass  # a guard must never crash the turn
     ws = cp.which_ws()
     n = cp.load().get(ws, (0, ""))[0]
     load_ = cp.context_load()
@@ -81,6 +95,22 @@ def _selftest():
     ok = len(line.rstrip("\n").split(" | ")) == 6
     print(("PASS  " if ok else "FAIL  ") + "data line carries the 6 fields")
     fails += not ok
+
+    # forget_session_reads: guarded import never crashes, and when diet_guard
+    # is present (it is, in this repo) it actually clears the session's
+    # RE-READ marks - tested on a plain dict so no real state file is touched.
+    if forget_session_reads:
+        fake_state = {"sessions": {"x": {"admitted_reads": {"a": "1:2"},
+                                          "reread_offered": {"a": 1}}}}
+        forget_session_reads("x", fake_state)
+        ok = ("admitted_reads" not in fake_state["sessions"]["x"]
+              and "reread_offered" not in fake_state["sessions"]["x"])
+    else:
+        ok = True  # diet_guard not importable - the guarded import degraded safely
+    print(("PASS  " if ok else "FAIL  ")
+          + "forget_session_reads clears this session's RE-READ marks (or degrades safely)")
+    fails += not ok
+
     print("pre_compact selftest: %d failed" % fails)
     return 1 if fails else 0
 

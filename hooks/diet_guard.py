@@ -27,6 +27,10 @@ WHAT IT SAYS:
     Section-read it (Grep "^## " then offset/limit, or sed -n A,Bp) or, if
     this is an understand-this step, delegate the reading to an employee.
   OUTPUT DIET: <shape> - add a limiter (| head -n, -n N, --stat, -q ...).
+  RE-READ (diet guard): <file> is unchanged since its whole read this
+    session and already in context - denied once per fingerprint (the file
+    changing resets it); the next identical call passes with a warning,
+    the same repeat-passes mechanism as INDEX FIRST.
 Shell shapes are warned at most WARN_CAP times per session per shape so a
 deliberate choice is not nagged; the big-read warning fires every time,
 because every big read is a fresh decision.
@@ -36,16 +40,22 @@ PURPOSE: PreToolUse guard on Read, Bash and PowerShell enforcing the read
   recursive listing, install) has no limiter, and on the first whole read of
   a file over about 10k tokens in a session it denies once and returns the
   file's own section or function index instead; the same call repeated
-  afterward passes with a warning only.
+  afterward passes with a warning only; a LATER whole read of that same
+  file in the same session, fingerprint (mtime_ns+size) unchanged since the
+  admitted read, is denied once more as RE-READ and passes on repeat;
+  forget_session_reads() clears a session's RE-READ marks (not its INDEX
+  FIRST marks) after a compaction empties the context.
 INTENT: section or split ... should not require my approval ... part of the
   looping scripts
 
 Search keys: diet guard, read diet, output diet, big read, whole-file read,
-chatty command, limiter, pretooluse warn, 10k rule.
+chatty command, limiter, pretooluse warn, 10k rule, re-read, RE-READ,
+fingerprint, admitted read, forget_session_reads.
 See also: tools/hooks/fanout_guard.py (the same warn shape); TOKEN_IDEAS.md
 ideas 15-18; WIKI_METHOD.md (the read diet + the output diet laws);
 tools/usage_report.py (the daily line that grades the outcome);
-docs/systems/tooling.md (The hooks).
+docs/systems/tooling.md (The hooks); tools/hooks/pre_compact.py (calls
+forget_session_reads() so the RE-READ marks don't outlive a compaction).
 """
 import json
 import os
@@ -102,6 +112,30 @@ def _save(state):
             json.dump(state, fh)
     except OSError:
         pass
+
+
+def forget_session_reads(session_id, state=None):
+    """Compaction empties the manager's context, so a file's RE-READ marks
+    must go with it - it is no longer "already in context." Clears this
+    session's admitted-read fingerprints and RE-READ-offered flags; leaves
+    INDEX FIRST's own per-file marks alone (those track "the index was
+    already served," which stays true across a compaction). State
+    bookkeeping only - no file is touched, nothing is deleted from disk.
+
+    With no `state` given, operates on the real on-disk STATE (the normal
+    call from pre_compact.py: load, clear, save). A `state` dict may be
+    passed directly (tests, or a caller already holding one) and is
+    mutated in place with no disk I/O."""
+    owns = state is None
+    if owns:
+        state = _load()
+    sess = state.get("sessions", {}).get(session_id)
+    if sess:
+        sess.pop("admitted_reads", None)
+        sess.pop("reread_offered", None)
+    if owns:
+        _save(state)
+    return state
 
 
 def _ktok(n):
@@ -179,6 +213,27 @@ def _read_hint(name, est, lines, sections):
             % (name, _ktok(est), lines if lines is not None else "?", move))
 
 
+def _fingerprint(path):
+    """<mtime_ns>:<size> for the RE-READ check - changes whenever the file's
+    content could have changed; None when it can't be stat'd (gone, no
+    permission)."""
+    try:
+        st = os.stat(path)
+        return "%d:%d" % (st.st_mtime_ns, st.st_size)
+    except OSError:
+        return None
+
+
+def _reread_msg(name, est):
+    """RE-READ (the CEO's Rootstock take, 2026-09-30): a later whole read of
+    a file this session already read whole and unchanged since - denied
+    once, same repeat-passes mechanism as INDEX FIRST."""
+    return ("RE-READ (diet guard): %s is unchanged since its whole read this session and "
+            "is already in context (%s tokens). Grep the section you need, or Read with "
+            "offset/limit. If the context was compacted since, repeat the call once and it "
+            "passes." % (name, _ktok(est)))
+
+
 def _index_first(name, est, lines, index):
     """INDEX FIRST (the CEO 2026-09-10, "section or split ... should not require
     my approval ... part of the looping scripts"): the first whole read of a
@@ -203,22 +258,40 @@ def evaluate(data, state, now=None):
     s = state.setdefault("sessions", {}).setdefault(sid, {"t": now, "shapes": {}})
     s["t"] = now
     offered = s.setdefault("offered", {})
+    admitted = s.setdefault("admitted_reads", {})      # key -> fingerprint at admission
+    reread_offered = s.setdefault("reread_offered", {})  # key -> RE-READ already denied once
     msgs = []
     action = ""
 
     def whole_read(raw_path):
         """One big whole read: the first per file per session is denied with
-        the index; every later one warns."""
+        the index (INDEX FIRST); the next admitted read of the same file
+        records its fingerprint; a LATER read of that file, unchanged since,
+        is denied once more (RE-READ) and passes on repeat; a changed file
+        (different fingerprint) always passes and resets the mark."""
         info = file_size_info(raw_path, cwd)
         if not (info and info[0] >= BIG_READ_TOK):
             return None
         name = os.path.basename(raw_path.strip("\"'"))
-        key = _resolve(raw_path, cwd).replace("\\", "/").lower()
+        resolved = _resolve(raw_path, cwd)
+        key = resolved.replace("\\", "/").lower()
         if key not in offered:
             index = file_index(raw_path, cwd)
             if index:
                 offered[key] = now
                 return ("deny", _index_first(name, info[0], info[1], index))
+            return ("", _read_hint(name, *info))
+        fp = _fingerprint(resolved)
+        if fp is not None:
+            prev = admitted.get(key)
+            if prev is None:
+                admitted[key] = fp                     # first admission: baseline it
+            elif prev != fp:
+                admitted[key] = fp                     # changed since - fresh baseline
+                reread_offered.pop(key, None)
+            elif key not in reread_offered:
+                reread_offered[key] = now
+                return ("deny", _reread_msg(name, info[0]))
         return ("", _read_hint(name, *info))
 
     if tool == "Read":
@@ -329,9 +402,51 @@ def _selftest():
         last = run("Bash", sess="cap", state=st, command="git log")
     check("shape warning capped per session", last == "" and st["sessions"]["cap"]["shapes"]["git log without a count"] == WARN_CAP + 2)
     reads = [run("Bash", sess="cap", state=st, command="cat big.md") for _ in range(WARN_CAP + 2)]
-    check("read warning never capped", "INDEX FIRST" in reads[0]
-          and all("READ DIET" in r for r in reads[1:]))
+    # never silently capped like the shape warnings are (none of these is ""):
+    # INDEX FIRST once, then READ DIET, then RE-READ once (the file is
+    # unchanged), then READ DIET forever after.
+    check("read warning never capped", "INDEX FIRST" in reads[0] and "READ DIET" in reads[1]
+          and "RE-READ" in reads[2] and all("READ DIET" in r for r in reads[3:])
+          and all(r != "" for r in reads))
     check("junk input is silent", evaluate({}, {})[0] == "")
+
+    # RE-READ dedup: a later whole read of a file already admitted this
+    # session, unchanged, is denied once more; the next passes; a changed
+    # file skips it; forget_session_reads() resets the marks.
+    rr = {}
+    evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+              "session_id": "rr"}, rr)                          # INDEX FIRST deny
+    evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+              "session_id": "rr"}, rr)                          # admitted, fp recorded
+    third = evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+                      "session_id": "rr"}, rr)
+    check("second unchanged whole read is refused with RE-READ",
+          third[2] == "deny" and "RE-READ" in third[0])
+    fourth = evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+                       "session_id": "rr"}, rr)
+    check("the third whole read passes with a warning", fourth[2] == "" and "READ DIET" in fourth[0])
+    check("an offset/limit read never triggers RE-READ",
+          run("Read", sess="rr", state=rr, file_path=big, limit=40) == "")
+    with open(big, "a", encoding="utf-8") as fh:
+        fh.write("## More\n" + ("y" * 79 + "\n") * 10)          # different size -> new fingerprint
+    changed = evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+                        "session_id": "rr"}, rr)
+    check("a changed file (different fingerprint) passes",
+          changed[2] == "" and "READ DIET" in changed[0])
+    reread_again = evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+                             "session_id": "rr"}, rr)
+    check("RE-READ can fire again on the new baseline",
+          reread_again[2] == "deny" and "RE-READ" in reread_again[0])
+    forget_session_reads("rr", rr)
+    after_forget = evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+                             "session_id": "rr"}, rr)
+    check("after forget_session_reads the next whole read is admitted again",
+          after_forget[2] == "" and "READ DIET" in after_forget[0])
+    diff_sess = evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
+                          "session_id": "rr-other"}, rr)
+    check("a different session is unaffected by rr's RE-READ state",
+          diff_sess[2] == "deny" and "INDEX FIRST" in diff_sess[0])
+
     print("diet_guard selftest: %d failed" % len(fails))
     return 1 if fails else 0
 
@@ -352,8 +467,9 @@ def main():
         state["errors"] = state["errors"][-5:]
     _save(state)
     if action == "deny":
-        # INDEX FIRST: the read is refused ONCE and the index travels in the
-        # reason; the same call repeated passes (see _index_first).
+        # INDEX FIRST or RE-READ: the read is refused ONCE and the reason
+        # carries the index or the unchanged-fingerprint notice; the same
+        # call repeated passes (see _index_first, _reread_msg).
         emit({"hookSpecificOutput": {"hookEventName": "PreToolUse",
                                      "permissionDecision": "deny",
                                      "permissionDecisionReason": msg}})

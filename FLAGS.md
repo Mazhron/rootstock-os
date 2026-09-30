@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-29 16:38 | items 76 | GREEN 70 | YELLOW 0 | RED 0 | unflagged 6 | stale 20
+Updated 2026-09-30 11:57 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 | stale 18
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -55,19 +55,19 @@ Updated 2026-09-29 16:38 | items 76 | GREEN 70 | YELLOW 0 | RED 0 | unflagged 6 
 | hooks/README.txt | GREEN | STALE | fable | 2026-09-20 03:21 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
-| hooks/brief_guard.py | - | UNFLAGGED | - | - |
+| hooks/brief_guard.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/delegation_auditor.py | - | UNFLAGGED | - | - |
-| hooks/diet_guard.py | GREEN | ok | fable | 2026-09-13 12:21 |
+| hooks/diet_guard.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/hygiene_guard.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/lesson_advisor.py | GREEN | ok | fable | 2026-09-20 03:21 |
-| hooks/pre_compact.py | GREEN | ok | fable | 2026-09-13 12:21 |
+| hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | STALE | fable-ws1 | 2026-09-20 17:37 |
-| hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-09-28 23:37 |
+| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/session_end.py | - | UNFLAGGED | - | - |
 | hooks/session_start.py | GREEN | ok | fable | 2026-09-29 00:24 |
-| hooks/settings.json | GREEN | STALE | fable | 2026-09-20 03:21 |
+| hooks/settings.json | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/stop_tick.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | hooks/verify_advisor.py | - | UNFLAGGED | - | - |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
@@ -82,6 +82,7 @@ Updated 2026-09-29 16:38 | items 76 | GREEN 70 | YELLOW 0 | RED 0 | unflagged 6 
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/format_lint.py | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/guard_replay.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
@@ -100,6 +101,7 @@ Updated 2026-09-29 16:38 | items 76 | GREEN 70 | YELLOW 0 | RED 0 | unflagged 6 
 | reference tools/standup.py | GREEN | STALE | fable | 2026-09-29 10:39 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-29 00:24 |
+| reference tools/usage_window.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | reference tools/version_hint.py | - | UNFLAGGED | - | - |
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
@@ -962,3 +964,38 @@ FLAG: The 16:36 YELLOW's two fixes landed: PURPOSE and CHECK B now name the full
 SAYS: the ritual behind FLAGS.md - one kit thing at a time, the auditor reads it, compares the stated purpose with the behaviour, gives it a color, explains the color in the entry, and never touches the thing.
 DOES: Instructs a read-only purpose audit of one kit thing: pick from purpose_audit --pending, read, compare PURPOSE with the body, file a green, yellow or red entry via purpose_audit --flag. Step 6 now splits a missing header (format_lint --rewrite) from a wrong existing line (edited in the original after the flag, then re-flagged).
 FLAG: Does what it says. The 2026-09-29 amendment fixes a stale step: --rewrite only fills gaps, so the old never-by-hand rule could not be followed for a stale PURPOSE.
+
+### 2026-09-30 11:57 | hooks/diet_guard.py | GREEN | fable | WS1 | 4ac53f36
+SAYS: PreToolUse guard on Read, Bash and PowerShell enforcing the read diet and output diet: warns when a shell command shape (git log, git diff, recursive listing, install) has no limiter, and on the first whole read of a file over about 10k tokens in a session it denies once and returns the file's own section or function index instead; the same call repeated afterward passes with a warning only; a LATER whole read of that same file in the same session, fingerprint (mtime_ns+size) unchanged since the admitted read, is denied once more as RE-READ and passes on repeat; forget_session_reads() clears a session's RE-READ marks (not its INDEX FIRST marks) after a compaction empties the context.
+DOES: the read and output diet on Read/Bash/PowerShell: shell-shape warnings, INDEX FIRST once per big file per session, and since v1.40 RE-READ once for an unchanged big file already admitted this session; per-session state in .claude/diet_state.json; forget_session_reads() for pre_compact
+FLAG: diff read 2026-09-30: RE-READ reuses the offered-dict mechanism, fingerprint is mtime_ns:size, big files only; 38 selftest checks pass
+
+### 2026-09-30 11:57 | hooks/brief_guard.py | GREEN | fable | WS1 | 3991c850
+SAYS: PreToolUse guard that refuses an Agent/Task dispatch to a work agent type when the brief is missing the stamp template (STAMP/TOOLS/ WORKFLOW), the INTENT line ask, the budget line or THE PRESERVATION LAW line; also refuses THE EMPLOYEE MODEL RULE (SUBAGENTS.md rule 6): a dispatch whose tool_input.model is missing/empty, or matches Fable (case-insensitive, even inside a longer id like "claude-fable-5-1"), since a model-less dispatch inherits the parent model (Fable), and Fable is never an employee; silent for read-only agent types and complete briefs.
+DOES: refuses an Agent/Task work dispatch whose brief lacks the stamp template, intent line, budget line or preservation line, and since v1.40 whose model is missing or names Fable; read-only agent types exempt; pure missing_pieces() with a sentinel third arg
+FLAG: full hunk read 2026-09-30; 12 selftest checks pass; the model rule prints through the existing Missing: path
+
+### 2026-09-30 11:57 | hooks/pre_compact.py | GREEN | fable | WS1 | b78c1b66
+SAYS: PreCompact hook that appends one ledger line per compaction (when, workstation, version, manual or auto trigger, context load, unbanked task count) to docs/history/compact_runs.txt, and on an auto trigger tells the manager the session_start hook will re-inject the standup digest right after; also clears diet_guard's RE-READ marks for this session (via forget_session_reads(), imported defensively) since a compaction empties what was "already in context."
+DOES: appends one compact ledger line per compaction and, since v1.40, clears the session's RE-READ marks through a defensively imported forget_session_reads()
+FLAG: hunk read 2026-09-30: both the import and the call are wrapped so the hook cannot crash; 3 selftest checks pass
+
+### 2026-09-30 11:57 | hooks/prompt_gauge.py | GREEN | fable | WS1 | c1901def
+SAYS: UserPromptSubmit hook that stays silent on a normal turn and, when a threshold is crossed, prints the checkpoint counter warning (8 tasks advised, 15 dire) and the context-remaining warning, plus since 2026-09-13 a KIT UNSYNCED line when a portable original is newer than its kit copy, and since 2026-09-20 the LESSONS line naming the LESSONS.md entries whose Keys match the prompt, so the one right way is read before the first tool call, and since 2026-09-28 the ROUTE line naming the WORKFLOWS.md entries and the reference tools whose heading, WHEN line or Search keys the prompt hits, and since 2026-09-30 a live USAGE WINDOW line (tools/usage_window.py) when the rolling five-hour spend is already most of the seven-day peak.
+DOES: the silent per-prompt gauge: checkpoint and context thresholds, the lesson match, the route line, and since v1.40 the usage window line via usage_window.gauge_line(), in-process, wrapped so any exception stays silent
+FLAG: hunk read 2026-09-30; 9 selftest checks pass; empty stdin exits 0
+
+### 2026-09-30 11:57 | hooks/settings.json | GREEN | fable | WS1 | 690e81dc
+SAYS: (no PURPOSE line)
+DOES: wires the fifteen hooks and, since v1.40, carries a permissions.deny block: destructive shell shapes plus Read/Edit of .env files, key material and credentials; no allow or ask entries
+FLAG: json validated 2026-09-30; the block is a copy of the origin project's committed list
+
+### 2026-09-30 11:57 | reference tools/usage_window.py | GREEN | fable | WS1 | 3efea537
+SAYS: Mine the harness transcripts for a LIVE weighted-token read of the last 5 hours, the peak 5-hour window inside the last 7 days, and the 7-day total, printed as one line or advised only past an owner-tuned share of that peak; incremental (byte offset + 10-minute slot cache) so a warm read costs well under a second.
+DOES: mines the harness transcripts incrementally for the last-5h, peak-5h-in-7d and 7d weighted spend; writes only its own gitignored cache and, when advised, one ledger line; --selftest builds fixtures in a TemporaryDirectory
+FLAG: writes enumerated 2026-09-30 (cache, ledger, selftest temp); no subprocess, no delete; 14 checks pass; 0.1s warm
+
+### 2026-09-30 11:57 | reference tools/guard_replay.py | GREEN | fable | WS1 | 02fe2b54
+SAYS: Replays the four PreToolUse guards' pure judge functions (diet_guard.evaluate, bash_guard.verdict, preserve_guard.evaluate, brief_guard.missing_pieces) against the last N days of harness transcript traffic in a sandbox (a fresh in-memory diet_guard state per run, no grant, no ledger writes except its own), counts replayed / would-refuse / refused-live calls per guard per rule, and prints the NEW CATCH and LOST deltas with `--show <guard>` giving up to ten one-line examples each; never executes a command and never modifies a transcript, a hook, or a hook's state.
+DOES: replays recorded tool calls, employee transcripts included since the manager's os.walk fix, through the four guards' judge functions with sandbox state; writes only its own ledger; the one subprocess is preserve_guard's read-only git diff, memoized, never a replayed command
+FLAG: writes enumerated 2026-09-30 (ledger, selftest temp); 13 checks pass; the sandbox promise is a selftest case; first true run WARN lost 1, a shell read judged at today's size

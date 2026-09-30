@@ -60,6 +60,11 @@ and an UPGRADES entry.
   and a try/except around anything that can throw.
 - A broken settings.json silently disables every hook in it: validate
   with `python -m json.tool .claude/settings.json` after each edit.
+- The template's permissions.deny block (v1.40, a take from serio-focus)
+  is the layer under the hooks: destructive shell shapes and Read/Edit of
+  .env files, key material and credentials are refused by the harness
+  itself, before any hook runs, at zero cost. Merge it, do not replace
+  your own list.
 - The settings watcher picks up edits live for directories that had a
   settings file at session start; a brand-new file MAY need /hooks or a
   restart (in the origin project it was picked up live).
