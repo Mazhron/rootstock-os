@@ -127,7 +127,7 @@ See also: docs/index/gotchas.md "Gotcha: writing .tres from PowerShell",
 
 ## Write a long file or script through the shell (heredocs on this Windows setup)
 Tags: lessons, process | A long quoted heredoc through the Bash tool dies with "unexpected EOF while looking for matching quote" past roughly a hundred lines; write files with the Write tool and put edit scripts in the scratchpad, then run them
-Keys: heredoc, bash tool, write file, long script, edit script, python script, shell write, cat eof, unexpected eof, scratchpad
+Keys: heredoc, bash tool, write file, long script, edit script, python script, shell write, cat eof, unexpected eof, scratchpad, powershell syntax, wrong shell, exit 2, select-object, call operator
 
 THE ONE RIGHT WAY: a new file of any length goes through the Write tool;
 a multi-file edit goes into a Python script written to the scratchpad
@@ -140,6 +140,12 @@ or fewer.
   shell reported "unexpected EOF while looking for matching quote" at
   lines 148 and 73 both times; a 118-line markdown heredoc had worked
   minutes earlier, so the cliff is size plus content, not size alone.
+- NUANCE (2026-09-30, the same family the other way around): PowerShell
+  syntax sent to the Bash tool (`& "exe"`, `Select-Object`) dies with
+  exit 2 just as a bashism would in PowerShell; the two shell tools each
+  take only their own syntax, so match the tool to the syntax BEFORE
+  writing the command, and on an exit-2 with no useful output reread the
+  command for the other shell's idioms first.
   DO INSTEAD: Write tool for the file, scratchpad script for the edits;
   both landed first time.
 - NUANCE: the shell guard refuses shell writes into settings.json in any
