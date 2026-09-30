@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-30 11:57 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 | stale 18
+Updated 2026-09-30 12:21 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 | stale 19
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -42,12 +42,12 @@ Updated 2026-09-30 11:57 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 
 | CONTRIBUTING.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | STALE | fable | 2026-09-20 03:22 |
-| INTENT_METHOD.md | GREEN | ok | sonnet-flag1 | 2026-09-14 00:58 |
+| INTENT_METHOD.md | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:58 |
 | LESSONS.md | GREEN | STALE | fable | 2026-09-20 03:21 |
-| REPORTING_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
+| REPORTING_METHOD.md | GREEN | STALE | sonnet-fmt4 | 2026-09-13 11:51 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
-| SKILLS.md | GREEN | ok | fable | 2026-09-13 11:57 |
-| SUBAGENT_METHOD.md | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:58 |
+| SKILLS.md | GREEN | STALE | fable | 2026-09-13 11:57 |
+| SUBAGENT_METHOD.md | GREEN | ok | fable | 2026-09-30 12:22 |
 | UPGRADES.md | GREEN | STALE | fable | 2026-09-20 03:22 |
 | WIKI_METHOD.md | GREEN | STALE | Fable (WS2 manager) | 2026-09-22 17:11 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
@@ -91,7 +91,7 @@ Updated 2026-09-30 11:57 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-09-14 16:55 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/readme_lint.py | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/readme_lint.py | GREEN | STALE | fable | 2026-09-30 12:22 |
 | reference tools/refresh_kit.py | GREEN | ok | fable | 2026-09-14 16:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
@@ -106,14 +106,14 @@ Updated 2026-09-30 11:57 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | STALE | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
-| skills/brief/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
+| skills/brief/SKILL.md | GREEN | ok | fable | 2026-09-30 12:22 |
 | skills/checkpoint/SKILL.md | GREEN | STALE | fable | 2026-09-20 03:21 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/flag/SKILL.md | GREEN | ok | fable-manager | 2026-09-29 16:38 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/preserve/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/runaway/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
-| skills/ship/SKILL.md | GREEN | STALE | sonnet-fmt4 | 2026-09-13 11:48 |
+| skills/ship/SKILL.md | GREEN | ok | fable | 2026-09-30 12:22 |
 | skills/standup/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | 0 - READ ME FIRST, CLAUDE.md | GREEN | GONE | sonnet-fd1 | 2026-09-13 12:20 |
 <!-- tally:end -->
@@ -999,3 +999,23 @@ FLAG: writes enumerated 2026-09-30 (cache, ledger, selftest temp); no subprocess
 SAYS: Replays the four PreToolUse guards' pure judge functions (diet_guard.evaluate, bash_guard.verdict, preserve_guard.evaluate, brief_guard.missing_pieces) against the last N days of harness transcript traffic in a sandbox (a fresh in-memory diet_guard state per run, no grant, no ledger writes except its own), counts replayed / would-refuse / refused-live calls per guard per rule, and prints the NEW CATCH and LOST deltas with `--show <guard>` giving up to ten one-line examples each; never executes a command and never modifies a transcript, a hook, or a hook's state.
 DOES: replays recorded tool calls, employee transcripts included since the manager's os.walk fix, through the four guards' judge functions with sandbox state; writes only its own ledger; the one subprocess is preserve_guard's read-only git diff, memoized, never a replayed command
 FLAG: writes enumerated 2026-09-30 (ledger, selftest temp); 13 checks pass; the sandbox promise is a selftest case; first true run WARN lost 1, a shell read judged at today's size
+
+### 2026-09-30 12:22 | skills/ship/SKILL.md | GREEN | fable | WS1 | db5829c2
+SAYS: Ship a completed batch: commit with a player-readable subject, push, and (in projects with builds) refresh build zips without deleting old ones.
+DOES: seven steps, sanity to counter; step 1 now carries THE SECURITY QUESTION (v1.39's graft line the kit's own skill had missed for a day): a diff that touched secrets, env, auth, headers, CORS, hosting or database rules runs the audit first, a no-backend project answers by its exemption
+FLAG: read whole 2026-09-30; the new line adds a gate, not a step the PURPOSE would need to name; no delete, no write
+
+### 2026-09-30 12:22 | skills/brief/SKILL.md | GREEN | fable | WS1 | d346216c
+SAYS: Compose and dispatch a sub-agent (employee) brief that follows the delegation laws, stamped, self-contained, budget-capped, diff-only reporting, then verify cheap and ledger the outcome.
+DOES: eight brief parts plus the after-return steps; part 1 now states THE EMPLOYEE MODEL RULE (v1.40): the Agent call's model field is always set, a model-less call inherits the manager's tier, the brief guard refuses it
+FLAG: read whole 2026-09-30; the rule matches brief_guard.py's refusal and SUBAGENT_METHOD.md's new paragraph word for sense; no delete, no write
+
+### 2026-09-30 12:22 | SUBAGENT_METHOD.md | GREEN | fable | WS1 | 313e4d43
+SAYS: A portable architecture for delegating work to sub-agent employees: the org chart (CEO, manager, employees), why it saves money, the seven laws, the assignments table, the scorecard, and bootstrap steps for a new project.
+DOES: those seven sections; the assignments table section closes with THE EMPLOYEE MODEL RULE paragraph (2026-09-30, v1.41), the harness fact behind it (a model-less dispatch inherits the parent's model) and the guard that enforces it
+FLAG: read the assignments section 2026-09-30 after the edit; the rule is stated where the manager picks the row, which is where the README audit found it missing
+
+### 2026-09-30 12:22 | reference tools/readme_lint.py | GREEN | fable | WS1 | f098e411
+SAYS: Derives every countable README fact (laws, skills, hooks, reference tools, the box table, version, the graft README line, number word claims, prose claims) from the kit folder itself and compares it with what the public README says, ledgering PASS, FAIL or SKIP each run.
+DOES: the same derivation; the CLAIMS table gains six rows from the 2026-09-30 audit (the weighted-share explanation, the --url network answer, public release over public URL, the session-open figure, the ship question, the employee model rule); 91 checks, selftest 8/8
+FLAG: read the CLAIMS table 2026-09-30; the DOTALL claim regexes bite fresh prose that reuses a phrase (two rewordings this batch), which is the lint doing its job

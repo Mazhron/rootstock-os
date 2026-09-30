@@ -188,7 +188,8 @@ it never fires the audit unasked.
 ## The loop law: a repeatable script is called by the loop, never by hand
 Tags: intent, process, lessons | The first systems audit's headline: ledgers drift when the parent loop is bypassed; the fix is wiring, not discipline
 
-The first audit (2026-09-13) found the scorecard ledger silent for ten
+The first audit (the night of 2026-09-13, ledgered 2026-09-14 00:02)
+found the scorecard ledger silent for ten
 days while its siblings in the same run_all group ran by hand, one probe
 group run once as a baseline and never again, and four check scripts
 appending identical rows minutes apart because two callers ran them. The

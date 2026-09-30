@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.40** (2026-09-30). The graft log `UPGRADES.md` is the
+Kit version: **v1.41** (2026-09-30). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -100,8 +100,8 @@ nothing in Rootstock rides in the context by default:
 | Skills | Only the one invoked, when invoked | a few hundred tokens each |
 | Hooks | Never (they are scripts; only their one-line output enters) | ~0 |
 
-So a session opens at roughly 4.3k tokens of context for a project whose
-written knowledge is ~289k. The core is a sliver of the wiki, and a linter
+So a session opens at roughly 3.5k-4.5k tokens of context (the core plus
+the digest) for a project whose written knowledge is ~289k. The core is a sliver of the wiki, and a linter
 (`check_claude_md.py`) fails when it grows past budget, because THAT is
 the one file that is a standing cost. The rule that keeps it small:
 CLAUDE.md is a POINTER file, one pointer to `docs/index/MASTER_INDEX.md`;
@@ -190,8 +190,13 @@ tokens over 50 days were about 366 million weighted, and the split is not
 what the raw column suggests:
 
 - Cache READS, the giant raw number, were 41% of the weighted bill. Cache
-  WRITES - new context entering the prefix - were 29%, and the model's own
-  OUTPUT (prose, edits, thinking) 13%. Fresh input rounds to zero.
+  WRITES - new context entering the prefix - were 29% at the five-minute
+  write rate the pillar shares assume, and the model's own OUTPUT (prose,
+  edits, thinking) 13%. Fresh input rounds to zero. The shares stop at
+  ~83% because this machine ran the one-hour cache, whose doubled write
+  price is the rest: counted at its true rate, writes were the largest
+  pillar at ~46%, which is the method file's finding (writes first, reads
+  second) from its earlier window.
 - Prefix REWRITES nobody chose - a cache that expired, a core file edited
   mid-session - were 24% of the all-time budget. They are now counted per
   day, because a waste with a name gets fixed.
@@ -327,19 +332,26 @@ Anything repeatable becomes a SCRIPT; every result lands in a LEDGER.
   and the failures if any. You read the TAIL, never the whole file, and
   runs compare across versions without re-reading anything. The test
   for a new kind of run: a number that matters enough to mention in a
-  conversation matters enough to append.
+  conversation matters enough to append. A ledger is never pruned: one
+  that grows huge starts a dated continuation file with a pointer left
+  behind, because the history is the product.
 - **Sheets a human opens get a spreadsheet twin.** The CSV and TXT stay
   for grep and git diffs; the .xlsx has a frozen header, thousands
   separators and a bold total per period - because a sheet nobody can
   skim is a sheet nobody reviews, and numbers nobody reviews change
-  nothing.
+  nothing. When the spreadsheet library is missing the run still writes
+  the CSV and TXT and says the .xlsx was skipped; a ledger run never
+  crashes over formatting.
 - **Trust the ledger.** A green test at an unchanged version is never
   re-run "for confidence"; the runner warns if you try. This one rides in
   the origin project's always-loaded core rather than in the method file:
   it is the ledger rule's flip side, read before every verification.
 
 The usage sheet and its weighted column - the receipts sections earlier
-on this page - are the same discipline pointed at the AI bill itself.
+on this page - are the same discipline pointed at the AI bill itself,
+with a pair of rules of its own: the transcripts ARE the ledger, so the sheet
+regenerates whole instead of appending, and its rows are keyed by machine,
+because each machine sees only its own transcripts.
 
 This is not just thrift. On its first day in Everwood, the discipline
 caught three real bugs, because scripted runs with ledgered baselines make
@@ -362,6 +374,10 @@ asked at setup and revisited as models change - never assumed.
   drafts doc sections and does first-pass review; the strong tier takes
   multi-file refactors and gnarly bugs with a written plan; design,
   architecture, rulings, verification and pushes never leave the manager.
+  Cheap employees run several at once for independent jobs, never two
+  writers on one file. And every dispatch names its model in the call:
+  a model-less one inherits the manager's own tier, the one tier that is
+  never an employee, so the brief guard refuses it (v1.40).
 - Every brief is STAMPED (task, date, model), SELF-CONTAINED, and carries a
   budget line: exceed ~30 tool calls or fail the same step twice, and the
   employee stops and reports instead of running up a bill. The report ends
@@ -473,7 +489,9 @@ makes the fix and logs it;
 `/runaway` shows and tunes the fan-out guard's numbers, owner only;
 `/brief` composes an employee's work order by the delegation laws. `/ship`
 is the one you will use most: sanity-check tests (trusting the ledger),
-read the scripted version hint (none, patch or minor from what changed
+ask the security question (did this diff touch secrets, env, auth,
+headers, CORS, hosting or database rules? then the audit runs first;
+v1.39), read the scripted version hint (none, patch or minor from what changed
 since the last bump; never major) and bump if warranted, commit with a
 player-readable subject, push, run
 the build script without deleting old builds, sync the kit if kit files
@@ -490,7 +508,10 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
 - **Every prompt** carries a silent context gauge that speaks only when a
   threshold is crossed, and since v1.33 the ROUTE line: the registry
   entries and reference tools the prompt already hits, named before the
-  first tool call; **every reply** ticks the checkpoint counter when
+  first tool call, and since v1.40 the live usage window: last five hours
+  against the worst five hours of the last seven days, spoken only when
+  the window is already most of the peak and ledgered when it speaks;
+  **every reply** ticks the checkpoint counter when
   work actually happened, and refuses to end the turn once it is dire.
 - **Before compaction** a ledger line records what was at stake.
 - **Session end** is the checkpoint's net (v1.28): with nothing unbanked
@@ -503,11 +524,17 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
   briefed twice, a prompt that reads as a correction - and refuses to end
   the turn once with LESSON ADVISED, so the lesson lands in LESSONS.md
   before the arc moves on. Never the same turn twice; a turn that wrote
-  the lesson passes. The prompt gauge carries the other end: a prompt
+  the lesson passes. The same hook holds the manager to its own words:
+  a reply that names a checkpoint as due without banking one, or names
+  a standup [DO] proposal the trend script still raises, is refused once
+  (v1.34, v1.35). The prompt gauge carries the other end: a prompt
   whose words hit an entry's Keys line gets that entry named before the
   first tool call.
 - **The shell guard** refuses what the CEO's laws forbid (no force push, no
-  skipped hooks, plus the project's own rules).
+  skipped hooks, plus the project's own rules). Beside it, at zero runtime
+  cost, the kit settings file's permissions.deny block (v1.40) refuses a
+  Read or Edit of .env files, key material and credential folders, and
+  the destructive shell one-liners.
 - **The fan-out guard** is catastrophe-only: it refuses a burst or flood of
   sub-agent spawns or runaway token velocity - each self-clearing - and
   warns on the rest. It exists because a manager once spawned 821 agents
@@ -533,15 +560,15 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
 - **The hygiene guard** runs AFTER every file edit and says the law that
   applies to that file: refresh the kit copy (and this README) when a
   portable original changes, add the missing See-also line to a wiki
-  section, fix a forbidden character in player-facing text (the one
-  block), run the engine import after a new asset. It exists because
+  section, fix a forbidden character in player-facing text (the only one of
+  its rules that blocks), run the engine import after a new asset. It exists because
   this README once fell two versions behind while the law to refresh it
   was already written.
 - **The delegation truth set** (v1.30, a trio) watches the Agent
   tool itself: the brief guard refuses a work dispatch whose brief lacks
   the stamp template, the intent line, the budget line or the
-  preservation line, and since v1.40 one whose model is missing or is
-  the manager's own tier (a model-less dispatch inherits it silently);
+  preservation line, and since v1.40 one whose model is missing (which
+  silently inherits the manager's own tier) or explicitly names it;
   the delegation auditor reads the metered tool and
   token figures out of every result, names a fabricated report (zero
   metered calls) or an inflated tool count, and appends a pending
@@ -576,7 +603,12 @@ The contract, plainly, because a worried reader asks these first:
   interpreter) refuses every tool call, not just the one it meant to
   guard. The fix is one line in settings.json; every kit hook answers
   `--selftest` and is tested by piping a fake event into it before it is
-  wired.
+  wired. A selftest proves the cases its author imagined; since v1.40 the
+  guard replay (`guard_replay.py`) runs the last N days of recorded tool
+  calls, employee sessions included, through the guards' judge functions
+  in a sandbox and prints per rule what would be refused now, what was
+  refused live, the NEW catches and the LOST ones - read the LOST column
+  before trusting a guard change.
 - **Turning one off** is removing its line from settings.json, for every
   hook outside the safety tier; unwiring a safety hook is exactly the
   edit the format guard refuses. No hook keeps
@@ -625,7 +657,8 @@ with the README audit, the digest trim, a stale loop group, dead
 links, an unwritten lesson, a stale claim) and relays only the [ASK]
 ones; the audit itself runs in the reply whose standup proposed it.
 
-The first systems audit ran on 2026-09-14 (kit v1.21). Four read-only
+The first systems audit ran on 2026-09-14 (kit v1.21; the night of the
+13th's session, ledgered after midnight). Four read-only
 employees returned 26 proposals; the owner ruled on every one. What it
 found and what changed: habitual scripts were being run by hand and their
 ledgers drifted, so THE LOOP LAW now holds (a script that runs more than
@@ -773,12 +806,16 @@ yes. It never restructures a live repo unasked.
    session rituals and the workstation inventory, delegation, skills,
    hooks, then the loops that measure the loop: the learning loop, the
    intent loop, the format law and purpose audit, the README gate, the
-   lesson loop, and the route line beside it.
+   lesson loop, and the route line beside it. Last, the optional boards
+   (ideas, roadmap, changelog) and, if the project has a backend, a key,
+   an env file, a database or accounts, the security audit's bootstrap
+   before the first public release; a project with none writes its
+   exemption and moves on.
 5. It finishes with a definition of done you can verify yourself: the
-   standup script runs clean, the lint passes, the format lint passes and
-   FLAGS.md flags every kit thing, the resulting CLAUDE.md
-   lands under Anthropic's 200-line target with every rule declared by
-   path and the master index complete (the lint keeps all of it true),
+   standup script runs clean, the core lint passes (CLAUDE.md under
+   Anthropic's 200-line target and its token budget, every rule declared
+   by path, the master index complete - the lint keeps all of it true),
+   the format lint passes and FLAGS.md flags every kit thing,
    the delegation ledger has one real line, the skills answer to their
    slash commands, and the first commit is in.
 
@@ -867,8 +904,10 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   agnostic and the front door makes Claude ASK who manages rather than
   assume. The skills and hooks are Claude Code mechanisms.
 - **Is anything sent anywhere?** No. Everything is local files and git.
-  The only network call is the optional weekly fetch of this repo's graft
-  log, and nothing about your project leaves your machine.
+  The only network calls are the optional weekly fetch of this repo's
+  graft log and, when you run the security audit with `--url`, plain
+  requests to your own deployment to read its headers; nothing about your
+  project leaves your machine.
 - **Can I take part of it?** Yes; see "What you need" above. The wiki
   conventions alone are the biggest single saving.
 - **Can I use it commercially?** MIT. Yes.
@@ -890,7 +929,8 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   requirements and limits.
 - **Does it check the app I build, or only my process?** Both, since
   v1.39. Everything above audits the process. `SECURITY_METHOD.md`
-  audits the app: before the first public URL, and before any release
+  audits the app: before the first public release (a URL, a store
+  listing, a showcase post), and before any release
   that touched secrets, env files, auth, headers, CORS, hosting or
   database rules, the checklist runs and a ledger line says PASS. It
   exists because a survey of 100 AI-built apps found 37 shipping a
@@ -928,7 +968,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |
 | `SECURITY_METHOD.md` | The pre-production security audit: the gate before an app, SaaS or site with a backend, a key, an env file or user data goes public; the rotation law, the prefix law, the nine-class checklist (secrets in the client, headers, exposed files, CORS, database rules, auth per route, dependencies, logs, the game-export note), the ledger line, the workflow entry, bootstrap |
-| `reference tools/` | 35 working scripts to adapt, not rewrite. Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), trust the ledger for the check scripts, the lesson loop (lesson_log.py: the prompt match, the trial-and-error scan, the lint), the route line (route_index.py: the registry entry and the script a prompt already has, named before the first tool call), the local mirror (backup_push.py: every branch and tag to a bare repo on another drive), the law ledgers (law_gaps.py: the archive sweep and the workflow-rule proxy, WARN lines in the check group), the ship-time version hint (version_hint.py: none, patch or minor from what changed since the last bump; never major), the pre-production security audit (security_audit.py: secret shapes in a build folder, the security headers, the exposed-file paths and the CORS answer of your own deployment, read-only, with a ledger line), the live usage window (usage_window.py: last five hours against the seven-day peak, spoken by the prompt gauge only when it matters), the guard replay (guard_replay.py: the guards' judge functions run over the last N days of recorded tool calls, employee sessions included, with the NEW and LOST columns and a ledger line) |
+| `reference tools/` | 35 working scripts to adapt, not rewrite. Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), trust the ledger for the check scripts, the lesson loop (lesson_log.py: the prompt match, the trial-and-error scan, the lint), the route line (route_index.py: the registry entry and the script a prompt already has, named before the first tool call), the local mirror (backup_push.py: every branch and tag to a bare repo on another drive), the law ledgers (law_gaps.py: the archive sweep and the workflow-rule proxy, WARN lines in the check group), the ship-time version hint (version_hint.py: none, patch or minor from what changed since the last bump; never major), the pre-production security audit (security_audit.py: secret shapes in a build folder, the security headers, the exposed-file paths and the CORS answer of your own deployment, read-only, with a ledger line), the live usage window (usage_window.py: last five hours against the seven-day peak, spoken by the prompt gauge only when it matters, each spoken reading ledgered), the guard replay (guard_replay.py: the guards' judge functions run over the last N days of recorded tool calls, employee sessions included, with the NEW and LOST columns and a ledger line) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `CONTRIBUTING.md` | The format law and the purpose audit: the one header every thing carries, the read-only flag ritual, what a contributed update looks like |
 | `FLAGS.md` | The flag ledger: every kit thing's latest GREEN / YELLOW / RED, hashed to the version reviewed, tallied, append-only |

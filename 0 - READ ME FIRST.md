@@ -118,7 +118,8 @@ and a FUTURE_FEATURES.md pin board; a public CHANGELOG fed by readable
 commit subjects. If STEP 0 said the project has a backend, a key, an
 env file, a database or user accounts: SECURITY_METHOD.md's bootstrap
 (the audit script, the workflow entry, the ship question) before the
-first public URL; if it said none, write the exemption in the systems
+first public release (a URL, a store listing, a showcase post); if it
+said none, write the exemption in the systems
 index and move on.
 
 ## DEFINITION OF DONE

@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.40** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.41** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1539,3 +1539,44 @@ in your check loop.
 README: "The hooks" (the diet guard and brief guard sentences), "What is
 in the box" (the reference-tools row's count and list, the hooks row's
 settings-template words).
+
+### v1.41 - 2026-09-30 - The fourth README audit: the two grafts v1.39 and v1.40 named but never wrote (the ship question, the employee model rule)
+WHAT: Four read-only sonnet lanes read kit v1.40 against the public
+README (T-0930-RA-1..4). The README was close; the drift was upstream.
+v1.39's GRAFT line told every project to "add the one-line question to
+your ship ritual" and the kit's own ship skill never got it; v1.40's
+employee model rule lived in brief_guard.py and the README's hooks
+section while SUBAGENT_METHOD.md and the brief skill, the two things a
+manager reads before dispatching, said nothing. Both are written now:
+/ship step 1 asks THE SECURITY QUESTION (secrets, env, auth, headers,
+CORS, hosting or database rules touched? the audit runs first; a
+project with no backend answers by its standing exemption); /brief
+step 1 and SUBAGENT_METHOD.md's assignments section carry THE EMPLOYEE
+MODEL RULE (every dispatch names its model; a model-less call inherits
+the manager's tier; the brief guard refuses). The README took 22 edits:
+one numeric WRONG explained (the weighted shares stop at ~83% because
+the pillar shares assume the five-minute write rate and this machine
+runs the one-hour cache, so writes are the largest pillar at ~46%, which
+is what the method file's earlier 43% said; REPORTING_METHOD.md now
+dates its snapshot), the first-audit date reconciled in INTENT_METHOD.md
+(the night of 09-13, ledgered 09-14), the "sent anywhere" answer naming
+the security audit's own --url requests, "public URL" widened to "public
+release (a URL, a store listing, a showcase post)" in the README and the
+front door, Quick start's step 4 carrying the front door's STEP 5, and
+the hooks section gaining the usage window, the deny block, the guard
+replay and the lesson advisor's two named checks it had never mentioned.
+Six CLAIMS rows so none recurs; lint PASS at 91 checks.
+CARRIES: skills/ship/SKILL.md (step 1); skills/brief/SKILL.md (step 1);
+SUBAGENT_METHOD.md (the assignments section's closing rule);
+REPORTING_METHOD.md (the dated split); INTENT_METHOD.md (the audit
+date); 0 - READ ME FIRST.md (STEP 5's wording); reference
+tools/readme_lint.py (six CLAIMS rows); this entry.
+GRAFT: copy the two skills over yours (or add the two step-1 lines to
+your own); paste THE EMPLOYEE MODEL RULE paragraph into your
+SUBAGENT_METHOD.md after the assignments table; copy readme_lint.py if
+you run the README gate. No settings change, no hook change.
+README: "The four pillars" (pillar 3's "Who gets what" and pillar 4's
+/ship sentence), "The hooks" (the usage window, the deny block, the
+guard replay, the named checks), "Quick start" (step 4's last sentence),
+"Questions people ask" (the network answer, the security answer's
+"public release"), "What is in the box" (the usage-window words).

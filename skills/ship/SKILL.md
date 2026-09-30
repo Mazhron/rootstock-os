@@ -15,7 +15,11 @@ INTENT: Mazhron 2026-09-04: Without my asking the changelog should be
 Run after EVERY completed batch of work; the user should never have to ask.
 
 1. Sanity: tests/checks relevant to the batch are green (trust the ledger -
-   do not re-run identical green runs).
+   do not re-run identical green runs). THE SECURITY QUESTION (kit v1.39):
+   did this diff touch secrets, env, auth, headers, CORS, hosting or
+   database rules? Then the security audit runs first (WORKFLOWS "Audit
+   the app for exposed secrets before a public release"); a project with
+   no backend and no keys answers no by its standing exemption.
 2. Version: `python tools/version_hint.py` prints the first-pass reading
    (none / patch / minor from what changed since the last bump; never
    major, that is the owner's call). Bump if the batch warrants it (MINOR for a notable batch, MAJOR

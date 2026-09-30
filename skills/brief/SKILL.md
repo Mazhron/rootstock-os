@@ -18,6 +18,10 @@ appending/auditing). Then compose the brief with ALL of:
 
 1. STAMP: task id, date, workstation, assigned model (from the assignments
    table; escalate a task type's model when its correction rate passes ~25%).
+   THE EMPLOYEE MODEL RULE (kit v1.40): the Agent call's `model` field is
+   set explicitly, always - a call without one inherits the manager's own
+   model, and the manager's tier is never an employee; the brief guard
+   refuses a work dispatch whose model is missing or names that tier.
 2. SELF-CONTAINED CONTEXT: everything the employee needs inline or by exact
    file/section pointer - an employee starts with an EMPTY context and must
    not wander the repo discovering things.

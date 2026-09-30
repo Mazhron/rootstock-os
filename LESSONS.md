@@ -173,6 +173,17 @@ or fewer.
   DO INSTEAD: a multi-line edit script is a .py file in the scratchpad,
   written with the Write tool and run by path; commands with quoted
   prose go in their own call, never after a heredoc.
+- NUANCE (2026-09-30, the README audit's four lane briefs): an EMPLOYEE
+  BRIEF is never a file at all. Four ~60-line briefs went into a heredoc
+  Python script meant to write them to the scratchpad, and died on an
+  apostrophe inside a quoted question ("Does it check the app I build?")
+  plus a stray `$VAR` on the same line. FAILED BECAUSE: the detour added
+  a shell layer and a file layer to text whose only reader is the Agent
+  tool's prompt field. DO INSTEAD: compose the brief in the Agent call
+  itself (the shared preamble pasted into each of the four prompts);
+  the scratchpad is for scripts that run, not for prose that is read
+  once. Same rule for a note to the other workstation or a lesson: the
+  Write or Edit tool, never a shell write.
 - TRIED (2026-09-21 evening, the records script): the same 120-line
   quoted heredoc ALONE in its call, with only `echo written` after it,
   written under the auto-mode instruction to prefer Bash. FAILED

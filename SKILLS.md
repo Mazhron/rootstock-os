@@ -140,3 +140,7 @@ Everwood-specific except named examples (marked "in Everwood").
   FLAGS.md). Nine skills. Every SKILL.md now carries the format header
   (PURPOSE / INTENT after the title) - the format guard blocks a skill
   edit without it.
+- 2026-09-30 WS1 (kit v1.41, the fourth README audit): /ship step 1 gains
+  THE SECURITY QUESTION (v1.39's graft line the shelf had missed) and
+  /brief step 1 THE EMPLOYEE MODEL RULE (v1.40's guard, now stated where
+  the brief is composed). Nine skills, unchanged count.

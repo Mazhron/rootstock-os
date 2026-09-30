@@ -149,6 +149,13 @@ held up:
   touching the CEO's standing rules, conversations with the CEO, final
   verification, and the commits/pushes.
 
+THE EMPLOYEE MODEL RULE (2026-09-30, kit v1.40): every dispatch names its
+model explicitly. In the harness, an Agent call with no `model` field
+inherits the manager's own model, so a model-less brief runs on the top
+tier silently - the one tier the table says is never an employee. The
+brief guard refuses a work dispatch whose model is missing or names the
+manager's tier; the fix is the table's row, written into the call.
+
 ## The scorecard (measure the company - added 2026-09-02, proven same day)
 
 Track, per model AND per manager, from the ledger itself (a small script
