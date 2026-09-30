@@ -1207,3 +1207,24 @@ folder read different stores. Bank and stub each store the same way
 See also: docs/systems/memory-bank.md "What stayed in auto-memory";
 WORKFLOWS.md "Reference or restore a banked auto-memory"; docs/index/
 notes.md (WS2's task to check its own stores).
+
+## Copy a hook's stated line shape exactly (a RESOLVED line with a date prefix is invisible to verify_advisor, 2026-09-30)
+Tags: lessons, hooks, delegation | When a hook prints the line it wants appended, that text is its parser's grammar; any prefix or reordering makes the line unread and the hook advises the same set forever
+Keys: verify_advisor, delegation_pending, RESOLVED line, LEDGER ADVISED, hook parser, line format, append-only, date prefix
+
+THE ONE RIGHT WAY: when a hook says "append `RESOLVED | <id> | OK/CORRECTED
+- <words>`", append exactly that: first field the literal word, second the
+id, nothing before it. The ledger's other lines carry dates; the RESOLVED
+line does not, because tools/hooks/verify_advisor.py reads
+`parts[0].startswith("RESOLVED")`. If a set keeps coming back ADVISED after
+you resolved it, grep the hook for its parse before resolving it again.
+
+- TRIED (2026-09-29 01:38): the four README-audit lanes were resolved as
+  `2026-09-29 01:38 | WS1 | RESOLVED | D10e3e1 | ...`, matching the
+  PENDING lines' shape. FAILED BECAUSE: the hook only clears a PENDING
+  when a LATER line's FIRST field starts with RESOLVED; the dated lines
+  never matched, so the set stayed ADVISED into 2026-09-30. DO INSTEAD:
+  the exact shape; a wrong past line is never edited (append-only), a
+  correct line is appended after it, naming the original.
+See also: tools/hooks/verify_advisor.py; .claude/skills/brief/SKILL.md
+"AFTER THE EMPLOYEE RETURNS"; SUBAGENTS.md rule 5.
