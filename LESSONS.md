@@ -1248,3 +1248,24 @@ markdown does not; matching it adds nothing and costs the whole output.
   result does spill, `tail -c` the saved file rather than re-running.
 See also: tools/export_wiki_view.py; docs/systems/tooling.md; LESSONS.md
 "Copy a hook's stated line shape exactly" (the same batch).
+
+## Walk the transcript tree, never list it (employee sessions live in <session>/subagents/, 2026-09-30)
+Tags: lessons, tooling, tokens | A miner of the harness transcripts that lists only the project's top-level folder sees the manager's sessions and none of the employees', which is where most guard denials and most spend happen
+Keys: transcripts, subagents folder, os.walk, listdir, guard_replay, usage_window, usage_report, transcript miner, employee transcripts
+
+THE ONE RIGHT WAY: any script that reads ~/.claude/projects/<slug>/ walks it
+recursively (os.walk or rglob) and takes every *.jsonl it finds; the
+employees' transcripts sit one level down in <session-id>/subagents/. Before
+trusting a miner's first table, count the files it opened against
+`find <slug> -name "*.jsonl" -mtime -7 | wc -l`.
+
+- TRIED (2026-09-30, guard_replay.py's first real run): collect_calls()
+  used os.listdir on the top level, replayed 889 calls, and reported that
+  every guard matched its live behaviour exactly. FAILED BECAUSE: 17 of
+  the 31 recent transcripts were employee files under subagents/, holding
+  five of the six live INDEX FIRST denials; the table was drawn from
+  two thirds of the traffic. DO INSTEAD: os.walk (the fix, one hunk); the
+  true table was 1261 calls, INDEX FIRST 9 would / 10 live / 1 lost.
+See also: tools/guard_replay.py; tools/usage_window.py; tools/usage_report.py
+(transcript_dirs, which already walks); LESSONS.md "Widen a proxy after
+its first real run".

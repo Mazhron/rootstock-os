@@ -62,7 +62,8 @@ GROUPS = {
                 ["tools/format_lint.py", "--quiet"],
                 ["tools/purpose_audit.py", "--pending"],
                 ["tools/lesson_log.py", "--check"],   # THE LESSON LOOP (2026-09-20): entry shape + advised/written counts
-                ["tools/law_gaps.py"]],   # THE LAW LEDGERS (2026-09-29): the archive sweep + the workflow-rule proxy, WARN lines only
+                ["tools/law_gaps.py"],   # THE LAW LEDGERS (2026-09-29): the archive sweep + the workflow-rule proxy, WARN lines only
+                ["tools/guard_replay.py", "--days", "7", "--record"]],   # THE GUARD REPLAY (2026-09-30, a serio-focus take): the guards over the last week of recorded calls, WARN on a LOST rule
     "regen":   [["tools/export_upgrades.py"],
                 ["tools/memory_chains.py"],   # THE MEMORIES SHOP's chain table (2026-09-21)
                 ["tools/export_upgrade_web.py"],
