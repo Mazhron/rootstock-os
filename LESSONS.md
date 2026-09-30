@@ -370,6 +370,18 @@ rerun of the same script, not a hand-split second script.
   several files prints the FILE before its hits - `@export var pause_menu`
   was run_controller.gd's, not main.gd's, so the check reaches it as
   `$RunController.pause_menu`.
+- NUANCE (2026-09-30, the fourth README audit, 22 replacements): the
+  anchors were composed from `sed -n` output read minutes earlier, not
+  grepped, and the script stopped twice before landing: once on an
+  anchor that began at a line's start ("  fix a forbidden") where the
+  file's line began mid-sentence ("  section, fix a forbidden"), once on
+  a numbered-list continuation indented THREE spaces where the bullets
+  above it use two. Nothing was half-applied (the write is per file,
+  after its edits), so the cost was two reruns, not a split. DO INSTEAD:
+  the script gets a `--check` pass that prints every anchor's count and
+  writes nothing, run first and always; and an anchor starts at a word
+  that begins its line in the file, or mid-line with no leading spaces,
+  never at a guessed indentation.
 
 See also: LESSONS.md "Write a long file or script through the shell";
 WORKFLOWS.md "Audit the public README (Rootstock)" and "Add or change a
