@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.41** (2026-09-30). The graft log `UPGRADES.md` is the
+Kit version: **v1.42** (2026-10-01). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -572,7 +572,12 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
   the delegation auditor reads the metered tool and
   token figures out of every result, names a fabricated report (zero
   metered calls) or an inflated tool count, and appends a pending
-  ledger line; the verify advisor refuses to end a turn while a
+  ledger line, and since v1.42 it also runs at the employee's own stop:
+  it counts the employee's transcript (a background employee's result
+  is only a launch notice, so this is the only meter there is), holds
+  the employee once when its self-reported tool count is under 70% of
+  the truth or its template lines are missing, and ledgers the true
+  figures; the verify advisor refuses to end a turn while a
   delegation is pending without a resolution line. It exists because of
   a public case where a manager said its sub-agents did their job when
   they had not.

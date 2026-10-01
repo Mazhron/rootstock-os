@@ -1047,6 +1047,17 @@ quotes and apostrophes that a shell will parse before Python sees them.
 - NUANCE: the diet guard's OUTPUT DIET line on a command that mentions
   glob or a listing is advice about limiters, not a failure; the parse
   error came from the shell, and the fix is the file, not shorter output.
+- TRIED (2026-10-01, the stop-time cross-check, twice in ten minutes):
+  a short heredoc Python script whose replacement text held `\n` inside
+  a triple-quoted block, then a one-line fix-up script with `\\n`.
+  FAILED BECAUSE: the Bash tool's own layer halved the backslashes both
+  times, so the file got a real newline inside a string literal and the
+  selftest died on "unterminated string literal"; the second try had
+  "fixed 3" printed and changed nothing, since `\\n` had become `\n`
+  before Python ran. DO INSTEAD: the length test is a trap when the
+  script is SHORT: any text with a backslash in it goes through the
+  Edit tool (its old/new strings pass verbatim) or a Write-tool
+  scratchpad script, even when it is three lines.
 
 See also: WORKFLOWS.md "Section or split a file the big-reads ledger
 names" (the batch-edit lesson nuance: one anchor per replacement, one

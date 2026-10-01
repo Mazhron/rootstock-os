@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-09-30 12:21 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 | stale 19
+Updated 2026-10-01 16:54 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 | stale 18
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -56,7 +56,7 @@ Updated 2026-09-30 12:21 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/brief_guard.py | GREEN | ok | fable | 2026-09-30 11:57 |
-| hooks/delegation_auditor.py | - | UNFLAGGED | - | - |
+| hooks/delegation_auditor.py | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/diet_guard.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
@@ -67,7 +67,7 @@ Updated 2026-09-30 12:21 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 
 | hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/session_end.py | - | UNFLAGGED | - | - |
 | hooks/session_start.py | GREEN | ok | fable | 2026-09-29 00:24 |
-| hooks/settings.json | GREEN | ok | fable | 2026-09-30 11:57 |
+| hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/stop_tick.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | hooks/verify_advisor.py | - | UNFLAGGED | - | - |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
@@ -81,7 +81,7 @@ Updated 2026-09-30 12:21 | items 78 | GREEN 73 | YELLOW 0 | RED 0 | unflagged 5 
 | reference tools/correction_log.py | GREEN | STALE | fable | 2026-09-20 03:21 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
-| reference tools/format_lint.py | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/format_lint.py | GREEN | ok | fable | 2026-10-01 16:55 |
 | reference tools/guard_replay.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
@@ -1019,3 +1019,18 @@ FLAG: read the assignments section 2026-09-30 after the edit; the rule is stated
 SAYS: Derives every countable README fact (laws, skills, hooks, reference tools, the box table, version, the graft README line, number word claims, prose claims) from the kit folder itself and compares it with what the public README says, ledgering PASS, FAIL or SKIP each run.
 DOES: the same derivation; the CLAIMS table gains six rows from the 2026-09-30 audit (the weighted-share explanation, the --url network answer, public release over public URL, the session-open figure, the ship question, the employee model rule); 91 checks, selftest 8/8
 FLAG: read the CLAIMS table 2026-09-30; the DOTALL claim regexes bite fresh prose that reuses a phrase (two rewordings this batch), which is the lint doing its job
+
+### 2026-10-01 16:55 | hooks/delegation_auditor.py | GREEN | fable | WS1 | e7dd9f63
+SAYS: PostToolUse hook that reads the harness-metered tool and token figures from an Agent/Task result, warns on rule 9's fabrication tell, a TOOLS-line mismatch or a malformed report, and appends one PENDING line per work delegation; on SubagentStop it meters the employee's own transcript, holds the employee once over a malformed report or a self-count miss, and appends the METER line with the true figures.
+DOES: both branches as said; writes only the pending ledger (append) and the block decision; reads the employee's transcript through agent_transcript_path then the subagents folder, never the manager's; no subprocess, no delete; 33 selftest cases
+FLAG: read whole 2026-10-01 after five live runs; the first two live events exposed the manager's-transcript field and the pre-hand-back stop, both handled in the code and the docstring; the hold is bounded by stop_hook_active and the ASKED tail line
+
+### 2026-10-01 16:55 | hooks/settings.json | GREEN | fable | WS1 | 250ba570
+SAYS: Wires the fifteen hooks and, since v1.40, carries a permissions.deny block.
+DOES: the same wiring plus a SubagentStop block running delegation_auditor.py (v1.42); json validated; the format guard's SAFETY row knows the event
+FLAG: diffed against the origin project's live settings 2026-10-01; identical hook blocks
+
+### 2026-10-01 16:55 | reference tools/format_lint.py | GREEN | fable | WS1 | 5f82c9c9
+SAYS: check every kit thing (a script, a hook, a skill, a method file, the hooks README, the settings template) and its repo original for the one header the filing system needs - PURPOSE, INTENT, Search keys, See also - plus the safety wiring in settings.json; report PASS/FAIL per item.
+DOES: the same; the delegation_auditor row now requires PostToolUse on Agent|Task AND SubagentStop (v1.42), so unwiring the stop-time check is refused like unwiring any safety hook
+FLAG: read the SAFETY table 2026-10-01; 151 items PASS after the wiring, FAIL on the kit template between the two settings edits (the in-between-state lesson, by design)

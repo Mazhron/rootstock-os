@@ -123,7 +123,10 @@ delegation_auditor.py (PostToolUse on Agent|Task): reads the
 harness-metered tool/token figures out of every sub-agent result - 0
 metered calls on a work task is the fabrication tell, a TOOLS-line
 mismatch and a malformed report warn - and appends one PENDING line per
-work delegation to docs/history/delegation_pending.txt. verify_advisor.py
+work delegation to docs/history/delegation_pending.txt; on SubagentStop
+(2026-10-01) it meters the employee's own transcript, holds the employee
+once over a missing template line or a self-count under 70% of the
+meter, and appends the METER line with the true figures. verify_advisor.py
 (Stop, a once-per-set REFUSAL): a PENDING id with no later `RESOLVED |
 <id>` line refuses the turn end once - verify, ledger, resolve, or say
 why not; gitignore .claude/verify_state.json. Wire all three

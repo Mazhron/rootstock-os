@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.41** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.42** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1580,3 +1580,50 @@ README: "The four pillars" (pillar 3's "Who gets what" and pillar 4's
 guard replay, the named checks), "Quick start" (step 4's last sentence),
 "Questions people ask" (the network answer, the security answer's
 "public release"), "What is in the box" (the usage-window words).
+
+### v1.42 - 2026-10-01 - The stop-time cross-check (delegation_auditor.py on SubagentStop: the employee's transcript is the meter, a self-count miss holds it once)
+WHAT: The rule-3 tightening the 09-30 checkpoint named, and the finding
+underneath it. The delegation auditor's PostToolUse branch sees the Agent
+call's RESULT; a background employee's result is only the launch notice,
+so 24 of the first 25 PENDING lines carried tools=? tokens=? and the
+cross-check had been blind since the trio was born. The SubagentStop
+event fires when the employee itself stops, foreground or background.
+The same script is now wired there: it finds the employee's own
+transcript (this build hands the MANAGER's file under transcript_path -
+the first live run metered 116 calls and 428k tokens, the whole session -
+and the employee's under agent_transcript_path, which is tried first,
+then <session>/subagents/agent-<id>.jsonl), counts its tool_use blocks
+(nine of nine matched the harness's figure exactly on the calibration
+day), sums output + cache-write tokens once per message id, and judges
+the union of the hand-back text, the last text block and
+last_assistant_message - the stop and the hand-back land in either order
+(foreground: hand-back first; background: the stop, then the hand-back,
+then a second stop). A missing template line, or a TOOLS line under
+selfcount_floor (0.7, owner-tuned in .claude/fanout_limits.json) of the
+meter by three or more calls, HOLDS the employee once with the true
+count in the reason; stop_hook_active plus an ASKED line at the ledger's
+tail guarantee once. A METER line then lands in delegation_pending.txt
+(task id from the brief's stamp, tools, tokens, claimed, verdict; "held
+once"; "pre-hand-back" on the earlier of a background employee's two).
+The PostToolUse branch gains the same miss tier (under the 3x rule) and
+recognises the launch notice even when the result echoes the brief.
+Replayed over the week's nine employees: the four misses the manager
+had ledgered by hand (26 of 43, 27 of 41, 41 of 70, 18 of 27) held,
+the three honest reports passed. Five live haiku runs proved the event
+fires for both modes. The Tier 4 pin "SubagentStop refuses an
+employee's stop when its report lacks the stamp" is built, as part of
+this, not as the deferred separate hook.
+CARRIES: hooks/delegation_auditor.py (main_subagent_stop,
+employee_transcript, read_transcript, stop_verdict, selfcount_miss,
+asked_before, launched_async; 20 new selftest cases); hooks/settings.json
+(the SubagentStop block); reference tools/format_lint.py (the SAFETY
+row); HOOKS_METHOD.md (Tier 4a's new bullet); hooks/README.txt;
+SUBAGENT_METHOD.md's manager book in the origin project (rule 3's
+mechanical line); this entry.
+GRAFT: copy delegation_auditor.py and run --selftest; add the
+SubagentStop block to your settings (the format guard refuses the edit
+if format_lint.py's SAFETY table does not know the row yet, so copy
+format_lint.py first); run one cheap employee and read the METER line
+at the tail of docs/history/delegation_pending.txt; add selfcount_floor
+to .claude/fanout_limits.json only if 0.7 is wrong for your employees.
+README: "The hooks" (the delegation truth set's auditor sentence).

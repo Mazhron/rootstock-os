@@ -472,6 +472,29 @@ per moment:
   delegation lands in docs/history/delegation_pending.txt (id + metered
   truth) so no delegation vanishes unledgered. Resolution is a NEW
   `RESOLVED | <id> | OK/CORRECTED - <words>` line, never an edit.
+- THE EMPLOYEE'S STOP (2026-10-01, the same script on SubagentStop):
+  the RESULT branch above sees the Agent call's result, and with a
+  background employee that is only the launch notice - 24 of the first
+  25 PENDING lines carried tools=? tokens=?, so rule 3 had nothing to
+  cross-check. At the employee's own stop the hook finds its transcript
+  (agent_transcript_path, else <session>/subagents/agent-<id>.jsonl;
+  this build hands the MANAGER's file under transcript_path), counts the
+  tool_use blocks (the harness's own figure, nine of nine exact on the
+  calibration day), sums output + cache-write tokens once per message
+  id, and judges the union of the hand-back text, the last text block
+  and last_assistant_message (the stop and the hand-back land in either
+  order). A report without its template lines, or a TOOLS line under
+  selfcount_floor (0.7, owner-tuned in .claude/fanout_limits.json) of
+  the meter by three calls or more, HOLDS the employee once with the
+  true count in the reason ("your TOOLS line says 18, the transcript
+  holds 27; restate it"); stop_hook_active and an ASKED line at the
+  ledger's tail guarantee once. Then a METER line lands in the pending
+  ledger: `METER | <task id> | tools=N tokens=~Mk | claimed=C | OK /
+  RULE 3 MISS / MALFORMED / FABRICATION TELL`, read at the tail (the
+  event fires twice for a background employee, before and after the
+  hand-back; the earlier line says pre-hand-back). The first replay
+  over the week's nine employees reproduced the manager's hand ledger
+  exactly: four misses held, three honest reports passed.
 - STOP: verify_advisor.py (Stop, a once-per-set REFUSAL, the lesson
   advisor's pattern) - a PENDING id with no later RESOLVED line refuses
   the turn end once: verify cheap, write the manager-book ledger line,
