@@ -439,6 +439,14 @@ eater; leave the rule that caught it alone.
   reruns at the same version read the old baseline (473 / 498 ms). The
   tell is the shape: a real eater plateaus in some windows; contention
   lifts all of them. Rerun idle before reading anything else.
+- NUANCE (2026-10-02, the .51 build soak): the same reading holds when
+  only the LAST windows fail (22 violations, all inside a Hurricane
+  wipeout at 4.2 min, every earlier window at the 340-500 ms baseline)
+  and the sharer is not Godot: `tasklist | grep -i "godot\|gimp"` showed
+  GIMP at 923 MB with the 200 MB tree palette open. The idle rerun
+  passed at 380 ms. Widen the tasklist to whatever Mazhron edits art
+  with; the hurricane's clouds are the costliest window the game has and
+  the first to show a shared GPU.
 
 See also: docs/systems/testing.md "The long-soak stability probe";
 docs/systems/perf.md "The water redraw cadence"; tools/soak_report.py;
