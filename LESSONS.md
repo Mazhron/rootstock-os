@@ -339,6 +339,18 @@ category it sits beside.
   two Buttonbush panels) and take the middle. When a count fails, dump
   the blob list (area + bbox) before touching a threshold: it names the
   cause in one read. Landed as panels_from_sheet's baseline_gap mode.
+- NUANCE (2026-10-02, the twenty-five trees): the join size is a per-FAMILY
+  number, not a slicer constant. The bushes' 9 welded two tree crowns
+  that touch (American Beech, Umbrella Thorn Acacia: "only 5 blobs");
+  the sweep on just those two sheets took seconds (crop to the opaque
+  bbox first) and 1..5 cut them, 7 welded. DO: sweep the new family's
+  worst sheet before touching the shared constant; give the family its
+  own join (TREE_JOIN_PX). A species drawn across TWO sheets (the
+  Redwood) has no shared pixel scale between them: scale the earlier
+  sheet from the later one's first stage (TREE_SPLIT_RATIO), never from
+  its own mature. And read docs/species_edits.json's mtime before an
+  art batch: Mazhron had banked the eighteen new trees the evening
+  before, three under ids that did not match the sheet names.
 
 See also: ART_METHOD.md; docs/systems/art-pipeline.md "Gemini growth
 sheets"; WORKFLOWS.md "Cut and wire new creature or plant art".
