@@ -1382,3 +1382,28 @@ that text). "Do what you think is best" is one acknowledgment at most;
 the law wants two, said as two. WORKFLOWS "Delete something" step 5b.
 See also: tools/hooks/preserve_guard.py; tools/delete_grant.py;
 docs/history/delete_grants.txt.
+
+## The digest size proposal measures the LAST standup, not this one (measure the fresh line before trimming, 2026-10-05)
+Tags: lessons, process, digest diet | A PROPOSE [DO] on digest_size.txt was computed before this session's digest was appended; read the newest line first, and a post-arc digest that prints moved ledgers in full is context under the loss test, not bloat
+Keys: digest size, digest_size.txt, digest diet, digest trim, PROPOSE digest, 12000, digest_warn_bytes, loss test, standup digest bytes, trim by the loss test, measure, stale proposal, ledger tails in full
+
+THE ONE RIGHT WAY: when the standup carries "PROPOSE [DO] (digest_size.txt):
+the standup digest is N bytes", `tail -2 docs/history/digest_size.txt`
+first. The proposal was computed by ledger_trends from the line the PREVIOUS
+standup wrote; the current standup appends its own line after the digest
+prints. If the newest line is under digest_warn_bytes the [DO] is the
+measurement itself: say so and move on. If it is over, apply the loss test
+(INTENT.md "The digest diet") and only then edit tools/standup.py. A digest
+that follows an active arc is bigger because every ledger that moved prints
+in full ("new since you last looked" is context); that is never a trim.
+
+- TRIED (2026-10-05 14:00, the first reply after /clear): the digest said
+  12735 bytes; the reflex was to open standup.py and find a section to cut.
+  FAILED BECAUSE: the 12735 line was the 13:08 digest, written after the
+  morning arc had moved a dozen ledgers; the 13:59 line for THIS digest was
+  already 10953, under the 12000 warn. Cutting would have failed the loss
+  test for a number that had already cleared. DO INSTEAD: tail the ledger,
+  report the fresh number, let the next trends run clear the proposal.
+See also: INTENT.md "The digest diet"; tools/standup.py (THE DIGEST DIET
+helpers); docs/systems/self-audit.md "The digest size ledger";
+docs/history/digest_size.txt.
