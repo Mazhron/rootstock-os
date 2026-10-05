@@ -1367,3 +1367,18 @@ replacement text names a folder, switch tools.
   SyntaxError; nothing was written. DO INSTEAD: the Edit tool for that
   line (it worked first time), or r"..." when a script must carry it.
 See also: LESSONS "Unset ELECTRON_RUN_AS_NODE before any Electron app's CLI" above (the same day's other workstation trap); WORKSTATION_METHOD.md.
+
+## A force push is a delete: branch the old tip first, then name the grant's target in the one command (the kit mirror, 2026-10-05)
+Tags: lessons, git, preservation | The preserve guard refuses --force and --force-with-lease as history rewrites; the lossless shape is an added branch holding the old tip, a recorded two-yes grant, and one push whose command line carries the grant's target text
+Keys: force push, force-with-lease, mirror behind, non-fast-forward, rebase rewrote hashes, backup rejected, grant target, preserve guard, pre-rebase branch
+
+THE ONE RIGHT WAY: when a mirror's push is rejected because a rebase
+rewrote the hashes it holds, do not reach for --force. Push the old tip
+to the mirror as a dated branch first (an added ref needs no grant: the
+hashes live on), ask Mazhron twice naming the remote, the ref and the
+kept branch, record the grant, then run the single force-with-lease push
+with the grant's target string in the same command (the guard matches
+that text). "Do what you think is best" is one acknowledgment at most;
+the law wants two, said as two. WORKFLOWS "Delete something" step 5b.
+See also: tools/hooks/preserve_guard.py; tools/delete_grant.py;
+docs/history/delete_grants.txt.
