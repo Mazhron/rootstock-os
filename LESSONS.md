@@ -1349,3 +1349,21 @@ query and install directly.
   because the inherited environment carried ELECTRON_RUN_AS_NODE=1.
   DO INSTEAD: `env -u ELECTRON_RUN_AS_NODE` in front; the listing and the
   install then worked first time (editor + three modules in one call).
+See also: WORKSTATION_METHOD.md (the kit); docs/systems/mods.md; the Art of War handoff (the local Claude notes at the root of the TheArtOfWar clone under Desktop, Unity).
+
+## Never put a Windows path inside a Python heredoc's string literal (a `\U` in `Desktop\Unity` is a unicode escape, 2026-10-05)
+Tags: lessons, tooling, workstation | A backslash-U or backslash-x in a normal Python string is an escape, so a one-off edit script carrying `C:\Users` or `Desktop\Unity` dies with "truncated \UXXXXXXXX escape" before it runs
+Keys: unicodeescape, truncated UXXXXXXXX, heredoc, python - <<, Windows path, backslash, raw string, Edit tool
+
+THE ONE RIGHT WAY: an edit that carries a Windows path uses the Edit tool,
+or a raw string (r"...") in the script, or forward slashes. A `python -
+<<'EOF'` one-off is for text without backslashes; the moment the
+replacement text names a folder, switch tools.
+
+- TRIED (2026-10-05, twice in one day: the mods.md See also, then the
+  LESSONS See also): wrote the replacement text as a normal "..." literal
+  with `Desktop\Unity` inside. FAILED BECAUSE: Python read `\U` as the
+  start of a 32-bit unicode escape and refused the whole script with a
+  SyntaxError; nothing was written. DO INSTEAD: the Edit tool for that
+  line (it worked first time), or r"..." when a script must carry it.
+See also: LESSONS "Unset ELECTRON_RUN_AS_NODE before any Electron app's CLI" above (the same day's other workstation trap); WORKSTATION_METHOD.md.

@@ -122,8 +122,17 @@ def push_one(name, cwd, status_only):
     a = git(["push", REMOTE, "--all"], cwd)
     t = git(["push", REMOTE, "--tags"], cwd)
     if a.returncode or t.returncode:
-        err = (a.stderr + t.stderr).strip().splitlines()
-        return "FAIL: %s" % (err[-1] if err else "push error"), url
+        # Only the FAILING push's stderr, and its rejection line over its
+        # last line: a rejected --all followed by a clean --tags used to
+        # report "FAIL: Everything up-to-date" (2026-10-05, the rebased
+        # kit main against the mirror's old main).
+        err = []
+        for r in (a, t):
+            if r.returncode:
+                err += r.stderr.strip().splitlines()
+        telling = [l for l in err if "rejected" in l or "error:" in l or "fatal:" in l]
+        line = (telling or err or ["push error"])[-1]
+        return "FAIL: %s" % line.strip(), url
     head = git(["rev-parse", "--short", "HEAD"], cwd).stdout.strip()
     return "ok (HEAD %s)" % head, url
 
