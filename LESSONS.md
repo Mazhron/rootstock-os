@@ -1329,3 +1329,23 @@ trusting a miner's first table, count the files it opened against
 See also: tools/guard_replay.py; tools/usage_window.py; tools/usage_report.py
 (transcript_dirs, which already walks); LESSONS.md "Widen a proxy after
 its first real run".
+
+## Unset ELECTRON_RUN_AS_NODE before any Electron app's CLI from a Claude Code shell (Unity Hub ran as bare Node, 2026-10-05)
+Tags: lessons, tooling, workstation | VS Code's Claude Code shell exports ELECTRON_RUN_AS_NODE=1, so an Electron binary launched from it (Unity Hub, any Electron CLI) starts as plain Node and fails "Cannot find module '--headless'"
+Keys: Unity Hub, headless, ELECTRON_RUN_AS_NODE, MODULE_NOT_FOUND, Electron CLI, env -u, install editor, Art of War
+
+THE ONE RIGHT WAY: launch an Electron app's command line with the variable
+removed: `env -u ELECTRON_RUN_AS_NODE "C:/Program Files/Unity Hub/Unity Hub.exe" -- --headless editors -i`.
+The same flag is why `code`, Discord or any Electron tool misbehaves from
+this shell; check for it before blaming the tool. A Hub catalogue query
+(`editors -r`) can hang on the network; the install needs only the
+version and changeset from ProjectSettings/ProjectVersion.txt, so skip the
+query and install directly.
+
+- TRIED (2026-10-05, installing Unity 6000.6.4f1 for The Art of War): ran
+  the Hub's documented `-- --headless editors -i` from the repo folder,
+  then from the Hub folder. FAILED BECAUSE: both printed Node's
+  MODULE_NOT_FOUND for '--headless' - the process was Node, not the Hub,
+  because the inherited environment carried ELECTRON_RUN_AS_NODE=1.
+  DO INSTEAD: `env -u ELECTRON_RUN_AS_NODE` in front; the listing and the
+  install then worked first time (editor + three modules in one call).
