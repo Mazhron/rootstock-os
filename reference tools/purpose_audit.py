@@ -70,7 +70,12 @@ FLAGS = os.path.join(KIT_DIR, "FLAGS.md")
 LEDGER = os.path.join(ROOT, "docs", "history", "purpose_audit_runs.txt")
 LOCK = os.path.join(ROOT, ".claude", "flags.lock")   # gitignored; held only while appending
 SKIP_DIRS = {"__pycache__", ".git"}
-SKIP_NAMES = {"FLAGS.md", "LICENSE", ".gitignore"}
+# README.md (2026-10-05): a second install whose KIT_DIR is the public clone
+# itself (ClaudeBrain, the Art of War) saw the clone's README as a 79th
+# item and rewrote the clone's FLAGS.md on every loop run, so Everwood's
+# mirror check cried KIT UNSYNCED on every prompt - the README is the
+# clone's own, never a kit thing.
+SKIP_NAMES = {"FLAGS.md", "LICENSE", ".gitignore", "README.md"}
 COLORS = ("GREEN", "YELLOW", "RED")
 TALLY_START = "<!-- tally:start -->"
 TALLY_END = "<!-- tally:end -->"
@@ -386,8 +391,9 @@ def selftest():
         write(os.path.join(kit, "hooks", "a.py"), '"""PURPOSE: guards the thing well enough.\nINTENT: owner.\n"""\n')
         write(os.path.join(kit, "b.md"), "# B\n\nno purpose here\n")
         write(os.path.join(kit, "FLAGS.md"), "x")  # skipped by name
+        write(os.path.join(kit, "README.md"), "# Rootstock\n")  # the clone's own, skipped (2026-10-05)
         fpath = os.path.join(td, "F.md")
-        check("items skip FLAGS.md and list kit-relative paths", items(kit) == ["b.md", "hooks/a.py"])
+        check("items skip FLAGS.md and README.md and list kit-relative paths", items(kit) == ["b.md", "hooks/a.py"])
         rows, t = status(kit, "")
         check("no ledger -> all unflagged", t["unflagged"] == 2 and all(r[1] == "UNFLAGGED" for r in rows))
         e = add_flag("hooks/a.py", "green", "tester", "guards it", "matches", path=fpath, kit=kit, now="2026-09-13 12:00")

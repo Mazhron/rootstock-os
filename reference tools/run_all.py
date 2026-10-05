@@ -24,6 +24,7 @@ too: changed only to add or fix):
   tests    the full sweepable test roster (run_tests --all; slow, ~25 min)
   metrics  the company scorecard (parses SUBAGENTS.md, appends its ledger)
            + the usage sheet (harness-metered tokens per model/tool/day)
+           + the fork watch (forks of the public Rootstock repo; WARN when one pulls ahead)
   probes   the pacing + stability probes (progression 12 rebirths, 5-min soak)
   builds   export + zip both release builds (refuses same-version overwrite)
   backup   every branch + tag to the bare mirrors on J: (THE LOCAL MIRROR, 2026-09-20)
@@ -77,7 +78,8 @@ GROUPS = {
                 ["tools/wiki_heat.py"],
                 ["tools/big_reads.py"],
                 ["tools/intent_report.py"],
-                ["tools/keepwarm.py", "--report"]],   # THE KEEP-WARM TRIAL (2026-09-29): prices the session's ping turns; silent-ish when none
+                ["tools/keepwarm.py", "--report"],   # THE KEEP-WARM TRIAL (2026-09-29): prices the session's ping turns; silent-ish when none
+                ["tools/fork_watch.py"]],   # THE FORK WATCH (2026-10-05): forks of the public Rootstock repo; WARN only when one pulls ahead
     "probes":  [["tools/progression_report.py", "-n", "12"],
                 ["tools/soak_report.py", "-m", "5"]],
     "builds":  [["tools/make_builds.py"]],
