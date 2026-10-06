@@ -314,6 +314,21 @@ category it sits beside.
   split then swaps stages 2 and 3. The montage shows it as a size dip.
   DO: add the species id to X_ORDER in extract_gemini_sheets.py (sort
   the six by x only) and re-cut `--only <category>`.
+- NUANCE (2026-10-06, "very grainy" at the young stages, said twice):
+  the montage law checks the cut's ORDER; it does not catch a cut that
+  is right and TOO SMALL. One factor per sheet (mature to 72 px) put a
+  109 px sprout on disk at 19 px, the render floor blew it back to 53
+  and nearest drew it at 16: a thumbnail enlarged, which is the grain.
+  TRIED: mipmaps + the linear filter (0.99.57): softer, not readable.
+  FAILED BECAUSE: a filter cannot add pixels the slicer threw away. DO
+  INSTEAD: read the SOURCE sizes before blaming the art (Mazhron had to
+  show the 109 x 105 sprout); cut every stage at a per-category minimum
+  (MIN_STAGE_CUT_H) and carry the oversize factor in scales.txt so the
+  game draws it at the sheet's proportion (THE YOUNG-STAGE FLOOR,
+  art-pipeline.md). Verify with the stage strip (`EVERWOOD_PROBE=1
+  EVERWOOD_ART_DUMP="<ids>"`), which shows what the player sees, not the
+  files. A stage that renders below the floor is a cut problem first,
+  a filter problem never.
 - NUANCE (2026-09-26, the flair sheets): joining the PARTS of one decal
   (a flower head above its stem) is a PIXEL-distance question, never a
   bounding-box one. Merging boxes that overlap or sit near each other
