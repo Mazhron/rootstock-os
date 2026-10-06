@@ -1462,3 +1462,26 @@ the newest transcript by hand and look at what it threw away.
 See also: INTENT.md "The digest diet" (the loss test: the exchange is never
 cut, so it must also never be the wrong one); tools/standup.py
 (_mine_exchange, unwrap_paste); WORKFLOWS.md "Open a session / close an arc".
+
+## A patch script with backslash escapes goes through the Write tool, never a bash heredoc (2026-10-06)
+Tags: lessons, process, tooling | Four times in one afternoon a one-off Python patch sent through the Bash tool's heredoc had its escapes rewritten on the way in: a regex word boundary landed as a backspace byte, a GDScript line continuation plus newline landed as literal backslash-n text, a test string broke mid-literal, and the first draft of THIS lesson arrived with backspace bytes in it
+Keys: heredoc, backslash, escape, backspace, Write tool, patch script, python stdin, regex word boundary, line continuation, bash tool quoting, one-off edit, cat -A
+
+THE ONE RIGHT WAY: when a one-off edit script contains ANY backslash (a
+regex, a GDScript continuation, a Windows path, a newline meant for the
+file), write the script to the scratchpad with the Write tool and run it
+with `python <path>`; or build the byte with chr(92) / chr(10) so no escape
+is parsed twice. Reserve a stdin heredoc for scripts with no backslashes at
+all. Verify the written bytes with `cat -A` before running anything that
+depends on them: a parse error in main.gd left the windowed capture sitting
+open for ten minutes until Mazhron noticed ("the game has been running for
+quite a long time with nothing happening").
+
+- TRIED (2026-10-06): the paste-unwrap regex inside a heredoc patch.
+  FAILED BECAUSE: the file received a 0x08 byte; the selftest failed and
+  the kit copy was refreshed with the broken regex. Then a continuation
+  line for the creative self-test arrived as backslash-n text, a GDScript
+  parse error, the test printed MISSING and the capture hung. DO INSTEAD:
+  Write tool for the script, chr() for the bytes, cat -A to check.
+See also: "Never put a Windows path inside a Python heredoc's string
+literal" (the same trap from the path side); tools/standup.py unwrap_paste.
