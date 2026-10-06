@@ -56,7 +56,7 @@ Everything else is indexed into it, so it comes first: the project's
 CLAUDE.md as THE POINTER CORE (the project in a paragraph, how to read,
 how to verify, the laws no hook enforces, ONE pointer to the master
 index; under Anthropic's 200-line target, the lint fails past 200 lines
-or 2,000 tokens and warns past 1,000: WIKI_METHOD.md "The hot core and
+or 2,000 tokens and warns past 1,500: WIKI_METHOD.md "The hot core and
 the sub-indexes"; the origin lands ~900 tokens), docs/index/
 MASTER_INDEX.md (the one door: every topic file, root file, sub-index and
 rule, one line each), .claude/rules/ path-scoped rules for what only
@@ -69,7 +69,7 @@ MDs to the repo root and index each with one line in the master index.
 Create WORKFLOWS.md
 (WORKFLOW_METHOD.md) the day the first two-step process exists. Stamp the
 install: "Rootstock vX.Y installed <date> | updates: <policy>" in the
-core's index (version: UPGRADES.md).
+project's CLAUDE.md itself (version: UPGRADES.md).
 
 ## STEP 2 - reporting + session rituals (REPORTING_METHOD.md, bootstrap)
 

@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.43** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.44** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1653,3 +1653,56 @@ GRAFT: add the verbatim line to your brief template under the budget
 line; add the sentence to your delegation rules' parallelism rule. No
 hook, no settings change, no new file.
 README: "The company" (the stamped-brief bullet's last sentence).
+
+### v1.44 - 2026-10-06 - The fifth README audit: six slips lived upstream in the method files, not the README
+WHAT: The audit's four read-only lanes (T-1006-RA-1..4) found the README
+right and its sources wrong six times, the reverse of the usual drift:
+the front door still said the core lint warns past 1,000 tokens (v1.37
+moved it to 1,500) and put the install stamp "in the core's index"
+(UPGRADES and the README say CLAUDE.md itself); WIKI_METHOD's learning
+loop still said the manager never applies a proposal unasked (the
+proposal law's [DO]/[ASK] split, 2026-09-29, superseded that);
+REPORTING_METHOD labelled the 2026-09-10 weighted window 44 days (it is
+50; 44 days is the raw window to 09-03); HOOKS_METHOD's Tier 4 pin still
+deferred the SubagentStop stamp refusal that v1.42 built; CONTRIBUTING's
+safety list named seven hooks when format_lint's SAFETY table, the code,
+names eleven, and its format-law list omitted the front door that
+carries the header; WORKFLOW_METHOD never mentioned law_gaps.py, the
+shadow check the README credited to it. All six fixed at the source.
+The README's own slips: "while a file is open" for a path-scoped rule
+(Claude Code loads it when Claude READS the file), a 93% weighted share
+in the raw-window receipt that the weighted section's 83% contradicted,
+the stale "deferred outright" sentence, and "a flag from someone other
+than the author" without CONTRIBUTING's "when possible". Twenty LACKS
+and POORLY edits beside them: the three knowledge layers and the
+bootstrap instruction, the comparison rule's thresholds, the runner's
+non-zero exit and own ledger line, the cold shelf's folder and mover,
+the auto-memory trim numbers, the employee's closing stamp (workflow and
+INTENT lines, the claim the manager logs), the fan-out refusal rule and
+where its numbers live, the checkpoint's dire consequence and the 30%
+floor, the mirror push and the self-ticking counter in /ship, the
+session-start triggers and the two UNSYNCED/UNEXPORTED lines, the
+auditor's three-call floor and delegation_pending.txt's line shapes, the
+safety tier named, the hooks' install walk, the graft batch's ship step,
+where to open Claude Code and the hooks' human parts in Quick start. Five
+CLAIMS rows keep the slips from recurring. Skipped by design: LICENSE
+and README.md rows in the box (the lint derives the box from the kit
+folder, which holds neither), and the long run-on splits (the reference
+tools cell, the truthfulness and checkpoint bullets) - a rewrite pass,
+not an audit edit.
+CARRIES: 0 - READ ME FIRST.md (STEP 1: 1,500 and the stamp's home);
+WIKI_METHOD.md ("The learning loop" step 3); REPORTING_METHOD.md ("THE
+WEIGHTED COLUMN" window label); HOOKS_METHOD.md ("Tier 4 (still
+pinned)"); CONTRIBUTING.md ("THE FORMAT" list, the SAFETY list);
+WORKFLOW_METHOD.md ("Who writes it", THE SHADOW CHECK bullet); the origin
+project's tools/readme_lint.py (five CLAIMS rows); this entry.
+GRAFT: if your install copied any of the six method files before this
+version, re-read the six sections named under CARRIES and apply the
+corrected sentence to your copy; if your core lint still warns at 1,000
+tokens, move it to 1,500; if your proposal step still waits for the
+owner on every line, adopt the [DO]/[ASK] split. No hook, no settings
+change, no new file.
+README: "What loads every session" (the rules row), "The receipts", "1.
+The Knowledge Wiki", "2. The Reporting Discipline", "3. The Delegation
+Company", "4. Lossless Sessions", "The hooks", "The format law",
+"Quick start", "Updating an installed project", "What is in the box".

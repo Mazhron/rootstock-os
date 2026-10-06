@@ -19,7 +19,7 @@ INTENT: Mazhron 2026-09-13: "Rootstock-os will eventually, hopefully, turn
 ## THE FORMAT (one header, every thing)
 
 Every thing in the kit - a script under reference tools/, a hook under
-hooks/, a skill's SKILL.md, a method file, the hooks README - carries
+hooks/, a skill's SKILL.md, a method file, the hooks README, the front door - carries
 these lines in its header. A Python file carries them in its module
 docstring; a Markdown file right after its title line; a .txt at the top.
 
@@ -36,7 +36,9 @@ Plus, by class:
 - the SETTINGS template (hooks/settings.json) parses, names only hook
   scripts that exist beside it, and keeps every SAFETY hook wired with
   its required matcher: preserve_guard, bash_guard, fanout_guard,
-  diet_guard, hygiene_guard, format_guard, stop_tick.
+  diet_guard, hygiene_guard, format_guard, brief_guard,
+  delegation_auditor, verify_advisor, stop_tick, session_end (the SAFETY
+  table in format_lint.py is the list; this prose follows it).
 
 A placeholder ("(unfilled ...)") is scaffolding, not a header: it fails.
 

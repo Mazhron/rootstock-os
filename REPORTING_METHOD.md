@@ -100,7 +100,7 @@ the best public model of an unpublished budget. The raw count stays as
 trivia. The same weights drive every other meter in the project (the
 fan-out guard's spend), so all numbers agree. Under those weights the
 origin project's split was cache WRITES 43%, cache reads 40%, output 17%,
-fresh input ~0 (the first reading, 44 days to 2026-09-10; the sheet's
+fresh input ~0 (the first reading, 50 days to 2026-09-10; the sheet's
 ALL-TIME line is the live figure, and its pillar shares assume the
 five-minute write rate, so on a one-hour cache the writes' missing share
 is the doubled write price) - which is why the sheet also counts CACHE MISSES (a

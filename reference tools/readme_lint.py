@@ -141,6 +141,17 @@ CLAIMS = [
      r"ask the security question", None),
     ("the pillars name the employee model rule (v1.40)",
      r"every dispatch names its model in the call", None),
+    # 2026-10-06 audit (T-1006-RA-1..4): the prose slips the count check cannot see
+    ("the SubagentStop stamp hook is built in v1.42, not deferred outright",
+     r"built in v1\.42 as part of the auditor", r"was deferred outright"),
+    ("a contributor's flag comes from someone else when possible, not always",
+     r"other than the author when possible", None),
+    ("path-scoped rules load when Claude reads a matching file, never 'while open'",
+     None, r"while (a|that kind of) (matching |markdown )?file is open"),
+    ("the raw-window receipt states no weighted share the weighted section contradicts",
+     None, r"roughly 93% of the weighted"),
+    ("the front door warns at 1,500 tokens too (the slip lived upstream, 2026-10-06)",
+     None, r"warns past 1,000"),
 ]
 NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven",
                 "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen",

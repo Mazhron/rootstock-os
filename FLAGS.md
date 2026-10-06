@@ -33,24 +33,24 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-05 20:17 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 | stale 21
+Updated 2026-10-06 11:22 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 | stale 18
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | STALE | fable | 2026-09-20 03:22 |
+| 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| CONTRIBUTING.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:49 |
+| CONTRIBUTING.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | STALE | fable | 2026-09-20 03:22 |
+| HOOKS_METHOD.md | GREEN | STALE | fable | 2026-10-06 11:21 |
 | INTENT_METHOD.md | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:58 |
 | LESSONS.md | GREEN | STALE | fable | 2026-09-20 03:21 |
-| REPORTING_METHOD.md | GREEN | STALE | sonnet-fmt4 | 2026-09-13 11:51 |
+| REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | STALE | fable | 2026-09-13 11:57 |
 | SUBAGENT_METHOD.md | GREEN | STALE | fable | 2026-09-30 12:22 |
 | UPGRADES.md | GREEN | STALE | fable | 2026-09-20 03:22 |
-| WIKI_METHOD.md | GREEN | STALE | Fable (WS2 manager) | 2026-09-22 17:11 |
-| WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
+| WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
+| WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
 | hooks/README.txt | GREEN | STALE | fable | 2026-09-20 03:21 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
@@ -1034,3 +1034,33 @@ FLAG: diffed against the origin project's live settings 2026-10-01; identical ho
 SAYS: check every kit thing (a script, a hook, a skill, a method file, the hooks README, the settings template) and its repo original for the one header the filing system needs - PURPOSE, INTENT, Search keys, See also - plus the safety wiring in settings.json; report PASS/FAIL per item.
 DOES: the same; the delegation_auditor row now requires PostToolUse on Agent|Task AND SubagentStop (v1.42), so unwiring the stop-time check is refused like unwiring any safety hook
 FLAG: read the SAFETY table 2026-10-01; 151 items PASS after the wiring, FAIL on the kit template between the two settings edits (the in-between-state lesson, by design)
+
+### 2026-10-06 11:21 | 0 - READ ME FIRST.md | GREEN | fable | WS1 | a82a24ae
+SAYS: The kit's front door: walks a receiving Claude through the install in order (ask the CEO first, then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: the same as its PURPOSE line; the 2026-10-06 README audit (T-1006-RA) corrected one stale sentence in it at the source
+FLAG: read-only compare after the T-1006-RA batch edit; PURPOSE unchanged, body matches the kit v1.44 entry
+
+### 2026-10-06 11:21 | WIKI_METHOD.md | GREEN | fable | WS1 | 379900d7
+SAYS: A portable system for organizing a project's knowledge (a lean CLAUDE.md core, a docs/systems topic library, portable root notes) so an AI assistant finds anything in three cheap hops, Glob, Grep for headings, then a targeted Read, without wasting tokens.
+DOES: the same as its PURPOSE line; the 2026-10-06 README audit (T-1006-RA) corrected one stale sentence in it at the source
+FLAG: read-only compare after the T-1006-RA batch edit; PURPOSE unchanged, body matches the kit v1.44 entry
+
+### 2026-10-06 11:21 | REPORTING_METHOD.md | GREEN | fable | WS1 | b0c156a9
+SAYS: A portable method for scripted runs and history ledgers: every repeatable run is a script, every run appends one labeled line to an append-only ledger, and a recorded baseline lets a regression show up as a single line flip between two ledger lines.
+DOES: the same as its PURPOSE line; the 2026-10-06 README audit (T-1006-RA) corrected one stale sentence in it at the source
+FLAG: read-only compare after the T-1006-RA batch edit; PURPOSE unchanged, body matches the kit v1.44 entry
+
+### 2026-10-06 11:21 | HOOKS_METHOD.md | GREEN | fable | WS1 | b3dccc4b
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: the same as its PURPOSE line; the 2026-10-06 README audit (T-1006-RA) corrected one stale sentence in it at the source
+FLAG: read-only compare after the T-1006-RA batch edit; PURPOSE unchanged, body matches the kit v1.44 entry
+
+### 2026-10-06 11:21 | CONTRIBUTING.md | GREEN | fable | WS1 | 35d0df34
+SAYS: the two guardrails every Rootstock update passes through - THE FORMAT (one header on every thing, checked by script and enforced by a hook) and THE PURPOSE AUDIT (a read-only comparison of what a thing says against what it does, flagged green / yellow / red and filed in FLAGS.md) - written so a contributor, a maintainer and any Claude apply them the same way.
+DOES: the same as its PURPOSE line; the 2026-10-06 README audit (T-1006-RA) corrected one stale sentence in it at the source
+FLAG: read-only compare after the T-1006-RA batch edit; PURPOSE unchanged, body matches the kit v1.44 entry
+
+### 2026-10-06 11:21 | WORKFLOW_METHOD.md | GREEN | fable | WS1 | 7f405d14
+SAYS: A portable process registry method: every repeatable multi-step process gets one runbook entry, WHEN, STEPS, VERIFY, in a single registry file, so the choreography between scripts and ledgers is never lost to context clearing or memory.
+DOES: the same as its PURPOSE line; the 2026-10-06 README audit (T-1006-RA) corrected one stale sentence in it at the source
+FLAG: read-only compare after the T-1006-RA batch edit; PURPOSE unchanged, body matches the kit v1.44 entry

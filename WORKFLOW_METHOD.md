@@ -96,6 +96,10 @@ The division of labor (pairs with SUBAGENT_METHOD.md):
   or a law (those need the manager's judgment about WHY the order is law).
 - THE MANAGER'S OWN TASKS OBEY THE SAME RULE: performing a process with no
   entry obligates the capture, whoever performed it.
+- THE SHADOW CHECK (v1.37): a script (reference tools/law_gaps.py, in the
+  check group) reads the rule's shadow too: a tool changed in the last 30
+  days that no registry entry, loop group, hook setting or skill names is
+  a WARN line at standup.
 
 ## What earns an entry (and what doesn't)
 

@@ -424,8 +424,11 @@ makes learning less dependent on discipline:
    model past the escalation rule, too many compactions. Standup prints
    the block right after THE BUDGET. When the proposal set changes, one
    line lands in docs/history/proposal_runs.txt - the loop has history.
-3. RULE - the owner reads the proposals and says yes, no, or later. The
-   manager never applies one unasked. A proposal that keeps recurring
+3. RULE - a proposal is tagged [DO] or [ASK] (the proposal law,
+   2026-09-29): a [DO] (an audit, a diet, a loop run, anything a script
+   or an employee carries) is done in the reply that reads it, never
+   offered as a choice; an [ASK] is the owner's, answered yes, no, or
+   later. A proposal that keeps recurring
    with a no is a threshold to retune, not a rule to force.
 4. GROW - the yes becomes a law, a hook, a threshold change or a cold-
    shelf move, filed per the conventions; the next ledger line shows
