@@ -401,6 +401,19 @@ rerun of the same script, not a hand-split second script.
   that begins its line in the file, or mid-line with no leading spaces,
   never at a guessed indentation.
 
+- TRIED (2026-10-06, the fifth README audit): a new README bullet said
+  "merge the settings template" 350 lines ABOVE the box row that says
+  "drop into `tools/hooks/`", and the parity lint's must-not regex
+  `settings template.*into `tools/hooks/`` (written for one sentence)
+  matched across the whole file; lint FAIL, selftest FAIL, one reword
+  later PASS. FAILED BECAUSE: a CLAIMS regex with `.*` is a file-wide
+  order test, not a sentence test, so any new phrase that puts the left
+  half before an old right half trips it. DO INSTEAD: run the parity lint
+  right after the batch, before the version bump or the graft entry, and
+  when a claim regex fails on text you never wrote, reword the NEW phrase
+  (here `settings.json` for "settings template") rather than the old
+  sentence or the regex.
+
 See also: LESSONS.md "Write a long file or script through the shell";
 WORKFLOWS.md "Audit the public README (Rootstock)" and "Add or change a
 harness hook"; tools/hooks/session_end.py.
