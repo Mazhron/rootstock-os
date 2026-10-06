@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.42** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.43** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1627,3 +1627,29 @@ format_lint.py first); run one cheap employee and read the METER line
 at the tail of docs/history/delegation_pending.txt; add selfcount_floor
 to .claude/fanout_limits.json only if 0.7 is wrong for your employees.
 README: "The hooks" (the delegation truth set's auditor sentence).
+
+### v1.43 - 2026-10-05 - The one-turn line (an employee batches its independent tool calls into one turn)
+WHAT: The one piece of a public reply worth taking. Mazhron described
+Rootstock under a post (sub-agents orchestrated by the top model, cheap
+models for cheap tasks, scripts for anything repeatable, hooks against
+fan-out, indexed knowledge so agents read small); Ken Brown answered
+"make your subagents stateless and single use, have them do a fast pass
+read only for their one task, and call all tools in a single call".
+Two of those were already law 1 and law 3 (an employee starts with an
+empty context and one self-contained brief; readers are read-only by
+assignment, writers stay writers because that is where the cheap models
+earn their keep). The third was true and unwritten: nothing told an
+employee to fire its independent reads in ONE turn, and every extra turn
+re-reads the employee's whole growing context. Now the brief carries it
+verbatim: "Independent reads, greps and checks go in ONE turn, never one
+per turn; only a step that needs the previous result waits." It is a
+skill line, not a guard line: the delegation auditor's tools= count
+against the transcript's turn count is the measure, and a guard comes
+only if the ledger shows employees ignoring it.
+CARRIES: skills/brief/SKILL.md (item 3, THE ONE-TURN LINE);
+SUBAGENT_METHOD.md (law 1's last sentence); the origin project's
+SUBAGENTS.md rule 7 (the inside-an-employee sentence); this entry.
+GRAFT: add the verbatim line to your brief template under the budget
+line; add the sentence to your delegation rules' parallelism rule. No
+hook, no settings change, no new file.
+README: "The company" (the stamped-brief bullet's last sentence).

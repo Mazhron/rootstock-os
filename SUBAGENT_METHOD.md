@@ -60,7 +60,11 @@ Tags: delegation, process, architecture | Seven cardinal laws: brief, stamp, ver
 1. THE BRIEF IS EVERYTHING. Employees know NOTHING - no chat history, no
    project lore. A brief is a work order: exact files/paths, exact spec,
    exact output format, any needed rules PASTED IN (never "see the docs").
-   A vague brief is the manager's error, not the employee's.
+   A vague brief is the manager's error, not the employee's. The brief
+   also tells the employee HOW to spend its turns (v1.43): independent
+   reads, greps and checks go in one turn, never one per turn, because
+   every extra turn re-reads the whole growing context; only a step that
+   needs the previous result waits.
 2. EVERY EMPLOYEE STAMPS ITS WORK. Every brief ends by requiring:
    "STAMP: model=<model> effort=<low|med|high> est_tokens=<rough>
     task=<3-5 words> confidence=<high|med|low>"

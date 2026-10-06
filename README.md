@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.42** (2026-10-01). The graft log `UPGRADES.md` is the
+Kit version: **v1.43** (2026-10-05). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -382,7 +382,9 @@ asked at setup and revisited as models change - never assumed.
   budget line: exceed ~30 tool calls or fail the same step twice, and the
   employee stops and reports instead of running up a bill. The report ends
   with the employee's own stamp: model, effort, tokens, confidence, and
-  the tools it used.
+  the tools it used. The brief also says how to spend turns (v1.43):
+  independent reads and checks go in one turn, never one per turn, since
+  every extra turn re-reads the employee's whole growing context.
 - **How many at once.** A handful of employees per batch (four is the
   habit), never a burst, never an employee that spawns employees. A task
   that seems to need dozens is a design problem - split it, script it,

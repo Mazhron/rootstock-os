@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-05 19:24 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 | stale 19
+Updated 2026-10-05 20:17 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 | stale 21
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -47,7 +47,7 @@ Updated 2026-10-05 19:24 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 
 | REPORTING_METHOD.md | GREEN | STALE | sonnet-fmt4 | 2026-09-13 11:51 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | STALE | fable | 2026-09-13 11:57 |
-| SUBAGENT_METHOD.md | GREEN | ok | fable | 2026-09-30 12:22 |
+| SUBAGENT_METHOD.md | GREEN | STALE | fable | 2026-09-30 12:22 |
 | UPGRADES.md | GREEN | STALE | fable | 2026-09-20 03:22 |
 | WIKI_METHOD.md | GREEN | STALE | Fable (WS2 manager) | 2026-09-22 17:11 |
 | WORKFLOW_METHOD.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:51 |
@@ -106,7 +106,7 @@ Updated 2026-10-05 19:24 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | STALE | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
-| skills/brief/SKILL.md | GREEN | ok | fable | 2026-09-30 12:22 |
+| skills/brief/SKILL.md | GREEN | STALE | fable | 2026-09-30 12:22 |
 | skills/checkpoint/SKILL.md | GREEN | STALE | fable | 2026-09-20 03:21 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/flag/SKILL.md | GREEN | ok | fable-manager | 2026-09-29 16:38 |

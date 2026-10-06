@@ -27,6 +27,12 @@ appending/auditing). Then compose the brief with ALL of:
    not wander the repo discovering things.
 3. TOKEN BUDGET LINE, verbatim: "If you exceed ~30 tool calls or fail the
    same step twice, STOP and report what you have."
+   THE ONE-TURN LINE (rule 7, kit v1.43, 2026-10-05 - a public reply to
+   Mazhron's Rootstock comment, Ken Brown: "call all tools in a single
+   call"), verbatim: "Independent reads, greps and checks go in ONE turn,
+   never one per turn; only a step that needs the previous result waits."
+   Every extra turn re-reads the employee's whole growing context; the
+   auditor's tools= count against its turn count shows who obeys.
 4. REPORT FORMAT: write files directly; report `git diff --stat` + changed
    hunks + a short summary. NEVER paste whole file bodies back.
 5. THE WORKFLOW LINE (rule 11): for a repeatable multi-step task, NAME the
