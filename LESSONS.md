@@ -308,6 +308,12 @@ category it sits beside.
 - NUANCE: 0.5 is the clean factor under the nearest filter (every other
   pixel); a category that must render bigger gets a taller CUT, never
   a bigger art_scale.
+- NUANCE (2026-10-06, the re-edited Meadow Grass): a sheet can carry its
+  growth order as LEFT-TO-RIGHT ACROSS BOTH ROWS (the owner laid the six
+  out so x alone is the order, rows interleaved); the biggest-gap row
+  split then swaps stages 2 and 3. The montage shows it as a size dip.
+  DO: add the species id to X_ORDER in extract_gemini_sheets.py (sort
+  the six by x only) and re-cut `--only <category>`.
 - NUANCE (2026-09-26, the flair sheets): joining the PARTS of one decal
   (a flower head above its stem) is a PIXEL-distance question, never a
   bounding-box one. Merging boxes that overlap or sit near each other
