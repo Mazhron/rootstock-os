@@ -507,9 +507,11 @@ through the ledgers.
 
 ## Tier 4 (still pinned - the origin project's FUTURE_FEATURES.md)
 
-SubagentStop refuses an employee's stop when its report lacks the stamp /
-workflow line (deferred 2026-09-26 as ~90% redundant with
-delegation_auditor, which names a malformed report the moment it lands);
+SubagentStop refusing an employee's stop when its report lacks the stamp /
+workflow line: deferred 2026-09-26 as ~90% redundant with
+delegation_auditor, then BUILT in v1.42 (2026-10-01) as the auditor's own
+stop-time branch (Tier 4a: a report without its template lines is held
+once), so it is no longer pinned;
 Notification -> an OS toast when the manager waits on permission or
 idles after a long employee run.
 

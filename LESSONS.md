@@ -1212,6 +1212,16 @@ refresh, not of the copy before it.
   the kit folder is a grab-copy, not a home; refresh_kit says nothing
   when it overwrites. DO INSTEAD: the path rule above; the second pass
   edited WIKI_METHOD.md at the repo root and both copies followed.
+- TRIED AGAIN (2026-10-06, the fifth README audit): `ls -d */` showed no
+  method file at the root (it lists directories only) and a grep of
+  refresh_kit.py for the file names found nothing (the pairs are built,
+  not spelled out), so the batch pointed at the kit copies again; the
+  sync's DRY RUN then printed "refreshed WIKI_METHOD.md" and the copies
+  lost the edit. FAILED BECAUSE: two cheap checks that cannot see the
+  originals were trusted over the one that can. DO INSTEAD: `find . -name
+  <file> -not -path "./Future Project MDs/*"` or the pairs() call above
+  BEFORE the script is written; and read "refreshed <file>" in any
+  refresh or sync output as "the copy just lost whatever you put there".
 
 See also: WORKFLOWS.md "Edit the future-project kit (Rootstock)";
 tools/refresh_kit.py (pairs); "Apply an audit's findings with a batch edit
