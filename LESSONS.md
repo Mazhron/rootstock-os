@@ -1500,3 +1500,23 @@ quite a long time with nothing happening").
   Write tool for the script, chr() for the bytes, cat -A to check.
 See also: "Never put a Windows path inside a Python heredoc's string
 literal" (the same trap from the path side); tools/standup.py unwrap_paste.
+
+## A self-test that reads a tool-gated label selects the tool first (the soil brush check, 2026-10-06)
+Tags: lessons, testing, creative mode | The first run of the soil brush check in CREATIVETEST failed on brush=false though the feature worked: it read `armed_label()` for the brush name while the controller still had tool 1 in hand, and the label only names the brush under tool 2
+Keys: self-test, armed_label, tool-gated, select_tool, creative controller, brush, a FAIL that was the test's own assumption, read-out depends on state
+
+THE ONE RIGHT WAY: before a self-test asserts on a readout, label or
+tooltip that depends on which tool, mode or panel is active, put the
+controller in that state explicitly (`select_tool(2)` here), the way a
+player would be. A readout is a function of the whole hand, not of the one
+variable the test just set. The same shape as "Write a self-test for a shop
+purchase (a FAIL that was the test's own assumption)": when the feature's
+own assertions pass and only the readout fails, suspect the test's state.
+
+- TRIED (2026-10-06): `remember_tier(cell)` then `armed_label().contains("brush")`
+  with the default tool still in hand. FAILED BECAUSE: `armed_label()` is
+  branched on `tool`, and tool 1 reports the armed seed, never the brush.
+  DO INSTEAD: `select_tool(2)` first, assert, then `select_tool(2)` again
+  to prove the release.
+See also: "Write a self-test for a shop purchase"; docs/systems/creative.md
+("The hand: four tools, the palette, the picker").
