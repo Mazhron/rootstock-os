@@ -108,6 +108,20 @@ def _local_stamp(ts):
 
 _CAP = 8000  # chars replayed per side; the full text stays in the transcript
 
+# THE PASTE UNWRAP (2026-10-06): a prompt the owner pastes into the chat box
+# arrives as <pasted_content id="..."> ... </pasted_content id="..."> and so
+# starts with "<" exactly like a harness wrapper. Dropping it left the build
+# session with no human prompt at all, and the digest replayed the PREVIOUS
+# session's exchange - stale, the one loss the diet forbids. The tags go,
+# the words stay; the wrapper filter below then sees the human's text.
+_PASTE_RE = re.compile(r"</?pasted_content\b[^>]*>")
+
+
+def unwrap_paste(txt):
+    """Strip <pasted_content ...> wrappers; everything else is untouched."""
+    return _PASTE_RE.sub("", txt or "")
+
+
 
 def _mine_exchange(path):
     """One transcript -> (asst_ts, user_ts, user_txt, imgs, asst_txt) for the
@@ -138,6 +152,7 @@ def _mine_exchange(path):
                     txt = "\n".join(b.get("text", "") for b in blocks
                                     if b.get("type") == "text")
                     imgs = sum(1 for b in blocks if b.get("type") == "image")
+                txt = unwrap_paste(txt)
                 s = txt.strip()
                 if s.startswith("<") or s.startswith("Caveat:"):
                     continue  # harness command wrappers, not the human
@@ -543,6 +558,11 @@ def selftest():
           loop_rows({}, now) == ["check, regen, tests, metrics, probes, builds, session | never"])
     check("keep_commit drops a changelog export", not keep_commit("140ef83c changelog: export v0.99.48-alpha (1 changes)"))
     check("keep_commit keeps a patch note", keep_commit("a0de4403 The keep-warm ping retuned on three fixes"))
+    check("unwrap_paste keeps a pasted ruling",
+          unwrap_paste('<pasted_content id="a198">1.) Correct, it removes</pasted_content id="a198">')
+          == "1.) Correct, it removes")
+    check("unwrap_paste leaves a command wrapper for the filter",
+          unwrap_paste("<command-name>/clear</command-name>").startswith("<"))
     print("standup selftest: %d failed" % len(fails))
     return 1 if fails else 0
 

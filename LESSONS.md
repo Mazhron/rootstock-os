@@ -1430,3 +1430,29 @@ in full ("new since you last looked" is context); that is never a trim.
 See also: INTENT.md "The digest diet"; tools/standup.py (THE DIGEST DIET
 helpers); docs/systems/self-audit.md "The digest size ledger";
 docs/history/digest_size.txt.
+
+## A pasted prompt starts with "<" like a harness wrapper (unwrap pasted_content before the wrapper filter, 2026-10-06)
+Tags: lessons, process, digest diet, standup | The owner's four rulings arrived as a pasted_content block; standup's exchange miner dropped it as a harness wrapper, the build session yielded no prompt, and the digest replayed the previous session's exchange as if it were the last one
+Keys: pasted_content, pasted prompt, stale exchange, wrong session, THE LAST EXCHANGE, _mine_exchange, unwrap_paste, harness wrapper, startswith("<"), standup digest, loss test, ground truth
+
+THE ONE RIGHT WAY: a harness wrapper (`<command-name>`, `<task-notification>`,
+`<system-reminder>`, `<local-command-stdout>`) is NOT the human typing and
+stays filtered; a `<pasted_content id="...">` block IS the human typing with
+a tag around it. tools/standup.py strips the paste tags first (unwrap_paste)
+and only then applies the "starts with <" filter, and --selftest covers both
+sides. When a standup's LAST EXCHANGE names a session older than the day
+file's WHERE WE LEFT OFF, the miner skipped a prompt: run _mine_exchange on
+the newest transcript by hand and look at what it threw away.
+
+- TRIED (2026-10-06 11:55, the first standup after the creative-mode arc):
+  the digest replayed the 10:37 planning exchange from session 9c81e03c
+  while the checkpoint commit said the mode was built and shipped at 11:45.
+  FAILED BECAUSE: the build session's only human prompt after "standup" was
+  the pasted rulings, which begin with "<pasted_content", so the miner
+  returned None for that transcript and the newest surviving reply was the
+  older session's. DO INSTEAD: unwrap the paste tags before the wrapper
+  test (done, selftest PASS, kit copy refreshed); treat "session older than
+  the day file" as the symptom to look for.
+See also: INTENT.md "The digest diet" (the loss test: the exchange is never
+cut, so it must also never be the wrong one); tools/standup.py
+(_mine_exchange, unwrap_paste); WORKFLOWS.md "Open a session / close an arc".
