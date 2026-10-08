@@ -1498,6 +1498,15 @@ quite a long time with nothing happening").
   line for the creative self-test arrived as backslash-n text, a GDScript
   parse error, the test printed MISSING and the capture hung. DO INSTEAD:
   Write tool for the script, chr() for the bytes, cat -A to check.
+- TRIED (2026-10-08, the clean-screen restore): a heredoc Python patch
+  whose `old` string carried GDScript `\` continuations, two days after
+  this lesson was written. FAILED BECAUSE: the escapes were rewritten on
+  the way in, the assertion that the old text exists failed, nothing was
+  written. DO INSTEAD (the cheaper way when auto mode allows it): for a
+  GDScript block with continuation lines, skip the patch script entirely
+  and use the Edit tool, which takes the text verbatim; it landed first
+  time. A heredoc is for backslash-free text only; this lesson's heading
+  is the search key, read it before the first patch of a session.
 See also: "Never put a Windows path inside a Python heredoc's string
 literal" (the same trap from the path side); tools/standup.py unwrap_paste.
 
