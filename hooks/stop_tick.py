@@ -336,8 +336,9 @@ def main():
         state[ws] = mine
         cp.save_hook_state(state)
         if level == "advised":
-            msg = ("[hook] CHECKPOINT ADVISED (%s) - finish the "
-                   "arc, then /checkpoint." % "; ".join(parts))
+            msg = ("[hook] CHECKPOINT DUE - DO IT (%s) - ship if mid-batch, "
+                   "then end the next reply with the checkpoint; an open arc "
+                   "is checkpointed as open." % "; ".join(parts))
             if note:
                 msg += "\n" + note
             emit({"systemMessage": msg})

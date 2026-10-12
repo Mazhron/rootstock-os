@@ -33,8 +33,11 @@ the skills operationalize).
 - **/checkpoint** - arc closer. Push, refresh the day file's WHERE WE LEFT
   OFF (both sides of the final exchange VERBATIM + state + next-likely;
   write the reply into the file, then send that exact text), reset the
-  task counter, emit the safe-to-clear marker. Refuses mid-arc, with
-  uncommitted work, or with a running employee.
+  task counter, emit the safe-to-clear marker. Ships first if mid-batch;
+  only a running employee waits. Runs unasked at the end of any reply a
+  hook marked CHECKPOINT DUE, and of every reply after the 80% context
+  line until the /clear + standup (Mazhron 2026-10-12, THE DUE LINE); an
+  open arc is checkpointed as open.
 - **/ship** - batch shipper. Player-readable commit, push, build zips
   (never deleting old ones), counter tick. Runs after every completed
   batch, unprompted.

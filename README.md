@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.44** (2026-10-06). The graft log `UPGRADES.md` is the
+Kit version: **v1.45** (2026-10-12). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -467,7 +467,11 @@ because context lives in files, not in the conversation.
   changed the tree or the commit (a pure question never ticks) and warns
   at 8 tasks (dire at 15: the Stop hook then refuses to end the turn
   once) or when less than 80% of the context budget
-  remains (urgent under 30%); ADVISED MEANS DO IT, so the owner never has to ask - and since
+  remains (urgent under 30%); ADVISED MEANS DO IT, so the owner never has to ask - since
+  v1.45 THE DUE LINE: both hooks print CHECKPOINT DUE - DO IT, the
+  context line on every prompt past 80%, and each such reply ends with
+  the checkpoint, an open arc checkpointed as open, until the /clear and
+  the standup; "if the arc is closed" is no longer an escape - and since
   v1.31 THE HOOK LAW: every line a hook prints that names work (a
   checkpoint, a lesson, a kit sync, a changelog export) is an order the
   manager carries out inside that reply, worded as such, never a note

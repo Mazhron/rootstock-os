@@ -17,7 +17,7 @@ Usage:
   python tools/checkpoint.py --status   # just look
   python tools/checkpoint.py --reset    # checkpoint done - count to zero
 
-Thresholds: >=8 CHECKPOINT ADVISED; >=15 CHECKPOINT URGENT (dire).
+Thresholds: >=8 CHECKPOINT DUE - DO IT; >=15 CHECKPOINT URGENT (dire).
 
 THE CONTEXT GAUGE (the CEO's rule 2026-09-04: "regardless of the tasks
 3/8, 5/8, if the remaining % before auto compact hits 80% remaining,
@@ -183,7 +183,7 @@ def report_context():
         print("Auto-compact is close. Checkpoint + /clear NOW - a compact is")
         print("a lossy summary; the day file + standup are lossless.")
     elif remaining < 0.80:
-        print("~~ CHECKPOINT ADVISED (CONTEXT: %d%% remaining; the CEO's "
+        print("~~ CHECKPOINT DUE - DO IT (CONTEXT: %d%% remaining; the CEO's "
               "80%% rule) ~~" % round(remaining * 100))
         print(line)
         print("Suggest checkpoint + /clear at the next arc boundary - every")
@@ -199,7 +199,7 @@ def report(n):
         print("Manager: push, refresh the day file's WHERE WE LEFT OFF, run --reset,")
         print("and emit the checkpoint marker BEFORE taking new work.")
     elif n >= 8:
-        print("~~ CHECKPOINT ADVISED (%d tasks since last checkpoint) ~~" % n)
+        print("~~ CHECKPOINT DUE - DO IT (%d tasks since last checkpoint) ~~" % n)
         print("Finish the current arc, then checkpoint (push + day file + marker).")
     else:
         print("checkpoint counter: %d task(s) since last checkpoint (warns at 8, dire at 15)" % n)

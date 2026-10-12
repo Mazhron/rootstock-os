@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-06 11:23 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 | stale 17
+Updated 2026-10-12 11:27 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 | stale 21
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -41,7 +41,7 @@ Updated 2026-10-06 11:23 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
+| HOOKS_METHOD.md | GREEN | STALE | fable | 2026-10-06 11:21 |
 | INTENT_METHOD.md | GREEN | STALE | sonnet-flag1 | 2026-09-14 00:58 |
 | LESSONS.md | GREEN | STALE | fable | 2026-09-20 03:21 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
@@ -64,18 +64,18 @@ Updated 2026-10-06 11:23 | items 78 | GREEN 74 | YELLOW 0 | RED 0 | unflagged 4 
 | hooks/lesson_advisor.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | STALE | fable-ws1 | 2026-09-20 17:37 |
-| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-09-30 11:57 |
+| hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-09-30 11:57 |
 | hooks/session_end.py | - | UNFLAGGED | - | - |
 | hooks/session_start.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
-| hooks/stop_tick.py | GREEN | ok | fable | 2026-09-29 00:24 |
+| hooks/stop_tick.py | GREEN | STALE | fable | 2026-09-29 00:24 |
 | hooks/verify_advisor.py | - | UNFLAGGED | - | - |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | - | UNFLAGGED | - | - |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/check_claude_md.py | GREEN | STALE | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/check_wiki_links.py | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:37 |
-| reference tools/checkpoint.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
+| reference tools/checkpoint.py | GREEN | STALE | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/correction_log.py | GREEN | STALE | fable | 2026-09-20 03:21 |

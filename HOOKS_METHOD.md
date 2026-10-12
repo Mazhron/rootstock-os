@@ -91,9 +91,17 @@ TIER 1 - the resumption + checkpoint loop:
    "If a checkpoint is advised, you should do it. That way a user
    doesn't need to ask you to checkpoint, they can simply clear"): an
    ADVISED line from either hook is an instruction, not a suggestion -
-   the manager runs the checkpoint ritual at the end of that reply if
-   the arc is closed and the tree is committed, and the CEO just
-   /clears. Mid-arc: finish the step, ship, then checkpoint. THE HOOK
+   the manager runs the checkpoint ritual at the end of that reply, and
+   the CEO just /clears. THE DUE LINE (kit v1.45, the origin CEO
+   2026-10-12: "change this hook from advising a checkpoint to DO the
+   checkpoint. Unless doing a checkpoint costs some unreasonable amount
+   of tokens, it should just be done vs advising it. Any conversation
+   after should have a checkpoint happen until the clear/standup ritual
+   is complete"): both hooks print CHECKPOINT DUE - DO IT; the context
+   line fires on every prompt past 80% and every such reply ends with
+   the ritual, an open arc checkpointed as open; "if the arc is closed"
+   is no longer an escape. Mid-batch: ship the step, then checkpoint in
+   the same reply; only a running employee waits. THE HOOK
    LAW (kit v1.31, the origin CEO 2026-09-28, after a warn-only line was
    relayed to him three replies running: "A Warning from the hook means
    do it, not relay the message for the user to do"): the rule covers

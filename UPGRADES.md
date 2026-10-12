@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.44** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.45** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1706,3 +1706,35 @@ README: "What loads every session" (the rules row), "The receipts", "1.
 The Knowledge Wiki", "2. The Reporting Discipline", "3. The Delegation
 Company", "4. Lossless Sessions", "The hooks", "The format law",
 "Quick start", "Updating an installed project", "What is in the box".
+
+### v1.45 - 2026-10-12 - The due line: the checkpoint hooks order, they no longer advise
+WHAT: The origin CEO, after the gauge had said ADVISED through a long
+afternoon and the manager had kept shipping: "we should change this hook
+from advising a checkpoint to DO the checkpoint. Unless doing a
+checkpoint costs some unreasonable amount of tokens, it should just be
+done vs advising it. Any conversation after should have a checkpoint
+happen until the clear/standup ritual is complete." A checkpoint is a
+few thousand tokens; the "if the arc is closed" clause in the old line
+was the escape every skipped checkpoint had used. Now prompt_gauge.py
+and stop_tick.py print CHECKPOINT DUE - DO IT (the counter at 8 tasks,
+the context line under 80%), the context line fires on EVERY prompt past
+the threshold and each such reply ends with the ritual, an open arc is
+checkpointed as open (WHERE WE LEFT OFF names the step mid-way), the step
+ships first when mid-batch, and only a running employee waits. The
+checkpoint skill, HOOKS_METHOD's Tier 1 text, the laws stub, the session
+workflow and the shelf say the same; both hooks' selftests check the new
+wording.
+CARRIES: hooks/prompt_gauge.py (gauge_lines, the docstring, two selftest
+rows); hooks/stop_tick.py (the systemMessage at "advised"); the origin
+project's tools/checkpoint.py (the by-hand gauge, same words);
+skills/checkpoint/SKILL.md (THE DUE LINE paragraph, the context gauge
+paragraph); HOOKS_METHOD.md (Tier 1, THE DUE LINE); LESSONS.md ("If the
+hook says checkpoint advised", the RULING bullet); SKILLS.md (the
+/checkpoint shelf entry); this entry.
+GRAFT: replace your hooks/prompt_gauge.py and hooks/stop_tick.py with the
+kit's (both are whole-file hooks; re-run `--selftest` on each), then
+re-read the checkpoint skill's THE DUE LINE paragraph and apply it to
+your copy; no settings change, no new file. If your manager still treats
+a checkpoint line as advice, the words were the bug.
+README: "4. Lossless Sessions" (the checkpoint sentence), "The hooks"
+(prompt_gauge and stop_tick rows), "Kit version:".

@@ -14,10 +14,16 @@ INTENT: Mazhron's ruling 2026-09-10, ADVISED MEANS DO IT: the owner never
   unprompted.
 
 ADVISED MEANS DO IT (the owner's ruling 2026-09-10): when the prompt
-gauge or the Stop hook says CHECKPOINT ADVISED, run this sequence at the
-END OF THAT REPLY, unprompted - the owner never has to ask, they simply
-/clear afterwards. Mid-arc: finish the current step, ship it, then
-checkpoint before taking new work.
+gauge or the Stop hook says CHECKPOINT DUE (formerly ADVISED), run this
+sequence at the END OF THAT REPLY, unprompted - the owner never has to
+ask, they simply /clear afterwards. THE DUE LINE (the owner 2026-10-12:
+"change this hook from advising a checkpoint to DO the checkpoint ...
+Any conversation after should have a checkpoint happen until the
+clear/standup ritual is complete"): past the 80% context line the hook
+prints DUE on every prompt, and every one of those replies ends with
+this sequence; an open arc is checkpointed AS OPEN (WHERE WE LEFT OFF
+names the step mid-way). Mid-batch: ship the step first, then checkpoint
+in the same reply. Only a running employee waits.
 
 PRECONDITIONS (refuse and say why if any fail):
 - No employee (sub-agent) running.
@@ -66,8 +72,8 @@ once and the prompt hook repeats the line) verbatim.
 THE CONTEXT GAUGE (Mazhron's 80% rule, 2026-09-04): every tick/status
 also prints the live context load, probed from the harness transcript.
 REGARDLESS of the task count, once less than 80% of the auto-compact
-budget remains, CHECKPOINT at the end of the current reply if the arc
-is closed (ADVISED MEANS DO IT); under 30% remaining, treat it as
+budget remains, CHECKPOINT at the end of the current reply and of every
+reply after it until the /clear (THE DUE LINE); under 30% remaining, treat it as
 URGENT and checkpoint before taking new work. Auto-compact is a lossy summary - the day file + standup are
 lossless, so clearing early is always the cheaper path. Relay the
 gauge line and its warnings verbatim, like the task warnings.

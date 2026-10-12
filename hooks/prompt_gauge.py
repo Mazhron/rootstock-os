@@ -36,8 +36,10 @@ Answers `--selftest` (house pattern: PASS/FAIL lines on the pure line
 builder, never stdin or a real prompt).
 
 PURPOSE: UserPromptSubmit hook that stays silent on a normal turn and, when
-  a threshold is crossed, prints the checkpoint counter warning (8 tasks
-  advised, 15 dire) and the context-remaining warning, plus since 2026-09-13
+  a threshold is crossed, prints the checkpoint counter line (8 tasks DUE,
+  15 dire) and the context-remaining line (DUE under 80%, on EVERY prompt
+  until the /clear - the CEO 2026-10-12: the hook orders the checkpoint, it
+  does not advise one), plus since 2026-09-13
   a KIT UNSYNCED line when a portable original is newer than its kit copy,
   and since 2026-09-20 the LESSONS line naming the LESSONS.md entries whose
   Keys match the prompt, so the one right way is read before the first tool call,
@@ -70,9 +72,9 @@ def gauge_lines(n, load_):
         lines.append("!!!!! CHECKPOINT URGENT (%d tasks since last checkpoint) - "
                      "checkpoint before taking new work !!!!!" % n)
     elif n >= 8:
-        lines.append("~~ CHECKPOINT ADVISED (%d tasks since last checkpoint) - "
-                     "ADVISED MEANS DO IT: checkpoint at the end of this reply if "
-                     "the arc is closed ~~" % n)
+        lines.append("~~ CHECKPOINT DUE (%d tasks since last checkpoint) - DO IT: "
+                     "ship if mid-batch, then end this reply with the checkpoint; "
+                     "an open arc is checkpointed as open ~~" % n)
     if load_ is not None:
         remaining = max(0.0, 1.0 - load_ / float(cp.COMPACT_BUDGET))
         pct = round(remaining * 100)
@@ -81,10 +83,16 @@ def gauge_lines(n, load_):
                          "used) - checkpoint + /clear NOW; auto-compact is lossy "
                          "!!!!!" % (pct, load_ // 1000))
         elif remaining < 0.80:
-            lines.append("~~ CHECKPOINT ADVISED (CONTEXT: %d%% remaining, ~%dk "
-                         "used; the CEO's 80%% rule) - ADVISED MEANS DO IT: checkpoint "
-                         "at the end of this reply if the arc is closed, so the CEO "
-                         "can simply /clear ~~" % (pct, load_ // 1000))
+            # THE DUE LINE (the CEO 2026-10-12: "change this hook from
+            # advising a checkpoint to DO the checkpoint ... Any conversation
+            # after should have a checkpoint happen until the clear/standup
+            # ritual is complete"): this fires on EVERY prompt past the 80%
+            # line, and every one of those replies ends with a checkpoint.
+            lines.append("~~ CHECKPOINT DUE (CONTEXT: %d%% remaining, ~%dk used; "
+                         "the CEO's 80%% rule) - DO IT: ship if mid-batch, then end "
+                         "this reply with the checkpoint, and every reply after it "
+                         "until the /clear + standup; an open arc is checkpointed "
+                         "as open ~~" % (pct, load_ // 1000))
     return lines
 
 
@@ -157,8 +165,8 @@ def _selftest():
     ok = gauge_lines(0, None) == []
     print(("PASS  " if ok else "FAIL  ") + "n=0, no context load gives no lines")
     fails += not ok
-    ok = any("ADVISED" in x for x in gauge_lines(8, None))
-    print(("PASS  " if ok else "FAIL  ") + "n=8 gives an ADVISED line")
+    ok = any("DUE" in x and "DO IT" in x for x in gauge_lines(8, None))
+    print(("PASS  " if ok else "FAIL  ") + "n=8 gives a DUE line")
     fails += not ok
     ok = any("URGENT" in x for x in gauge_lines(15, None))
     print(("PASS  " if ok else "FAIL  ") + "n=15 gives an URGENT line")
@@ -168,8 +176,9 @@ def _selftest():
     print(("PASS  " if ok else "FAIL  ") + "under 30% remaining gives CONTEXT URGENT")
     fails += not ok
     advised_load = int(cp.COMPACT_BUDGET * 0.50)  # 50% remaining, 30-80%
-    ok = any("CONTEXT" in x and "ADVISED" in x for x in gauge_lines(0, advised_load))
-    print(("PASS  " if ok else "FAIL  ") + "30-80% remaining gives CONTEXT ADVISED")
+    ok = any("CONTEXT" in x and "DUE" in x and "every reply after" in x
+             for x in gauge_lines(0, advised_load))
+    print(("PASS  " if ok else "FAIL  ") + "30-80% remaining gives CONTEXT DUE, every reply")
     fails += not ok
     try:
         import lesson_log as _ll

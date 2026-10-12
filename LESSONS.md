@@ -1028,6 +1028,13 @@ part of the reply, never a substitute for the step. Mazhron then simply
 - NUANCE: mid-arc (uncommitted work, an employee running) the checkpoint
   waits for the step to ship - but the reply says so in one line and
   names when it will run, so the advice is answered, not dropped.
+- RULING (2026-10-12, Mazhron): "change this hook from advising a
+  checkpoint to DO the checkpoint ... Any conversation after should have
+  a checkpoint happen until the clear/standup ritual is complete." The
+  line is CHECKPOINT DUE - DO IT now, it fires on every prompt past the
+  80% line, and "if the arc is closed" is gone: an open arc is
+  checkpointed as open, the step ships first when mid-batch. A checkpoint
+  is a few thousand tokens; the ask was the cost he would not pay again.
 - TRIED (2026-09-28 afternoon, the same day): the Stop hook printed
   CHANGELOG UNEXPORTED after three docs-only commits; the replies
   relayed the line and ended, three times, until Mazhron asked "Why am I
