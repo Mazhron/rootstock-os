@@ -279,7 +279,7 @@ something"; HOOKS_METHOD.md Tier 2d.
 
 ## Cut and wire new art from a sheet
 Tags: lessons, art | Montage the slices and look at the picture before wiring a single species; some sheets interleave stages and a bad grid is only visible as an image
-Keys: slice, sheet, sprite, art, cut, wire art, montage, growth stages, sprites, spritesheet, animal art, plant art, resolution, lower resolution, pixelated, blurry, art_scale, chunky
+Keys: slice, sheet, sprite, art, cut, wire art, montage, growth stages, sprites, spritesheet, animal art, plant art, resolution, lower resolution, pixelated, blurry, art_scale, chunky, grainy, grain, graininess, grain scan, size table, size category, sprout size, young-stage floor
 
 THE ONE RIGHT WAY: slice, then build one montage of every cut cell and
 read it as an image, then wire. A grid cut that looks right in numbers
@@ -341,6 +341,21 @@ category it sits beside.
   mature_px / sprout_px over the category tiers), the cut only carries
   pixels; duckweed's "absolutely huge" baby pad was the sheet's
   proportion, fixed by sprout_px 8, not by a re-cut.
+- NUANCE (2026-10-12 afternoon, "run the same graininess scan, fix and
+  changes for flowers, bushes and trees"): the same-hour read above was
+  still a hand read, and flowers, bushes and trees had been left on the
+  single factor for three weeks (every flower sprout 21 to 39 px on disk,
+  blown to 16). Now ONE floor covers all five categories (MIN_STAGE_CUT_H,
+  one helper `floored_scales` in every cutter), and the read is the
+  script tools/grain_scan.py in run_all's check group: it replays the
+  game's ladder from the png headers and scales.txt and fails any stage
+  grainier than the grainiest mature plant (THE GRAIN LINE) or cut under
+  the floor; a WARN is a [DO] proposal at the standup. THE SIZE TABLE
+  (`grain_scan.py --table`, art-pipeline.md "THE SIZE TABLE") is the one
+  place the measurement sizes live, so a new plant of any category is cut
+  and wired to its row. DO: a grain report is answered with the scan's
+  line, never a hand read; a new category or sheet format is added to the
+  floor table and the scan the day it is cut.
 - NUANCE (2026-09-26, the flair sheets): joining the PARTS of one decal
   (a flower head above its stem) is a PIXEL-distance question, never a
   bounding-box one. Merging boxes that overlap or sit near each other

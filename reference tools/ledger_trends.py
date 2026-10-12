@@ -187,9 +187,11 @@ ACTION = {
     "digest_size.txt": "DO",          # the loss test (INTENT.md "The digest diet"), then measure
     "loop_runs.txt": "DO",            # run the group, fix the wiring
     "lesson_runs.txt": "DO",          # write the entry or tune the signal
+    "grain_scan_runs.txt": "DO",      # the floor on the category, re-cut, --import, montage (THE GRAIN SCAN, 2026-10-12)
 }
 CLEARS = {"systems_audit_runs.txt", "readme_audit_runs.txt", "digest_size.txt",
-          "loop_runs.txt", "wiki_link_runs.txt", "lesson_runs.txt", "intent_log.txt"}
+          "loop_runs.txt", "wiki_link_runs.txt", "lesson_runs.txt", "intent_log.txt",
+          "grain_scan_runs.txt"}
 HOW = {
     "systems_audit_runs.txt": "WORKFLOWS.md 'Audit the operating system': four read-only "
                               "employees (the /brief skill), then `python tools/systems_audit.py --record`",
@@ -201,6 +203,9 @@ HOW = {
     "wiki_link_runs.txt": "fix the targets listed in docs/history/wiki_links.txt",
     "lesson_runs.txt": "write the LESSONS.md entry (the /lesson shape) or tune tools/lesson_log.py",
     "intent_log.txt": "`python tools/intent_log.py --resolve <id> ...` for each stale claim",
+    "grain_scan_runs.txt": "WORKFLOWS.md 'Scan the plant art for grain': the category in MIN_STAGE_CUT_H, "
+                           "`python tools/extract_gemini_sheets.py --only <category>`, the montage, "
+                           "--import, `python tools/grain_scan.py` green",
 }
 _LEDGER_RE = re.compile(r"^PROPOSE \(([^)]+)\)")
 
@@ -462,6 +467,18 @@ def proposals(th=None):
                    "gained no entry - either the signals are noise (tune tools/lesson_log.py) "
                    "or the lesson law is being skipped; read the ADVISED lines and decide."
                    % advised)
+    # 15. grain_scan_runs.txt (THE GRAIN SCAN, 2026-10-12): a sliced stage reaches
+    # the screen grainier than the grainiest mature plant (BLOWN) or was cut
+    # under the category's floor (UNDER); the fix is scripted, so it is a DO.
+    grain = data_lines("grain_scan_runs.txt")
+    if grain:
+        m = re.search(r"blown (\d+) \| under (\d+)", grain[-1])
+        if m and (int(m.group(1)) or int(m.group(2))):
+            out.append("PROPOSE (grain_scan_runs.txt): %s blown and %s under-floor stage(s) in the "
+                       "sliced plant art (docs/history/grain_scan.txt names them) - the floor on "
+                       "the category, `extract_gemini_sheets.py --only <category>`, the montage, "
+                       "--import, the scan green (WORKFLOWS 'Scan the plant art for grain')."
+                       % (m.group(1), m.group(2)))
     return out
 
 

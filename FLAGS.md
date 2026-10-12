@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-12 11:48 | items 78 | GREEN 75 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
+Updated 2026-10-12 13:01 | items 78 | GREEN 75 | YELLOW 3 | RED 0 | unflagged 0 | stale 3
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -43,7 +43,7 @@ Updated 2026-10-12 11:48 | items 78 | GREEN 75 | YELLOW 3 | RED 0 | unflagged 0 
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
+| LESSONS.md | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:47 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
@@ -86,7 +86,7 @@ Updated 2026-10-12 11:48 | items 78 | GREEN 75 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
-| reference tools/ledger_trends.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
+| reference tools/ledger_trends.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
@@ -96,7 +96,7 @@ Updated 2026-10-12 11:48 | items 78 | GREEN 75 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
-| reference tools/run_all.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
+| reference tools/run_all.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/standup.py | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
