@@ -329,6 +329,18 @@ category it sits beside.
   EVERWOOD_ART_DUMP="<ids>"`), which shows what the player sees, not the
   files. A stage that renders below the floor is a cut problem first,
   a filter problem never.
+- NUANCE (2026-10-12, eight small plants "grainy" / "incredibly grainy"):
+  the floor was added for ONE category and the others were left "until
+  Mazhron's look"; six days later he named eight of them. A cut rule is a
+  rule for EVERY category that shares the slicer (MIN_STAGE_CUT_H now
+  lists plants too, and the three-row path learned it). DO: when a fix
+  lands for one category, read the sizes of every other category's
+  sprouts the same hour (ladder_dump: png heights x art_scale / factor)
+  and re-cut whichever sits under the floor, never wait for the report.
+  Also: a sprite's ON-SCREEN size is a species question (SpeciesData
+  mature_px / sprout_px over the category tiers), the cut only carries
+  pixels; duckweed's "absolutely huge" baby pad was the sheet's
+  proportion, fixed by sprout_px 8, not by a re-cut.
 - NUANCE (2026-09-26, the flair sheets): joining the PARTS of one decal
   (a flower head above its stem) is a PIXEL-distance question, never a
   bounding-box one. Merging boxes that overlap or sit near each other
