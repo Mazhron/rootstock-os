@@ -178,12 +178,13 @@ PROCESS (workflows, skills, hooks, what got done by hand instead of by
 script), KNOWLEDGE (the wiki, the ledgers, what a new data structure would
 capture), and FEATURES (what shipped since the last audit, and whether any
 of it should have been a script, a hook, a data file, or a cheaper model).
-Every lane returns PROPOSALS only - nothing is applied by the audit itself,
-ever; the owner decides what, if anything, changes. A finished audit is
+Every lane returns PROPOSALS, each tagged [DO] (a script, a hook or an
+employee carries it, so the manager does it in the reply that reads it)
+or [ASK] (only the owner can answer; the proposal law, 2026-09-29). A finished audit is
 ledgered (`--record`), and a trend-watching script proposes the NEXT audit
 once enough day files or enough elapsed time has piled up since the last
-one - the audit is on a cadence, not a whim, but the cadence only proposes,
-it never fires the audit unasked.
+one - the audit is on a cadence, not a whim, but the cadence proposes the audit as a
+[DO], and the manager runs it in the reply whose standup proposed it.
 
 ## The loop law: a repeatable script is called by the loop, never by hand
 Tags: intent, process, lessons | The first systems audit's headline: ledgers drift when the parent loop is bypassed; the fix is wiring, not discipline
@@ -234,8 +235,9 @@ Tags: intent, process, lessons | The discipline in seven short rules, none of th
    before the fix ships, and it resolves its claim by itself.
 4. The report is a script living in the loop the project already runs -
    never a status a manager has to remember to compile by hand.
-5. Nothing is ever applied by a script in this method. The systems audit
-   proposes; the owner decides.
+5. A script measures and proposes; a [DO] proposal is carried out by the
+   manager in the reply that reads it, an [ASK] waits for the owner (the
+   proposal law, 2026-09-29).
 6. Growth is incremental. A ruling's intent is captured the day it is
    made, or the day a correction reveals it - never a backfill sweep.
 7. A missing INTENT.md section is not a gap to route around; it is the

@@ -127,7 +127,7 @@ index and move on.
 standup.py runs clean and prints the core's size; check_claude_md.py
 passes (the core under 200 lines and inside its token budget, every rule
 by path, the master index complete); the format lint passes and FLAGS.md
-flags every kit thing;
+flags every kit thing; every hook answers its `--selftest`;
 SUBAGENTS.md has one real ledger line; the skills answer to their slash
 commands; the first commit is in. From then on: every write grows the
 wiki, every repeatable action becomes a script, every result lands in a

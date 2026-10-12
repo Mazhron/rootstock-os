@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.45** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.46** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -41,8 +41,12 @@ to graft it onto a project's own files, whatever they are named there.
 3. For each entry, in order: read its GRAFT instructions, then apply the
    concept to the project's OWN files - additive edits in the project's
    own names, paths, and voice. NEVER copy a kit file over an existing
-   project file. A file the project does not have at all (a genuinely new
-   MD or reference script) may be copied fresh, then adapted and indexed.
+   project file. Two exceptions: a file the project does not have at all
+   (a genuinely new MD or reference script) may be copied fresh, then
+   adapted and indexed; and a hook or reference script the project took
+   unadapted (its CONFIG block aside) is replaced whole, its CONFIG block
+   re-applied and its `--selftest` re-run, as every whole-file hook graft
+   below has always said (written here in v1.46).
 4. If a graft contradicts something the CEO customized on purpose, THE
    CONTRADICTION RULE applies: flag it, ask, never silently overwrite
    their choice with ours.
@@ -1738,3 +1742,58 @@ your copy; no settings change, no new file. If your manager still treats
 a checkpoint line as advice, the words were the bug.
 README: "4. Lossless Sessions" (the checkpoint sentence), "The hooks"
 (prompt_gauge and stop_tick rows), "Kit version:".
+
+### v1.46 - 2026-10-12 - The sixth README audit: the due line's echoes, three upstream slips, the never-copy rule's second exception
+WHAT: The audit's four read-only lanes (T-1012-RA-1..4) ran the day v1.45
+shipped and found its echoes first: the README's hook rows never said
+CHECKPOINT DUE, its checkpoint bullet still said the ritual "refuses with
+an employee running or work uncommitted", and the checkpoint skill's own
+PRECONDITIONS still read "No uncommitted work; never checkpoint mid-arc"
+two paragraphs under THE DUE LINE that says the opposite (the one wait is
+a running employee; uncommitted work ships first, in the same reply; an
+open arc is checkpointed as open). Two more slips lived upstream:
+INTENT_METHOD's systems-audit paragraph and its law 5 still said "nothing
+is applied by the audit itself, ever; the owner decides", which the
+proposal law's [DO]/[ASK] split (2026-09-29) superseded, the same slip
+v1.44 fixed in WIKI_METHOD; and the front door's DEFINITION OF DONE
+omitted the hook selftests the README listed. The graft protocol's
+never-copy rule had one exception (a genuinely new file) while every
+whole-file hook graft in this log says "replace it with the kit's": the
+practice is now written as the second exception (a hook or reference
+script taken unadapted, CONFIG block aside, is replaced whole, its CONFIG
+re-applied, its selftest re-run). README slips beside those: the
+employee's closing stamp described as "a second line" (it is four: STAMP,
+TOOLS, WORKFLOW, INTENT); the ~46% writes share called "an earlier
+window" (it is the same 50-day window at the one-hour rate; the method's
+43/40/17 are the sheet's five-minute pillar shares); the manager's-tier
+rule framed as an optional owner's choice; the front door's size (~2k
+tokens, not 1.8k); the domain notes' home; the checkpoint counter
+"never ticked by hand" (true only with the hooks). Thirty-eight edits in
+all, among them the always-loaded auto-memory row in both what-loads
+tables, the fan-out guard's numbers, the 70% self-count floor, THE HOOK
+LAW in the hooks contract with its five line names, the brief guard's
+exempt agent types, the intent toolchain's script names, the kit repo's
+address, the install stamp and the counter reset in their rituals, the
+skills' plain-phrase triggers and the shipped rule's `paths:` value. Five
+CLAIMS rows keep the slips from recurring. The audit's own lesson: all
+four lanes lost their first turn to a kit path the brief gave from memory
+(one folder off); the audit workflow now names the lint's KIT_REPO as
+the source of that path, verified with `ls` before the dispatch.
+CARRIES: skills/checkpoint/SKILL.md (PRECONDITIONS); INTENT_METHOD.md
+("The systems audit" lane paragraph and law 5); 0 - READ ME FIRST.md
+(DEFINITION OF DONE); this file (THE GRAFT PROTOCOL step 3); the origin
+project's tools/readme_lint.py (five CLAIMS rows, two patterns re-anchored)
+and WORKFLOWS.md (the audit entry's path line); this entry.
+GRAFT: if your checkpoint skill still refuses on uncommitted work, make
+the running employee its only wait and ship the step first; if your
+intent method still says the systems audit only proposes, adopt the
+[DO]/[ASK] tags; add every hook's selftest to your definition of done;
+when a graft tells you to replace a hook whole, that is the protocol's
+second exception, not a breach of never-copy. No hook, no settings
+change, no new file.
+README: "What loads every session" (the auto-memory row), "The receipts"
+(the weighted window), "1. The Knowledge Wiki", "2. The Reporting
+Discipline", "3. The Delegation Company", "4. Lossless Sessions", "The
+hooks", "The intent loop", "The format law", "What it saves", "Quick
+start", "Updating an installed project", "What is in the box", "Kit
+version:".

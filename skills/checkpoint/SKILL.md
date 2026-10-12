@@ -25,9 +25,10 @@ this sequence; an open arc is checkpointed AS OPEN (WHERE WE LEFT OFF
 names the step mid-way). Mid-batch: ship the step first, then checkpoint
 in the same reply. Only a running employee waits.
 
-PRECONDITIONS (refuse and say why if any fail):
-- No employee (sub-agent) running.
-- No uncommitted work; never checkpoint mid-arc.
+PRECONDITIONS (the one wait):
+- No employee (sub-agent) running. Uncommitted work is not a refusal:
+  ship it first, then checkpoint in the same reply; an open arc is
+  checkpointed as open (THE DUE LINE above).
 
 SEQUENCE
 0. Close the loop (THE LOOP LAW, 2026-09-14): `python tools/run_all.py

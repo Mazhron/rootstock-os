@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.45** (2026-10-12). The graft log `UPGRADES.md` is the
+Kit version: **v1.46** (2026-10-12). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -27,20 +27,23 @@ instructions, method files and reference scripts, read ONCE by the Claude
 doing the install; none of it is a CLAUDE.md and none of it loads into a
 session's context.
 
-| What | When it loads | Size (origin project, 2026-09-14) |
+| What | When it loads | Size (origin project; as of 2026-09-14, the digest row 2026-09-29) |
 |---|---|---|
 | CLAUDE.md, the pointer core | Every session, automatically | ~900 tokens, 68 lines |
 | A path-scoped rule (`.claude/rules/*.md`) | Only while Claude reads a matching file | a few hundred tokens each |
+| The harness auto-memory index (`MEMORY.md`) | Every session, automatically; its bodies on demand | one line per memory |
 | The standup digest | Once, at session start / after /clear | ~2.5k-3.5k tokens (was ~4.3k before the digest diet: only verdicts, moved ledgers and the last exchange print in full; four loss-test trims since, the last on 2026-09-29) |
 | The master index / wiki (47 files) | NEVER whole. A section at a time, on demand | ~289k tokens on disk, ~0 by default |
-| The front door `0 - READ ME FIRST.md` | Once, at install | ~1.8k tokens |
+| The front door `0 - READ ME FIRST.md` | Once, at install | ~2k tokens |
 
 Knowledge has three homes, by WHEN it is needed:
 
 - **ALWAYS.** CLAUDE.md itself: the pointer core.
 - **WHEN A MATCHING FILE IS READ.** A `.claude/rules/*.md` file with a
   `paths:` front matter field, loaded by Claude Code itself, not by a hook
-  or a Read call.
+  or a Read call. The kit ships one, `rules/wiki.md`, scoped
+  `paths: ["**/*.md"]`: it loads on any markdown read and carries the
+  rule that a feature's rulings live in that feature's topic file.
 - **ON DEMAND.** `docs/index/MASTER_INDEX.md`, the one door: every topic
   file, root file, sub-index, law stub, rule and knowledge file, one line
   each, every destination listed directly.
@@ -91,10 +94,11 @@ The natural objection: more files means more to read, so the context gets
 fat and token-hungry. It would, if the files loaded. They do not. Almost
 nothing in Rootstock rides in the context by default:
 
-| What | When it enters context | Size (origin project, 2026-09-14) |
+| What | When it enters context | Size (origin project; as of 2026-09-14, the digest row 2026-09-29) |
 |---|---|---|
 | CLAUDE.md, the pointer core | Every session, automatically | ~900 tokens, 68 lines (was ~3.5k that same morning, ~10k before the core diet) |
 | A path-scoped rule (`.claude/rules/*.md`) | Only while Claude reads a matching file | a few hundred tokens each |
+| The harness auto-memory index (`MEMORY.md`) | Every session, automatically; its bodies on demand | one line per memory |
 | The standup digest | Once, at session start / after /clear | ~2.5k-3.5k tokens (was ~4.3k before the digest diet: only verdicts, moved ledgers and the last exchange print in full; four loss-test trims since, the last on 2026-09-29) |
 | The wiki (47 files) | NEVER whole. A section at a time, on demand | ~289k tokens ON DISK; ~0 in context |
 | Skills | Only the one invoked, when invoked | a few hundred tokens each |
@@ -144,7 +148,7 @@ behind as its stub - reversible with `--restore`.
 
 The honest line: the origin's own core had drifted to ~10k tokens before
 any of this existed, then to ~3.5k after the first fix. The mechanism took
-two rulings the same day: the CEO (the project's owner: you) first ordered the token-budgeted diet,
+two rulings the same day: the CEO (the origin project's owner) first ordered the token-budgeted diet,
 then asked whether CLAUDE.md should simply point to everything else. A
 read of Anthropic's own memory page settled the mechanics, and the second
 ruling followed: a pointer core, a single master index, and rules that
@@ -181,7 +185,7 @@ And the before/after, same model, same project, from the sheet:
   days averaged ~267k per request - a 69% cut against that peak - while
   Sep 3 did three times the requests of an Aug 26-27 day.
 
-### The weighted receipts (the same window six days on: 50 days, 2026-09-10)
+### The weighted receipts (the same machine, 50 days to 2026-09-10)
 
 Raw token counts flatter the wrong column. What counts against a plan is
 WEIGHTED: input x1, cache write x1.25 (x2 on a one-hour cache), cache read
@@ -196,8 +200,9 @@ what the raw column suggests:
   edits, thinking) 13%. Fresh input rounds to zero. The shares stop at
   ~83% because this machine ran the one-hour cache, whose doubled write
   price is the rest: counted at its true rate, writes were the largest
-  pillar at ~46%, which is the method file's finding (writes first, reads
-  second) from its earlier window.
+  pillar at ~46%. The method file reports the same 50-day window as the
+  sheet's pillar shares at the five-minute write rate (writes 43%, reads
+  40%, output 17%): the same ordering, writes first, reads second.
 - Prefix REWRITES nobody chose - a cache that expired, a core file edited
   mid-session - were 24% of the all-time budget. They are now counted per
   day, because a waste with a name gets fixed.
@@ -259,7 +264,8 @@ that make it work:
 - **Size before you read (the 10k rule).** A whole-file read past ~10k
   tokens is section-read or handed to an employee; the diet guard refuses
   the first whole read of a big file (once per file per session) with the
-  file's own index attached, and warns on every later one. Editing that
+  file's own index attached, and warns on every later whole read of
+  that file. Editing that
   needs the exact text is the one fair exception: the same call repeated
   passes.
 - **The output diet.** Every emitted token costs five; every tool result
@@ -294,8 +300,8 @@ that make it work:
   ledger, never by memory: since v1.36 a named corrections pattern is a
   PATTERN row in the corrections ledger, and the proposal stays quiet
   until a new correction lands.
-- **The lessons book (the lesson loop).** Steps live in the process
-  registry; judgment lives in LESSONS.md: one entry per task shape, THE
+- **The lessons book (the lesson loop).** Steps live in WORKFLOWS.md
+  (the process registry); judgment lives in LESSONS.md: one entry per task shape, THE
   ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, then
   nuance lines as they accumulate. The prompt hook names the entry to
   read before the first tool call, and since v1.33 the ROUTE line beside
@@ -355,11 +361,21 @@ Anything repeatable becomes a SCRIPT; every result lands in a LEDGER.
   skim is a sheet nobody reviews, and numbers nobody reviews change
   nothing. When the spreadsheet library is missing the run still writes
   the CSV and TXT and says the .xlsx was skipped; a ledger run never
-  crashes over formatting.
+  crashes over formatting. Its numbers are tokens, weighted and raw,
+  never dollars: the billing dashboard is the only dollar truth. Its numbers are tokens, weighted and raw,
+  never dollars: the billing dashboard is the only dollar truth.
 - **Trust the ledger.** A green test at an unchanged version is never
   re-run "for confidence"; the runner warns if you try. This one rides in
   the origin project's always-loaded core rather than in the method file:
   it is the ledger rule's flip side, read before every verification.
+- **The bootstrap is one sentence too.** Hand REPORTING_METHOD.md to any
+  Claude and say "set this up": the runner is created the day the first
+  repeatable thing exists (one test is enough), the ledger and the runner
+  are committed together, and a brief for scripted work is one line.
+- **The bootstrap is one sentence too.** Hand REPORTING_METHOD.md to any
+  Claude and say "set this up": the runner is created the day the first
+  repeatable thing exists (one test is enough), the ledger and the runner
+  are committed together, and a brief for scripted work is one line.
 
 The usage sheet and its weighted column - the receipts sections earlier
 on this page - are the same discipline pointed at the AI bill itself,
@@ -389,25 +405,33 @@ asked at setup and revisited as models change - never assumed.
   multi-file refactors and gnarly bugs with a written plan; design,
   architecture, rulings, verification and pushes never leave the manager.
   Cheap employees run several at once for independent jobs, never two
-  writers on one file. And every dispatch names its model in the call:
-  a model-less one inherits the manager's own tier, the tier the owner's
-  standing rule keeps out of the employee pool (the fixed line below), so
-  the brief guard refuses it (v1.40).
+  writers on one file. And every Agent call sets its `model` field
+  explicitly: the brief guard refuses a call with no model (it would
+  silently inherit the manager's tier, which is never an employee) and
+  one that names that tier outright (v1.40).
 - Every brief is STAMPED by the manager (task, date, workstation, model),
-  SELF-CONTAINED, and carries a
-  budget line: exceed ~30 tool calls or fail the same step twice, and the
-  employee stops and reports instead of running up a bill. The report ends
-  with the employee's own closing stamp, a second line: model, effort,
-  tokens, confidence, the tools it used, the registry entry it matched (or
-  the gap it found) and one INTENT line saying what it understood the task
-  to be; the manager logs that line as a claim and resolves it once the
-  work is verified, and a reported gap is captured in the same batch. The brief also says how to spend turns (v1.43):
-  independent reads and checks go in one turn, never one per turn, since
-  every extra turn re-reads the employee's whole growing context.
+  SELF-CONTAINED, and carries a budget line: exceed ~30 tool calls or fail
+  the same step twice, and the employee stops and reports instead of
+  running up a bill.
+- The report ends with four closing lines: STAMP (model, effort,
+  est_tokens, task, confidence), TOOLS (every tool called, with counts),
+  WORKFLOW (the registry entry it matched, or the gap it found) and INTENT
+  (what it understood the task to be, in its own words). The manager logs
+  the INTENT line as a claim and resolves it once the work is verified,
+  and a reported gap is captured in the same batch.
+- The brief also says how to spend turns (v1.43): independent reads and
+  checks go in one turn, never one per turn, since every extra turn
+  re-reads the employee's whole growing context; only a step that needs
+  the previous result waits, and the auditor's metered tool count against
+  the turn count shows who obeys.
 - **How many at once.** A handful of employees per batch (four is the
   habit), never a burst, never an employee that spawns employees. A task
   that seems to need dozens is a design problem - split it, script it,
-  or ask the CEO - never a bigger fan-out. A harness hook refuses the runaway shapes outright and
+  or ask the CEO - never a bigger fan-out. A harness hook refuses the runaway shapes outright (more than 8
+  spawns in a minute machine-wide, 25 in ten minutes in one session, or
+  10M weighted tokens in two minutes, that last one refusing every tool
+  call until the window drains; warnings come first, at every 10 spawns,
+  every 10M tokens and past 3M velocity) and
   only the owner tunes its numbers, through `/runaway` (they live in a
   committed `.claude/fanout_limits.json` that survives a graft). A refusal
   is the owner's standing decision: the manager stops and reports what it
@@ -426,7 +450,9 @@ asked at setup and revisited as models change - never assumed.
   mechanical: a work brief missing its required lines is refused at
   dispatch; the moment a result lands, a hook reads the harness-metered
   figures (the numbers no model can fake), flags a zero-call "success"
-  or a tool count claimed at several times the meter, and appends one
+  or a tool count claimed at several times the meter (and, at the
+  employee's own stop, holds it once when its count is under 70% of the
+  meter, the floor owner-tuned), and appends one
   pending line per delegation; a Stop hook (its tag: LEDGER ADVISED) then refuses to end the turn
   while a delegation sits unverified and unledgered. What stays
   judgment - whether the diff matches the claims - stays audited
@@ -446,14 +472,12 @@ asked at setup and revisited as models change - never assumed.
   is promoted to a stronger model, with a dated line saying so. The
   assignment itself is the manager's (v1.37): any task type may drop a
   tier on trial without asking, and the rate moves it back up (a trial
-  is ledgered with "trial" in its line, so the rate counts it); the only
-  fixed line is the owner's choice for their project (in the origin
-  project the top model is never an employee, to save tokens). Catches -
+  is ledgered with "trial" in its line, so the rate counts it); the one
+  fixed line is that the manager's tier is never an employee (the origin
+  owner's standing rule, to save tokens; the brief guard enforces it). Catches -
   real problems an employee flagged that everyone else missed - are
   tallied too, the strongest signal a tier earns its keep. Models
   move on data, not impressions.
-
-The manager keeps design, laws, architecture, verification, and pushes.
 
 ### 4. Lossless Sessions (the rituals, packaged as skills)
 
@@ -467,11 +491,12 @@ because context lives in files, not in the conversation.
   changed the tree or the commit (a pure question never ticks) and warns
   at 8 tasks (dire at 15: the Stop hook then refuses to end the turn
   once) or when less than 80% of the context budget
-  remains (urgent under 30%); ADVISED MEANS DO IT, so the owner never has to ask - since
-  v1.45 THE DUE LINE: both hooks print CHECKPOINT DUE - DO IT, the
-  context line on every prompt past 80%, and each such reply ends with
-  the checkpoint, an open arc checkpointed as open, until the /clear and
-  the standup; "if the arc is closed" is no longer an escape - and since
+  remains (urgent under 30%). The owner never has to ask: since v1.45 THE
+  DUE LINE (formerly ADVISED MEANS DO IT) has both hooks print CHECKPOINT
+  DUE - DO IT, the context line fires on every prompt past 80%, and each
+  such reply ends with the checkpoint (an open arc is checkpointed as
+  open) until the /clear and the standup; "if the arc is closed" is no
+  longer an escape. Since
   v1.31 THE HOOK LAW: every line a hook prints that names work (a
   checkpoint, a lesson, a kit sync, a changelog export) is an order the
   manager carries out inside that reply, worded as such, never a note
@@ -487,8 +512,11 @@ because context lives in files, not in the conversation.
   trial and error or corrected (then it is a lesson, the lesson law);
   then pushes, refreshes the day file, and emits the marker:
   "CHECKPOINT - safe to /clear. Nothing in this chat exists only in this
-  chat." It refuses with an employee running or work uncommitted. A
-  checkpoint is where the method learns, not only where it saves.
+  chat." Only a running employee makes it wait; uncommitted work is
+  shipped first, in the same reply. The last step resets the counter
+  (`checkpoint.py --reset`, which also fingerprints the checkpoint commit
+  so it is not counted as a task). A checkpoint is where the method
+  learns, not only where it saves.
 - **The proposal law (v1.35).** A standup proposal is a source of the
   same kind as a named checkpoint: a reply that names a [DO] proposal
   its ledger still raises is refused once until the proposal is done
@@ -510,12 +538,15 @@ because context lives in files, not in the conversation.
 
 Nine rituals ship as Claude Code skills, invocable as slash commands:
 `/standup`, `/checkpoint`, `/ship`, `/brief`, `/runaway`, `/preserve`,
-`/intent`, `/correct`, and `/flag`. `/preserve` is the preservation law's
+`/intent`, `/correct`, and `/flag`. Most also fire on plain phrases ("that's
+wrong" runs `/correct`, "get rid of" runs `/preserve`), and `/ship`,
+`/checkpoint` and `/standup` run unprompted at their moments, so you
+rarely type them. `/preserve` is the preservation law's
 front (retire a file, shelve a wiki section, or walk the twice-acknowledged
 delete grant, in that order); `/flag` is the purpose audit (green, yellow
 or red, filed in FLAGS.md); `/intent` records the why of a ruling in the
-owner's words; `/correct` walks a correction, asks for the intent, then
-makes the fix and logs it;
+owner's words; `/correct` asks what was wrong, records your exact words first, asks
+the why, then fixes and logs the fix;
 `/runaway` shows and tunes the fan-out guard's numbers, owner only;
 `/brief` composes an employee's work order by the delegation laws. `/ship`
 is the one you will use most: sanity-check tests (trusting the ledger),
@@ -526,7 +557,8 @@ since the last bump; never major) and bump if warranted, commit with a
 player-readable subject, push, push again to the local mirror, run
 the build script without deleting old builds, sync the kit if kit files
 changed, and export the changelog unprompted; the checkpoint counter
-ticks itself and is never ticked by hand.
+ticks itself and is never ticked by hand on a machine with the hooks (a
+hookless machine ticks it with `checkpoint.py --tick`).
 
 ### The hooks: laws the harness enforces itself (HOOKS_METHOD.md)
 
@@ -536,9 +568,11 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
 
 - **Session start** (startup, resume, /clear and after a compaction)
   injects the standup digest by itself - after a /clear
-  the manager has everything back before anyone types a word. Two more
-  lines print when they apply: KIT UNSYNCED at the prompt (the kit copies
-  and the public mirror disagree) and CHANGELOG UNEXPORTED at the reply.
+  the manager has everything back before anyone types a word; once a day
+  it also runs the parent loop's session group. Two other hooks print
+  lines that name work when they apply: the prompt gauge prints KIT
+  UNSYNCED (the kit copies and the public mirror disagree) and the Stop
+  tick prints CHANGELOG UNEXPORTED.
 - **Every prompt** carries a silent context gauge that speaks only when a
   threshold is crossed, and since v1.33 the ROUTE line: the registry
   entries and reference tools the prompt already hits, named before the
@@ -546,7 +580,9 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
   against the worst five hours of the last seven days, spoken only when
   the window is already most of the peak and ledgered when it speaks;
   **every reply** ticks the checkpoint counter when
-  work actually happened, and refuses to end the turn once it is dire.
+  work actually happened. Both print CHECKPOINT DUE - DO IT at 8 tasks or
+  under 80% of the context budget (the context line on every prompt past
+  it), and refuse to end the turn once at 15 tasks or under 30%.
 - **Before compaction** a ledger line records what was at stake.
 - **Session end** is the checkpoint's net (v1.28): with nothing unbanked
   it writes one ledger line; with unbanked work it mines the final
@@ -601,7 +637,8 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
 - **The delegation truth set** (v1.30, a trio) watches the Agent
   tool itself: the brief guard refuses a work dispatch whose brief lacks
   the stamp template, the intent line, the budget line or the
-  preservation line, and since v1.40 one whose model is missing (which
+  preservation line (read-only searcher types such as Explore and Plan
+  pass untouched), and since v1.40 one whose model is missing (which
   silently inherits the manager's own tier) or names that tier outright;
   the delegation auditor reads the metered tool and
   token figures out of every result, names a fabricated report (zero
@@ -634,7 +671,11 @@ The contract, plainly, because a worried reader asks these first:
   which is Claude Code's mechanism. In another client (the Claude app,
   Cowork, an IDE plugin) the laws are prose again; the wiki and the
   rituals still work, the enforcement does not.
-- **A hook cannot trap you.** Each Stop hook refuses to end a turn at
+- **A hook's line is an order to the manager, not a note to you** (THE
+  HOOK LAW, v1.31): CHECKPOINT DUE, LESSON ADVISED, LEDGER ADVISED, KIT
+  UNSYNCED and CHANGELOG UNEXPORTED are each carried out inside the reply
+  that saw them; the same line seen twice is the failure.
+- **A working hook cannot trap you.** Each Stop hook refuses to end a turn at
   most once per crossing (the checkpoint counter re-blocks only every
   five further tasks; the advisors never repeat the same slice or set),
   and each checks the harness's own loop flag so it can never refuse
@@ -683,8 +724,9 @@ where the rule lives. Before building, the manager logs its OWN reading
 of the ask; employees state theirs in a stamp line. When the owner's
 intent is known, the claim resolves SAME, SIMILAR or DIFFERENT, with its
 source named (stated, revealed by a correction, or inferred, which is
-counted apart so it never inflates the rate). A small toolchain backs it - an
-intent log, a correction log, a report script, a systems audit - and the
+counted apart so it never inflates the rate). A small toolchain backs it (`intent_log.py`,
+`correction_log.py`, `intent_report.py`, `systems_audit.py`; the log is
+append-only, and the newest line per claim counts) and the
 report turns that log into day, week and month agreement rates per
 actor, a text file for Claude and a csv with a spreadsheet twin for you,
 and calls the trend improving, steady or declining. The owner's reason, in the owner's words: real data, past
@@ -730,7 +772,8 @@ yours:
   a method file, the hooks README, the front door itself) carries one
   header: `PURPOSE:` (what it
   does, plainly), `INTENT:` (why it exists, in the words of whoever asked
-  for it), search keys and see-also links. A lint derives the scope from
+  for it), and on scripts and Markdown files search keys and see-also
+  links. A lint derives the scope from
   the kit folder itself, names every thing that lacks the header, and
   the publish script refuses to push on a failure. A missing header is
   added BY SCRIPT after a read-only look (`format_lint.py --rewrite`
@@ -806,7 +849,7 @@ directly; both stop a kind of amnesia.
 | Cost numbers with no baseline | The daily line judges each day against the previous seven | Waste gets a name the next morning |
 | A screenshot counted as a 100k read | Pictures priced by pixels | Diet proposals aimed at real habits, not phantom ones |
 | A deleted file, a wiped tree | Retire, shelve, or ask twice | Knowledge never lost; a bad script cannot cost a folder |
-| Laws forgotten mid-batch | The hygiene guard speaks at the edit | The kit copy and this README stay in step by themselves |
+| Laws forgotten mid-batch | The hygiene guard speaks at the edit | The law is applied before the mistake ships; the kit copy and this README stay in step by themselves |
 
 The unglamorous truth this kit encodes: there is no magic compression
 trick. The savings come from structure, scripts, and discipline. (The kit's
@@ -846,7 +889,8 @@ yes. It never restructures a live repo unasked.
 
 1. Open Claude Code at the root of YOUR project's repo and give it this
    repo's contents (a clone beside it, or the folder copied in; the method
-   files end up at your repo root, the domain notes under `reference/`).
+   files end up at your repo root; a domain-notes file that does not apply
+   stays unindexed under `reference/`).
    Any capable model; one long session.
 2. Say: **read "0 - READ ME FIRST.md" and install the kit.**
 3. Answer its STEP 0 questions: project, engine and repo; who manages and
@@ -856,8 +900,9 @@ yes. It never restructures a live repo unasked.
 4. Claude builds the operating system in order: the wiki (and the process
    registry the day the first two-step process exists), reporting, the
    session rituals and the workstation inventory, delegation, skills,
-   hooks (the one step with human parts: you approve the safety wiring,
-   and every hook's `--selftest` must pass), then the loops that measure
+   hooks (the one step that needs you: you approve the safety wiring and
+   fill the bash guard's PROJECT RULES with what you named in STEP 0; every hook's
+   `--selftest` must also pass), then the loops that measure
    the loop: the learning loop, the
    intent loop, the format law and purpose audit, the README gate, the
    lesson loop, and the route line beside it. Last, the optional boards
@@ -866,17 +911,19 @@ yes. It never restructures a live repo unasked.
    before the first public release; a project with none writes its
    exemption and moves on.
 5. It finishes with a definition of done you can verify yourself: the
-   standup script runs clean, the core lint passes (CLAUDE.md under
+   standup script runs clean and prints the core's size, the core lint passes (CLAUDE.md under
    Anthropic's 200-line target and its token budget, every rule declared
    by path, the master index complete - the lint keeps all of it true),
    the format lint passes, every hook answers its `--selftest`, FLAGS.md
    flags every kit thing,
    the delegation ledger has one real line, the skills answer to their
-   slash commands, and the first commit is in.
+   slash commands, and the first commit is in, with the line `Rootstock vX.Y
+   installed <date> | updates: <policy>` stamped into CLAUDE.md, which every
+   later update reads.
 
 That is the whole handoff. The front-door file exists precisely so that a
 stranger's Claude needs no other instructions. The front door is an
-install runbook read once (~1.8k tokens); it is not a CLAUDE.md and never
+install runbook read once (~2k tokens); it is not a CLAUDE.md and never
 loads per session.
 
 ## Updating an installed project
@@ -906,13 +953,17 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   prerequisite recorded on the same line (`| no-git`). An install that
   predates versioning counts as v1.0, and the first update after that
   adds the stamp line as it bumps.
-- To update: pull this repo (or hand Claude the new folder) and ask
+- To update: pull this repo (github.com/Mazhron/rootstock-os, or hand
+  Claude the new folder) and ask
   Claude to update the kit (any wording; **update rootstock** is enough). Claude reads the graft log's entries newer than
   the project's stamp, applies each concept to the project's OWN files in
   its own names and voice, bumps the stamp and ships the batch: one graft
-  batch per update, recorded in the project's own changelog. The one exception to
+  batch per update, recorded in the project's own changelog. The two exceptions to
   never-copy: a file the project does not have at all (a genuinely new
-  MD or reference script) is copied in fresh, then adapted and indexed. Anything that would
+  MD or reference script) is copied in fresh, then adapted and indexed;
+  and a hook or reference script the project took unadapted, its CONFIG
+  block aside, is replaced whole and its `--selftest` re-run, as the graft
+  log's hook entries have always said (written into the protocol, v1.46). Anything that would
   contradict a choice you made on purpose gets flagged, never overwritten.
 - You don't have to remember any of this: the install wires
   `rootstock_update_check.py` into your project's standup, which checks
@@ -1024,7 +1075,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `WORKSTATION_METHOD.md` | The machine inventory: document, survey script, new-machine runbook |
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |
 | `SECURITY_METHOD.md` | The pre-production security audit: the gate before an app, SaaS or site with a backend, a key, an env file or user data goes public; the rotation law, the prefix law, the nine-class checklist (secrets in the client, headers, exposed files, CORS, database rules, auth per route, dependencies, logs, the game-export note), the ledger line, the workflow entry, bootstrap |
-| `reference tools/` | 35 working scripts to adapt, not rewrite (`_ledger.py` among them, the ledger helper the rest share). Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), trust the ledger for the check scripts, the lesson loop (lesson_log.py: the prompt match, the trial-and-error scan, the lint), the route line (route_index.py: the registry entry and the script a prompt already has, named before the first tool call), the local mirror (backup_push.py: every branch and tag to a bare repo on another drive), the law ledgers (law_gaps.py: the archive sweep and the workflow-rule proxy, WARN lines in the check group), the ship-time version hint (version_hint.py: none, patch or minor from what changed since the last bump; never major), the pre-production security audit (security_audit.py: secret shapes in a build folder, the security headers, the exposed-file paths and the CORS answer of your own deployment, read-only, with a ledger line), the live usage window (usage_window.py: last five hours against the seven-day peak, spoken by the prompt gauge only when it matters, each spoken reading ledgered), the guard replay (guard_replay.py: the guards' judge functions run over the last N days of recorded tool calls, employee sessions included, with the NEW and LOST columns and a ledger line) |
+| `reference tools/` | 35 working scripts to adapt, not rewrite (`_ledger.py` among them, the ledger helper the rest share). Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), the trust-the-ledger rule inside the check scripts (no script of its own), the lesson loop (lesson_log.py: the prompt match, the trial-and-error scan, the lint), the route line (route_index.py: the registry entry and the script a prompt already has, named before the first tool call), the local mirror (backup_push.py: every branch and tag to a bare repo on another drive), the law ledgers (law_gaps.py: the archive sweep and the workflow-rule proxy, WARN lines in the check group), the ship-time version hint (version_hint.py: none, patch or minor from what changed since the last bump; never major), the pre-production security audit (security_audit.py: secret shapes in a build folder, the security headers, the exposed-file paths and the CORS answer of your own deployment, read-only, with a ledger line), the live usage window (usage_window.py: last five hours against the seven-day peak, spoken by the prompt gauge only when it matters, each spoken reading ledgered), the guard replay (guard_replay.py: the guards' judge functions run over the last N days of recorded tool calls, employee sessions included, with the NEW and LOST columns and a ledger line) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `CONTRIBUTING.md` | The format law and the purpose audit: the one header every thing carries, the read-only flag ritual, what a contributed update looks like |
 | `FLAGS.md` | The flag ledger: every kit thing's latest GREEN / YELLOW / RED, hashed to the version reviewed, tallied, append-only |

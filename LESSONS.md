@@ -995,6 +995,18 @@ proposal's "fix or quarantine" words are for.
   flag - with 2/2 PASS at 10:31 and ui 7/7 PASS the same afternoon.
   Nothing was flaky; ui at the new version (0.99.46, a UI change) was
   the one run owed, and it passed 7/7.
+- TRIED (2026-10-12, standup carried "2 FAIL lines in the last 10 runs
+  (creative)"): the tail showed three CREATIVETEST FAIL lines, each
+  followed by a PASS one minute later at the same version label, each
+  pair landing in the minutes before a commit that touched main.gd (the
+  test's own file). That is the dev-loop shape: the test grew a new
+  assertion, its first run failed on the test's own assumption, the fix
+  passed, the commit followed. Nothing was flaky. The version had moved
+  to 0.99.67 past both groups' last green lines, so creative and flora
+  at 0.99.67 were the two runs owed; both passed (1/1, 3/3).
+  THE TELL: a FAIL and a PASS of the same test inside two minutes at one
+  version label, right before a commit touching the test, is a dev-loop
+  pair, never a quarantine case.
 
 See also: tools/ledger_trends.py (rule 2, test_fails threshold);
 WORKFLOWS.md "Run tests or probes"; docs/systems/testing.md;
