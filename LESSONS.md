@@ -1587,3 +1587,32 @@ own assertions pass and only the readout fails, suspect the test's state.
   to prove the release.
 See also: "Write a self-test for a shop purchase"; docs/systems/creative.md
 ("The hand: four tools, the palette, the picker").
+
+## A plant base below the row baseline is hidden by the row in front (place on or above the baseline, tuck only under water, 2026-10-12)
+Tags: lessons, art, placement, rows | Everything under row_baseline(row) is covered by the next row's band; a downward scatter buries sprouts and drooping leaves on ground, and only reads right under a water lip
+Keys: plant placement, baseline, row_baseline, band_overlap, buried sprout, leaves underground, down-bias, scatter, water lip, floater, lily pad fit, water fit, wet_habitat, shrink to fit, leaves on ground
+
+THE ONE RIGHT WAY: anything that stands in a row (a plant, a seed, an
+animal's feet) is placed at or ABOVE SoilGrid.row_baseline(row); the strip
+in front draws over every pixel below it (ROW_Z_STRIDE), so a base tucked
+lower is simply gone. The only tuck that reads right is IN water, where the
+hidden base looks afloat under the lip (PlantSystem.spawn_plant's hash
+scatter, gated on is_wet). A floating plant is sized to its water by
+PlantSystem._fit_floater, never by a placement rule.
+
+- TRIED (2026-08, the seam closer): a 0..8 px down-bias on every plant so
+  the front strip hid the sprite's hard bottom edge and a grass mat read
+  continuous. FAILED BECAUSE: the re-cut sprouts render at 16 px and carex's
+  leaves droop to its base - Mazhron's creative test (2026-10-12): "it can't
+  sit like this and have it's leaves be underground"; half the sprout and
+  the whole skirt sat under the next row. DO INSTEAD: scatter upward only
+  (-6..0 px) and let the art's own ground line be the ground.
+- TRIED (same day, the lilypad): the mature pad at its tier (43 px wide) on
+  a one-square pond (28 px) put its leaves on the shore. DO INSTEAD: fit the
+  floater to the wet run above and beside its square (THE WATER FIT), refit
+  on spawn, stage, load, the creative water tool and every 5 s; the pad
+  grows back when the pond does. A 2x2 placement rule was the other option
+  and would have changed the campaign's pick rules for nothing.
+See also: flora.md "Wetland habitat law" (THE BASELINE RULE, THE WATER FIT);
+scripts/entities/plant.gd (setup, fit_sprite); scripts/world/plant_system.gd
+(_fit_floater, refit_floaters).
