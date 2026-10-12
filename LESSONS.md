@@ -1494,6 +1494,18 @@ in full ("new since you last looked" is context); that is never a trim.
   already 10953, under the 12000 warn. Cutting would have failed the loss
   test for a number that had already cleared. DO INSTEAD: tail the ledger,
   report the fresh number, let the next trends run clear the proposal.
+- TRIED (2026-10-12 13:33, the first reply after /clear): the fresh line
+  WAS over the warn (13051 of 12000), so the loss test ran section by
+  section: the verbatim exchange was 3209 bytes (two tables listing the
+  eleven source-limited sprouts) and WHERE WE LEFT OFF 1290, both never
+  cut; the ledger tails printed the moved ledgers in full after a ship.
+  The overshoot (1051) was smaller than the exchange's excess over its
+  usual ~1.5k. NOTHING LEFT: no remaining line duplicated a block or sat
+  verdict-free one tail away beyond what the diet already does. DO
+  INSTEAD: when the fresh line is over, measure the sections (split the
+  saved digest on `== `), name where the bytes sit, and trim only a line
+  that fails the loss test; a big exchange or a post-ship tail is context
+  and clears itself next session.
 See also: INTENT.md "The digest diet"; tools/standup.py (THE DIGEST DIET
 helpers); docs/systems/self-audit.md "The digest size ledger";
 docs/history/digest_size.txt.
