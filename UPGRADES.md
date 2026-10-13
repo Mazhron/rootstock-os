@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.49** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.50** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1911,3 +1911,51 @@ README: "Taking part (the community inbox)" (new), "Updating an installed
 project" (the push rhythm), "Questions people ask" ("Can I contribute?"),
 "What is in the box" (SECURITY.md, the reference tools count and the
 community gate phrase), "Kit version:".
+
+### v1.50 - 2026-10-13 - The knowledge split: kind x domain, a manifest the front door reads
+WHAT: NS-38 phase 2. The kit's knowledge is a tree, not one book:
+knowledge/lessons/<domain>.md holds the origin's lessons split by domain
+(harness 39, godot 4, 2d 2 today; an entry's domain comes from its Tags
+line through a table, then a short override list, else harness), and
+knowledge/MANIFEST.md is one row per knowledge file (path, kind, domain,
+size in tokens, entries, one sentence) plus the WANTED rows: a kind x
+domain nobody has written (Unity and Unreal field notes, C++ gotchas, a
+2D graphics page, the nine silent-trial prompts). The front door's STEP 0
+item 4 now reads the manifest and pulls only the rows whose domain
+matches the answers. The kit's LESSONS.md stays as the lesson law, the
+entry shape and a pointer index: every heading under the file that holds
+it (THE PRESERVATION LAW). All of it is DERIVED: reference
+tools/split_knowledge.py builds the tree from the origin's one book on
+every kit refresh (refresh_kit.py's SPLIT set skips the plain copy and
+calls it), so the origin keeps one LESSONS.md for its hooks and the kit
+shows the split. Kinds: lessons, gotchas, field notes, design notes,
+graphics. Domains: harness, godot, unity, unreal, cpp, 2d, 3d. A domain
+gets a file only when it has entries (the assessment's caution: "Do not
+split finely before content exists ... Files appear when there is
+something to put in them"); the manifest's WANTED rows name the holes
+instead of stub files. The CEO's word: "Lets work on Phase 2".
+CARRIES: reference tools/split_knowledge.py (new: --selftest, --check,
+--dry-run; the ledger knowledge_split_runs.txt); reference
+tools/refresh_kit.py (SPLIT, the call after the copies); knowledge/
+MANIFEST.md and knowledge/lessons/harness.md, godot.md, 2d.md (new,
+generated); LESSONS.md (the pointer index); 0 - READ ME FIRST.md STEP 0
+item 4 and STEP 1 (one book per project); CONTRIBUTING.md "The community
+path" (where a graft lands); the origin's WORKFLOWS.md "Edit the
+future-project kit" step 1 and "Add a domain or a kind to the kit's
+knowledge taxonomy", reference tools/run_all.py's check group
+(split_knowledge --check); kit repo only: README "What is in the box"
+(the knowledge/ row, the LESSONS.md row), "Taking part", "Questions
+people ask" ("Which files do I actually need?"), community/README.md
+"What happens after the merge"; this entry.
+GRAFT: an installed project keeps ONE LESSONS.md (its hooks read it
+there); nothing in it is split. At the next update, open
+knowledge/MANIFEST.md, pull the rows whose domain matches yours, and
+append any entry your book lacks under its own heading (the entries are
+verbatim; the Tags and Keys lines travel with them). A project that
+publishes a kit of its own adopts split_knowledge.py and edits its CONFIG
+block (the tag table, the overrides, the wanted rows). No hook, no
+settings change.
+README: "What is in the box" (the knowledge/ row, the LESSONS.md row, the
+reference tools count), "Taking part" (where a merged file is grafted),
+"Questions people ask" ("Which files do I actually need?"), "Kit
+version:".

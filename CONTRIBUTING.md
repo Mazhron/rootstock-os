@@ -104,7 +104,8 @@ Two doors, by what you bring:
   install, a fetch, a deletion verb, an off-allowlist URL and an
   instruction aimed at a reading Claude. The owner reviews and merges;
   the file stays in the inbox for good and is grafted into its knowledge
-  file in a later kit batch with the stamp kept (community/README.md).
+  file (knowledge/<kind>/<domain>.md, one row in knowledge/MANIFEST.md;
+  kit v1.50) in a later kit batch with the stamp kept (community/README.md).
 - CODE (a hook, a tool, a skill, a change to a kit file): a PROPOSAL in
   the "Code proposal" issue form, with HOW IT WORKS, WHY IT WORKS, WHAT
   IT MIGHT HURT and a LEDGER (before and after). The owner builds it

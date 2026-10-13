@@ -6,8 +6,10 @@ PURPOSE: copy every portable ORIGINAL to its grab-copy in the kit folder
   tools/*.py that have a reference copy, and the .claude/rules/*.md files
   named in PORTABLE_RULES), with the one substitution the
   kit carries in scripts (the owner's name -> "the CEO"); report the
-  hand-adapted files it must never overwrite; `--check` only says what
-  is out of step (the prompt hook's KIT UNSYNCED line).
+  hand-adapted files it must never overwrite; then derive the kit's
+  LESSONS.md and knowledge/ tree through tools/split_knowledge.py (SPLIT;
+  it writes those files and one knowledge_split_runs.txt line); `--check`
+  only says what is out of step (the prompt hook's KIT UNSYNCED line).
 INTENT: the CEO 2026-09-13: "Every time I discuss rootstock-os, or it's
   features, scripts, audits, intents, laws, etc. the intention is to
   update the future projects and rootstock-os folder and upload to git
@@ -19,6 +21,8 @@ INTENT: the CEO 2026-09-13: "Every time I discuss rootstock-os, or it's
     python tools/refresh_kit.py --dry-run  # show what would change
     python tools/refresh_kit.py --adopt tools/x.py   # add a NEW reference tool (or skill dir) to the kit
 
+The kit's LESSONS.md and knowledge/ are DERIVED by tools/split_knowledge.py
+(SPLIT; NS-38 phase 2), not copied: the refresh calls it after the copies.
 Never deletes: a file the kit has and the repo does not is reported, not
 removed. ADAPTED files (hand-tailored copies, e.g. the shell guard with
 its PROJECT RULES block) are named and skipped - diff them by hand when
@@ -46,6 +50,7 @@ SKILLS_DIR = os.path.join(ROOT, ".claude", "skills")
 RULES_DIR = os.path.join(ROOT, ".claude", "rules")
 PORTABLE_RULES = {"wiki.md"}                # path-scoped rules that travel; game rules stay per project
 ADAPTED = {"hooks/bash_guard.py"}          # hand-tailored kit copies: never overwritten
+SPLIT = {"LESSONS.md"}                     # derived by tools/split_knowledge.py (NS-38 phase 2): the kit copy is a pointer index, the entries live in knowledge/
 SUBST = [("the CEO's", "the CEO's"), ("the CEO", "the CEO")]   # scripts only; prose stays verbatim
 JUNK = {"__pycache__", ".git"}
 KEEP = {"README.md", "LICENSE", ".git"}    # kit-repo-only, never compared
@@ -76,6 +81,8 @@ def pairs():
     out = []
     kit_mds = {n for n in os.listdir(KIT_DIR) if n.endswith(".md")}
     for n in sorted(kit_mds):
+        if n in SPLIT:
+            continue
         if os.path.isfile(os.path.join(ROOT, n)):
             out.append((os.path.join(ROOT, n), n, False))
     if os.path.isdir(SKILLS_DIR):
@@ -139,6 +146,13 @@ def check_line():
     if st:
         parts.append("%d original(s) newer than the kit copy (%s)" % (
             len(st), ", ".join(r for r, _ in st[:4]) + (", ..." if len(st) > 4 else "")))
+    try:
+        import split_knowledge
+        sk = split_knowledge.check_line()
+        if sk:
+            parts.append(sk)
+    except ImportError:
+        pass
     md = mirror_diff()
     if md:
         parts.append("%d kit file(s) not yet in the public mirror" % len(md))
@@ -163,6 +177,12 @@ def refresh(dry_run=False):
         print(("would refresh " if dry_run else "refreshed ") + rel)
         if not dry_run:
             write(dst, want)
+    # THE KNOWLEDGE SPLIT (NS-38 phase 2): LESSONS.md's kit copy and knowledge/ are derived, not copied
+    try:
+        import split_knowledge
+        changed += split_knowledge.generate(dry_run=dry_run)
+    except ImportError:
+        print("tools/split_knowledge.py missing: the kit's LESSONS.md and knowledge/ were not regenerated")
     return changed
 
 

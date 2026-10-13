@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.49** (2026-10-13). The graft log `UPGRADES.md` is the
+Kit version: **v1.50** (2026-10-13). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -939,7 +939,8 @@ file outside the inbox, a non-markdown file, a shell line or block, an
 install, a fetch, a deletion verb, a link to a host off its allowlist,
 and a sentence addressed to a reading Claude. The owner reviews and
 merges; the file stays, with your stamp, for as long as the repo exists,
-and is grafted into its knowledge file in a later kit version that names
+and is grafted into its knowledge file (`knowledge/<kind>/<domain>.md`,
+one row in `knowledge/MANIFEST.md`) in a later kit version that names
 you.
 
 A hook, a tool or a change to a kit file is welcome as a PROPOSAL in the
@@ -1103,6 +1104,14 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   (GREEN / YELLOW / RED) filed in `FLAGS.md`, ideally by someone other
   than its author. `CONTRIBUTING.md` has the whole of it. A RED is a
   question for the maintainer, not a rejection.
+- **Which files do I actually need?** Open `knowledge/MANIFEST.md`: one row
+  per knowledge file with its kind, domain, size in tokens and one
+  sentence, plus the WANTED rows nobody has written yet. Pull the rows
+  whose domain matches your engine and language; `harness` (Claude Code
+  and process) applies to every project. The method files are for every
+  project, the domain files only for theirs. Since v1.50 the origin's
+  lessons live under `knowledge/lessons/` by domain, and `LESSONS.md` is
+  the law plus a pointer index.
 
 ## What is in the box
 
@@ -1110,7 +1119,8 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 |---|---|
 | `0 - READ ME FIRST.md` | The front door: an install runbook read once (STEP 0 questions, the install order as pointers, definition of done); not a CLAUDE.md |
 | `WIKI_METHOD.md` | The knowledge wiki: token mechanics, conventions, bootstrap |
-| `LESSONS.md` | The one-right-way book: the lesson law, the entry shape, and the origin's first entries; grepped before any task, fed by the lesson advisor hook |
+| `LESSONS.md` | The one-right-way book's law and entry shape, plus a pointer index to every entry's home under `knowledge/` (since v1.50 the entries live there, by domain); an installed project keeps one book of its own, grepped before any task and fed by the lesson advisor hook |
+| `knowledge/` | The knowledge tree (v1.50): `MANIFEST.md`, one row per knowledge file (kind, domain, size in tokens, one sentence) plus the WANTED holes nobody has written, read at STEP 0 to pull only what matches; `lessons/<domain>.md`, the origin's lessons split by domain (harness, godot, 2d today), derived by `split_knowledge.py` on every refresh |
 | `REPORTING_METHOD.md` | Scripts + ledgers: the three rules, runner spec, bootstrap |
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, seven laws, assignments table, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
@@ -1123,7 +1133,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual, the agreement report, the systems audit, bootstrap |
 | `SECURITY.md` | The security policy: what pulling the repo runs (nothing), which classes can run and after whose yes, what the community gate refuses, the private door for reporting |
 | `SECURITY_METHOD.md` | The pre-production security audit: the gate before an app, SaaS or site with a backend, a key, an env file or user data goes public; the rotation law, the prefix law, the nine-class checklist (secrets in the client, headers, exposed files, CORS, database rules, auth per route, dependencies, logs, the game-export note), the ledger line, the workflow entry, bootstrap |
-| `reference tools/` | 37 working scripts to adapt, not rewrite (`_ledger.py` among them, the ledger helper the rest share). Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), the trust-the-ledger rule inside the check scripts (no script of its own), the lesson loop (lesson_log.py: the prompt match, the trial-and-error scan, the lint; retrieval_eval.py: the matcher measured against a query set in the owner's voice and a replay of the newest 200 prompts, hit, miss, the recall gap and the noisy entries, one ledger line), the route line (route_index.py: the registry entry and the script a prompt already has, named before the first tool call), the local mirror (backup_push.py: every branch and tag to a bare repo on another drive), the law ledgers (law_gaps.py: the archive sweep and the workflow-rule proxy, WARN lines in the check group), the ship-time version hint (version_hint.py: none, patch or minor from what changed since the last bump; never major), the pre-production security audit (security_audit.py: secret shapes in a build folder, the security headers, the exposed-file paths and the CORS answer of your own deployment, read-only, with a ledger line), the live usage window (usage_window.py: last five hours against the seven-day peak, spoken by the prompt gauge only when it matters, each spoken reading ledgered), the guard replay (guard_replay.py: the guards' judge functions run over the last N days of recorded tool calls, employee sessions included, with the NEW and LOST columns and a ledger line), the community gate (contribution_lint.py: the pull-request check on the inbox, text only, with a selftest) |
+| `reference tools/` | 38 working scripts to adapt, not rewrite (`_ledger.py` among them, the ledger helper the rest share). Day one: standup, checkpoint, core lint with a token budget, usage sheet (weighted, with the daily line and the per-arc line), update check, the parent loop (run_all, the loop ledger). Adopt when wanted: tag index, workstation survey, the learning loop (link checker, heat map, ledger trends, big reads), the preservation movers (retire, cold shelf, delete grant), the README gate (parity lint, audit ledger), the intent loop (intent log, correction ledger, intent report, systems audit ledger, open questions), the format law and the purpose audit (format lint, purpose audit, kit refresh), the core diet (core_diet.py, the hot core's mover), the trust-the-ledger rule inside the check scripts (no script of its own), the lesson loop (lesson_log.py: the prompt match, the trial-and-error scan, the lint; retrieval_eval.py: the matcher measured against a query set in the owner's voice and a replay of the newest 200 prompts, hit, miss, the recall gap and the noisy entries, one ledger line), the route line (route_index.py: the registry entry and the script a prompt already has, named before the first tool call), the local mirror (backup_push.py: every branch and tag to a bare repo on another drive), the law ledgers (law_gaps.py: the archive sweep and the workflow-rule proxy, WARN lines in the check group), the ship-time version hint (version_hint.py: none, patch or minor from what changed since the last bump; never major), the pre-production security audit (security_audit.py: secret shapes in a build folder, the security headers, the exposed-file paths and the CORS answer of your own deployment, read-only, with a ledger line), the live usage window (usage_window.py: last five hours against the seven-day peak, spoken by the prompt gauge only when it matters, each spoken reading ledgered), the guard replay (guard_replay.py: the guards' judge functions run over the last N days of recorded tool calls, employee sessions included, with the NEW and LOST columns and a ledger line), the community gate (contribution_lint.py: the pull-request check on the inbox, text only, with a selftest), the knowledge split (split_knowledge.py: `knowledge/` and its manifest derived from the origin's one lessons book on every kit refresh, by domain, with a selftest) |
 | `UPGRADES.md` | The graft log: kit version + how updates apply to installed projects |
 | `CONTRIBUTING.md` | The format law and the purpose audit: the one header every thing carries, the read-only flag ritual, what a contributed update looks like |
 | `FLAGS.md` | The flag ledger: every kit thing's latest GREEN / YELLOW / RED, hashed to the version reviewed, tallied, append-only |

@@ -33,23 +33,23 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-13 13:10 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
+Updated 2026-10-13 13:33 | items 86 | GREEN 83 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-10-13 12:52 |
+| 0 - READ ME FIRST.md | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| CONTRIBUTING.md | GREEN | ok | fable | 2026-10-13 12:52 |
+| CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | ok | fable | 2026-10-13 13:10 |
+| LESSONS.md | GREEN | ok | fable | 2026-10-13 13:33 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 12:52 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| UPGRADES.md | GREEN | ok | sonnet-flag-1013b | 2026-10-13 12:50 |
+| UPGRADES.md | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
@@ -71,6 +71,10 @@ Updated 2026-10-13 13:10 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 
 | hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
+| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-13 13:33 |
+| knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
+| knowledge/lessons/godot.md | GREEN | ok | fable | 2026-10-13 13:33 |
+| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-10-13 13:33 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
@@ -94,13 +98,14 @@ Updated 2026-10-13 13:10 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/purpose_audit.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/readme_lint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| reference tools/refresh_kit.py | GREEN | ok | fable | 2026-09-14 16:33 |
+| reference tools/refresh_kit.py | GREEN | ok | fable | 2026-10-13 13:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/retrieval_eval.py | GREEN | ok | fable | 2026-10-13 11:45 |
 | reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 12:27 |
 | reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
-| reference tools/run_all.py | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
+| reference tools/run_all.py | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
+| reference tools/split_knowledge.py | GREEN | ok | fable | 2026-10-13 13:33 |
 | reference tools/standup.py | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-29 00:24 |
@@ -1312,3 +1317,93 @@ FLAG: Same shape as the rest; read-only look at the new entry
 SAYS: One entry per task shape: THE ONE RIGHT WAY first, then what was tried, why it failed and what to do instead, then nuance headlines as they accumulate, so a future session does the correct thing first instead of repeating trial and error.
 DOES: The one-right-way entries; stale only because the three-trap entry (CI workflow scope, the preserve guard reading regex text, the kit refresh rewriting the owner's name) was appended with its query line
 FLAG: Same shape as the rest; read-only look at the new entry
+
+### 2026-10-13 13:32 | reference tools/split_knowledge.py | YELLOW | sonnet-flag-1013c | WS1 | b69aa446
+SAYS: Derive the kit's knowledge tree from the origin's LESSONS.md: split every entry by domain (Tags, then the override table, else harness) into knowledge/lessons/<domain>.md, write the manifest the front door reads (one row per knowledge file plus the wanted holes) and rewrite the kit's LESSONS.md as the lesson law plus a pointer index; report what changed and ledger one line. Never deletes.
+DOES: Reads the origin LESSONS.md, splits entries by Tags/override/default into knowledge/lessons/<domain>.md, writes knowledge/MANIFEST.md and the kit LESSONS.md pointer index only under the kit folder, reports orphans without removing, appends one ledger line to docs/history/knowledge_split_runs.txt; selftest writes only to a temp dir with ledger off.
+FLAG: Matches its purpose, no deletion, no writes outside kit folder and its ledger. Two flaws: selftest prints a hardcoded check count of 19 but runs 18 checks; _same_but_stamp strips any bare parenthesised date so a body edit changing only such a date would read as in step. Fix: count checks dynamically, narrow the stamp regex to the GENERATED line.
+
+### 2026-10-13 13:32 | knowledge/MANIFEST.md | GREEN | sonnet-flag-1013c | WS1 | 0aa5acd5
+SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
+DOES: Generated table of 5 knowledge files (3 lessons slices, GODOT_FIELD_NOTES, CLICKER_DESIGN_NOTES) with kind, domain, tokens, entries, sentence, plus 5 WANTED rows; entry counts 39/4/2 match the files.
+FLAG: Holds exactly what its purpose says. Cosmetic only: one unwrapped taxonomy line.
+
+### 2026-10-13 13:32 | knowledge/lessons/harness.md | YELLOW | sonnet-flag-1013c | WS1 | 6272eb1e
+SAYS: The harness slice of the one-right-way book, 39 entries whose Tags name balance, checkpoint, communication, cross-workstation, delegation, design, digest diet, git, gotchas, harness, hooks, intent, kit, learning loop, ledgers, memory, persistence, preservation, process, proposals, reporting, rootstock, standup, telemetry, testing, tokens, tooling, web, workstation, workstations: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: Holds 39 lesson entries verbatim from the origin LESSONS.md, GENERATED header, heading count verified as 39.
+FLAG: Count and verbatim claim hold. The PURPOSE line is one very long unwrapped line listing 30 tags, and the default-to-harness rule files origin-specific entries (the species balance envelope brief) under harness though the domain is Claude Code and process. Fix: wrap the line in domain_file() and add an OVERRIDES row or a balance tag mapping.
+
+### 2026-10-13 13:32 | knowledge/lessons/godot.md | GREEN | sonnet-flag-1013c | WS1 | 693f5ba5
+SAYS: The godot slice of the one-right-way book, 4 entries whose Tags name creative mode, godot, gotchas, testing, ui: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: Holds 4 entries verbatim (.tres write, button frames, headless click test, tool-gated label test), matching the manifest count of 4.
+FLAG: Does what the purpose says and nothing more.
+
+### 2026-10-13 13:32 | knowledge/lessons/2d.md | GREEN | sonnet-flag-1013c | WS1 | bb675742
+SAYS: The 2d slice of the one-right-way book, 2 entries whose Tags name art, placement, rows: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: Holds 2 entries verbatim (cut and wire art from a sheet, plant base below the row baseline), matching the manifest count of 2.
+FLAG: Does what the purpose says and nothing more.
+
+### 2026-10-13 13:32 | 0 - READ ME FIRST.md | GREEN | sonnet-flag-1013c | WS1 | a3317916
+SAYS: The kit's front door: walks a receiving Claude through the install in order (ask the CEO first, including whether to take part in the kit's community and under what name, which the install stamp records; then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: Install runbook; STEP 0 item 4 now reads knowledge/MANIFEST.md and pulls rows by domain, STEP 1 says one LESSONS.md book per project built from the kit preamble plus matched domain entries; adds no side effects or guard changes.
+FLAG: Changes match the v1.50 UPGRADES entry; purpose still accurate.
+
+### 2026-10-13 13:32 | CONTRIBUTING.md | GREEN | sonnet-flag-1013c | WS1 | a1343138
+SAYS: the two guardrails every Rootstock update passes through - THE FORMAT (one header on every thing, checked by script and enforced by a hook) and THE PURPOSE AUDIT (a read-only comparison of what a thing says against what it does, flagged green / yellow / red and filed in FLAGS.md) - and, since kit v1.49, THE COMMUNITY PATH (text into the inbox by pull request behind the contribution lint, code as a proposal in an issue) - written so a contributor, a maintainer and any Claude apply them the same way.
+DOES: Format law, purpose audit and community path; the one change says a grafted contribution lands in knowledge/<kind>/<domain>.md with a manifest row.
+FLAG: Small accurate change, purpose unchanged.
+
+### 2026-10-13 13:32 | LESSONS.md | YELLOW | sonnet-flag-1013c | WS1 | 8e18f10d
+SAYS: One entry per task shape: THE ONE RIGHT WAY first, then what was tried, why it failed and what to do instead, then nuance headlines as they accumulate, so a future session does the correct thing first instead of repeating trial and error.
+DOES: Now the lesson law and entry shape preamble plus a single section Where the entries live, a pointer index naming every heading under its knowledge/lessons/ file; holds no entries itself.
+FLAG: PURPOSE line is stale: it still says One entry per task shape, THE ONE RIGHT WAY first, but the file no longer holds entries. Fix in the origin LESSONS.md preamble or have pointer_book() rewrite the PURPOSE to describe the law plus pointer index.
+
+### 2026-10-13 13:32 | UPGRADES.md | GREEN | sonnet-flag-1013c | WS1 | db06429e
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: Append-only graft log; this batch bumped the version line to v1.50 and appended the v1.50 knowledge split entry at the end, nothing earlier altered (diff checked).
+FLAG: Append-only honoured; entry accurate.
+
+### 2026-10-13 13:32 | reference tools/refresh_kit.py | YELLOW | sonnet-flag-1013c | WS1 | b7bacbfd
+SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, .claude/skills/*/SKILL.md, tools/hooks/*.py, the tools/*.py that have a reference copy, and the .claude/rules/*.md files named in PORTABLE_RULES), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
+DOES: Copies portable originals to kit grab-copies with the CEO name substitution, skips LESSONS.md via SPLIT, then calls split_knowledge.generate (which writes knowledge/, LESSONS.md and a ledger line); check_line adds the split stale clause; never deletes; ADAPTED skipped.
+FLAG: PURPOSE line says only copy and report, but refresh() also derives files and appends a docs/history ledger line via generate; the body docstring mentions the split but PURPOSE omits it. Fix: add the derive step to the PURPOSE line.
+
+### 2026-10-13 13:32 | reference tools/run_all.py | GREEN | sonnet-flag-1013c | WS1 | 5ee9947c
+SAYS: Chain habitual scripts by named group (check/regen/tests/metrics/ probes/builds/session/standup) and ledger every group run so staleness is visible instead of silent.
+DOES: Chains script groups and ledgers each run; the check group gained tools/split_knowledge.py --check, which only reports STALE lines and exits 0.
+FLAG: Addition is read-only and matches purpose. Minor: the docstring Groups summary of check does not list every member, already true before this batch.
+
+### 2026-10-13 13:33 | LESSONS.md | GREEN | fable | WS1 | c4fee0d0
+SAYS: The lesson law and the entry shape of the one-right-way book, plus a pointer index: every one of the origin's 45 entries under the knowledge/lessons/<domain>.md file that holds it verbatim, so a project seeds its own LESSONS.md from the slices the manifest matched.
+DOES: The origin's preamble (the lesson law, the entry shape, the lint line) with its PURPOSE rewritten by pointer_book() to say pointer index, then one section listing all 45 headings under the knowledge/lessons file that holds each; no entry body
+FLAG: The sonnet yellow (PURPOSE still said it held entries) is fixed: the generator rewrites the PURPOSE block; re-read after the regeneration
+
+### 2026-10-13 13:33 | knowledge/MANIFEST.md | GREEN | fable | WS1 | 9640b5d9
+SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
+DOES: Five file rows (three lesson slices, the two domain-notes files) with kind, domain, tokens, entry counts that match the files (39, 4, 2, 8, 9) and five WANTED rows; the taxonomy paragraph; the format header
+FLAG: Regenerated after the slice PURPOSE fix; the sizes column moved with it; nothing else changed
+
+### 2026-10-13 13:33 | knowledge/lessons/2d.md | GREEN | fable | WS1 | 56668b85
+SAYS: The 2d slice of the one-right-way book, 2 entries whose Tags name art, placement, rows: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: Two entries (cut and wire art from a sheet; the plant base below the baseline) verbatim from the origin, under a header whose tag list now names up to four tags
+FLAG: Regenerated only for the wrapped PURPOSE line; the entries are byte-identical to the origin's
+
+### 2026-10-13 13:33 | knowledge/lessons/godot.md | GREEN | fable | WS1 | 3c9ced09
+SAYS: The godot slice of the one-right-way book, 4 entries whose Tags name creative mode, godot, gotchas, testing and 1 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: Four entries verbatim (the .tres write by override, the Button frames, the headless click test, the tool-gated label) under the wrapped header
+FLAG: Regenerated only for the wrapped PURPOSE line
+
+### 2026-10-13 13:33 | knowledge/lessons/harness.md | GREEN | fable | WS1 | 86a90dc5
+SAYS: The harness slice of the one-right-way book, 39 entries whose Tags name balance, checkpoint, communication, cross-workstation and 26 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: Thirty-nine entries verbatim from the origin, the default domain for every entry no tag or override sends elsewhere; the PURPOSE line now names four tags and the count of the rest and wraps at the usual width
+FLAG: The sonnet yellow (an unwrapped PURPOSE line of thirty tags) is fixed in domain_file(); the balance-brief entry stays here by design: it is a delegation lesson about briefing an employee, not an engine fact
+
+### 2026-10-13 13:33 | reference tools/refresh_kit.py | GREEN | fable | WS1 | 7cb38f31
+SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, .claude/skills/*/SKILL.md, tools/hooks/*.py, the tools/*.py that have a reference copy, and the .claude/rules/*.md files named in PORTABLE_RULES), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; then derive the kit's LESSONS.md and knowledge/ tree through tools/split_knowledge.py (SPLIT; it writes those files and one knowledge_split_runs.txt line); `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
+DOES: Copies every portable original to its kit copy with the CEO substitution, skips the adapted guard and the SPLIT set, then calls split_knowledge.generate to derive LESSONS.md and knowledge/ and one ledger line; --check carries the split's stale clause
+FLAG: The sonnet yellow (PURPOSE omitted the derive step and the ledger write) is fixed in the PURPOSE line itself
+
+### 2026-10-13 13:33 | reference tools/split_knowledge.py | GREEN | fable | WS1 | 2a7b2944
+SAYS: Derive the kit's knowledge tree from the origin's LESSONS.md: split every entry by domain (Tags, then the override table, else harness) into knowledge/lessons/<domain>.md, write the manifest the front door reads (one row per knowledge file plus the wanted holes) and rewrite the kit's LESSONS.md as the lesson law plus a pointer index; report what changed and ledger one line. Never deletes.
+DOES: Reads the root LESSONS.md through lesson_log.entries, assigns a domain per entry (overrides, the tag table, else harness), writes knowledge/lessons/<domain>.md, knowledge/MANIFEST.md and the pointer LESSONS.md under the kit folder only when they changed, reports orphans without touching them, appends one deduped ledger line; the selftest writes to a temp dir with the ledger off and counts its checks as it runs
+FLAG: Both sonnet yellows fixed: the check count is counted (18), the stamp strip matches only the GENERATED line's date; no deletion path anywhere

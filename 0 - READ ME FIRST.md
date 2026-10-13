@@ -35,9 +35,17 @@ recorded in the install stamp (see MISSING PREREQUISITES).
 2. WHO MANAGES: which Claude model is the manager, which are employees
    (SUBAGENT_METHOD.md forbids assuming).
 3. One workstation or several (ledgers and day files stamp per machine).
-4. Which domain files apply: GODOT_FIELD_NOTES.md (Godot),
-   CLICKER_DESIGN_NOTES.md (idle/clicker); otherwise keep them unindexed
-   in reference/ as examples of what such files become.
+4. Which knowledge files apply (kit v1.50): open knowledge/MANIFEST.md,
+   one row per knowledge file (path, kind, domain, size in tokens, one
+   sentence), and pull only the rows whose domain matches item 1's engine
+   and language. `harness` (Claude Code and process) applies to every
+   project, so knowledge/lessons/harness.md seeds the project's
+   LESSONS.md; a Godot project adds knowledge/lessons/godot.md and
+   GODOT_FIELD_NOTES.md, a 2D game knowledge/lessons/2d.md, an
+   idle/clicker game CLICKER_DESIGN_NOTES.md. A file the manifest rules
+   out stays unindexed in reference/ as an example of what such a file
+   becomes. The manifest's WANTED rows are the pages nobody has written
+   yet; item 6 says how a project offers one.
 5. UPDATE POLICY for future kit concepts: ask / auto / relevant / never
    (default ask; lives in the install stamp; the CEO changes it by saying so).
 6. THE COMMUNITY (kit v1.49): ask whether the CEO wants to take part in
@@ -77,7 +85,10 @@ the kit; write the project's own code and text rules with a `paths:`
 field), docs/systems/ topic files, docs/index/ sub-indexes for what falls
 out of the core, the lint (reference tools/check_claude_md.py) and the
 mover (reference tools/core_diet.py) in the check group. Copy the portable
-MDs to the repo root and index each with one line in the master index.
+MDs to the repo root and index each with one line in the master index;
+the project's LESSONS.md is ONE book (its hooks read it there): the
+kit's LESSONS.md preamble (the law, the entry shape) followed by the
+entries of the knowledge/lessons/ files STEP 0 item 4 matched, verbatim.
 Create WORKFLOWS.md
 (WORKFLOW_METHOD.md) the day the first two-step process exists. Stamp the
 install: "Rootstock vX.Y installed <date> | updates: <policy>" in the

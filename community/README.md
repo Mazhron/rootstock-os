@@ -55,7 +55,9 @@ proposer in the graft log.
 Your file stays in the inbox, with your stamp, for as long as the repo
 exists (THE PRESERVATION LAW: nothing here is deleted). In a later kit
 batch the maintainer grafts its content into the knowledge file it belongs
-to, keeps your stamp line beside it, and records the graft in
+to (`knowledge/<kind>/<domain>.md`, one row in `knowledge/MANIFEST.md`;
+your stamp's kind and domain say which), keeps your stamp line beside it,
+and records the graft in
 `UPGRADES.md` with your name. The inbox file then gets one line at its
 top: `GRAFTED into <file> (kit vX.Y, <date>)`.
 
