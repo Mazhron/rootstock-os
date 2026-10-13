@@ -1,6 +1,6 @@
 """THE CONTRIBUTION LINT (Rootstock's community gate, kit v1.49, NS-38 phase 1).
 
-    python tools/contribution_lint.py --base origin/main --actor <login>
+    python tools/contribution_lint.py --base origin/main --actor <login> --owner <login>
     python tools/contribution_lint.py --files community/inbox/a.md ...
     python tools/contribution_lint.py --selftest
 
@@ -24,15 +24,21 @@ change that could make a reader's Claude run something:
   8. WARN only: an em or en dash (the kit's text law), a file over
      ~4k tokens (split it)
 The owner's own pushes are the sync's business (format lint, README lint,
-purpose audit); the lint says so and passes them untouched. The deletion
+purpose audit); the lint says so and passes them untouched. WHO the owner
+is comes from --owner (the workflow passes the repository owner's login;
+locally $GITHUB_REPOSITORY_OWNER or the flag), never from a name written
+in this file: the kit refresh rewrites the origin owner's name in every
+script copy, so a constant here would be dead in the published copy (the
+2026-10-13 audit, T-1013-PA-2). The deletion
 and fetch verbs it hunts are spelled as character classes below so this
 file never carries one itself (the preserve guard reads scripts too).
 
 In CI the changed files come from `git diff --name-only <base>...HEAD`;
-locally pass --files. One ledger line per run when docs/history/ exists
-(docs/history/contribution_lint_runs.txt); CI has no ledger and needs
-none, the check's verdict is the status on the pull request. The
-selftest writes into a fresh temp folder and leaves it (nothing deletes).
+locally pass --files. One ledger line per run when <root>/docs/history/
+exists (docs/history/contribution_lint_runs.txt); CI has no ledger and
+needs none, the check's verdict is the status on the pull request. The
+selftest runs against a fresh temp folder with no docs/history, so it
+writes nothing anywhere else, and leaves the folder (nothing deletes).
 
 PURPOSE: Refuse, on a pull request from anyone but the owner, any change
   outside the community inbox, any non-text or shell-shaped content, any
@@ -60,7 +66,7 @@ import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ----------------------------------------------------------- CONFIG --
-OWNER = "the CEO"                      # the kit's owner: the sync's laws apply instead
+# The owner's login arrives by --owner / $GITHUB_REPOSITORY_OWNER (see above).
 INBOX = "community/inbox/"            # the only tree a contributor may change
 NAME_RE = re.compile(r"^\d{4}-\d{2}-\d{2}-[a-z0-9]+(?:-[a-z0-9]+)+\.md$")
 STAMP_RE = re.compile(r"^Contributed by: [^|\n]+ \| \d{4}-\d{2}-\d{2} \d{2}:\d{2} \| "
@@ -166,11 +172,12 @@ def check_file(rel, root=ROOT):
     return fails + f2, warns + w2
 
 
-def ledger(verdict, n, fails):
-    if not os.path.isdir(os.path.dirname(LEDGER)):
+def ledger(verdict, n, fails, root=ROOT):
+    path = LEDGER if root == ROOT else os.path.join(root, "docs", "history", "contribution_lint_runs.txt")
+    if not os.path.isdir(os.path.dirname(path)):
         return
-    new = not os.path.isfile(LEDGER)
-    with open(LEDGER, "a", encoding="utf-8") as fh:
+    new = not os.path.isfile(path)
+    with open(path, "a", encoding="utf-8") as fh:
         if new:
             fh.write("# CONTRIBUTION LINT RUNS (append-only; one line per local run; CI "
                      "runs leave their verdict on the pull request).\n"
@@ -179,8 +186,8 @@ def ledger(verdict, n, fails):
                                           n, fails, verdict))
 
 
-def lint(files, actor=None, root=ROOT):
-    if actor and actor.lower() == OWNER.lower():
+def lint(files, actor=None, root=ROOT, owner=""):
+    if actor and owner and actor.lower() == owner.lower():
         print("CONTRIBUTION LINT: owner push (%s); the sync's own gates apply "
               "(format lint, README lint, purpose audit). PASS" % actor)
         return 0
@@ -196,7 +203,7 @@ def lint(files, actor=None, root=ROOT):
             print("      WARN: " + w)
     verdict = "FAIL" if total_fail else "PASS"
     print("CONTRIBUTION LINT: %s - %d file(s), %d failure(s)" % (verdict, len(files), total_fail))
-    ledger(verdict, len(files), total_fail)
+    ledger(verdict, len(files), total_fail, root)
     return 1 if total_fail else 0
 
 
@@ -265,9 +272,13 @@ def selftest():
     f, w = check_file(put("community/inbox/2026-10-13-a-dash.md",
                           GOOD + "\nthis — that\n"), tmp)
     expect(not f and any("dash" in x for x in w), "an em dash warns, never fails")
-    expect(lint([good], actor="mazhron", root=tmp) == 0, "the owner's push passes untouched")
+    expect(lint(["LESSONS.md"], actor="Owner", root=tmp, owner="owner") == 0,
+           "the owner's push passes untouched (a kit edit, which a stranger fails)")
+    expect(lint(["LESSONS.md"], actor="Owner", root=tmp, owner="") == 1,
+           "no owner given means nobody bypasses")
     expect(lint([good], actor="stranger", root=tmp) == 0, "a stranger's good file passes")
-    expect(lint(["LESSONS.md"], actor="stranger", root=tmp) == 1, "a stranger's kit edit fails the run")
+    expect(lint(["LESSONS.md"], actor="stranger", root=tmp, owner="owner") == 1, "a stranger's kit edit fails the run")
+    expect(not os.path.exists(os.path.join(tmp, "docs")), "the selftest wrote no ledger")
     print("SELFTEST %s" % ("PASS" if not ok else "FAIL (%d)" % ok))
     return 1 if ok else 0
 
@@ -277,6 +288,8 @@ def main(argv):
     ap.add_argument("--base", default="origin/main", help="the branch the change targets")
     ap.add_argument("--files", nargs="*", help="lint these paths instead of the git diff")
     ap.add_argument("--actor", help="the pushing login (the owner's pushes pass untouched)")
+    ap.add_argument("--owner", default=os.environ.get("GITHUB_REPOSITORY_OWNER", ""),
+                    help="the repository owner's login (CI passes it; no owner means no bypass)")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args(argv)
     if a.selftest:
@@ -285,7 +298,7 @@ def main(argv):
     if not files:
         print("CONTRIBUTION LINT: no changed files. PASS")
         return 0
-    return lint(files, a.actor)
+    return lint(files, a.actor, owner=a.owner)
 
 
 if __name__ == "__main__":

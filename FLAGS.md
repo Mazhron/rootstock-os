@@ -33,23 +33,23 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-13 12:47 | items 81 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 2 | stale 4
+Updated 2026-10-13 12:52 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | STALE | sonnet-flag-1013 | 2026-10-13 11:44 |
+| 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-10-13 12:52 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| CONTRIBUTING.md | GREEN | STALE | fable | 2026-10-06 11:21 |
+| CONTRIBUTING.md | GREEN | ok | fable | 2026-10-13 12:52 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | LESSONS.md | GREEN | ok | fable | 2026-10-13 12:27 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
-| SECURITY.md | - | UNFLAGGED | - | - |
+| SECURITY.md | GREEN | ok | fable | 2026-10-13 12:52 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| UPGRADES.md | GREEN | STALE | fable | 2026-10-13 12:27 |
+| UPGRADES.md | GREEN | ok | sonnet-flag-1013b | 2026-10-13 12:50 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
@@ -78,7 +78,7 @@ Updated 2026-10-13 12:47 | items 81 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 2 
 | reference tools/check_wiki_links.py | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:37 |
 | reference tools/checkpoint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
-| reference tools/contribution_lint.py | - | UNFLAGGED | - | - |
+| reference tools/contribution_lint.py | GREEN | ok | fable | 2026-10-13 12:52 |
 | reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/correction_log.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
@@ -88,7 +88,7 @@ Updated 2026-10-13 12:47 | items 81 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 2 
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
-| reference tools/ledger_trends.py | GREEN | STALE | sonnet-flag-1013 | 2026-10-13 11:44 |
+| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-10-13 12:52 |
 | reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
@@ -1247,3 +1247,58 @@ FLAG: Stale only because v1.48 was appended; shape unchanged
 SAYS: One entry per task shape: THE ONE RIGHT WAY first, then what was tried, why it failed and what to do instead, then nuance headlines as they accumulate, so a future session does the correct thing first instead of repeating trial and error.
 DOES: The one-right-way entries, each with Tags, Keys and TRIED/FAILED/DO INSTEAD; stale because the 11:47 stash lesson was appended after the 11:44 flag
 FLAG: Read-only look at the newest entry: same shape as the rest, a query line beside it in retrieval_queries.txt
+
+### 2026-10-13 12:50 | reference tools/contribution_lint.py | YELLOW | sonnet-flag-1013b | WS1 | 5d4c5858
+SAYS: Refuse, on a pull request from anyone but the owner, any change outside the community inbox, any non-text or shell-shaped content, any off-allowlist URL and any instruction aimed at a reading Claude, so that nothing a stranger pulls from the kit can make their Claude run code.
+DOES: PR gate: for non-owner actors it refuses files outside community/inbox/, non-md or binary files, bad names, missing stamp or Tags, shell lines or fences, off-allowlist URLs and injection phrases; warns on dashes and size; appends a ledger line to docs/history/contribution_lint_runs.txt. Selftest of 15 checks passes.
+FLAG: Matches PURPOSE in substance, three flaws. (1) OWNER is the string 'the CEO' (a name-substitution artifact; the order says Mazhron), so no real login ever matches the owner bypass; it fails closed (owner PRs get linted) but the bypass the docstring promises is dead, and the selftest owner check uses actor mazhron, which passes only because the file is good, so it proves nothing. (2) The docstring says the selftest writes only into a temp folder, but lint() calls ledger() with the global LEDGER, so the selftest appends 2 lines to the real docs/history/contribution_lint_runs.txt (observed on my one run). (3) Docstring omits nothing else. Fix: set OWNER to the real GitHub login, give ledger a root parameter or skip it in selftest, make the owner selftest assert the bypass message.
+
+### 2026-10-13 12:50 | SECURITY.md | GREEN | sonnet-flag-1013b | WS1 | 04830dfb
+SAYS: the kit's security policy for readers and contributors - which parts of Rootstock execute on a machine and only after whose yes, which parts can never execute, what the community gate refuses, and the private door for reporting a problem - so nobody has to guess whether pulling this repo is safe.
+DOES: Text only security policy: says what pulling the repo runs (nothing), which script classes can run and after whose approval, what a contributor may change, what the lint refuses, and the private vulnerability reporting door.
+FLAG: PURPOSE and INTENT present and match the body; no instructions aimed at a reader's Claude, no URLs, no commands. Minor nit: says only one reference tool makes a network call then names security_audit.py with --url as a second; wording could say 'one by default'. Branch protection and signed commit claims are GitHub side and not verifiable here.
+
+### 2026-10-13 12:50 | CONTRIBUTING.md | YELLOW | sonnet-flag-1013b | WS1 | 8be565d1
+SAYS: the two guardrails every Rootstock update passes through - THE FORMAT (one header on every thing, checked by script and enforced by a hook) and THE PURPOSE AUDIT (a read-only comparison of what a thing says against what it does, flagged green / yellow / red and filed in FLAGS.md) - written so a contributor, a maintainer and any Claude apply them the same way.
+DOES: Format law and purpose audit method for updates, plus the new section 'The community path' describing the text door (inbox pull request behind the lint) and the code door (issue proposal built by the owner), with no commands or links outside the kit.
+FLAG: New section is accurate and safe, but the header PURPOSE still says 'the two guardrails' (THE FORMAT and THE PURPOSE AUDIT) and does not mention the community path, so the purpose line is stale. The section also states the owner's batches pass the lint untouched, which the lint's OWNER constant does not currently deliver. Fix: extend PURPOSE to name the community path.
+
+### 2026-10-13 12:50 | 0 - READ ME FIRST.md | YELLOW | sonnet-flag-1013b | WS1 | b37f8507
+SAYS: The kit's front door: walks a receiving Claude through the install in order (ask the CEO first, then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: Install runbook for a receiving Claude; STEP 0 now has item 6, which asks the owner whether to join the community and under what name, records the answer in the install stamp, and (if yes) offers general lessons for sharing, writing the inbox file only after a yes.
+FLAG: Item 6 is consent gated and leaks nothing, so it is safe, but the header PURPOSE sequence (ask first, then wiki, reporting, rituals, company, skills and hooks, companions, boards) does not mention the community opt-in or the install stamp field it adds. Stale purpose line only; fix by adding the community question to PURPOSE.
+
+### 2026-10-13 12:50 | reference tools/ledger_trends.py | YELLOW | sonnet-flag-1013b | WS1 | b7a3e09a
+SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop, the lesson loop), compares them against tunable thresholds, and prints proposed rule changes, each tagged [DO] (a script, hook or employee carries it out in the reply that reads it) or [ASK] (only the owner can answer); it applies nothing itself.
+DOES: Reads ledger tails, compares to thresholds and prints PROPOSE lines, applying nothing. New rule 17 reads the last commit date of a sibling rootstock-os git clone (three levels above the project) via git log with a 20 s timeout, byte-compares every file of the kit folder against the clone, and proposes the sync as a DO when the clone is 2 or more days old and files differ.
+FLAG: Rule 17 is wrapped in try/except Exception (timeouts included) so it cannot crash standup, runs only read-only git log, and writes nothing, so it is safe. But the PURPOSE says it reads 'the project history ledgers' and its proposal list stops at rule 13; rule 17 reads a git repo and files outside the project and is not described. Fix: add the kit clone read and rules 14 to 17 to the PURPOSE and the proposals list.
+
+### 2026-10-13 12:50 | UPGRADES.md | GREEN | sonnet-flag-1013b | WS1 | 071d0411
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: Append only graft log; header PURPOSE and INTENT present, version line reads v1.49, and the v1.49 entry records WHAT, CARRIES, GRAFT and README for the community inbox, the lint, SECURITY.md, STEP 0 item 6 and trend rule 17.
+FLAG: Header matches body, version line matches the last entry, GRAFT says no hook and no settings change, which agrees with the files read. The entry describes the owner bypass as working, which depends on the OWNER fix flagged on contribution_lint.py; no change needed here.
+
+### 2026-10-13 12:52 | reference tools/contribution_lint.py | GREEN | fable | WS1 | d39c1145
+SAYS: Refuse, on a pull request from anyone but the owner, any change outside the community inbox, any non-text or shell-shaped content, any off-allowlist URL and any instruction aimed at a reading Claude, so that nothing a stranger pulls from the kit can make their Claude run code.
+DOES: Refuses, on a pull request from anyone but the owner named by --owner (the workflow passes the repository owner), any file outside community/inbox/, non-markdown or binary content, shell-shaped lines and fences, off-allowlist URLs and instructions aimed at a reading Claude; one ledger line per local run under the given root; the selftest runs in a temp folder and writes no ledger
+FLAG: The 12:50 audit's three findings fixed in this batch: the owner now arrives by flag (the kit refresh rewrites names in script copies, so no constant could work), the ledger follows the root so the selftest writes nothing outside its temp folder, and the selftest asserts the bypass with a kit edit
+
+### 2026-10-13 12:52 | SECURITY.md | GREEN | fable | WS1 | da9880c1
+SAYS: the kit's security policy for readers and contributors - which parts of Rootstock execute on a machine and only after whose yes, which parts can never execute, what the community gate refuses, and the private door for reporting a problem - so nobody has to guess whether pulling this repo is safe.
+DOES: The security policy: what pulling runs (nothing), the four classes that can run and after whose yes, the two scripts that can touch the network, what the contribution gate refuses, the private reporting door
+FLAG: The 12:50 nit fixed: the network sentence now counts both scripts
+
+### 2026-10-13 12:52 | CONTRIBUTING.md | GREEN | fable | WS1 | 8be7b46b
+SAYS: the two guardrails every Rootstock update passes through - THE FORMAT (one header on every thing, checked by script and enforced by a hook) and THE PURPOSE AUDIT (a read-only comparison of what a thing says against what it does, flagged green / yellow / red and filed in FLAGS.md) - and, since kit v1.49, THE COMMUNITY PATH (text into the inbox by pull request behind the contribution lint, code as a proposal in an issue) - written so a contributor, a maintainer and any Claude apply them the same way.
+DOES: The format law, the purpose audit and, since v1.49, the community path (text by pull request into the inbox behind the lint, code as a proposal); the header now names all three
+FLAG: The 12:50 audit's stale PURPOSE widened; the owner bypass it describes works again by --owner
+
+### 2026-10-13 12:52 | 0 - READ ME FIRST.md | GREEN | fable | WS1 | 1dae78f7
+SAYS: The kit's front door: walks a receiving Claude through the install in order (ask the CEO first, including whether to take part in the kit's community and under what name, which the install stamp records; then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: The install runbook; STEP 0 item 6 asks the community question and records the name in the stamp, gated on a yes, sending nothing
+FLAG: PURPOSE widened to name the community question and the stamp field (the 12:50 audit)
+
+### 2026-10-13 12:52 | reference tools/ledger_trends.py | GREEN | fable | WS1 | 6cc8906c
+SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop, the lesson loop, the retrieval evaluation, the grain scan), plus one thing that is not a ledger: the kit clone three folders up (`git log -1` there, read-only, and a byte comparison of the kit folder against it, for the push schedule), compares them against tunable thresholds, and prints proposed rule changes, each tagged [DO] (a script, hook or employee carries it out in the reply that reads it) or [ASK] (only the owner can answer); it applies nothing itself.
+DOES: Reads ledger tails and, for rule 17, git log in the sibling kit clone plus a byte comparison of the kit folder, inside try/except with a 20 s timeout, writes nothing but its own proposal ledger
+FLAG: PURPOSE widened to disclose the clone read and the rules past 13 (the 12:50 audit)

@@ -27,4 +27,4 @@ jobs:
         with:
           python-version: "3.12"
       - name: Lint the changed files
-        run: python "reference tools/contribution_lint.py" --base "origin/${{ github.base_ref }}" --actor "${{ github.actor }}"
+        run: python "reference tools/contribution_lint.py" --base "origin/${{ github.base_ref }}" --actor "${{ github.actor }}" --owner "${{ github.repository_owner }}"

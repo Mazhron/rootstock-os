@@ -1,10 +1,12 @@
 # READ ME FIRST - the kit's front door (an install runbook, read once)
 
 PURPOSE: The kit's front door: walks a receiving Claude through the install
-  in order (ask the CEO first, then the wiki, reporting and session
-  rituals, the delegation company, the skills and hooks, the companions,
-  the optional boards) by POINTING at each method file's bootstrap
-  section, so the operating system lands the same way every time.
+  in order (ask the CEO first, including whether to take part in the
+  kit's community and under what name, which the install stamp records;
+  then the wiki, reporting and session rituals, the delegation company,
+  the skills and hooks, the companions, the optional boards) by POINTING
+  at each method file's bootstrap section, so the operating system lands
+  the same way every time.
 INTENT: the methods encode lessons already paid for, so a receiving Claude
   installs them in order instead of improvising a different architecture.
   This file is NOT a CLAUDE.md and never loads per session: it is read

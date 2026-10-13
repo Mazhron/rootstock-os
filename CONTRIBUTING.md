@@ -4,8 +4,10 @@ PURPOSE: the two guardrails every Rootstock update passes through - THE
   FORMAT (one header on every thing, checked by script and enforced by a
   hook) and THE PURPOSE AUDIT (a read-only comparison of what a thing says
   against what it does, flagged green / yellow / red and filed in
-  FLAGS.md) - written so a contributor, a maintainer and any Claude apply
-  them the same way.
+  FLAGS.md) - and, since kit v1.49, THE COMMUNITY PATH (text into the
+  inbox by pull request behind the contribution lint, code as a proposal
+  in an issue) - written so a contributor, a maintainer and any Claude
+  apply them the same way.
 INTENT: Mazhron 2026-09-13: "Rootstock-os will eventually, hopefully, turn
   into a community involved system. Guardrails need to be in place so
   that anything written in updates must have a comment describing the

@@ -49,10 +49,13 @@ source (default/json) for every key.
 PURPOSE: Reads the tails of the project's history ledgers (usage, tests,
   wiki links, wiki heat, employee corrections, compactions, README audit,
   intent claims, corrections, systems audit, open questions, digest size,
-  the run_all loop, the lesson loop), compares them against tunable
-  thresholds, and prints proposed rule changes, each tagged [DO] (a
-  script, hook or employee carries it out in the reply that reads it) or
-  [ASK] (only the owner can answer); it applies nothing itself.
+  the run_all loop, the lesson loop, the retrieval evaluation, the grain
+  scan), plus one thing that is not a ledger: the kit clone three folders
+  up (`git log -1` there, read-only, and a byte comparison of the kit
+  folder against it, for the push schedule), compares them against
+  tunable thresholds, and prints proposed rule changes, each tagged [DO]
+  (a script, hook or employee carries it out in the reply that reads it)
+  or [ASK] (only the owner can answer); it applies nothing itself.
 INTENT: the CEO's ask 2026-09-10: 'Is Rootstock implementing learning
   loops?' Extended 2026-09-14: open questions get a nudge past N days, and
   the thresholds move to a data file the owner tunes (security and cost/

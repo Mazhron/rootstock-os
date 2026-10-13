@@ -19,10 +19,10 @@ that CAN run are, by class:
   merged, never auto-installed; every hook answers `--selftest` first.
 - `reference tools/*.py`: run only when someone runs them. They are
   meant to be adapted; their docstrings say what each reads and writes.
-  Only one makes a network call: `rootstock_update_check.py` fetches
-  this repo's `UPGRADES.md` over HTTPS (or reads a local clone) and sends
-  nothing. `security_audit.py` makes plain requests to YOUR deployment
-  only when you pass `--url`.
+  Two can make a network call: `rootstock_update_check.py` fetches this
+  repo's `UPGRADES.md` over HTTPS (or reads a local clone) and sends
+  nothing; `security_audit.py` makes plain requests to YOUR deployment,
+  only when you pass `--url`. No other kit script touches the network.
 - `skills/*/SKILL.md`: prompt text Claude follows when the owner types
   the slash command; a skill can ask Claude to run a kit script, never
   anything outside the project.
