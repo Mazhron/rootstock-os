@@ -984,6 +984,12 @@ employee's selftest pins the exact string it was told to print.
   first (the "Apply an audit's findings with a batch edit script" entry's
   anchor rule applies to verdict strings too).
 
+- TRIED (2026-10-13, purpose_audit.py's clone fallback): a new selftest
+  case added a fourth flag entry above a check that pinned the count at
+  three. FAILED BECAUSE: a count check is a pinned phrase in disguise; the
+  case went in without reading the checks below it. DO INSTEAD: before
+  adding a case, grep the selftest for `== <number>` and `count(` and move
+  each pinned number in the same edit.
 See also: INTENT.md "Everything that can be measured is measured"; tools/
 law_gaps.py (the named corpus comment); "Apply an audit's findings with a
 batch edit script (anchors quoted from a report)".
