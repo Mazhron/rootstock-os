@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-13 12:52 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
+Updated 2026-10-13 13:08 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 | stale 1
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -43,7 +43,7 @@ Updated 2026-10-13 12:52 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | ok | fable | 2026-10-13 12:27 |
+| LESSONS.md | GREEN | STALE | fable | 2026-10-13 12:27 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 12:52 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
