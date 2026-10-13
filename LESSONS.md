@@ -1616,3 +1616,36 @@ PlantSystem._fit_floater, never by a placement rule.
 See also: flora.md "Wetland habitat law" (THE BASELINE RULE, THE WATER FIT);
 scripts/entities/plant.gd (setup, fit_sprite); scripts/world/plant_system.gd
 (_fit_floater, refit_floaters).
+
+## Never git stash to compare against a clean tree (the check script rewrote ledgers while the stash was held, 2026-10-13)
+Tags: lessons, gotchas, git | A stash in this repo is a trap: the check scripts append to ledgers on every run, so the pop refuses, and the discard verb the fix wants is the one the preserve guard refuses; compare with git show instead, and restore a stash by writing its files
+Keys: git stash, stash pop, stash, clean tree, compare against HEAD, local changes would be overwritten, git show HEAD, git show stash, union-merge, ledger conflict, checkout refused, preserve guard, restore the stash, before my change
+
+THE ONE RIGHT WAY: to ask "was this dead link / count / result there
+before my change?", never stash. Read the old version with `git show
+HEAD:<path>` into the scratchpad and run the checker there, or `git diff
+HEAD -- <path>` the single file; the ledgers in docs/history/ keep
+appending and the working tree stays whole. If a stash exists anyway
+and `git stash pop` refuses with "local changes would be overwritten"
+(a check script appended to ledger_heads, wiki_link_runs, wiki_links
+while the stash was held), do NOT reach for `git checkout --` (the
+preserve guard refuses the discard verb, and rightly): list the stash's
+files with `git stash show --name-only`, write each back with `git show
+stash@{0}:<path>`, and for the append-only ledgers that moved write the
+stash's lines first then the current lines not already present (the
+union-merge of WORKFLOWS "Pull when both machines appended"). Leave the
+stash entry in place; it is preserved, not popped.
+
+- TRIED (2026-10-13, the graphics-creation.md batch): `git stash -q &&
+  python tools/check_wiki_links.py | tail -1; git stash pop -q` to learn
+  whether the one dead link predated the new file. FAILED BECAUSE: the
+  checker appended to three ledgers while the stash was held, so the pop
+  refused; the reflex `git checkout -- <three ledgers>` was refused by
+  the preserve guard; the master-index edit and the morning's loop ledger
+  lines sat in the stash for three turns. DO INSTEAD: the dead link's
+  own line in the checker output already named the new file as its
+  source; read the output before testing a hypothesis with git, and when
+  a hypothesis needs the old tree, `git show HEAD:<path>` it.
+See also: WORKFLOWS.md "Pull when both machines appended the same
+generated ledgers"; tools/hooks/preserve_guard.py (the discard verbs);
+the restore script shape -> this entry (write, never checkout).
