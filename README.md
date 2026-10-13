@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.47** (2026-10-13). The graft log `UPGRADES.md` is the
+Kit version: **v1.48** (2026-10-13). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -967,9 +967,9 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   contradict a choice you made on purpose gets flagged, never overwritten.
 - You don't have to remember any of this: the install wires
   `rootstock_update_check.py` into your project's standup, which checks
-  this repo weekly (offline-safe, one ledger line per check) and reports
+  this repo every two days (offline-safe, one ledger line per check) and reports
   newer grafts by itself. What it does on the network: one HTTPS fetch of
-  this repo's UPGRADES.md, at most once a week, or a read of a local clone
+  this repo's UPGRADES.md, at most once every two days (weekly before v1.48), or a read of a local clone
   if you point it at one. It sends nothing about your project anywhere.
 - **You choose the noise level.** The stamp carries your update policy -
   `ask` (default: present the grafts, you pick), `auto` (apply everything,
@@ -1029,7 +1029,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   agnostic and the front door makes Claude ASK who manages rather than
   assume. The skills and hooks are Claude Code mechanisms.
 - **Is anything sent anywhere?** No. Everything is local files and git.
-  The only network calls are the optional weekly fetch of this repo's
+  The only network calls are the optional two-day fetch of this repo's
   graft log and, when you run the security audit with `--url`, plain
   requests to your own deployment to read its headers; nothing about your
   project leaves your machine.

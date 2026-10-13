@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-13 12:05 | items 79 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 0 | stale 1
+Updated 2026-10-13 12:27 | items 79 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -43,12 +43,12 @@ Updated 2026-10-13 12:05 | items 79 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 0 
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | STALE | sonnet-flag-1013 | 2026-10-13 11:44 |
+| LESSONS.md | GREEN | ok | fable | 2026-10-13 12:27 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| UPGRADES.md | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
+| UPGRADES.md | GREEN | ok | fable | 2026-10-13 12:27 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
@@ -95,7 +95,7 @@ Updated 2026-10-13 12:05 | items 79 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/refresh_kit.py | GREEN | ok | fable | 2026-09-14 16:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/retrieval_eval.py | GREEN | ok | fable | 2026-10-13 11:45 |
-| reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 12:27 |
 | reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
 | reference tools/run_all.py | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
@@ -1230,3 +1230,18 @@ FLAG: Documentation-only, additive and accurate to the new script; no instructio
 SAYS: Measure the lesson matcher's recall and precision against a hand-written query set and against the project's own replayed prompts; print the report, rewrite docs/history/retrieval_eval.txt and append one ledger line (the append goes through tools/_ledger.py, which also updates its sidecar docs/history/ledger_heads.txt). Reads LESSONS.md, the query file and this project's transcripts (every ~/.claude/projects folder whose name carries the repo name, top level only); writes nothing else.
 DOES: Reads LESSONS.md, tools/retrieval_queries.txt and this project's top-level transcripts; scores the query set and replays the newest 200 typed prompts through lesson_log.match and signals; prints the report, rewrites docs/history/retrieval_eval.txt, appends one line to retrieval_eval_runs.txt through _ledger.py (which keeps its sidecar ledger_heads.txt); no deletes, no spawns, bounded window.
 FLAG: Re-flag after sonnet-flag-1013's YELLOW: the PURPOSE line now names the ledger_heads sidecar and the transcript folder match it omitted; the code did not change.
+
+### 2026-10-13 12:27 | reference tools/rootstock_update_check.py | GREEN | fable | WS1 | 9ef3a656
+SAYS: Reads the project's install stamp from CLAUDE.md, fetches the kit's current UPGRADES.md (a local clone if configured, else the public repo over HTTPS), and prints any graft entries newer than the install plus what the CEO's update policy says to do about them; it only reports, a manager Claude performs the actual grafts by hand.
+DOES: Reads the CLAUDE.md install stamp, fetches UPGRADES.md from a local clone (git pull) or the public repo over HTTPS, compares versions, prints newer graft entries and the policy action, appends one line to rootstock_updates.txt; the only change since the last flag is CHECK_EVERY_DAYS 7 to 2 and the docstring and INTENT line saying so (kit v1.48)
+FLAG: Body otherwise identical to the GREEN version of 2026-09-13; the cadence change is disclosed in PURPOSE, INTENT and the docstring; still no grafts performed, no writes outside its ledger
+
+### 2026-10-13 12:27 | UPGRADES.md | GREEN | fable | WS1 | ff7fa716
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: The append-only graft log; the v1.48 entry appended today follows the WHAT/CARRIES/GRAFT/README protocol and bumps the version line; nothing above it edited
+FLAG: Stale only because v1.48 was appended; shape unchanged
+
+### 2026-10-13 12:27 | LESSONS.md | GREEN | fable | WS1 | ebe738f0
+SAYS: One entry per task shape: THE ONE RIGHT WAY first, then what was tried, why it failed and what to do instead, then nuance headlines as they accumulate, so a future session does the correct thing first instead of repeating trial and error.
+DOES: The one-right-way entries, each with Tags, Keys and TRIED/FAILED/DO INSTEAD; stale because the 11:47 stash lesson was appended after the 11:44 flag
+FLAG: Read-only look at the newest entry: same shape as the rest, a query line beside it in retrieval_queries.txt

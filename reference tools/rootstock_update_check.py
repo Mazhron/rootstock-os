@@ -17,7 +17,7 @@ POLICIES (the CEO sets the word in the stamp line, changeable any time):
               and records the skipped ones so they are never re-offered
   never     - no standup checks; only when the CEO explicitly asks
 
-Checks are rate-limited to once a week (--force bypasses) and every check
+Checks are rate-limited to once every two days (--force bypasses; weekly until kit v1.48) and every check
 appends one line to its ledger, so standup can carry the result for free.
 
 Usage:  python tools/rootstock_update_check.py [--force] [--stamp vX.Y]
@@ -33,8 +33,9 @@ PURPOSE: Reads the project's install stamp from CLAUDE.md, fetches the kit's
   the CEO's update policy says to do about them; it only reports, a manager
   Claude performs the actual grafts by hand.
 INTENT: so a project can learn when the kit has grown new concepts worth
-  grafting; checks are rate limited to once a week so the check is cheap
-  enough to ride the standup habit.
+  grafting; checks are rate limited to once every two days (the CEO 2026-10-13:
+  once per day or two, not weekly) so the check is cheap enough to ride the
+  standup habit.
 
 Search keys: rootstock update, kit version check, graft check, upgrade.
 See also: UPGRADES.md (the graft log + protocol, in the kit repo).
@@ -53,7 +54,7 @@ LEDGER = os.path.join(ROOT, "docs", "history", "rootstock_updates.txt")
 KIT_CLONE = ""  # optional local clone of rootstock-os; "" = fetch over HTTPS
 KIT_RAW = ("https://raw.githubusercontent.com/Mazhron/rootstock-os/"
            "main/UPGRADES.md")
-CHECK_EVERY_DAYS = 7
+CHECK_EVERY_DAYS = 2   # kit v1.48 (the CEO 2026-10-13: once per day or two, not weekly)
 
 
 def read_stamp():

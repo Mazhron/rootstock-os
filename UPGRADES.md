@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.47** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.48** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1834,3 +1834,27 @@ add a query line every time a lesson is written. No hook, no settings
 change, one new file plus the query file.
 README: "Questions people ask" (the RAG question), "What is in the box"
 (the reference tools count and the lesson loop phrase), "Kit version:".
+
+### v1.48 - 2026-10-13 - The two-day update check, and the community path announced
+WHAT: The CEO opened the kit's community path ("it's time to get
+Rootstock_os to begin it's path down community involvement") and ruled on
+the plan the same day: contributions land in an inbox the sync never
+writes (the direction flip is a later entry), text only at first, a code
+RECOMMENDATION is welcome when it says how it works, why it works, what it
+might hurt and carries a before/after ledger, every owner is ASKED whether
+to take part and a chosen name plus a date/time is stamped on whatever
+they contribute, and the update check runs "once per day or two from now
+on" instead of weekly, with a push schedule for knowledge beside it. This
+entry ships the one piece that is a kit change today: CHECK_EVERY_DAYS 7
+to 2 in the update checker. The rest is the origin's roadmap entry NS-38
+and its topic file (docs/systems/rootstock-community.md: the rulings, the
+three phases, the founding exchange verbatim), built in later entries.
+CARRIES: reference tools/rootstock_update_check.py (CHECK_EVERY_DAYS = 2,
+the docstring and INTENT line); README "Updating an installed project"
+and "Questions people ask" (the cadence claim); this entry.
+GRAFT: set CHECK_EVERY_DAYS to 2 in your copy of the update checker (or
+replace it whole if you took it unadapted) and re-run it once; nothing
+else changes until the community entries land. No hook, no settings
+change.
+README: "Updating an installed project" (weekly to every two days),
+"Questions people ask" (the network-call sentence), "Kit version:".
