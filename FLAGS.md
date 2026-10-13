@@ -33,23 +33,23 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-13 13:33 | items 86 | GREEN 83 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
+Updated 2026-10-13 14:14 | items 86 | GREEN 83 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
+| 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-10-13 14:13 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
+| CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | LESSONS.md | GREEN | ok | fable | 2026-10-13 13:33 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
-| SECURITY.md | GREEN | ok | fable | 2026-10-13 12:52 |
+| SECURITY.md | GREEN | ok | fable | 2026-10-13 14:13 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| UPGRADES.md | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
+| UPGRADES.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
@@ -82,26 +82,26 @@ Updated 2026-10-13 13:33 | items 86 | GREEN 83 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/check_wiki_links.py | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:37 |
 | reference tools/checkpoint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
-| reference tools/contribution_lint.py | GREEN | ok | fable | 2026-10-13 12:52 |
+| reference tools/contribution_lint.py | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/correction_log.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/format_lint.py | GREEN | ok | fable | 2026-10-01 16:55 |
-| reference tools/guard_replay.py | GREEN | ok | fable | 2026-09-30 11:57 |
+| reference tools/guard_replay.py | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
 | reference tools/ledger_trends.py | GREEN | ok | fable | 2026-10-13 12:52 |
 | reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
-| reference tools/purpose_audit.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
+| reference tools/purpose_audit.py | GREEN | ok | fable | 2026-10-13 14:14 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/readme_lint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/refresh_kit.py | GREEN | ok | fable | 2026-10-13 13:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/retrieval_eval.py | GREEN | ok | fable | 2026-10-13 11:45 |
-| reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 12:27 |
+| reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 14:13 |
 | reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
 | reference tools/run_all.py | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
@@ -114,7 +114,7 @@ Updated 2026-10-13 13:33 | items 86 | GREEN 83 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| skills/brief/SKILL.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
+| skills/brief/SKILL.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:10 |
 | skills/checkpoint/SKILL.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/flag/SKILL.md | GREEN | ok | fable-manager | 2026-09-29 16:38 |
@@ -124,6 +124,8 @@ Updated 2026-10-13 13:33 | items 86 | GREEN 83 | YELLOW 3 | RED 0 | unflagged 0 
 | skills/ship/SKILL.md | GREEN | ok | fable | 2026-09-30 12:22 |
 | skills/standup/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | 0 - READ ME FIRST, CLAUDE.md | GREEN | GONE | sonnet-fd1 | 2026-09-13 12:20 |
+| .github/workflows/contribution-lint.yml | YELLOW | GONE | fable | 2026-10-13 14:13 |
+| community/code/README.md | GREEN | GONE | fable | 2026-10-13 14:13 |
 <!-- tally:end -->
 
 ## The flags (append-only, newest last)
@@ -1407,3 +1409,73 @@ FLAG: The sonnet yellow (PURPOSE omitted the derive step and the ledger write) i
 SAYS: Derive the kit's knowledge tree from the origin's LESSONS.md: split every entry by domain (Tags, then the override table, else harness) into knowledge/lessons/<domain>.md, write the manifest the front door reads (one row per knowledge file plus the wanted holes) and rewrite the kit's LESSONS.md as the lesson law plus a pointer index; report what changed and ledger one line. Never deletes.
 DOES: Reads the root LESSONS.md through lesson_log.entries, assigns a domain per entry (overrides, the tag table, else harness), writes knowledge/lessons/<domain>.md, knowledge/MANIFEST.md and the pointer LESSONS.md under the kit folder only when they changed, reports orphans without touching them, appends one deduped ledger line; the selftest writes to a temp dir with the ledger off and counts its checks as it runs
 FLAG: Both sonnet yellows fixed: the check count is counted (18), the stamp strip matches only the GENERATED line's date; no deletion path anywhere
+
+### 2026-10-13 14:09 | reference tools/contribution_lint.py | GREEN | sonnet-flag-1013d | WS1 | 2e46a9b8
+SAYS: Refuse, on a pull request from anyone but the owner, any change outside the community inbox, any non-text or shell-shaped content, any off-allowlist URL and any instruction aimed at a reading Claude, so that nothing a stranger pulls from the kit can make their Claude run code; the code lane (community/code/) admits only Python that is headed, stamped, self-testing, network-free and free of dynamic execution.
+DOES: Static regex lint over changed files: path lane check, name shapes, stamp and Tags, shell lines, URL allowlist, injection phrases, and for code-lane .py the header, selftest, network and dynamic execution rules. Reads files as text only, runs git diff, appends a ledger line only if docs/history exists, owner login comes from --owner. No network, no deletion, no hardcoded owner name.
+FLAG: none material. Minor: regex gate is bypassable by indirect imports (from os import system, getattr tricks) so CI replay and owner review are the real backstops; the text-lane FAIL message omits kind code; selftest leaves its temp folder (stated).
+
+### 2026-10-13 14:09 | reference tools/guard_replay.py | GREEN | sonnet-flag-1013d | WS1 | 0ad116c0
+SAYS: Replays the four PreToolUse guards' pure judge functions (diet_guard.evaluate, bash_guard.verdict, preserve_guard.evaluate, brief_guard.missing_pieces) against the last N days of harness transcript traffic in a sandbox (a fresh in-memory diet_guard state per run, no grant, no ledger writes except its own), counts replayed / would-refuse / refused-live calls per guard per rule, and prints the NEW CATCH and LOST deltas with `--show <guard>` giving up to ten one-line examples each; never executes a command and never modifies a transcript, a hook, or a hook's state. FILE MODE (`--file <path> ...`, the code gate for contributed Python): judges each file as a synthetic Write plus every line as a Bash command, reads no transcript, writes no ledger, exits 1 on any refusal.
+DOES: Replays the four hook judges over recorded transcripts in a sandbox and prints deltas, appending its own ledger on --record. File mode judges each file as a synthetic Write plus each line as Bash text, writes nothing, exits 1 on refusal. Never executes a command, no network, no deletion code.
+FLAG: none material. Minor: preserve_guard shells out to read-only git (disclosed in docstring); selftest leaves a temp dir behind (purpose does not say); transcript_dirs filter on everwood and workstation names owner/travis are origin specific hardcodes.
+
+### 2026-10-13 14:09 | reference tools/rootstock_update_check.py | YELLOW | sonnet-flag-1013d | WS1 | 91ef91b3
+SAYS: Reads the project's install stamp from CLAUDE.md, fetches the kit's current UPGRADES.md (a local clone if configured, else the public repo over HTTPS), and prints any graft entries newer than the install plus what the CEO's update policy says to do about them; it only reports, a manager Claude performs the actual grafts by hand. It pins to the kit's signed git tag (vX.Y) and verifies UPGRADES.md against the tag's SHA256SUMS before it reports; a mismatch stops the report, a missing tag is flagged unverified.
+DOES: Reads the CLAUDE.md stamp, fetches UPGRADES.md from main over HTTPS (or a local clone after git pull), then fetches SHA256SUMS and UPGRADES.md at tag vX.Y and compares sha256, prints newer graft entries, appends a ledger line. Report only, no deletion, no execution of fetched text. Network only in fetch_text via urlopen, plus a git pull in clone mode.
+FLAG: Docs say the one fetch is the only network reach, but clone mode runs git pull (network) unannounced. Clone mode is not pinned to the tag and prints VERIFIED local clone from the clone's own SHA256SUMS, which proves nothing. The script checks only a hash fetched from the same host; it never verifies the tag's signature, though the purpose says it pins to the signed tag. When the tag is missing it still lists grafts from main, labelled unverified. No stale CEO identity comparison; CEO appears only in prose.
+
+### 2026-10-13 14:09 | 0 - READ ME FIRST.md | YELLOW | sonnet-flag-1013d | WS1 | a317ae7f
+SAYS: The kit's front door: walks a receiving Claude through the install in order (ask the CEO first, including whether to take part in the kit's community and under what name, which the install stamp records; then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: Install runbook with STEP 0 to 5 and DEFINITION OF DONE, pointing at method files. The UPDATING AN EXISTING INSTALL section tells a Claude never to reinstall, to graft concepts per UPGRADES.md, and to update only from a VERIFIED release, stopping on an UNVERIFIED line. Text only, no commands, no injected instructions beyond the stated runbook.
+FLAG: The PURPOSE line describes only the install path and never mentions the update section or its verify and stop rule, so the purpose is partly stale. The claim that the checker pins to the signed tag overstates slightly, since it checks a hash, not the signature.
+
+### 2026-10-13 14:09 | CONTRIBUTING.md | GREEN | sonnet-flag-1013d | WS1 | cc78cef9
+SAYS: the two guardrails every Rootstock update passes through - THE FORMAT (one header on every thing, checked by script and enforced by a hook) and THE PURPOSE AUDIT (a read-only comparison of what a thing says against what it does, flagged green / yellow / red and filed in FLAGS.md) - and, since kit v1.49, THE COMMUNITY PATH (text into the inbox by pull request behind the contribution lint; since v1.51 code into a never-wired code lane behind three CI checks, and a change to a kit file as a proposal in an issue) - written so a contributor, a maintainer and any Claude apply them the same way.
+DOES: Describes the format law, the purpose audit, and the community path: text inbox, never-wired code lane with three CI checks, code proposals as issues. The code lane rules match what contribution_lint.py and the workflow actually do (headers, stamp kind code, selftest, network and dynamic execution bans, 60 second selftest, replay).
+FLAG: none. Purpose line already names v1.49 and v1.51 additions.
+
+### 2026-10-13 14:09 | SECURITY.md | YELLOW | sonnet-flag-1013d | WS1 | 923e772d
+SAYS: the kit's security policy for readers and contributors - which parts of Rootstock execute on a machine and only after whose yes, which parts can never execute, what the community gate refuses, and the private door for reporting a problem - so nobody has to guess whether pulling this repo is safe.
+DOES: Security policy text: what runs when pulling the repo, the two contributor lanes and what the lint and CI checks refuse, never-wired rule, how to verify a release via SHA256SUMS and signed tag, private reporting door. Text only, no commands, no injected instructions.
+FLAG: Says the update checker reads a local clone or makes a read-only GET and that only two scripts touch the network; clone mode also runs git pull, a network reach not stated. Says the checker does the same as the by-hand check (hash plus tag signature) but it verifies only the hash, never the signature. Branch protection, signed commits and sync behaviour are claims about repo settings and sync_kit_repo.py that this file cannot show.
+
+### 2026-10-13 14:09 | UPGRADES.md | GREEN | sonnet-flag-1013d | WS1 | ea7b34ef
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: Append-only graft log. CURRENT KIT VERSION line reads v1.51 and the v1.51 entry records the code lane, guards in CI, SHA256SUMS and signed tag, with CARRIES and GRAFT notes that match the three read scripts and SECURITY.md. States no hook or settings change. Text only.
+FLAG: none. Claims about sync_kit_repo.py (SHA256SUMS written, signed tag, refusal without key) were not checked here since that script was outside this audit.
+
+### 2026-10-13 14:10 | skills/brief/SKILL.md | GREEN | sonnet-flag-1013d | WS1 | 2ae311b1
+SAYS: Compose and dispatch a sub-agent (employee) brief that follows the delegation laws, stamped, self-contained, budget-capped, diff-only reporting, then verify cheap and ledger the outcome.
+DOES: Skill text telling the manager to compose a stamped, self-contained, budget-capped brief with verbatim token, one-turn, preservation and intent lines, then log the intent claim (resolve now requires --theirs, --verdict and --source), verify and ledger. Matches its purpose; the changed line is only the full intent_log resolve command.
+FLAG: none. Minor: the resolve line asserts the tool refuses a missing flag, which lives in intent_log.py and was not read here; names Ken Brown and Mazhron as quoted sources, which is attribution, not instruction.
+
+### 2026-10-13 14:13 | .github/workflows/contribution-lint.yml | YELLOW | fable | WS1 | 40c20076
+SAYS: (no PURPOSE line)
+DOES: Runs on pull requests to main with contents read permission on GitHub's runner: checks out full history, runs the contribution lint with actor and owner, replays the kit's guards over changed community/code .py files, and runs each file's --selftest with a 60 second timeout; nothing runs on a reader's machine, no secrets, no deploy.
+FLAG: The check runs from the pull request's own checkout, so a pull request that edits the lint, the replay or this file is judged by its own copy; the backstops are the lint's path rule, the required status check and the owner's review (SECURITY.md says so since v1.51). Header version and the merge verb fixed in the same batch.
+
+### 2026-10-13 14:13 | community/code/README.md | GREEN | fable | WS1 | 6caef51c
+SAYS: Say how a stranger contributes a Python script to the kit, what the pull request check refuses, and why a merged script is never run by anyone's machine until the owner grafts it in by hand.
+DOES: Contributor-facing text on the code lane: the folder and file names, the four header lines and the stamp with kind code, the selftest, the banned network and dynamic execution, the three CI checks, and that a merged file is never wired and is grafted by hand after a read-only audit.
+FLAG: none; a README.md inside the lane gets only the text lint, which the page does not spell out (a later wording batch)
+
+### 2026-10-13 14:13 | reference tools/rootstock_update_check.py | GREEN | fable | WS1 | 220b5e8b
+SAYS: Reads the project's install stamp from CLAUDE.md, fetches the kit's current UPGRADES.md (a local clone if configured, else the public repo over HTTPS), and prints any graft entries newer than the install plus what the CEO's update policy says to do about them; it only reports, a manager Claude performs the actual grafts by hand. It pins to the kit's release tag (vX.Y) and verifies UPGRADES.md against the tag's SHA256SUMS before it reports; a mismatch stops the report, a missing tag is flagged unverified and still lists main's grafts. The checksum proves the files match the release, not who signed it: the tag's signature is checked by hand (git tag -v, or the Verified badge in the repo's tags view). With KIT_CLONE set it runs git pull on that clone first (a second network reach) and verifies against the clone's own SHA256SUMS, unpinned.
+DOES: Reads the install stamp, fetches main's UPGRADES.md (or pulls a local clone), pins to the release tag, verifies UPGRADES.md against the tag's SHA256SUMS, lists newer grafts with the policy verdict, one ledger line per check; the only kit tool that reaches the network.
+FLAG: the v1.51 yellow (the clone branch's pull unannounced, the signature claim overstated, the unpinned clone mode) is fixed in the PURPOSE text this batch; the checksum proves the files, the signature stays a hand check
+
+### 2026-10-13 14:13 | 0 - READ ME FIRST.md | GREEN | fable | WS1 | 66975207
+SAYS: The kit's front door (and, for an existing install, the UPDATING section: graft only from a verified release): walks a receiving Claude through the install in order (ask the CEO first, including whether to take part in the kit's community and under what name, which the install stamp records; then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: The install runbook in order, plus the UPDATING section for an existing install: graft only from a verified release, an UNVERIFIED line means stop.
+FLAG: the v1.51 yellow fixed: the PURPOSE now names the UPDATING section and the signature is stated as the reader's own check
+
+### 2026-10-13 14:13 | SECURITY.md | GREEN | fable | WS1 | 9ec6a175
+SAYS: the kit's security policy for readers and contributors - which parts of Rootstock execute on a machine and only after whose yes, which parts can never execute, what the community gate refuses, and the private door for reporting a problem - so nobody has to guess whether pulling this repo is safe.
+DOES: The security policy: what pulling runs (nothing), the two network-reaching tools including the checker's clone pull, what a contributor can change in each lane and what the gate refuses, the CI backstop paragraph, how a release is verified by hand and by the checker (the checksum half), and the private reporting door.
+FLAG: the v1.51 yellow fixed: the clone pull is stated, the checker's claim is the checksum only, the pull-request-judges-its-own-copy point and its backstops are written
+
+### 2026-10-13 14:14 | reference tools/purpose_audit.py | GREEN | fable | WS1 | 46772371
+SAYS: keep the kit's flag ledger (FLAGS.md in the kit folder): every kit thing's latest flag (GREEN / YELLOW / RED), who gave it and when, whether the thing changed since (STALE), the ones nobody has audited yet (UNFLAGGED), and the tally - regenerated in place from the entries; `--flag` appends one entry (SAYS = the thing's own PURPOSE line, DOES = what the reviewer found it actually does, FLAG = why the color).
+DOES: Lists the kit's things and their flag state (unflagged, stale, color), files a flag entry append-only into FLAGS.md with the thing's PURPOSE line and content hash, keeps the tally, and since v1.51 resolves a kit-repo-only item (community/, .github/) under the public clone when the kit folder lacks it.
+FLAG: none; the clone fallback is covered by a new selftest case and the entry count check moved from three to four

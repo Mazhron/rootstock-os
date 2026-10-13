@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.50** (2026-10-13). The graft log `UPGRADES.md` is the
+Kit version: **v1.51** (2026-10-13). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -943,9 +943,21 @@ and is grafted into its knowledge file (`knowledge/<kind>/<domain>.md`,
 one row in `knowledge/MANIFEST.md`) in a later kit version that names
 you.
 
-A hook, a tool or a change to a kit file is welcome as a PROPOSAL in the
+Code has its own lane (kit v1.51): Python goes in one folder under
+`community/code/<YYYY-MM-DD-name-slug>/`, by pull request. Every .py
+carries the four header lines and a stamp with kind `code`, answers
+`--selftest`, imports no network module and calls nothing that executes
+text or a shell. Three checks run on the pull request, all on GitHub's
+runner and none on a reader's machine: the contribution lint, a replay of
+the kit's own bash guard and preserve guard over the file, and the file's
+own selftest under a 60 second timeout. A merged file is never wired: it
+sits in `community/code/` with your stamp, a different Claude audits its
+purpose read-only and files a flag, and the owner may graft it into the
+kit in a later version that names you. Only then does an install see it.
+
+A change to an existing kit file is still welcome as a PROPOSAL in the
 "Code proposal" issue form (how it works, why it works, what it might
-hurt, a before/after ledger), never as a pull request; the owner builds
+hurt, a before/after ledger); the owner builds
 it inside the kit's laws and credits you. The forms, the template and
 the whole of the rules: `community/README.md`, `CONTRIBUTING.md` and
 `SECURITY.md`. An installed project is asked at STEP 0 whether its owner
@@ -1000,6 +1012,13 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   newer grafts by itself. What it does on the network: one HTTPS fetch of
   this repo's UPGRADES.md, at most once every two days (weekly before v1.48), or a read of a local clone
   if you point it at one. It sends nothing about your project anywhere.
+- **Updates are verifiable (kit v1.51).** The repo carries `SHA256SUMS`
+  beside every file, and each kit version from v1.51 is one signed tag
+  (`v1.51` and on). The checker pins to the tag, fetches `SHA256SUMS` and
+  `UPGRADES.md` at it, verifies the hash and prints `VERIFIED v1.51
+  (checksum matches)` before it lists a single graft; on a mismatch it
+  prints `UNVERIFIED` and lists nothing. Graft only from a VERIFIED
+  release, and tell the kit's owner about an UNVERIFIED one.
 - **You choose the noise level.** The stamp carries your update policy -
   `ask` (default: present the grafts, you pick), `auto` (apply everything,
   report after), `relevant` (only offer grafts that benefit your project;
@@ -1097,7 +1116,9 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   employee walks. A key that was ever public is rotated, never merely
   removed.
 - **Can I contribute?** Yes: text by pull request into `community/inbox/`
-  (see "Taking part" above), code as a proposal in an issue. The kit's
+  (see "Taking part" above), Python by pull request into
+  `community/code/` (never wired, audited read-only before any graft), and
+  a change to an existing kit file as a proposal in an issue. The kit's
   own updates pass two guardrails that apply to its authors too: every new or changed thing carries
   the header (`PURPOSE:`, `INTENT:`, search keys, see also) or the lint
   refuses it, and every changed thing gets a read-only purpose audit
@@ -1112,6 +1133,13 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   project, the domain files only for theirs. Since v1.50 the origin's
   lessons live under `knowledge/lessons/` by domain, and `LESSONS.md` is
   the law plus a pointer index.
+- **How do I know a release was not tampered with?** Every release carries
+  `SHA256SUMS` at the repo root, and each kit version from v1.51 is a
+  signed tag. Compare your files against `SHA256SUMS` and check that the
+  tag shows as verified in the repo's tags view; the update checker does
+  the checksum half for you: it prints `VERIFIED v1.51 (checksum matches)`
+  before it lists grafts and `UNVERIFIED` (and lists nothing) when the
+  hash disagrees. The signature stays your check.
 
 ## What is in the box
 

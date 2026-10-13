@@ -1,12 +1,17 @@
-# THE CONTRIBUTION LINT on every pull request (Rootstock, kit v1.49, NS-38 phase 1).
+# THE CONTRIBUTION LINT on every pull request (Rootstock, kit v1.49, NS-38 phase 1; the code lane kit v1.51, phase 3).
 # PURPOSE: run reference tools/contribution_lint.py against the files a pull
 #   request changes, so a contribution outside community/inbox/, a non-text
 #   file, a shell-shaped line, an off-allowlist URL or an instruction aimed
-#   at a reading Claude never merges; the owner's own pushes pass untouched.
+#   at a reading Claude fails the check (branch protection makes it required,
+#   so it cannot merge green); the owner's own pushes pass untouched.
+#   The code lane (community/code/, phase 3) also replays the kit's own guards
+#   over each contributed .py and runs its --selftest on this runner only.
 # INTENT: Mazhron 2026-10-13: "we must ensure that no user could pull code
 #   and be forced to run it."
-# Search keys: contribution lint, pull request check, community gate, CI.
-# See also: reference tools/contribution_lint.py; community/README.md.
+# Search keys: contribution lint, pull request check, community gate, CI,
+#   code lane, guard replay, selftest.
+# See also: reference tools/contribution_lint.py; reference tools/guard_replay.py;
+#   community/README.md; community/code/README.md.
 name: contribution-lint
 
 on:
@@ -28,3 +33,11 @@ jobs:
           python-version: "3.12"
       - name: Lint the changed files
         run: python "reference tools/contribution_lint.py" --base "origin/${{ github.base_ref }}" --actor "${{ github.actor }}" --owner "${{ github.repository_owner }}"
+      - name: Replay the guards against contributed code
+        run: |
+          files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- 'community/code/' | grep '\.py$' || true)
+          if [ -z "$files" ]; then echo "no contributed code"; else python "reference tools/guard_replay.py" --file $files; fi
+      - name: Run each contributed selftest (60 s each, on this runner only)
+        run: |
+          files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" -- 'community/code/' | grep '\.py$' || true)
+          for f in $files; do echo "== $f"; timeout 60 python "$f" --selftest || exit 1; done

@@ -5,8 +5,9 @@ PURPOSE: the two guardrails every Rootstock update passes through - THE
   hook) and THE PURPOSE AUDIT (a read-only comparison of what a thing says
   against what it does, flagged green / yellow / red and filed in
   FLAGS.md) - and, since kit v1.49, THE COMMUNITY PATH (text into the
-  inbox by pull request behind the contribution lint, code as a proposal
-  in an issue) - written so a contributor, a maintainer and any Claude
+  inbox by pull request behind the contribution lint; since v1.51 code
+  into a never-wired code lane behind three CI checks, and a change to a
+  kit file as a proposal in an issue) - written so a contributor, a maintainer and any Claude
   apply them the same way.
 INTENT: Mazhron 2026-09-13: "Rootstock-os will eventually, hopefully, turn
   into a community involved system. Guardrails need to be in place so
@@ -91,7 +92,7 @@ FLAGS.md is committed and published with the kit: it is the one file
 that references every flag, tallies them, and holds every finding for the
 next reviewer.
 
-## The community path (kit v1.49, NS-38 phase 1)
+## The community path (kit v1.49, NS-38 phase 1; the code lane kit v1.51, phase 3)
 
 Two doors, by what you bring:
 - TEXT (a lesson, a gotcha, a page of field notes, design notes, a
@@ -106,12 +107,28 @@ Two doors, by what you bring:
   the file stays in the inbox for good and is grafted into its knowledge
   file (knowledge/<kind>/<domain>.md, one row in knowledge/MANIFEST.md;
   kit v1.50) in a later kit batch with the stamp kept (community/README.md).
-- CODE (a hook, a tool, a skill, a change to a kit file): a PROPOSAL in
-  the "Code proposal" issue form, with HOW IT WORKS, WHY IT WORKS, WHAT
-  IT MIGHT HURT and a LEDGER (before and after). The owner builds it
-  inside the laws above and credits the proposer in UPGRADES.md. A pull
-  request carrying code is refused by the lint, by design: nothing a
-  stranger pulls from the kit may be able to run on their machine.
+- CODE (kit v1.51): Python goes in one folder under
+  `community/code/<YYYY-MM-DD-name-slug>/` (one or more .py files, an
+  optional README.md), by pull request. Each .py carries the four header
+  lines in its docstring, the stamp line `Contributed by: <name> |
+  <YYYY-MM-DD HH:MM> | code | <domain>`, and answers `--selftest`; it
+  imports no network module and calls nothing that executes text or a
+  shell (eval, exec, compile, __import__, os.system, os.popen, shell=True,
+  ctypes, marshal, pickle.loads). Three checks run on the pull request on
+  GitHub's runner, never on a reader's machine: the contribution lint, a
+  replay of the kit's own bash guard and preserve guard over each file
+  (reference tools/guard_replay.py; a deletion call or a shell-shaped line
+  is a refusal), and each file's `--selftest` under a 60 second timeout.
+  A merged file is NEVER wired: it sits in `community/code/` with its
+  stamp, a different Claude audits its purpose read-only (the flag skill)
+  and files a FLAGS.md entry, and only then may the owner graft it into
+  reference tools/ or hooks/ in a later kit batch, crediting the stamp in
+  UPGRADES.md. Anything outside `community/` (hooks/, settings.json,
+  reference tools/, .github/) stays refused from a non-owner. A change to
+  an existing kit file is still a PROPOSAL in the "Code proposal" issue
+  form, with HOW IT WORKS, WHY IT WORKS, WHAT IT MIGHT HURT and a LEDGER
+  (before and after); the owner builds it inside the laws above and
+  credits the proposer in UPGRADES.md.
 The owner's own batches arrive by the sync script and pass the lint
 untouched; their gates are the format lint, the README lint and the
 purpose audit below. Main takes pull requests only, reviewed by the
@@ -132,10 +149,16 @@ reference tools/contribution_lint.py; SECURITY.md; .github/ISSUE_TEMPLATE/
 - Nothing deletes (THE PRESERVATION LAW): a file retires, a section goes
   to the cold shelf, a wrong line is marked superseded.
 - No em or en dashes in text a person reads.
+- The release is verifiable (kit v1.51): the repo carries `SHA256SUMS`
+  beside every file, each kit version is a signed tag, and the update
+  checker prints a VERIFIED line before it lists any graft (SECURITY.md
+  "Verifying a release").
 
 Search keys: contributing, format law, purpose audit, flags, header,
 PURPOSE line, INTENT line, safety wiring, community update, pull
-request, guardrails, community inbox, code proposal, contribution lint.
+request, guardrails, community inbox, code proposal, contribution lint,
+code lane, community/code, guard replay, never wired, signed tag,
+SHA256SUMS, verified release.
 See also: FLAGS.md (the flag ledger); reference tools/format_lint.py;
 reference tools/purpose_audit.py; hooks/format_guard.py; skills/flag (the
 ritual); HOOKS_METHOD.md (Tier 3b); UPGRADES.md (the graft protocol);

@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.50** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.51** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1959,3 +1959,59 @@ README: "What is in the box" (the knowledge/ row, the LESSONS.md row, the
 reference tools count), "Taking part" (where a merged file is grafted),
 "Questions people ask" ("Which files do I actually need?"), "Kit
 version:".
+
+### v1.51 - 2026-10-13 - The code gate: a code lane, the guards in CI, checksums and a signed tag per release
+WHAT: NS-38 phase 3. The CEO's intent, verbatim: "Anything pushed would
+need to come with whatever is needed to authenticate that the code is not
+malicious, we must ensure that no user could pull code and be forced to run
+it." The go word: "Lets do phase 3". Four parts. (1) A CODE LANE: a
+contributor may add Python under `community/code/<YYYY-MM-DD-name-slug>/`
+(one or more .py files, an optional README.md). The contribution lint now
+refuses, in that lane, a .py without the four header lines (PURPOSE,
+INTENT, Search keys, See also) in its docstring; without the stamp line
+`Contributed by: <name> | <YYYY-MM-DD HH:MM> | code | <domain>`; without
+`--selftest`; importing a network module (urllib, requests, socket,
+http.client and the like); calling eval, exec, compile, __import__,
+os.system, os.popen, shell=True, ctypes, marshal or pickle.loads; an
+off-allowlist URL; and an instruction aimed at a reading Claude. The inbox
+stays markdown only, and anything outside community/ (hooks/, settings.json,
+reference tools/, .github/) stays refused from a non-owner. (2) THE GUARDS
+IN CI: the pull request check gains two steps for contributed .py files:
+guard_replay.py replays the kit's own bash guard and preserve guard over
+each file (a deletion call or a shell-shaped line is a refusal), and each
+file's `--selftest` runs on GitHub's runner with a 60 second timeout.
+Nothing runs on any reader's machine. (3) NEVER WIRED: after a merge a
+contributed file sits in `community/code/` with its stamp and is never
+wired; a different Claude audits its purpose read-only (the flag skill) and
+files a FLAGS.md entry; the owner grafts it into reference tools/ or hooks/
+in a later kit batch, credits the stamp in this log, and only then does an
+install see it. The "Code proposal" issue form stays as the other door for
+a change to a kit file. (4) VERIFIABLE RELEASES: the sync script writes
+`SHA256SUMS` at the repo root (every file but .git and build junk) before
+each commit and, after each push, creates a SIGNED annotated tag
+`v<kit version>` and pushes it; an unsigned tag is never made, and a
+machine without the signing key prints a refusal. The first tagged release
+is v1.51. The update checker pins to the tag: it fetches `SHA256SUMS` and
+`UPGRADES.md` at `v<version>`, verifies the hash and prints `VERIFIED
+v1.51 (checksum matches)` before it lists grafts, or `UNVERIFIED` and
+refuses to list them on a mismatch.
+CARRIES: reference tools/contribution_lint.py (the code lane rules);
+reference tools/guard_replay.py (new: --file, --selftest); reference
+tools/sync_kit_repo.py (SHA256SUMS, the signed tag); reference
+tools/rootstock_update_check.py (pin and verify, --selftest);
+CONTRIBUTING.md "The community path"; SECURITY.md ("What a contributor can
+change", "Verifying a release"); 0 - READ ME FIRST.md (the verify line);
+kit repo only: .github/workflows/contribution-lint.yml,
+community/code/README.md, community/README.md,
+.github/PULL_REQUEST_TEMPLATE.md, README "Taking part", "Updating an
+installed project", "Questions people ask"; this entry.
+GRAFT: an installed project that takes contributions adopts the code lane
+rules into its own lint and the two CI steps (guard replay, selftest with a
+timeout). A project that publishes a kit adopts the checksum and tag steps
+into its sync script (SHA256SUMS before the commit, a signed tag after the
+push, a refusal when there is no signing key). Every install gains the
+verify step at update time: run the update checker and graft only from a
+VERIFIED release; the tag and SHA256SUMS are the proof, and an UNVERIFIED
+line means stop and tell the kit's owner. No hook, no settings change.
+README: "Taking part (the community inbox)", "Updating an installed
+project", "Questions people ask", "Kit version:".

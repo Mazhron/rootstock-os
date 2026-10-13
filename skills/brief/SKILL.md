@@ -62,7 +62,10 @@ appending/auditing). Then compose the brief with ALL of:
 AFTER THE EMPLOYEE RETURNS
 - Log the INTENT line as a claim (`python tools/intent_log.py --claim
   --actor <model> --task "..." --mine "<the line>"`) and resolve it once
-  verified (SAME / SIMILAR / DIFFERENT, source inferred or stated); a
+  verified with ALL THREE flags (`python tools/intent_log.py --resolve <id>
+  --theirs "<the task as you meant it>" --verdict SAME|SIMILAR|DIFFERENT
+  --source inferred|stated`; the tool refuses a resolve missing any one,
+  2026-10-13); a
   correction goes through /correct (tools/correction_log.py, actor = the
   model) which resolves the claim DIFFERENT itself.
 - Verify cheap, in order: tests/probes first, spot-read the diff second,

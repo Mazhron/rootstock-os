@@ -66,6 +66,10 @@ import _ledger
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ----------------------------------------------------------- CONFIG --
 KIT_DIR = os.path.join(ROOT, "Future Project MDs")
+# Kit-repo-only things (community/, .github/) live only in the public clone (the
+# same path tools/sync_kit_repo.py uses); --flag falls back to it (2026-10-13, the
+# phase 3 audit could not file the workflow yml or community/code/README.md).
+KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
 FLAGS = os.path.join(KIT_DIR, "FLAGS.md")
 LEDGER = os.path.join(ROOT, "docs", "history", "purpose_audit_runs.txt")
 LOCK = os.path.join(ROOT, ".claude", "flags.lock")   # gitignored; held only while appending
@@ -300,21 +304,25 @@ def locked(lock=None):
         fh.close()
 
 
-def add_flag(item, color, by, does, note, path=None, kit=None, now=None):
+def add_flag(item, color, by, does, note, path=None, kit=None, now=None, repo=None):
     with locked(None if path is None else path + ".lock"):
-        return _add_flag(item, color, by, does, note, path, kit, now)
+        return _add_flag(item, color, by, does, note, path, kit, now, repo)
 
 
-def _add_flag(item, color, by, does, note, path=None, kit=None, now=None):
+def _add_flag(item, color, by, does, note, path=None, kit=None, now=None, repo=None):
     path = path or FLAGS
     kit = kit or KIT_DIR
+    repo = repo or KIT_REPO
     color = color.upper()
     if color not in COLORS:
         raise SystemExit("color must be one of green / yellow / red")
     item = item.replace("\\", "/").strip("/")
     full = os.path.join(kit, item)
+    if not os.path.isfile(full) and os.path.isfile(os.path.join(repo, item)):
+        full = os.path.join(repo, item)      # kit-repo-only (community/, .github/)
     if not os.path.isfile(full):
-        raise SystemExit("no such kit thing: %s (paths are kit-relative, e.g. hooks/preserve_guard.py)" % item)
+        raise SystemExit("no such kit thing: %s (paths are kit-relative, e.g. hooks/preserve_guard.py, "
+                         "or kit-repo-only under community/ or .github/)" % item)
     says = purpose_line(full)
     if says is None and color == "GREEN" and not item.endswith(".json"):
         raise SystemExit("%s has no PURPOSE line - a thing without a stated purpose cannot be GREEN; "
@@ -406,6 +414,12 @@ def selftest():
         except SystemExit as ex:
             check("green without a PURPOSE line is refused", "cannot be GREEN" in str(ex))
         add_flag("b.md", "yellow", "tester", "documents b", "no purpose line yet", path=fpath, kit=kit, now="2026-09-13 12:01")
+        clone = os.path.join(td, "clone", "community")
+        os.makedirs(clone)
+        write(os.path.join(clone, "c.md"), "# C\n\nPURPOSE: the clone-only page.\n")
+        e2 = add_flag("community/c.md", "green", "tester", "documents c", "none", path=fpath, kit=kit,
+                      repo=os.path.join(td, "clone"), now="2026-09-13 12:02")
+        check("a kit-repo-only item resolves under the clone", "SAYS: the clone-only page." in e2)
         rows, t = status(kit, read(fpath))
         check("tally counts one green and one yellow", t["green"] == 1 and t["yellow"] == 1 and t["unflagged"] == 0)
         write(os.path.join(kit, "hooks", "a.py"), '"""PURPOSE: guards the thing well enough.\nINTENT: owner.\n"""\nchanged = 1\n')
@@ -415,7 +429,7 @@ def selftest():
         rows, t = status(kit, read(fpath))
         check("newest entry wins; red counted; no longer stale", t["red"] == 1 and t["green"] == 0 and t["stale"] == 0)
         n = read(fpath).count("### ")
-        check("entries are append-only (three kept)", n == 3)
+        check("entries are append-only (four kept, the clone item among them)", n == 4)
         rows, t = status(kit, read(fpath))
         regenerate(rows, t, path=fpath)
         before = read(fpath)

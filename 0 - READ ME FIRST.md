@@ -1,6 +1,7 @@
 # READ ME FIRST - the kit's front door (an install runbook, read once)
 
-PURPOSE: The kit's front door: walks a receiving Claude through the install
+PURPOSE: The kit's front door (and, for an existing install, the UPDATING
+  section: graft only from a verified release): walks a receiving Claude through the install
   in order (ask the CEO first, including whether to take part in the
   kit's community and under what name, which the install stamp records;
   then the wiki, reporting and session rituals, the delegation company,
@@ -168,6 +169,11 @@ Never reinstall, never copy kit files over project files. Open UPGRADES.md
 (the graft log), read the entries newer than the project's install stamp,
 act per the CEO's update policy, graft each chosen CONCEPT onto the
 project's own files in its own names, bump the stamp.
+
+Update only from a VERIFIED release: the update checker pins to the kit's
+release tag and verifies `SHA256SUMS` before it lists a single graft (the
+tag's signature is yours to confirm in the repo's tags view). An
+UNVERIFIED line means stop and tell the kit's owner; graft nothing.
 
 See also: UPGRADES.md (the graft protocol); CONTRIBUTING.md (the format
   law); WIKI_METHOD.md, REPORTING_METHOD.md, SUBAGENT_METHOD.md, SKILLS.md,

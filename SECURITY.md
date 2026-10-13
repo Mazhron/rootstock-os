@@ -1,4 +1,4 @@
-# SECURITY.md - what runs, what never runs, and where to report (kit v1.49)
+# SECURITY.md - what runs, what never runs, and where to report (kit v1.51)
 
 PURPOSE: the kit's security policy for readers and contributors - which
   parts of Rootstock execute on a machine and only after whose yes, which
@@ -19,10 +19,14 @@ that CAN run are, by class:
   merged, never auto-installed; every hook answers `--selftest` first.
 - `reference tools/*.py`: run only when someone runs them. They are
   meant to be adapted; their docstrings say what each reads and writes.
-  Two can make a network call: `rootstock_update_check.py` fetches this
-  repo's `UPGRADES.md` over HTTPS (or reads a local clone) and sends
-  nothing; `security_audit.py` makes plain requests to YOUR deployment,
-  only when you pass `--url`. No other kit script touches the network.
+  Two can make a network call: `rootstock_update_check.py` does a
+  read-only GET of this repo (or reads a local clone, which it pulls
+  first) and sends nothing; since v1.51 it pins to the release tag for
+  the kit version, fetches `SHA256SUMS` and `UPGRADES.md` at that tag and
+  verifies the checksum before it reports a single graft; it does not
+  check the tag's signature, you do (see "Verifying a release");
+  `security_audit.py` makes plain requests to YOUR deployment, only when
+  you pass `--url`. No other kit script touches the network.
 - `skills/*/SKILL.md`: prompt text Claude follows when the owner types
   the slash command; a skill can ask Claude to run a kit script, never
   anything outside the project.
@@ -33,17 +37,65 @@ that CAN run are, by class:
 
 ## What a contributor can change
 
-Only `community/inbox/*.md`, and only text (community/README.md). The
+Two lanes, and nothing else. Text goes in `community/inbox/*.md`
+(markdown only; community/README.md). Python goes in one folder under
+`community/code/<YYYY-MM-DD-name-slug>/` (kit v1.51; one or more .py
+files and an optional README.md; community/code/README.md). The
 contribution lint (`reference tools/contribution_lint.py`) runs on every
-pull request and refuses a file outside the inbox, a non-markdown or
-binary file, a shell line or shell block, a package install, a web fetch,
-a deletion verb, a URL whose host is not on its allowlist, and an
-instruction addressed to a reading Claude. Code arrives as a proposal in
-an issue and is built by the maintainer inside the kit's laws: the format
-header, a selftest, a read-only purpose audit filed in `FLAGS.md`.
+pull request and refuses a file outside those two lanes (hooks/,
+settings.json, reference tools/ and .github/ stay refused from a
+non-owner), a binary file, a shell line or shell block, a package
+install, a web fetch, a deletion verb, a URL whose host is not on its
+allowlist, and an instruction addressed to a reading Claude. In the code
+lane it also refuses a .py without the four header lines (PURPOSE, INTENT,
+Search keys, See also) in its docstring, without the stamp line
+`Contributed by: <name> | <YYYY-MM-DD HH:MM> | code | <domain>`, or
+without `--selftest`; a .py that imports a network module (urllib,
+requests, socket, http.client and the like); and a .py that calls eval,
+exec, compile, __import__, os.system, os.popen, shell=True, ctypes,
+marshal or pickle.loads.
+
+Two more checks run on the pull request, on GitHub's runner: a replay of
+the kit's own bash guard and preserve guard over each contributed file
+(`reference tools/guard_replay.py`; a deletion call or a shell-shaped line
+is a refusal), and the file's own `--selftest` under a 60 second timeout.
+The selftest never runs on a reader's machine, only on GitHub's.
+
+A merged file is never wired. It sits in `community/code/` with its stamp,
+does nothing, and is not part of any install. A different Claude audits
+its purpose read-only (the flag skill) and files a `FLAGS.md` entry; only
+after that may the owner graft it into reference tools/ or hooks/ in a
+later kit batch, crediting the stamp in `UPGRADES.md`. A change to an
+existing kit file is still a proposal in the "Code proposal" issue form,
+built by the maintainer inside the kit's laws: the format header, a
+selftest, a read-only purpose audit filed in `FLAGS.md`.
 
 The main branch takes pull requests only, each reviewed by the owner;
 force pushes are refused; the owner's commits are signed.
+
+The pull request check runs from the pull request's own checkout, so a
+pull request that edits the lint, the guard replay or the workflow file
+is judged by its own copy. The backstops are branch protection (the
+check is required and the owner reviews every merge) and the owner's
+read-only purpose audit of every changed thing before the merge; a
+change to any of those three files from a non-owner is refused by the
+lint's own path rule in the first place.
+
+## Verifying a release
+
+Every release is checkable (kit v1.51). The repo root carries `SHA256SUMS`,
+one hash line for every file except `.git` and build junk, written by the
+sync script before each commit. From v1.51 on each kit version is also one
+SIGNED annotated tag, `v<kit version>`, created and pushed by the sync
+script after the push; an unsigned tag is never made, and a machine
+without the signing key prints a refusal instead. To check a release by
+hand, compare the hash of each file you pulled against its line in
+`SHA256SUMS`, and confirm the tag's signature shows as verified in the
+repo's tags view on GitHub. The update checker
+(`reference tools/rootstock_update_check.py`) does the checksum half of
+that before it lists grafts: it fetches `SHA256SUMS` and `UPGRADES.md` at the tag, and
+prints `VERIFIED v1.51 (checksum matches)` or, on a mismatch, `UNVERIFIED`
+and no grafts. An UNVERIFIED line means stop and tell the kit's owner.
 
 ## Reporting a problem
 
@@ -65,7 +117,8 @@ and re-audits the day a leaderboard, an account or a key arrives.
 
 Search keys: security policy, what runs, hooks wiring, network calls,
 contribution gate, private vulnerability reporting, signed commits,
-branch protection, text only.
+branch protection, text only, code lane, community/code, never wired,
+guard replay, SHA256SUMS, signed tag, verified release.
 See also: community/README.md (the inbox rules, kit repo only); reference
 tools/contribution_lint.py; CONTRIBUTING.md; HOOKS_METHOD.md
 "Bootstrap"; SECURITY_METHOD.md; 0 - READ ME FIRST.md STEP 4.

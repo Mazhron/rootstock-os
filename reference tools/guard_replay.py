@@ -26,7 +26,9 @@ PURPOSE: Replays the four PreToolUse guards' pure judge functions
   refused-live calls per guard per rule, and prints the NEW CATCH and LOST
   deltas with `--show <guard>` giving up to ten one-line examples each;
   never executes a command and never modifies a transcript, a hook, or a
-  hook's state.
+  hook's state. FILE MODE (`--file <path> ...`, the code gate for contributed
+  Python): judges each file as a synthetic Write plus every line as a Bash
+  command, reads no transcript, writes no ledger, exits 1 on any refusal.
 INTENT: the hooks' own selftests only check invented cases; nobody knows
   what the CURRENT guard code would do against what the manager actually
   did - this measures it, the way serio-focus replays its own guard over
@@ -34,7 +36,8 @@ INTENT: the hooks' own selftests only check invented cases; nobody knows
 
 Search keys: guard replay, replay guards, would refuse now, refused live,
 new catches, lost, sandbox state, diet_guard, bash_guard, preserve_guard,
-brief_guard, serio-focus, guard tags.
+brief_guard, serio-focus, guard tags, contributed code, file mode, --file,
+code gate.
 See also: tools/hooks/diet_guard.py, tools/hooks/bash_guard.py,
 tools/hooks/preserve_guard.py, tools/hooks/brief_guard.py (the four
 judges); tools/usage_report.py (transcript_dirs, the same transcript
@@ -50,7 +53,11 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))       # tools/
 ROOT = os.path.dirname(HERE)                             # repo root
+# NS-38 phase 3: CI runs the KIT copy ("reference tools/guard_replay.py"), where
+# the hooks sit in hooks/ beside tools, not in tools/hooks/; fall back to that.
 HOOKS = os.path.join(HERE, "hooks")
+if not os.path.isdir(HOOKS):
+    HOOKS = os.path.join(ROOT, "hooks")
 if HOOKS not in sys.path:
     sys.path.insert(0, HOOKS)
 if HERE not in sys.path:
@@ -358,6 +365,56 @@ def judge_brief(call):
     return "brief_incomplete" if gaps else None
 
 
+def replay_files(paths):
+    """FILE MODE (NS-38 phase 3, the code gate). -> {path: [(guard, reason), ...]}
+    for each file: preserve_guard judges the whole text as a synthetic Write
+    (consume=False, so no grant is touched), then bash_guard judges every
+    non-blank line as a Bash command. Judged as text only; nothing runs."""
+    out = {}
+    for p in paths:
+        reasons = []
+        try:
+            with open(p, encoding="utf-8") as fh:
+                text = fh.read()
+        except (OSError, UnicodeDecodeError) as e:
+            out[p] = [("file", "unreadable as UTF-8 text: %s" % e)]
+            continue
+        data = {"tool_name": "Write", "tool_input": {"file_path": os.path.abspath(p),
+                                                      "content": text}}
+        try:
+            r = preserve_guard.evaluate(data, grant=None, consume=False)
+        except Exception as e:
+            r = "judge error: %r" % (e,)
+        if r:
+            reasons.append(("preserve_guard", r))
+        for line in text.splitlines():
+            if not line.strip():
+                continue
+            try:
+                r = bash_guard.verdict(line)
+            except Exception as e:
+                r = "judge error: %r" % (e,)
+            if r:
+                reasons.append(("bash_guard", r))
+        out[p] = reasons
+    return out
+
+
+def run_file_mode(paths):
+    """Print the file-mode verdict; -> exit code (1 on any refusal)."""
+    res = replay_files(paths)
+    total = 0
+    for p in paths:
+        reasons = res[p]
+        total += len(reasons)
+        print(("REFUSE " if reasons else "clean  ") + p)
+        for g, r in reasons:
+            print("      %s: %s" % (g, " ".join(str(r).split())[:100]))
+    print("GUARD REPLAY (files): %s - %d file(s), %d refusal(s)"
+          % ("FAIL" if total else "PASS", len(paths), total))
+    return 1 if total else 0
+
+
 JUDGES = {
     "diet_guard": lambda call, diet_state: judge_diet(call, diet_state),
     "bash_guard": lambda call, diet_state: judge_bash(call),
@@ -599,6 +656,18 @@ def _selftest():
         check("a successful grep quoting a law in prose is not a live refusal",
               result["stats"][("preserve_guard", "preservation_law")]["live"] == 0)
 
+    # FILE MODE: the forbidden text is assembled at runtime (THE GUARD TRAP).
+    fm_dir = tempfile.mkdtemp(prefix="guard_replay_files_")   # left behind on purpose
+    good_p = os.path.join(fm_dir, "good.py")
+    bad_p = os.path.join(fm_dir, "bad.py")
+    with open(good_p, "w", encoding="utf-8") as fh:
+        fh.write("x = 1\n")
+    with open(bad_p, "w", encoding="utf-8") as fh:
+        fh.write("import " + "sh" + "util\n" + "sh" + "util.rm" + "tree('docs')\n")
+    fres = replay_files([good_p, bad_p])
+    check("file mode: a harmless file is clean", not fres[good_p])
+    check("file mode: a file carrying a deletion call is refused", len(fres[bad_p]) >= 1)
+
     after_mtime = os.path.getmtime(state_path) if os.path.exists(state_path) else None
     check("the real diet_guard state file is untouched (the sandbox promise)",
           before_mtime == after_mtime)
@@ -614,10 +683,14 @@ def main():
     ap.add_argument("--show", choices=GUARDS)
     ap.add_argument("--record", action="store_true")
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--file", nargs="+", metavar="PATH",
+                    help="file mode: judge these files (contributed code); --record is ignored")
     args = ap.parse_args()
 
     if args.selftest:
         sys.exit(_selftest())
+    if args.file:
+        sys.exit(run_file_mode(args.file))
 
     calls = collect_calls(transcript_dirs(), args.days)
     result = replay(calls)
