@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.46** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.47** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1797,3 +1797,40 @@ Discipline", "3. The Delegation Company", "4. Lossless Sessions", "The
 hooks", "The intent loop", "The format law", "What it saves", "Quick
 start", "Updating an installed project", "What is in the box", "Kit
 version:".
+
+### v1.47 - 2026-10-13 - The retrieval evaluation: the lesson matcher measured against a query set and a replay
+WHAT: The CEO asked whether an AI-engineering post's vocabulary (RAG,
+pre-retrieval, retrieval, scoring, re-ranking, fine-tuning, a boot
+sequence, a tool registry, a state manager, "a representative query
+dataset ... measure if the system actually works") applied to the kit.
+Everything but two items mapped onto what the kit already does lexically
+and by hand (the table is in the origin's self-audit.md "Rootstock in the
+industry's words" and the README's new question); fine-tuning and a vector
+database do not apply and the WHY is written. The one real gap was the
+evaluation: the lesson ledger said WHICH entries fired on a prompt, never
+whether the RIGHT one did. reference tools/retrieval_eval.py closes it from
+two sides: a query file (retrieval_queries.txt, one `heading fragment ||
+prompt in the owner's voice` per line) scored hit or miss, and a replay of
+the newest 200 typed prompts, each re-matched and its turn scanned by
+lesson_log.signals for trial and error, giving four cells (named or silent
+x clean or trial; silent-trial is the recall gap) and a fire rate per entry
+(above 25% of eligible prompts is noise). Harness-generated messages (a
+skill body, an agent hand-back, an image drop) are not prompts and are
+filtered; prompts under four content words sit outside the cells. One
+ledger line per run through _ledger.py; the detail file names each miss
+and what fired instead. ledger_trends rule 16 proposes a [DO] on a miss or
+a noisy entry: the fix is always the Keys line, never the matcher. First
+run in the origin: 30 queries, 20 hit, 10 miss, noisy 0.
+CARRIES: reference tools/retrieval_eval.py (new; a query file beside it
+is the project's own, write one in the CEO's voice); reference
+tools/ledger_trends.py (rule 16, the DO class, the HOW line); reference
+tools/run_all.py (metrics group); the origin's WORKFLOWS.md "Evaluate the
+lesson retrieval"; the origin's self-audit.md section; README "Questions
+people ask" and the box line; this entry.
+GRAFT: adopt the tool and write ten query lines from your own LESSONS.md
+headings in the CEO's phrasing; run it once and read the misses before
+touching any Keys line; add the metrics-group line and the trends rule;
+add a query line every time a lesson is written. No hook, no settings
+change, one new file plus the query file.
+README: "Questions people ask" (the RAG question), "What is in the box"
+(the reference tools count and the lesson loop phrase), "Kit version:".

@@ -100,7 +100,7 @@ change a harness hook"; HOOKS_METHOD.md.
 
 ## Write an engine resource file (.tres, .tscn) from a script or shell
 Tags: lessons, gotchas | A shell write puts a BOM or CRLF in a .tres and Godot's parser fails; write engine resources from Python with utf-8 and newline "\n", never from PowerShell redirection
-Keys: tres, tscn, resource file, write species file, species files, data/species, powershell write, redirect, bom, project.godot, comments stripped, editor rewrote
+Keys: tres, tscn, resource file, write species file, species files, data/species, powershell write, redirect, bom, project.godot, comments stripped, editor rewrote, generate tres, new species, python script, from a script
 
 THE ONE RIGHT WAY: edit or write a .tres/.tscn from Python (or the Edit
 tool) with encoding utf-8 and newline "\n"; the shell guard refuses a
@@ -664,7 +664,7 @@ LESSONS.md "A ruling about the parts is not a ruling about the whole".
 
 ## Pull when both machines appended the same generated ledgers (a merge under the preservation law)
 Tags: lessons, process, gotchas | Commit the local hook-written ledgers BEFORE pulling, and resolve a generated-file conflict by writing theirs and re-running the generator - never `git checkout --theirs` (the preserve guard refuses the discard verb, and rightly: the write path loses nothing)
-Keys: pull, merge conflict, usage ledgers, checkpoint_state, generated files, checkout --theirs, preserve guard refusal, keep_other_ws, regenerate, cross-workstation sync, xlsx binary conflict
+Keys: pull, merge conflict, usage ledgers, checkpoint_state, generated files, checkout --theirs, preserve guard refusal, keep_other_ws, regenerate, cross-workstation sync, xlsx binary conflict, both machines, appended, same ledgers, pull now, both appended
 
 THE ONE RIGHT WAY: (1) commit the locally modified hook ledgers first (the
 pull aborts on them otherwise), then `git pull --no-rebase`. (2)
@@ -700,7 +700,7 @@ docs/index/laws.md (the preservation law); tools/usage_report.py
 
 ## Leave the cross-workstation note the moment the need is spoken (never wait to be told)
 Tags: lessons, process, cross-workstation | The instant the manager knows the OTHER machine must do or know something, the note goes in docs/index/notes.md in the SAME batch; telling the owner about the need without writing the note is the failure
-Keys: leave a note, WS1, WS2, other workstation, relay, handoff, notes.md, proactive note, unprompted note, next tasks, courier
+Keys: leave a note, WS1, WS2, other workstation, relay, handoff, notes.md, proactive note, unprompted note, next tasks, courier, laptop, on the laptop, need to know, tomorrow, other machine, be on WS2
 
 THE ONE RIGHT WAY: the test lives in the reply itself: any sentence
 shaped "WS1 will need to...", "remember for the other machine...", "ask
@@ -727,7 +727,7 @@ for the other workstation"; docs/index/laws.md (the workflow rule).
 
 ## Keep track of real time between saves (a telemetry clock that spans sessions)
 Tags: lessons, telemetry, persistence | A persisted log's real-time deltas come from its own play clock, never from wall-clock stamps; the log flushes at the world save, not at the window-close notification
-Keys: telemetry, real seconds, real_s, wall-clock, unix, play clock, quit, save and exit, resume, next day, several days, flush, WM_CLOSE_REQUEST, get_tree().quit, balance log, run spans sessions
+Keys: telemetry, real seconds, real_s, wall-clock, unix, play clock, quit, save and exit, resume, next day, several days, flush, WM_CLOSE_REQUEST, get_tree().quit, balance log, run spans sessions, between saves, across sessions, how long, time between saves, spends between
 
 THE ONE RIGHT WAY: when a log measures "real time" between events and
 its baseline is persisted, the time source is a counter the log owns
@@ -930,7 +930,7 @@ ledgers".
 
 ## Never set EVERWOOD_*TEST by hand, even though CLAUDE.md's verify snippet showed how (the runner is the only door, 2026-09-26)
 Tags: lessons, testing, process | A doc snippet that demonstrates a pattern a guard forbids is a stale doc, not a permission; the guard's message names the one right way and the doc is fixed in the same batch
-Keys: EVERWOOD_WOODTEST, EVERWOOD_*TEST, run_tests.py, --group, --list, script rule, hook block, verify snippet, CLAUDE.md Verifying changes, stale doc, env var by hand
+Keys: EVERWOOD_WOODTEST, EVERWOOD_*TEST, run_tests.py, --group, --list, script rule, hook block, verify snippet, CLAUDE.md Verifying changes, stale doc, env var by hand, by hand, run by hand, test by hand, check the purchase
 
 THE ONE RIGHT WAY: tests run through `python tools/run_tests.py --group
 <group>` (`--list` shows the groups) - the groups, the don't-combine laws
@@ -1030,7 +1030,7 @@ a window (FOOTERTEST through --test, 2026-09-25)".
 
 ## If the hook says checkpoint advised, I shouldn't have to type /checkpoint (the ADVISED line is a step in the reply, not a line to relay)
 Tags: lessons, process, checkpoint | The closing check of every reply: did any hook say ADVISED this turn? Each one is work done before the reply ends
-Keys: checkpoint advised, ADVISED MEANS DO IT, hook line, relay verbatim, closing check, end of reply, safe to clear, context gauge, 80% rule, C0002, C0003, kit unsynced, lesson advised, changelog unexported, hook warning, warning means do it, the hook law, repeated warning
+Keys: checkpoint advised, ADVISED MEANS DO IT, hook line, relay verbatim, closing check, end of reply, safe to clear, context gauge, 80% rule, C0002, C0003, kit unsynced, lesson advised, changelog unexported, hook warning, warning means do it, the hook law, repeated warning, checkpoint due, type /checkpoint, hook says, should I type
 
 THE ONE RIGHT WAY: before sending any reply, run the closing check: (1)
 is the tree committed and pushed, (2) did a hook this turn say ADVISED -
@@ -1166,7 +1166,7 @@ docs/systems/self-audit.md "The route line".
 
 ## A standup proposal is this reply's work (the PROPOSE line is an order, not a menu, 2026-09-29)
 Tags: lessons, process, learning loop | A [DO] proposal at standup (an audit, a trim, a loop run) is done in the first reply by a script or an employee; only an [ASK] line is a question for Mazhron
-Keys: proposal, PROPOSE, standup proposals, what to work on, learning loop, owner decides, systems audit overdue, digest trim, do it, permission, ask permission, proposal named, DO ASK, C0005, four corrections, name the pattern
+Keys: proposal, PROPOSE, standup proposals, what to work on, learning loop, owner decides, systems audit overdue, digest trim, do it, permission, ask permission, proposal named, DO ASK, C0005, four corrections, name the pattern, PROPOSE line, which ones, standup printed, should we do, which to do
 
 THE ONE RIGHT WAY: the first reply after standup relays the digest, then
 DOES every PROPOSE [DO] line in that same reply: the systems audit is four
@@ -1212,7 +1212,7 @@ stop_tick.py (PROPOSAL NAMED); WORKFLOWS.md "Audit the operating system".
 
 ## An ask is a question with a recommended answer (a statement never asks, 2026-09-29)
 Tags: lessons, process, communication | Every [ASK] line put to Mazhron ends with a question mark, carries the manager's recommended answer first, and never shares a list with statements; a reply of "agreed" or "you decide" on any line must be enough
-Keys: ask, ASK items, ruling, rulings, are you asking me, statement or question, summaries, can't tell, recommended answer, relay ASK, what do you want, question mark, decision list
+Keys: ask, ASK items, ruling, rulings, are you asking me, statement or question, summaries, can't tell, recommended answer, relay ASK, what do you want, question mark, decision list, open questions, as a list, questions to me, list of questions, questions for me
 
 THE ONE RIGHT WAY: when a reply puts something to Mazhron, each item is
 one numbered line shaped "<the thing in a sentence>. <The question>?
@@ -1443,7 +1443,7 @@ See also: WORKSTATION_METHOD.md (the kit); docs/systems/mods.md; the Art of War 
 
 ## Never put a Windows path inside a Python heredoc's string literal (a `\U` in `Desktop\Unity` is a unicode escape, 2026-10-05)
 Tags: lessons, tooling, workstation | A backslash-U or backslash-x in a normal Python string is an escape, so a one-off edit script carrying `C:\Users` or `Desktop\Unity` dies with "truncated \UXXXXXXXX escape" before it runs
-Keys: unicodeescape, truncated UXXXXXXXX, heredoc, python - <<, Windows path, backslash, raw string, Edit tool
+Keys: unicodeescape, truncated UXXXXXXXX, heredoc, python - <<, Windows path, backslash, raw string, Edit tool, desktop path, path inside, python string, string literal, inside the string
 
 THE ONE RIGHT WAY: an edit that carries a Windows path uses the Edit tool,
 or a raw string (r"...") in the script, or forward slashes. A `python -
@@ -1512,7 +1512,7 @@ docs/history/digest_size.txt.
 
 ## A pasted prompt starts with "<" like a harness wrapper (unwrap pasted_content before the wrapper filter, 2026-10-06)
 Tags: lessons, process, digest diet, standup | The owner's four rulings arrived as a pasted_content block; standup's exchange miner dropped it as a harness wrapper, the build session yielded no prompt, and the digest replayed the previous session's exchange as if it were the last one
-Keys: pasted_content, pasted prompt, stale exchange, wrong session, THE LAST EXCHANGE, _mine_exchange, unwrap_paste, harness wrapper, startswith("<"), standup digest, loss test, ground truth
+Keys: pasted_content, pasted prompt, stale exchange, wrong session, THE LAST EXCHANGE, _mine_exchange, unwrap_paste, harness wrapper, startswith("<"), standup digest, loss test, ground truth, pasted, reddit comment, starts with, hook ate, pasted a comment
 
 THE ONE RIGHT WAY: a harness wrapper (`<command-name>`, `<task-notification>`,
 `<system-reminder>`, `<local-command-stdout>`) is NOT the human typing and

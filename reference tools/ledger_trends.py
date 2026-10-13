@@ -188,10 +188,11 @@ ACTION = {
     "loop_runs.txt": "DO",            # run the group, fix the wiring
     "lesson_runs.txt": "DO",          # write the entry or tune the signal
     "grain_scan_runs.txt": "DO",      # the floor on the category, re-cut, --import, montage (THE GRAIN SCAN, 2026-10-12)
+    "retrieval_eval_runs.txt": "DO",  # refresh the Keys lines the query set or the replay found weak (THE RETRIEVAL EVALUATION, 2026-10-13)
 }
 CLEARS = {"systems_audit_runs.txt", "readme_audit_runs.txt", "digest_size.txt",
           "loop_runs.txt", "wiki_link_runs.txt", "lesson_runs.txt", "intent_log.txt",
-          "grain_scan_runs.txt"}
+          "grain_scan_runs.txt", "retrieval_eval_runs.txt"}
 HOW = {
     "systems_audit_runs.txt": "WORKFLOWS.md 'Audit the operating system': four read-only "
                               "employees (the /brief skill), then `python tools/systems_audit.py --record`",
@@ -206,6 +207,9 @@ HOW = {
     "grain_scan_runs.txt": "WORKFLOWS.md 'Scan the plant art for grain': the category in MIN_STAGE_CUT_H, "
                            "`python tools/extract_gemini_sheets.py --only <category>`, the montage, "
                            "--import, `python tools/grain_scan.py` green",
+    "retrieval_eval_runs.txt": "WORKFLOWS.md 'Evaluate the lesson retrieval': docs/history/retrieval_eval.txt names "
+                               "the missed queries and the noisy entries; add the owner's words to the missed "
+                               "entry's Keys line, narrow the noisy one's, `python tools/retrieval_eval.py` green",
 }
 _LEDGER_RE = re.compile(r"^PROPOSE \(([^)]+)\)")
 
@@ -479,6 +483,19 @@ def proposals(th=None):
                        "the category, `extract_gemini_sheets.py --only <category>`, the montage, "
                        "--import, the scan green (WORKFLOWS 'Scan the plant art for grain')."
                        % (m.group(1), m.group(2)))
+    # 16. retrieval_eval_runs.txt (THE RETRIEVAL EVALUATION, the CEO 2026-10-13):
+    # the lesson matcher measured against the hand-written query set and the
+    # replayed prompts; a missed query or a noisy entry is a Keys-line fix,
+    # scripted to find and plain to apply, so it is a DO.
+    rev = data_lines("retrieval_eval_runs.txt")
+    if rev:
+        m = re.search(r"noisy (\d+) \|.*?\| miss (\d+) \|", rev[-1])
+        if m and (int(m.group(1)) or int(m.group(2))):
+            out.append("PROPOSE (retrieval_eval_runs.txt): the lesson retrieval missed %s query(ies) "
+                       "and has %s noisy entry(ies) (docs/history/retrieval_eval.txt names them and "
+                       "what fired instead) - add the owner's words to each missed entry's Keys line, "
+                       "narrow the noisy one's, then `python tools/retrieval_eval.py` green "
+                       "(WORKFLOWS 'Evaluate the lesson retrieval')." % (m.group(2), m.group(1)))
     return out
 
 

@@ -80,7 +80,8 @@ GROUPS = {
                 ["tools/big_reads.py"],
                 ["tools/intent_report.py"],
                 ["tools/keepwarm.py", "--report"],   # THE KEEP-WARM TRIAL (2026-09-29): prices the session's ping turns; silent-ish when none
-                ["tools/fork_watch.py"]],   # THE FORK WATCH (2026-10-05): forks of the public Rootstock repo; WARN only when one pulls ahead
+                ["tools/fork_watch.py"],   # THE FORK WATCH (2026-10-05): forks of the public Rootstock repo; WARN only when one pulls ahead
+                ["tools/retrieval_eval.py"]],   # THE RETRIEVAL EVALUATION (2026-10-13): the lesson matcher against the query set and the replayed prompts; WARN on a miss or a noisy entry
     "probes":  [["tools/progression_report.py", "-n", "12"],
                 ["tools/soak_report.py", "-m", "5"]],
     "builds":  [["tools/make_builds.py"]],

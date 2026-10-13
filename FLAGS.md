@@ -33,22 +33,22 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-12 13:01 | items 78 | GREEN 75 | YELLOW 3 | RED 0 | unflagged 0 | stale 3
+Updated 2026-10-13 11:45 | items 79 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
+| 0 - READ ME FIRST.md | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:47 |
+| LESSONS.md | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| UPGRADES.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
+| UPGRADES.md | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
@@ -86,7 +86,7 @@ Updated 2026-10-12 13:01 | items 78 | GREEN 75 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
-| reference tools/ledger_trends.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
+| reference tools/ledger_trends.py | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
 | reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
@@ -94,9 +94,10 @@ Updated 2026-10-12 13:01 | items 78 | GREEN 75 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/readme_lint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/refresh_kit.py | GREEN | ok | fable | 2026-09-14 16:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/retrieval_eval.py | GREEN | ok | fable | 2026-10-13 11:45 |
 | reference tools/rootstock_update_check.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
-| reference tools/run_all.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
+| reference tools/run_all.py | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/standup.py | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
@@ -1194,3 +1195,38 @@ FLAG: Matches PURPOSE; honors the preservation law explicitly.
 SAYS: Print a suggested version-bump size for the batch being shipped; the hint is advice only, a human decides; never edits any file except its own ledger.
 DOES: Reads project.godot and git log, prints a suggested bump size, appends one line to version_hint_runs.txt; edits nothing else.
 FLAG: Matches PURPOSE.
+
+### 2026-10-13 11:44 | reference tools/run_all.py | GREEN | sonnet-flag-1013 | WS1 | 3770dbda
+SAYS: Chain habitual scripts by named group (check/regen/tests/metrics/ probes/builds/session/standup) and ledger every group run so staleness is visible instead of silent.
+DOES: Runs named groups of habitual tools scripts in order, appends one line per group run to docs/history/loop_runs.txt and stops on first failure; the metrics group now also calls tools/retrieval_eval.py.
+FLAG: The change since the last flag is one list entry in GROUPS with an explanatory comment, which fits the stated purpose of chaining habitual scripts; no new side effects in the runner itself.
+
+### 2026-10-13 11:44 | LESSONS.md | GREEN | sonnet-flag-1013 | WS1 | 20829b6e
+SAYS: One entry per task shape: THE ONE RIGHT WAY first, then what was tried, why it failed and what to do instead, then nuance headlines as they accumulate, so a future session does the correct thing first instead of repeating trial and error.
+DOES: Kit lesson book; the change only extends the Keys lines of about ten entries with the owner's phrasing so the matcher recalls them.
+FLAG: Keys-only edits, which is exactly the fix the retrieval evaluation prescribes; no entry body or one-right-way text changed.
+
+### 2026-10-13 11:44 | reference tools/retrieval_eval.py | YELLOW | sonnet-flag-1013 | WS1 | 9794c6ec
+SAYS: Measure the lesson matcher's recall and precision against a hand-written query set and against the project's own replayed prompts; print the report, rewrite docs/history/retrieval_eval.txt and append one ledger line. Reads LESSONS.md, the query file and the transcripts; writes nothing else.
+DOES: Scores the lesson matcher (lesson_log.match) against tools/retrieval_queries.txt and against a replay of the newest 200 typed prompts from this project's transcripts under ~/.claude/projects; prints a report, rewrites docs/history/retrieval_eval.txt and appends one line to docs/history/retrieval_eval_runs.txt through _ledger.append_unless_identical.
+FLAG: Matches its purpose in substance: reads only LESSONS.md, the query file and transcripts, no deletes, no spawns, bounded window, ledger write wrapped in OSError handling. Small omission: PURPOSE says it writes nothing else, but append_unless_identical also updates the sidecar docs/history/ledger_heads.txt; also the transcript glob matches any ~/.claude/projects dir whose name contains the repo name. Fix later by adding both to the PURPOSE line.
+
+### 2026-10-13 11:44 | UPGRADES.md | GREEN | sonnet-flag-1013 | WS1 | 7d1075ca
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: Append-only kit upgrade log; adds the v1.47 entry (retrieval evaluation) and bumps CURRENT KIT VERSION to v1.47.
+FLAG: Append-only entry with WHAT, CARRIES and GRAFT sections that matches what retrieval_eval.py, ledger_trends rule 16 and run_all actually do; no hook or settings change claimed and none made.
+
+### 2026-10-13 11:44 | reference tools/ledger_trends.py | GREEN | sonnet-flag-1013 | WS1 | 4a08ffc3
+SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop, the lesson loop), compares them against tunable thresholds, and prints proposed rule changes, each tagged [DO] (a script, hook or employee carries it out in the reply that reads it) or [ASK] (only the owner can answer); it applies nothing itself.
+DOES: Reads the docs/history ledgers and prints PROPOSE lines (DO or ASK) for trends; rule 16 now proposes a DO when the latest retrieval_eval_runs.txt line shows a missed query or noisy entry.
+FLAG: The additions (ACTION and CLEARS entries, a HOW line, rule 16 regex over the last ledger line) are read-only proposals consistent with the learning loop; no writes, deletions or guard bypass.
+
+### 2026-10-13 11:44 | 0 - READ ME FIRST.md | GREEN | sonnet-flag-1013 | WS1 | 8d2c5cb2
+SAYS: The kit's front door: walks a receiving Claude through the install in order (ask the CEO first, then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: Kit front-door README; the change adds a clause naming reference tools/retrieval_eval.py (kit v1.47) beside the lesson loop line.
+FLAG: Documentation-only, additive and accurate to the new script; no instructions that conflict with laws.
+
+### 2026-10-13 11:45 | reference tools/retrieval_eval.py | GREEN | fable | WS1 | 82c61677
+SAYS: Measure the lesson matcher's recall and precision against a hand-written query set and against the project's own replayed prompts; print the report, rewrite docs/history/retrieval_eval.txt and append one ledger line (the append goes through tools/_ledger.py, which also updates its sidecar docs/history/ledger_heads.txt). Reads LESSONS.md, the query file and this project's transcripts (every ~/.claude/projects folder whose name carries the repo name, top level only); writes nothing else.
+DOES: Reads LESSONS.md, tools/retrieval_queries.txt and this project's top-level transcripts; scores the query set and replays the newest 200 typed prompts through lesson_log.match and signals; prints the report, rewrites docs/history/retrieval_eval.txt, appends one line to retrieval_eval_runs.txt through _ledger.py (which keeps its sidecar ledger_heads.txt); no deletes, no spawns, bounded window.
+FLAG: Re-flag after sonnet-flag-1013's YELLOW: the PURPOSE line now names the ledger_heads sidecar and the transcript folder match it omitted; the code did not change.
