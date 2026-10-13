@@ -72,6 +72,7 @@ import datetime
 import json
 import os
 import re
+import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -94,6 +95,7 @@ DEFAULTS = {
     "open_question_days": 7,         # an OPEN question waited this many days
     "lesson_advised_unwritten": 3,    # ADVISED lines in 7 d with no WRITTEN line and no new entry (THE LESSON LOOP, 2026-09-20)
     "digest_warn_bytes": 12000,      # the standup digest's byte size (24000 before THE DIGEST DIET, 2026-09-14: ~6-8k after it)
+    "kit_push_days": 2,              # THE PUSH SCHEDULE (NS-38, the CEO 2026-10-13: the kit pulls and pushes "once per day or two")
     "loop_stale_days": {             # per run_all group: days since last run
         "session": 2, "metrics": 2, "check": 2, "regen": 7, "probes": 14, "tests": 7,
     },
@@ -496,6 +498,38 @@ def proposals(th=None):
                        "what fired instead) - add the owner's words to each missed entry's Keys line, "
                        "narrow the noisy one's, then `python tools/retrieval_eval.py` green "
                        "(WORKFLOWS 'Evaluate the lesson retrieval')." % (m.group(2), m.group(1)))
+    # 17. THE PUSH SCHEDULE (NS-38 phase 1, the CEO 2026-10-13: "Instead of
+    # pulling from Rootstock once every week, strongly recommend once per day
+    # or two from now on. As well as a push/commit schedule to add knowledge."):
+    # when the kit repo's last commit is older than the limit AND a kit file
+    # differs from the folder, the sync is scripted, so it is a DO.
+    try:
+        kit_repo = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
+        kit_src = os.path.join(ROOT, "Future Project MDs")
+        if os.path.isdir(os.path.join(kit_repo, ".git")):
+            last = subprocess.run(["git", "-C", kit_repo, "log", "-1", "--format=%cs"],
+                                  capture_output=True, text=True, timeout=20).stdout.strip()
+            age = (datetime.date.today() - datetime.date.fromisoformat(last)).days if last else None
+            differ = 0
+            for dp, dns, fns in os.walk(kit_src):
+                dns[:] = [d for d in dns if d != "__pycache__"]
+                for f in fns:
+                    if f.endswith(".pyc"):
+                        continue
+                    a = os.path.join(dp, f)
+                    b = os.path.join(kit_repo, os.path.relpath(a, kit_src))
+                    try:
+                        if open(a, "rb").read() != open(b, "rb").read():
+                            differ += 1
+                    except OSError:
+                        differ += 1
+            if age is not None and age >= th["kit_push_days"] and differ:
+                out.append("PROPOSE [DO] (the push schedule): the kit repo was last pushed %d d ago "
+                           "(limit %d) and %d kit file(s) differ from the folder - "
+                           "`python tools/sync_kit_repo.py` (NS-38 phase 1, the CEO 2026-10-13: "
+                           "a push/commit schedule to add knowledge)." % (age, th["kit_push_days"], differ))
+    except Exception:
+        pass  # the kit clone is optional; never crash standup over it
     return out
 
 

@@ -1,0 +1,45 @@
+name: Lesson (the one right way)
+description: A task shape where you now know the right first move. Text only; the pull request path is community/inbox/.
+title: "[lesson] <the heading in the words you typed when you hit it>"
+labels: ["community", "lesson"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A lesson is "do this first, because that failed for this reason". If you would rather send it as a file, copy `community/TEMPLATE.md` into `community/inbox/YYYY-MM-DD-<name>-<slug>.md` and open a pull request; the lint checks the shape. Either way it is text only: no shell commands, no links outside the lint's allowlist.
+  - type: input
+    id: stamp
+    attributes:
+      label: Your stamp
+      description: The name you want on it and the date/time, as `<name> | YYYY-MM-DD HH:MM`.
+      placeholder: "mazhron | 2026-10-13 12:00"
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      options: [harness (Claude Code and process), godot, unity, unreal, cpp, python, web, 2d, 3d, other]
+    validations:
+      required: true
+  - type: textarea
+    id: right_way
+    attributes:
+      label: THE ONE RIGHT WAY
+      description: The thing to do first, before any trial and error.
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: TRIED / FAILED BECAUSE / DO INSTEAD
+      description: What you did first, why it did not work (the mechanism), and the step that worked, in words.
+    validations:
+      required: true
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Two or three search words a reader would type.
+    validations:
+      required: true

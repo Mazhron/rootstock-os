@@ -89,6 +89,34 @@ FLAGS.md is committed and published with the kit: it is the one file
 that references every flag, tallies them, and holds every finding for the
 next reviewer.
 
+## The community path (kit v1.49, NS-38 phase 1)
+
+Two doors, by what you bring:
+- TEXT (a lesson, a gotcha, a page of field notes, design notes, a
+  graphics note): one markdown file in `community/inbox/` of the public
+  repo, named `YYYY-MM-DD-<name>-<slug>.md`, stamped on line two
+  `Contributed by: <name> | <YYYY-MM-DD HH:MM> | <kind> | <domain>`, by
+  pull request. The contribution lint (reference
+  tools/contribution_lint.py) runs on the pull request and refuses a
+  file outside the inbox, a non-markdown file, a shell line or block, an
+  install, a fetch, a deletion verb, an off-allowlist URL and an
+  instruction aimed at a reading Claude. The owner reviews and merges;
+  the file stays in the inbox for good and is grafted into its knowledge
+  file in a later kit batch with the stamp kept (community/README.md).
+- CODE (a hook, a tool, a skill, a change to a kit file): a PROPOSAL in
+  the "Code proposal" issue form, with HOW IT WORKS, WHY IT WORKS, WHAT
+  IT MIGHT HURT and a LEDGER (before and after). The owner builds it
+  inside the laws above and credits the proposer in UPGRADES.md. A pull
+  request carrying code is refused by the lint, by design: nothing a
+  stranger pulls from the kit may be able to run on their machine.
+The owner's own batches arrive by the sync script and pass the lint
+untouched; their gates are the format lint, the README lint and the
+purpose audit below. Main takes pull requests only, reviewed by the
+owner, no force pushes, signed commits.
+See also: community/README.md and community/TEMPLATE.md (kit repo only);
+reference tools/contribution_lint.py; SECURITY.md; .github/ISSUE_TEMPLATE/
+(the five forms); 0 - READ ME FIRST.md STEP 0 item 6 (the opt-in).
+
 ## What a contributed update looks like
 
 - Every new or changed thing carries THE FORMAT header, with INTENT in
@@ -104,7 +132,7 @@ next reviewer.
 
 Search keys: contributing, format law, purpose audit, flags, header,
 PURPOSE line, INTENT line, safety wiring, community update, pull
-request, guardrails.
+request, guardrails, community inbox, code proposal, contribution lint.
 See also: FLAGS.md (the flag ledger); reference tools/format_lint.py;
 reference tools/purpose_audit.py; hooks/format_guard.py; skills/flag (the
 ritual); HOOKS_METHOD.md (Tier 3b); UPGRADES.md (the graft protocol);

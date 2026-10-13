@@ -1,0 +1,56 @@
+name: Code proposal (a hook, a tool, a skill or a change to one)
+description: Code is welcome as a proposal the maintainer builds inside the kit's laws, never as a pull request. Say how it works, why, what it might hurt, and show a before/after.
+title: "[proposal] <what it does, in one line>"
+labels: ["community", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Mazhron 2026-10-13: "A recommendation for a hook or code is fine as long as it has information pertaining to how it works, why it works, anything it might effect negatively, and if possible should include some type of ledgering, before/after, etc." A merged proposal is built by the maintainer with the format header, a selftest and a read-only purpose audit, and credits you in `UPGRADES.md`. Paste code in a fenced block that names its language (python, javascript); the lint refuses shell blocks and lines that install, fetch or delete, because nothing in this repo may be able to run on a reader's machine by being pulled.
+  - type: input
+    id: stamp
+    attributes:
+      label: Your stamp
+      description: "`<name> | YYYY-MM-DD HH:MM`"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of thing
+      options: [a new hook, a change to a hook, a new reference tool, a change to a reference tool, a new skill, a change to a skill, a change to a method file, a change to the settings template]
+    validations:
+      required: true
+  - type: textarea
+    id: how
+    attributes:
+      label: HOW IT WORKS
+      description: What it reads, what it writes, when it runs, what it prints or refuses.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: WHY IT WORKS
+      description: The mechanism, and the moment that showed you the gap it closes.
+    validations:
+      required: true
+  - type: textarea
+    id: hurt
+    attributes:
+      label: WHAT IT MIGHT HURT
+      description: Side effects, cost in tokens or time, what breaks if it is wrong, which law it touches (the preservation law, the safety wiring, the format law).
+    validations:
+      required: true
+  - type: textarea
+    id: ledger
+    attributes:
+      label: LEDGER (before and after)
+      description: Numbers if you have them, a ledger line shape if you do not. What a reader would measure to know it worked.
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: The code or the diff
+      description: In a fenced block naming its language. Optional; the four sections above are what gets it built.

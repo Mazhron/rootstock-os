@@ -1,0 +1,36 @@
+name: Bug (a kit script, hook, skill or method file misbehaves)
+description: Something in the kit did other than its PURPOSE line says. Read-only report; the fix is the maintainer's.
+title: "[bug] <file>: <what happened>"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every kit thing carries a PURPOSE line and a FLAGS.md entry. A bug is a gap between that line and what the thing did. If the gap could make a reader's Claude run something it did not approve, do not file it here: use "Report a security problem privately" on the new-issue page.
+  - type: input
+    id: thing
+    attributes:
+      label: The kit thing
+      placeholder: "hooks/diet_guard.py, skills/checkpoint/SKILL.md, WIKI_METHOD.md ..."
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Kit version and platform
+      placeholder: "v1.49, Windows 11, Python 3.12, Claude Code 2.1.x"
+    validations:
+      required: true
+  - type: textarea
+    id: said
+    attributes:
+      label: What its PURPOSE line says
+    validations:
+      required: true
+  - type: textarea
+    id: did
+    attributes:
+      label: What it did instead, and how to see it again
+      description: The command or the moment, the output, in words or a fenced `text` block. No secrets, no paths you would not want public.
+    validations:
+      required: true

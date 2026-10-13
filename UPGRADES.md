@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.48** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.49** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -1858,3 +1858,56 @@ else changes until the community entries land. No hook, no settings
 change.
 README: "Updating an installed project" (weekly to every two days),
 "Questions people ask" (the network-call sentence), "Kit version:".
+
+### v1.49 - 2026-10-13 - The community inbox: the door opens, text only, behind a gate
+WHAT: NS-38 phase 1. The public repo gains a contributors' inbox
+(community/inbox/, one stamped markdown file per contribution, named
+YYYY-MM-DD-<name>-<slug>.md, shaped by community/TEMPLATE.md), the rules
+page (community/README.md), five issue forms (lesson, gotcha, field notes,
+bug, code proposal: HOW IT WORKS / WHY IT WORKS / WHAT IT MIGHT HURT /
+LEDGER before and after), a pull-request template, a security policy
+(SECURITY.md: what pulling runs, which classes can run and after whose
+yes, the private reporting door) and a CI check on every pull request:
+reference tools/contribution_lint.py refuses, from anyone but the owner,
+a file outside the inbox, a non-markdown or binary file, a shell line or
+block, an install, a fetch, a deletion verb, an off-allowlist URL and an
+instruction aimed at a reading Claude (the prompt-injection guard), with
+a selftest of fifteen checks. The sync script now pulls the clone
+fast-forward before the copy and never touches community/ or .github/,
+so a merged contribution survives every sync (the mirror used to be
+one-way). The front door's STEP 0 gains item 6: the CEO is asked whether
+to take part and under what name, the answer lives in the install stamp
+(`| community: <name>` or `| community: no`), and a general lesson is
+offered for sharing at the moment it is written, never sent without a
+yes. The trend script gains rule 17, the push schedule: when the kit
+repo's last commit is older than two days and a kit file differs from
+the folder, standup proposes the sync as a DO. GitHub side: Discussions
+on, private vulnerability reporting on, a pinned "wanted" issue, and
+branch protection on main (pull requests only, one review, signed
+commits required, no force push; the owner's signing key is the one
+step only the owner can do). The CEO's words: "a user should have the
+choice to participate in the community side to help it grow. Their
+claude should ask them if they want to participate, their username or
+whatever name they choose with a timestamp (date/time) will be stamped
+on whatever they contribute."
+CARRIES: reference tools/contribution_lint.py (new); SECURITY.md (new);
+CONTRIBUTING.md "The community path"; 0 - READ ME FIRST.md STEP 0 item 6;
+reference tools/ledger_trends.py (rule 17, the kit_push_days limit);
+the origin's tools/sync_kit_repo.py (KEEP + the pull), WORKFLOWS.md
+"Review a community contribution (Rootstock)" and the sync entry's step
+5, WORKSTATION.md (the signing-key row), docs/systems/
+rootstock-community.md; kit repo only: community/README.md,
+community/TEMPLATE.md, community/inbox/README.md, .github/ISSUE_TEMPLATE/
+(five forms + config), .github/PULL_REQUEST_TEMPLATE.md,
+.github/workflows/contribution-lint.yml; README "Taking part", the box
+rows, "Can I contribute?"; this entry.
+GRAFT: nothing to copy for a project that does not publish a kit of its
+own. Add STEP 0 item 6's question to your install stamp if you want to
+take part (`| community: <name>`); from then on a general lesson is
+offered for sharing when written. A project that runs the trend script
+gains rule 17 only if it keeps a kit clone (it is silent otherwise).
+No hook, no settings change.
+README: "Taking part (the community inbox)" (new), "Updating an installed
+project" (the push rhythm), "Questions people ask" ("Can I contribute?"),
+"What is in the box" (SECURITY.md, the reference tools count and the
+community gate phrase), "Kit version:".

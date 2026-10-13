@@ -33,22 +33,23 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-13 12:27 | items 79 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
+Updated 2026-10-13 12:47 | items 81 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 2 | stale 4
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
+| 0 - READ ME FIRST.md | GREEN | STALE | sonnet-flag-1013 | 2026-10-13 11:44 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| CONTRIBUTING.md | GREEN | ok | fable | 2026-10-06 11:21 |
+| CONTRIBUTING.md | GREEN | STALE | fable | 2026-10-06 11:21 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | LESSONS.md | GREEN | ok | fable | 2026-10-13 12:27 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
+| SECURITY.md | - | UNFLAGGED | - | - |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| UPGRADES.md | GREEN | ok | fable | 2026-10-13 12:27 |
+| UPGRADES.md | GREEN | STALE | fable | 2026-10-13 12:27 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
@@ -77,6 +78,7 @@ Updated 2026-10-13 12:27 | items 79 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/check_wiki_links.py | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:37 |
 | reference tools/checkpoint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
+| reference tools/contribution_lint.py | - | UNFLAGGED | - | - |
 | reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
 | reference tools/correction_log.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
@@ -86,7 +88,7 @@ Updated 2026-10-13 12:27 | items 79 | GREEN 76 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
-| reference tools/ledger_trends.py | GREEN | ok | sonnet-flag-1013 | 2026-10-13 11:44 |
+| reference tools/ledger_trends.py | GREEN | STALE | sonnet-flag-1013 | 2026-10-13 11:44 |
 | reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |

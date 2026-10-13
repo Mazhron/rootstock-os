@@ -1,0 +1,36 @@
+name: Field notes (a page for an engine, language or area)
+description: The start of a domain file the kit does not have yet (Unity, Unreal, C++, 3D ...), or a section for one it has. Text only.
+title: "[field notes] <domain>: <what the page covers>"
+labels: ["community", "field notes"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The kit's domain files (`GODOT_FIELD_NOTES.md`, `CLICKER_DESIGN_NOTES.md`) are examples of what a page becomes: hard-won facts under search-key headings, each section ending in a See also. A page can start with three sections. File path if by pull request: `community/inbox/YYYY-MM-DD-<name>-<slug>.md` with kind `field notes`.
+  - type: input
+    id: stamp
+    attributes:
+      label: Your stamp
+      description: "`<name> | YYYY-MM-DD HH:MM`"
+    validations:
+      required: true
+  - type: input
+    id: domain
+    attributes:
+      label: Domain
+      placeholder: "unity, unreal, cpp, python, web, 2d, 3d, or your own word"
+    validations:
+      required: true
+  - type: textarea
+    id: sections
+    attributes:
+      label: The sections
+      description: Each as `## <heading in search-key words>` followed by the facts and a See also line. No shell blocks, no links outside the lint's allowlist.
+    validations:
+      required: true
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+    validations:
+      required: true

@@ -1,0 +1,41 @@
+name: Gotcha (an engine or language trap)
+description: Something that behaves other than its docs or its name suggest. Text only.
+title: "[gotcha] <what you expected> but <what happened>"
+labels: ["community", "gotcha"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A gotcha is smaller than a lesson: one trap, its cause, the way around it. The file path is `community/inbox/YYYY-MM-DD-<name>-<slug>.md` with kind `gotcha` if you would rather open a pull request.
+  - type: input
+    id: stamp
+    attributes:
+      label: Your stamp
+      description: "`<name> | YYYY-MM-DD HH:MM`"
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      options: [godot, unity, unreal, cpp, python, web, 2d, 3d, harness (Claude Code and process), other]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Engine or language version it was seen on
+      placeholder: "Godot 4.4 stable, GL Compatibility"
+  - type: textarea
+    id: trap
+    attributes:
+      label: The trap, the cause, the way around it
+      description: In words. A snippet in the language itself may sit in a fenced block naming that language; no shell blocks.
+    validations:
+      required: true
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+    validations:
+      required: true

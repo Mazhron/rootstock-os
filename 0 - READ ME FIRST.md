@@ -38,6 +38,16 @@ recorded in the install stamp (see MISSING PREREQUISITES).
    in reference/ as examples of what such files become.
 5. UPDATE POLICY for future kit concepts: ask / auto / relevant / never
    (default ask; lives in the install stamp; the CEO changes it by saying so).
+6. THE COMMUNITY (kit v1.49): ask whether the CEO wants to take part in
+   Rootstock's community, and under what name. Record the answer in the
+   install stamp (`| community: <name>` or `| community: no`). When yes:
+   a lesson or gotcha the manager believes is GENERAL (an engine, language
+   or process fact, not a fact about this project) is offered for sharing
+   at the moment it is written; a yes writes it in the inbox shape
+   (community/TEMPLATE.md in the kit repo, stamped `Contributed by: <name>
+   | <date time> | <kind> | <domain>`) for the CEO to push as a pull
+   request. Nothing leaves the machine without that yes; a no is never
+   asked again until the CEO changes the stamp.
 
 THE BROWNFIELD RULE (an existing project): inventory first, ADOPT what
 already plays each role under its own name, PROPOSE the install as a plan,

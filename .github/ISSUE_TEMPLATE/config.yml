@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask or talk (Discussions)
+    url: https://github.com/Mazhron/rootstock-os/discussions
+    about: Questions, ideas that are not yet a proposal, and what you built with the kit.
+  - name: Report a security problem privately
+    url: https://github.com/Mazhron/rootstock-os/security/advisories/new
+    about: Anything that could make a reader's Claude run code it did not approve. Not a public issue.
