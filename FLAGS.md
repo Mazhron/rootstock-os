@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-13 13:08 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 | stale 1
+Updated 2026-10-13 13:09 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -43,7 +43,7 @@ Updated 2026-10-13 13:08 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | STALE | fable | 2026-10-13 12:27 |
+| LESSONS.md | GREEN | ok | fable | 2026-10-13 13:09 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 12:52 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
@@ -1302,3 +1302,8 @@ FLAG: PURPOSE widened to name the community question and the stamp field (the 12
 SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop, the lesson loop, the retrieval evaluation, the grain scan), plus one thing that is not a ledger: the kit clone three folders up (`git log -1` there, read-only, and a byte comparison of the kit folder against it, for the push schedule), compares them against tunable thresholds, and prints proposed rule changes, each tagged [DO] (a script, hook or employee carries it out in the reply that reads it) or [ASK] (only the owner can answer); it applies nothing itself.
 DOES: Reads ledger tails and, for rule 17, git log in the sibling kit clone plus a byte comparison of the kit folder, inside try/except with a 20 s timeout, writes nothing but its own proposal ledger
 FLAG: PURPOSE widened to disclose the clone read and the rules past 13 (the 12:50 audit)
+
+### 2026-10-13 13:09 | LESSONS.md | GREEN | fable | WS1 | fc3557a2
+SAYS: One entry per task shape: THE ONE RIGHT WAY first, then what was tried, why it failed and what to do instead, then nuance headlines as they accumulate, so a future session does the correct thing first instead of repeating trial and error.
+DOES: The one-right-way entries; stale only because the three-trap entry (CI workflow scope, the preserve guard reading regex text, the kit refresh rewriting the owner's name) was appended with its query line
+FLAG: Same shape as the rest; read-only look at the new entry
