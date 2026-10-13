@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-13 13:09 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
+Updated 2026-10-13 13:10 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -43,7 +43,7 @@ Updated 2026-10-13 13:09 | items 81 | GREEN 78 | YELLOW 3 | RED 0 | unflagged 0 
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | ok | fable | 2026-10-13 13:09 |
+| LESSONS.md | GREEN | ok | fable | 2026-10-13 13:10 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 12:52 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
@@ -1304,6 +1304,11 @@ DOES: Reads ledger tails and, for rule 17, git log in the sibling kit clone plus
 FLAG: PURPOSE widened to disclose the clone read and the rules past 13 (the 12:50 audit)
 
 ### 2026-10-13 13:09 | LESSONS.md | GREEN | fable | WS1 | fc3557a2
+SAYS: One entry per task shape: THE ONE RIGHT WAY first, then what was tried, why it failed and what to do instead, then nuance headlines as they accumulate, so a future session does the correct thing first instead of repeating trial and error.
+DOES: The one-right-way entries; stale only because the three-trap entry (CI workflow scope, the preserve guard reading regex text, the kit refresh rewriting the owner's name) was appended with its query line
+FLAG: Same shape as the rest; read-only look at the new entry
+
+### 2026-10-13 13:10 | LESSONS.md | GREEN | fable | WS1 | fc3557a2
 SAYS: One entry per task shape: THE ONE RIGHT WAY first, then what was tried, why it failed and what to do instead, then nuance headlines as they accumulate, so a future session does the correct thing first instead of repeating trial and error.
 DOES: The one-right-way entries; stale only because the three-trap entry (CI workflow scope, the preserve guard reading regex text, the kit refresh rewriting the owner's name) was appended with its query line
 FLAG: Same shape as the rest; read-only look at the new entry
