@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.51** (2026-10-13). The graft log `UPGRADES.md` is the
+Kit version: **v1.52** (2026-10-15). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -94,7 +94,8 @@ Every piece of the kit is one of these seven in disguise. The three marked
 MEASURED have before-and-after numbers from the origin project's meters
 ("The receipts" below); the rest are structural, each removing a class of
 re-reading, re-asking or re-doing, and the daily line says the next morning
-whether it held.
+whether it held. `WORKED_EXAMPLE.md` walks one task through all seven
+twice, with and without the kit, and prices every step.
 
 1. **What loads every session stays tiny.** CLAUDE.md is a pointer core of
    about a thousand tokens and a linter fails it past budget; the old 10k
@@ -1220,7 +1221,8 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   endless sessions and wholesale reads should expect roughly half to two
   thirds off; a user who already clears often and reads carefully saves
   less. Prompts are under 1% of the cost, so nothing here is a prompt
-  trick. "What it saves, concretely" below lists each habit and its cut.
+  trick. "What it saves, concretely" below lists each habit and its cut,
+  and `WORKED_EXAMPLE.md` prices one task step by step, both ways.
 - **Should I compact or clear?** Clear, right after a checkpoint. A
   compaction is a summary the model writes with no law about what it
   keeps, and it costs one more pass over the whole context to write,
@@ -1265,6 +1267,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `FLAGS.md` | The flag ledger: every kit thing's latest GREEN / YELLOW / RED, hashed to the version reviewed, tallied, append-only |
 | `GODOT_FIELD_NOTES.md` | Domain example: hard-won Godot engine lessons (skip if not Godot) |
 | `CLICKER_DESIGN_NOTES.md` | Domain example: idle/clicker genre lessons (skip if not that genre) |
+| `WORKED_EXAMPLE.md` | One task priced twice, step by step, with and without the kit: tool calls, results, output, cache reads and writes, and which piece of the kit took which share (v1.52) |
 
 The two domain files double as templates for what YOUR project's
 engine-notes and genre-notes files should grow into.

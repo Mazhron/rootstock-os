@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-13 14:39 | items 86 | GREEN 83 | YELLOW 3 | RED 0 | unflagged 0 | stale 0
+Updated 2026-10-15 22:06 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 | stale 1
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -49,8 +49,9 @@ Updated 2026-10-13 14:39 | items 86 | GREEN 83 | YELLOW 3 | RED 0 | unflagged 0 
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| UPGRADES.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
+| UPGRADES.md | GREEN | STALE | sonnet-flag-1013d | 2026-10-13 14:09 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
+| WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
 | hooks/README.txt | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
@@ -1504,3 +1505,8 @@ FLAG: Derived file, no side effect, re-flagged after the refresh that the entry 
 SAYS: The lesson law and the entry shape of the one-right-way book, plus a pointer index: every one of the origin's 46 entries under the knowledge/lessons/<domain>.md file that holds it verbatim, so a project seeds its own LESSONS.md from the slices the manifest matched.
 DOES: Derived by split_knowledge.py from the root lessons book; the only change since the last flag is the 2026-10-13 kit-checkpoint lesson entry (46 entries, harness 40) and its row counts
 FLAG: Derived file, no side effect, re-flagged after the refresh that the entry itself prescribes
+
+### 2026-10-15 22:06 | WORKED_EXAMPLE.md | GREEN | fable | WS1 | ce4970e0
+SAYS: A step-by-step, modeled walk-through of one ordinary task done by a user without Rootstock and a user with it, every step priced in tool calls, tool results, output, cache reads and cache writes, so a person or a reading Claude can see WHICH piece of the kit saved WHICH tokens and why the saving compounds across turns and sessions.
+DOES: A prose and table document: one task priced twice (with and without the kit) in tool calls, results, output, cache reads and writes, weighted with the usage sheet's ratios, then the share each kit piece took and why it compounds; states that it is a model, not a meter
+FLAG: Does what the purpose says and nothing more; no instructions aimed at a reading Claude beyond the laws it already carries; the modeled sizes are the origin's measured averages and are labelled as modeled

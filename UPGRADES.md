@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.51** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.52** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2015,3 +2015,29 @@ VERIFIED release; the tag and SHA256SUMS are the proof, and an UNVERIFIED
 line means stop and tell the kit's owner. No hook, no settings change.
 README: "Taking part (the community inbox)", "Updating an installed
 project", "Questions people ask", "Kit version:".
+
+### v1.52 - 2026-10-15 - The worked example: one task priced twice, step by step
+WHAT: a new document, WORKED_EXAMPLE.md, that takes one ordinary task (a
+headless self-test for a new button, with the origin's real "a click test
+fails headless" trap) and prices it step by step for a user without the kit
+and a user with it: tool calls, tool results, output, cache reads, cache
+writes, context after each step, weighted totals with the usage sheet's
+price ratios (input x1, cache write x1.25, cache read x0.1, output x5), and
+then names which piece of the kit took which share (the lesson, the
+workflow, section reads, the digest and the pointer core, trust the ledger,
+the output diet) and why it compounds across turns and sessions. A model,
+not a meter: the metered numbers stay in the README's receipts; this file
+says where and why. The CEO's ask: "I feel it's very important for people
+and even another AI to understand." The README gained the section "The
+seven ways it saves tokens" the same day (the map the example walks) and
+the question "How much does it actually save?".
+CARRIES: WORKED_EXAMPLE.md (new); README "The seven ways it saves tokens",
+"What is in the box" (the new row), "Questions people ask"; this entry.
+GRAFT: nothing to wire. An installed project may copy the file beside its
+own method files for its manager to read once; a project that keeps its
+own usage sheet can replace the modeled sizes with its measured averages
+(the whole-read and section-read averages from its daily line) and keep the
+same steps.
+README: "The seven ways it saves tokens" (a pointer line to the example),
+"What is in the box" (the new row), "Questions people ask" ("How much does
+it actually save?" points at the example).
