@@ -1141,6 +1141,24 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   before it lists grafts and `UNVERIFIED` (and lists nothing) when the
   hash disagrees. The signature stays your check.
 
+- **Should I compact or clear?** Clear, right after a checkpoint. A
+  compaction is a summary the model writes with no law about what it
+  keeps, and it costs one more pass over the whole context to write,
+  then rides in every prompt after. The kit puts context in files so
+  nothing has to survive the chat: the checkpoint banks both sides of the
+  last exchange, the state and the open queue, and the next standup
+  re-arms from the digest in a few thousand tokens. The recovery after a
+  compaction is the same digest (the session start hook fires on both),
+  so compacting pays for a paraphrase the manager then re-anchors past.
+  Neither path keeps the prompt cache warm. The hooks already treat
+  compaction as the fallback: CHECKPOINT DUE prints at 80% of the context
+  budget so the checkpoint lands before auto-compact can, the session end
+  hook banks anything unbanked on a /clear, and the PreCompact hook only
+  writes a receipt. The origin project's receipt ledger shows no real
+  compaction since the hook went in (two pipe tests). Compact only when a
+  half-built change or a running employee would cost more to re-derive
+  than the summary costs to carry, and checkpoint first even then.
+
 ## What is in the box
 
 | File | What it is |
