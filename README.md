@@ -88,6 +88,75 @@ Everything in Rootstock is a variation on one insight:
 > Keep the manager's context small, and let cheap, disposable contexts do
 > the reading.
 
+### The seven ways it saves tokens (the map; the receipts follow)
+
+Every piece of the kit is one of these seven in disguise. The three marked
+MEASURED have before-and-after numbers from the origin project's meters
+("The receipts" below); the rest are structural, each removing a class of
+re-reading, re-asking or re-doing, and the daily line says the next morning
+whether it held.
+
+1. **What loads every session stays tiny.** CLAUDE.md is a pointer core of
+   about a thousand tokens and a linter fails it past budget; the old 10k
+   core was paid on every request of every session. Rules load only while
+   a matching file is read, skills only when invoked, and hooks are
+   scripts that cost nothing but their one-line verdict. The standup
+   digest, about 3k tokens, is the only other standing load and is trimmed
+   by a loss test, never a byte target. A session opens at roughly 4k
+   tokens for a wiki of nearly 300k. MEASURED.
+2. **Reading less, and never twice.** Grep a file's headings for about 50
+   tokens, then read one section; the origin's meter shows 85-95% of reads
+   landing as sections and the average read falling from 35k to 1-2k
+   tokens. The diet guard says a file's size before any whole read past
+   10k, refuses a re-read of a file already in context, and refuses a
+   whole read when an index exists for it. A whole-read ledger names the
+   files that keep getting read whole, screenshots are priced by pixels,
+   and a big read goes to an employee in a throwaway context that returns
+   a distilled report: 50k permanent becomes about 1k. MEASURED.
+3. **Context that never accretes.** Checkpoint plus /clear is lossless, so
+   sessions actually end: re-read per request fell from about 850k at the
+   marathon peak to about 267k. The checkpoint fires itself at 80% of the
+   context budget and on every reply after until the clear; compaction is
+   the fallback, never the plan, since a summary is lossy and rides every
+   later prompt; a forgotten checkpoint is caught by the session-end hook,
+   which banks the exchange from the transcript. MEASURED.
+4. **Cache discipline.** The weighted meter counts cache writes at their
+   true rate, which made them the largest pillar. A keep-warm ping holds
+   the one-hour cache across a pause, since expired caches carried 97% of
+   the priced waste in the first reading. The cache-miss ledger classifies
+   every miss by cause (session start, employee, expiry gap, long pause,
+   a prefix change mid-session); the last is the fixable one, which is why
+   the core and the settings file are edited rarely and by guarded steps.
+   Every day is judged against the previous seven and a CHECK verdict
+   reaches the next standup verbatim.
+5. **Not re-deriving what is already known.** Trust the ledger: a green
+   test at an unchanged version never re-runs, and the runner enforces
+   it. The script rule: anything repeatable is a script in the loop, and
+   the prompt hook prints a ROUTE line naming the scripted way before the
+   manager re-derives it. WORKFLOWS.md holds the steps and LESSONS.md the
+   judgment; the prompt hook names matching lessons and the lesson advisor
+   forces an entry whenever a turn shows trial and error, so the second
+   occurrence is a read, not a re-discovery. The intent loop records the
+   why of each ruling in the owner's words, so a decision is looked up
+   instead of re-asked, and the contradiction rule flags a request that
+   reverses one before anything is built.
+6. **Output and delegation kept bounded.** The output diet: every emitted
+   token costs five, so replies, reports and tool results stay short, and
+   employees report diffs, not transcripts. Every brief carries a budget
+   line, the fan-out guard refuses bursts and floods and halts on token
+   velocity, and a batch runs a handful of employees, not a swarm, so a
+   runaway ends as a partial report instead of a bill. The fabrication
+   check and the truthfulness hooks verify an employee's claim cheaply
+   against the diff, in order: tests first, a spot read second, never a
+   full re-read.
+7. **Preventing the expensive mistake.** The preserve guard refuses delete
+   verbs and the shell guard refuses force pushes and the like, so a wrong
+   command never costs a folder or a rebuild. The hygiene guard speaks at
+   the moment of an edit, naming the law that applies, so a slip is caught
+   before it ships and before a correction round is paid for. The format
+   guard, the purpose audit and the version and changelog scripts keep the
+   kit's own state mechanical, so none of it is re-litigated in chat.
+
 ### "Doesn't a wiki make the context HEAVIER?" (what actually loads)
 
 The natural objection: more files means more to read, so the context gets
