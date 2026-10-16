@@ -1141,6 +1141,17 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   before it lists grafts and `UNVERIFIED` (and lists nothing) when the
   hash disagrees. The signature stays your check.
 
+- **How much does it actually save?** No single number, because there is
+  no controlled benchmark; there are three measured levers from the origin
+  project's own meters ("The receipts" above): section reads cut the
+  tokens injected per read by 71%, checkpoint plus /clear cut the context
+  re-read per request by 69% against the marathon peak, and a session
+  opens at a few thousand tokens instead of a re-explanation. Context is
+  more than four fifths of the weighted bill, so a user coming from
+  endless sessions and wholesale reads should expect roughly half to two
+  thirds off; a user who already clears often and reads carefully saves
+  less. Prompts are under 1% of the cost, so nothing here is a prompt
+  trick. "What it saves, concretely" below lists each habit and its cut.
 - **Should I compact or clear?** Clear, right after a checkpoint. A
   compaction is a summary the model writes with no law about what it
   keeps, and it costs one more pass over the whole context to write,
