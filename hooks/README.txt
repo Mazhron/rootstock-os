@@ -1,4 +1,4 @@
-Rootstock hooks (kit v1.30). Install per HOOKS_METHOD.md 'Bootstrap':
+Rootstock hooks (the version is UPGRADES.md's). Install per HOOKS_METHOD.md 'Bootstrap':
 
 PURPOSE: Installation notes for the Rootstock hooks folder: what each hook
   file needs filled in or wired (bash_guard.py's PROJECT RULES,

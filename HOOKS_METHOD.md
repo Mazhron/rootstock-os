@@ -150,7 +150,9 @@ TIER 1 - the resumption + checkpoint loop:
    lines pile up unwritten. State file: gitignore it.
    Since kit v1.34 (THE CHECKPOINT NAMED CHECK, 2026-09-28, correction
    C0004: "Any reference to a checkpoint from any valid source should
-   prompt you to do it") it also reads the turn's reply text from the
+   prompt you to do it") the Stop tick (stop_tick.py, not this hook: filed
+   here by mistake until the seventh README audit, 2026-10-19) reads the
+   turn's reply text from the
    transcript and refuses once per prompt when the reply names a
    checkpoint as due (the word within a sentence of next / natural / due
    / advised / ready / should / whenever / now) without the safe-to-clear
@@ -159,7 +161,7 @@ TIER 1 - the resumption + checkpoint loop:
    Since kit v1.35 (THE PROPOSAL NAMED CHECK, 2026-09-29, correction
    C0005: "If an audit is required, and it can be done with a sub-agent,
    or a script, it doesn't need my permission. Just do it.") the same
-   reader holds the reply to the standup's proposals: ledger_trends.py
+   reader, the Stop tick, holds the reply to the standup's proposals: ledger_trends.py
    tags every PROPOSE line [DO] or [ASK] and exposes the DO ones that
    clear when done (the systems audit, the README audit, the digest trim,
    a stale loop group, dead links, an unwritten lesson, a stale claim);
@@ -425,9 +427,10 @@ event name:
    content; an Edit's old -> new applied to the current file) and
    REFUSED if it would not parse, would name a hook script that does not
    exist beside it, or would leave any SAFETY hook unwired, narrowed or
-   mis-pointed. The SAFETY table lives in the lint: preserve_guard,
-   bash_guard, fanout_guard, diet_guard, hygiene_guard, format_guard,
-   stop_tick, each with the event and the tools its matcher must cover.
+   mis-pointed. The SAFETY table lives in the lint, eleven rows:
+   preserve_guard, bash_guard, fanout_guard, diet_guard, hygiene_guard,
+   format_guard, brief_guard, delegation_auditor, verify_advisor,
+   stop_tick and session_end, each with the event and the tools its matcher must cover.
    Only the CEO changes the wiring, by hand; a prompt, a brief or a
    contributed patch cannot.
 2. AFTER any edit of a kit thing or its original: the lint runs on that

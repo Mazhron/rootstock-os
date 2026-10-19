@@ -78,6 +78,25 @@ LEDGER = os.path.join(ROOT, "docs", "history", "readme_lint_runs.txt")
 # prose slip that no count expresses; never remove one (a slip that
 # happened once can happen again).
 CLAIMS = [
+    # the seventh audit, 2026-10-19 (T-1019-RA-1..4)
+    ("the Stop tick, not the lesson advisor, carries the NAMED checks",
+     r"The Stop tick holds the manager to its own words",
+     r"The same hook holds the manager to its own words"),
+    ("v1.20 closed the five yellows the same day",
+     r"closed all five the same day",
+     r"closed all five the next morning"),
+    ("the update checker fetches the checksums and the graft log at the tag",
+     r"SHA256SUMS and UPGRADES\.md at the tag",
+     r"one HTTPS fetch of\s+this repo's UPGRADES\.md, at most"),
+    ("the usage sheet's dollars are estimates",
+     r"dollars are an estimate",
+     r"never dollars: the billing dashboard"),
+    ("the diet guard refuses an unchanged re-read once more",
+     r"refuses one more unchanged whole read",
+     r"and warns on every later whole read of"),
+    ("the dire refusal repeats every five tasks",
+     r"then again every five tasks",
+     r"refuses to end the turn\s+once\) or when"),
     ("settings.json merges into .claude/settings.json (not tools/hooks)",
      r"merge into `\.claude/settings\.json`",
      r"settings template.*into `tools/hooks/`"),

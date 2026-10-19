@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-19 09:44 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 | stale 1
+Updated 2026-10-19 10:26 | items 87 | GREEN 85 | YELLOW 2 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -41,7 +41,7 @@ Updated 2026-10-19 09:44 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
+| HOOKS_METHOD.md | GREEN | ok | fable | 2026-10-19 10:26 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | LESSONS.md | GREEN | ok | fable | 2026-10-19 09:44 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
@@ -49,12 +49,12 @@ Updated 2026-10-19 09:44 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| UPGRADES.md | GREEN | STALE | sonnet-flag-1013d | 2026-10-13 14:09 |
+| UPGRADES.md | GREEN | ok | fable | 2026-10-19 10:26 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
-| hooks/README.txt | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
+| hooks/README.txt | GREEN | ok | fable | 2026-10-19 10:26 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/brief_guard.py | GREEN | ok | fable | 2026-09-30 11:57 |
@@ -72,10 +72,10 @@ Updated 2026-10-19 09:44 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 
 | hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-19 09:44 |
+| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-19 10:26 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
 | knowledge/lessons/godot.md | GREEN | ok | fable | 2026-10-19 09:44 |
-| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-10-13 14:39 |
+| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-10-19 10:26 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
@@ -98,7 +98,7 @@ Updated 2026-10-19 09:44 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-10-13 14:14 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/readme_lint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
+| reference tools/readme_lint.py | GREEN | ok | fable | 2026-10-19 10:26 |
 | reference tools/refresh_kit.py | GREEN | ok | fable | 2026-10-13 13:33 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/retrieval_eval.py | GREEN | ok | fable | 2026-10-13 11:45 |
@@ -116,7 +116,7 @@ Updated 2026-10-19 09:44 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:10 |
-| skills/checkpoint/SKILL.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
+| skills/checkpoint/SKILL.md | GREEN | ok | fable | 2026-10-19 10:26 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/flag/SKILL.md | GREEN | ok | fable-manager | 2026-09-29 16:38 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
@@ -1525,3 +1525,38 @@ FLAG: Derived file, no side effect, re-flagged after the refresh
 SAYS: The lesson law and the entry shape of the one-right-way book, plus a pointer index: every one of the origin's 47 entries under the knowledge/lessons/<domain>.md file that holds it verbatim, so a project seeds its own LESSONS.md from the slices the manifest matched.
 DOES: Derived by split_knowledge.py from the root lessons book; the only change since the last flag is the 2026-10-19 scroll-list lesson entry and its row counts
 FLAG: Derived file, no side effect, re-flagged after the refresh
+
+### 2026-10-19 10:26 | HOOKS_METHOD.md | GREEN | fable | WS1 | eee0eeed
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: the hooks method: the contract, the fifteen hooks by tier, bootstrap; item 5 now credits the NAMED checks to the Stop tick and the SAFETY paragraph lists the lint's eleven rows
+FLAG: seventh README audit 2026-10-19 (T-1019-RA-1..4), read by the manager after editing
+
+### 2026-10-19 10:26 | UPGRADES.md | GREEN | fable | WS1 | e5e420ae
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: the graft log; v1.53 entry added with WHAT/CARRIES/GRAFT/README, version line bumped
+FLAG: seventh README audit 2026-10-19 (T-1019-RA-1..4), read by the manager after editing
+
+### 2026-10-19 10:26 | hooks/README.txt | GREEN | fable | WS1 | 68073f9a
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: the per-hook setup steps; the stale kit v1.30 label replaced by a pointer to UPGRADES.md, which clears the 10-12 yellow
+FLAG: seventh README audit 2026-10-19 (T-1019-RA-1..4), read by the manager after editing
+
+### 2026-10-19 10:26 | knowledge/MANIFEST.md | GREEN | fable | WS1 | 6e56e6d3
+SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
+DOES: the derived manifest of the knowledge split, rewritten by refresh_kit after the shop-purchase lesson nuance
+FLAG: derived file, 2026-10-19
+
+### 2026-10-19 10:26 | knowledge/lessons/harness.md | GREEN | fable | WS1 | 3d70e0df
+SAYS: The harness slice of the one-right-way book, 40 entries whose Tags name balance, checkpoint, communication, cross-workstation and 27 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: the derived harness-domain lessons file; carries the amended shop-purchase lesson
+FLAG: derived file, 2026-10-19
+
+### 2026-10-19 10:26 | reference tools/readme_lint.py | GREEN | fable | WS1 | 74b82daf
+SAYS: Derives every countable README fact (laws, skills, hooks, reference tools, the box table, version, the graft README line, number word claims, prose claims) from the kit folder itself and compares it with what the public README says, ledgering PASS, FAIL or SKIP each run.
+DOES: the README parity lint; six CLAIMS rows added for the seventh audit's prose slips, 113 checks PASS
+FLAG: seventh README audit 2026-10-19 (T-1019-RA-1..4), read by the manager after editing
+
+### 2026-10-19 10:26 | skills/checkpoint/SKILL.md | GREEN | fable | WS1 | e08fc6cc
+SAYS: Close an arc safely: push, refresh the day file's WHERE WE LEFT OFF section with both sides of the final exchange verbatim, reset the task counter, and emit the safe-to-clear marker.
+DOES: the checkpoint skill; the counter line now says the dire refusal repeats every five tasks
+FLAG: seventh README audit 2026-10-19 (T-1019-RA-1..4), read by the manager after editing

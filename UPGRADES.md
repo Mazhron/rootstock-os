@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.52** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.53** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2015,6 +2015,48 @@ VERIFIED release; the tag and SHA256SUMS are the proof, and an UNVERIFIED
 line means stop and tell the kit's owner. No hook, no settings change.
 README: "Taking part (the community inbox)", "Updating an installed
 project", "Questions people ask", "Kit version:".
+
+### v1.53 - 2026-10-19 - The seventh README audit: the Stop tick owns the NAMED checks, the safety tier is eleven, the dire refusal repeats
+WHAT: four read-only sonnet lanes (T-1019-RA-1..4) against kit v1.52 found
+three slips that lived UPSTREAM and are fixed at the source: HOOKS_METHOD.md
+filed the CHECKPOINT NAMED and PROPOSAL NAMED checks under the lesson
+advisor (they are stop_tick.py's, as its own change log said) and listed a
+SAFETY table of seven hooks where the lint's has eleven; the checkpoint
+skill called the dire refusal "once" where stop_tick refuses again every
+five tasks past 15; hooks/README.txt carried a "kit v1.30" label that went
+stale with every version (the label now points at UPGRADES.md). Fifteen
+README WRONG lines applied (the diet guard's RE-READ refusal, the usage
+sheet's dollars as estimates, the floor of three on the miss rule, the 70%
+hold's three-call gap, the update checker's two files at the signed tag,
+the code lane in the community gate's box row, the Quick start's community
+question and the stamp's community field, the two doors, a direction word,
+the same-day close of the first audit's yellows, Claude Code's own IDE
+extension running the hooks, the URGENT line named), about twenty-five
+LACKS and POORLY applied (the Index directive and the three core numbers,
+the cold shelf's index columns and the six cold classes, the cache-miss
+definition, what earns a ledger, the output diet's last bullets, layers
+versus homes, the duplicated bootstrap bullet, the brief header named
+apart from the STAMP line, the no-bulk-orchestration rule, the delete
+grant's mechanics, how a claim closes, the mirror push, escalation by
+effort, weighted tokens and the /runaway flags, the purpose audit's
+checklist and batch rule, the intent file's four fields, the n/a trend,
+the format law by class, what earns a registry entry, Remote Control,
+what SECURITY.md and CONTRIBUTING.md answer, the inbox stamp's kind and
+domain, the no-Python case); six new lint CLAIMS rows. Skipped by design:
+the box rows for community/, SHA256SUMS, LICENSE and .github (the lint
+derives the box), the seven-laws recap, the scorecard detail.
+CARRIES: HOOKS_METHOD.md (item 5 and the format guard's SAFETY paragraph),
+skills/checkpoint/SKILL.md, hooks/README.txt, reference tools/readme_lint.py
+(six CLAIMS rows), README.md, this entry.
+GRAFT: nothing to wire. An installed project's HOOKS_METHOD.md copy may
+take the two corrected paragraphs; its checkpoint skill's counter line
+may take the "then again every five tasks" words. No hook changed.
+README: "The hooks: laws the harness enforces itself", "3. The Delegation
+Company", "4. Lossless Sessions", "1. The Knowledge Wiki", "2. The
+Reporting Discipline", "The intent loop", "The format law and the purpose
+audit", "The two companions", "What you need", "Quick start", "Taking
+part", "Updating an installed project", "Questions people ask", "What is
+in the box" (the community gate's row).
 
 ### v1.52 - 2026-10-15 - The worked example: one task priced twice, step by step
 WHAT: a new document, WORKED_EXAMPLE.md, that takes one ordinary task (a

@@ -68,7 +68,8 @@ SEQUENCE
 The counter TICKS ITSELF (Stop hook, 2026-09-06) whenever a reply changed
 the tree or HEAD - never tick by hand, it double-counts. Relay its warnings
 (advised at 8, dire at 15 - at dire the Stop hook refuses to end the turn
-once and the prompt hook repeats the line) verbatim.
+once, then again every five tasks, and the prompt hook repeats the line)
+verbatim.
 
 THE CONTEXT GAUGE (Mazhron's 80% rule, 2026-09-04): every tick/status
 also prints the live context load, probed from the harness transcript.
