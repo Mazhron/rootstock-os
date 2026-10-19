@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-15 22:06 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 | stale 1
+Updated 2026-10-19 09:44 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 | stale 1
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -43,7 +43,7 @@ Updated 2026-10-15 22:06 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | ok | fable | 2026-10-13 14:39 |
+| LESSONS.md | GREEN | ok | fable | 2026-10-19 09:44 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 14:13 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
@@ -72,9 +72,9 @@ Updated 2026-10-15 22:06 | items 87 | GREEN 84 | YELLOW 3 | RED 0 | unflagged 0 
 | hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-13 14:39 |
+| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-19 09:44 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
-| knowledge/lessons/godot.md | GREEN | ok | fable | 2026-10-13 13:33 |
+| knowledge/lessons/godot.md | GREEN | ok | fable | 2026-10-19 09:44 |
 | knowledge/lessons/harness.md | GREEN | ok | fable | 2026-10-13 14:39 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
@@ -1510,3 +1510,18 @@ FLAG: Derived file, no side effect, re-flagged after the refresh that the entry 
 SAYS: A step-by-step, modeled walk-through of one ordinary task done by a user without Rootstock and a user with it, every step priced in tool calls, tool results, output, cache reads and cache writes, so a person or a reading Claude can see WHICH piece of the kit saved WHICH tokens and why the saving compounds across turns and sessions.
 DOES: A prose and table document: one task priced twice (with and without the kit) in tool calls, results, output, cache reads and writes, weighted with the usage sheet's ratios, then the share each kit piece took and why it compounds; states that it is a model, not a meter
 FLAG: Does what the purpose says and nothing more; no instructions aimed at a reading Claude beyond the laws it already carries; the modeled sizes are the origin's measured averages and are labelled as modeled
+
+### 2026-10-19 09:44 | knowledge/MANIFEST.md | GREEN | fable | WS1 | a50c4900
+SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
+DOES: Derived by split_knowledge.py from the root lessons book; the only change since the last flag is the 2026-10-19 scroll-list lesson entry and its row counts
+FLAG: Derived file, no side effect, re-flagged after the refresh
+
+### 2026-10-19 09:44 | knowledge/lessons/godot.md | GREEN | fable | WS1 | 9af4f3e8
+SAYS: The godot slice of the one-right-way book, 5 entries whose Tags name creative mode, godot, gotchas, testing and 1 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: Derived by split_knowledge.py from the root lessons book; the only change since the last flag is the 2026-10-19 scroll-list lesson entry and its row counts
+FLAG: Derived file, no side effect, re-flagged after the refresh
+
+### 2026-10-19 09:44 | LESSONS.md | GREEN | fable | WS1 | fa650dd5
+SAYS: The lesson law and the entry shape of the one-right-way book, plus a pointer index: every one of the origin's 47 entries under the knowledge/lessons/<domain>.md file that holds it verbatim, so a project seeds its own LESSONS.md from the slices the manifest matched.
+DOES: Derived by split_knowledge.py from the root lessons book; the only change since the last flag is the 2026-10-19 scroll-list lesson entry and its row counts
+FLAG: Derived file, no side effect, re-flagged after the refresh
