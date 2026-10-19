@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-19 10:26 | items 87 | GREEN 85 | YELLOW 2 | RED 0 | unflagged 0 | stale 0
+Updated 2026-10-19 12:32 | items 87 | GREEN 85 | YELLOW 2 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -43,7 +43,7 @@ Updated 2026-10-19 10:26 | items 87 | GREEN 85 | YELLOW 2 | RED 0 | unflagged 0 
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | fable | 2026-10-19 10:26 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | ok | fable | 2026-10-19 09:44 |
+| LESSONS.md | GREEN | ok | fable | 2026-10-19 12:32 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 14:13 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
@@ -72,10 +72,10 @@ Updated 2026-10-19 10:26 | items 87 | GREEN 85 | YELLOW 2 | RED 0 | unflagged 0 
 | hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-19 10:26 |
+| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-19 12:32 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
 | knowledge/lessons/godot.md | GREEN | ok | fable | 2026-10-19 09:44 |
-| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-10-19 10:26 |
+| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-10-19 12:32 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
@@ -1560,3 +1560,18 @@ FLAG: seventh README audit 2026-10-19 (T-1019-RA-1..4), read by the manager afte
 SAYS: Close an arc safely: push, refresh the day file's WHERE WE LEFT OFF section with both sides of the final exchange verbatim, reset the task counter, and emit the safe-to-clear marker.
 DOES: the checkpoint skill; the counter line now says the dire refusal repeats every five tasks
 FLAG: seventh README audit 2026-10-19 (T-1019-RA-1..4), read by the manager after editing
+
+### 2026-10-19 12:32 | LESSONS.md | GREEN | fable | WS1 | 295857b6
+SAYS: The lesson law and the entry shape of the one-right-way book, plus a pointer index: every one of the origin's 48 entries under the knowledge/lessons/<domain>.md file that holds it verbatim, so a project seeds its own LESSONS.md from the slices the manifest matched.
+DOES: Derived by tools/split_knowledge.py from the root LESSONS.md; the only change is the new kit-install entry (48 entries, harness 41) and the backslash lesson's nuance line
+FLAG: Read-only re-flag after the refresh: generated content, matches its PURPOSE, nothing beyond the new paragraph
+
+### 2026-10-19 12:32 | knowledge/MANIFEST.md | GREEN | fable | WS1 | 5f3bacaa
+SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
+DOES: Derived by tools/split_knowledge.py from the root LESSONS.md; the only change is the new kit-install entry (48 entries, harness 41) and the backslash lesson's nuance line
+FLAG: Read-only re-flag after the refresh: generated content, matches its PURPOSE, nothing beyond the new paragraph
+
+### 2026-10-19 12:32 | knowledge/lessons/harness.md | GREEN | fable | WS1 | 755cf6ca
+SAYS: The harness slice of the one-right-way book, 41 entries whose Tags name balance, checkpoint, communication, cross-workstation and 27 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: Derived by tools/split_knowledge.py from the root LESSONS.md; the only change is the new kit-install entry (48 entries, harness 41) and the backslash lesson's nuance line
+FLAG: Read-only re-flag after the refresh: generated content, matches its PURPOSE, nothing beyond the new paragraph
