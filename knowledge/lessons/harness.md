@@ -1477,7 +1477,8 @@ the day file and put back as numbered asks, never silent.
 - NUANCE: the trend proposals fire on day one for audits a receiving
   project cannot do (no README): park them by their limits in
   .claude/trend_limits.json with the reason in its _comment.
-See also: "0 - READ ME FIRST.md" (the front door); hooks/README.txt (per-hook
+See also: the kit's front door file "0 - READ ME FIRST" (Future Project MDs/,
+a name with spaces the link checker cannot resolve); hooks/README.txt (per-hook
 fill-ins); docs/history/days/2026-10-19-WS1.md "The off-topic arc"; the
 Swarm Wars repo's docs/history/days/2026-10-19-WS1.md (the install record).
 
