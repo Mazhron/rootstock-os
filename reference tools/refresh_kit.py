@@ -2,8 +2,9 @@
 updated and pushed whenever it is discussed").
 
 PURPOSE: copy every portable ORIGINAL to its grab-copy in the kit folder
-  (repo-root MDs, .claude/skills/*/SKILL.md, tools/hooks/*.py, the
-  tools/*.py that have a reference copy, and the .claude/rules/*.md files
+  (repo-root MDs, .claude/skills/*/SKILL.md, .claude/agents/*.md (kit
+  v1.54, the pinned searchers), tools/hooks/*.py, the tools/*.py that have
+  a reference copy, and the .claude/rules/*.md files
   named in PORTABLE_RULES), with the one substitution the
   kit carries in scripts (the owner's name -> "the CEO"); report the
   hand-adapted files it must never overwrite; then derive the kit's
@@ -19,7 +20,7 @@ INTENT: the CEO 2026-09-13: "Every time I discuss rootstock-os, or it's
     python tools/refresh_kit.py            # refresh every copy that differs; print what changed
     python tools/refresh_kit.py --check    # report only (exit 1 if anything is out of step)
     python tools/refresh_kit.py --dry-run  # show what would change
-    python tools/refresh_kit.py --adopt tools/x.py   # add a NEW reference tool (or skill dir) to the kit
+    python tools/refresh_kit.py --adopt tools/x.py   # add a NEW reference tool (or skill dir, or .claude/agents/x.md) to the kit
 
 The kit's LESSONS.md and knowledge/ are DERIVED by tools/split_knowledge.py
 (SPLIT; NS-38 phase 2), not copied: the refresh calls it after the copies.
@@ -47,6 +48,7 @@ KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os")
 HOOKS_DIR = os.path.join(ROOT, "tools", "hooks")
 TOOLS_DIR = os.path.join(ROOT, "tools")
 SKILLS_DIR = os.path.join(ROOT, ".claude", "skills")
+AGENTS_DIR = os.path.join(ROOT, ".claude", "agents")   # kit v1.54: agents/<name>.md, prose (no substitution)
 RULES_DIR = os.path.join(ROOT, ".claude", "rules")
 PORTABLE_RULES = {"wiki.md"}                # path-scoped rules that travel; game rules stay per project
 ADAPTED = {"hooks/bash_guard.py"}          # hand-tailored kit copies: never overwritten
@@ -90,6 +92,10 @@ def pairs():
             src = os.path.join(SKILLS_DIR, s, "SKILL.md")
             if os.path.isfile(src):
                 out.append((src, "skills/%s/SKILL.md" % s, False))
+    if os.path.isdir(AGENTS_DIR):
+        for f in sorted(os.listdir(AGENTS_DIR)):
+            if f.endswith(".md"):
+                out.append((os.path.join(AGENTS_DIR, f), "agents/" + f, False))
     if os.path.isdir(HOOKS_DIR):
         for f in sorted(os.listdir(HOOKS_DIR)):
             if f.endswith(".py"):
@@ -197,8 +203,11 @@ def adopt(path):
     elif p.endswith(".py") and os.path.dirname(p).lower() == HOOKS_DIR.lower():
         rel = "hooks/" + os.path.basename(p)
         write(os.path.join(KIT_DIR, rel), transform(read(p), True))
+    elif p.endswith(".md") and os.path.dirname(p).lower() == AGENTS_DIR.lower():
+        rel = "agents/" + os.path.basename(p)
+        write(os.path.join(KIT_DIR, rel), read(p))
     else:
-        raise SystemExit("adopt takes a tools/*.py, a tools/hooks/*.py or a .claude/skills/<name> dir")
+        raise SystemExit("adopt takes a tools/*.py, a tools/hooks/*.py, a .claude/agents/*.md or a .claude/skills/<name> dir")
     print("adopted %s -> %s (add its UPGRADES.md entry, README box line and front-door step this batch)"
           % (path, rel))
 

@@ -474,7 +474,10 @@ per moment:
   work brief missing the STAMP/TOOLS/WORKFLOW template, the INTENT line,
   the budget line or the preservation line is refused with the pieces
   named; a malformed brief costs a refusal, never a spent employee.
-  Read-only searcher agent types pass untouched.
+  Read-only searcher agent types carry no brief laws; since kit v1.54
+  they carry the model rule, the model taken from the call or from the
+  agent file's `model:` pin (.claude/agents/<type>.md), so a search
+  never inherits the manager's tier.
 - RESULT: delegation_auditor.py (PostToolUse on Agent|Task) - reads the
   harness-metered tool/token figures out of the result (the numbers no
   model can fake): 0 metered calls on a work task = the fabrication

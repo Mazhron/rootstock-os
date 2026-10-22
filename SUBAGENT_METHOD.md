@@ -160,6 +160,17 @@ tier silently - the one tier the table says is never an employee. The
 brief guard refuses a work dispatch whose model is missing or names the
 manager's tier; the fix is the table's row, written into the call.
 
+THE PINNED SEARCH (2026-10-22, kit v1.54): read-only searches were the
+loophole. The harness's built-in Explore type carries no model and the
+guard exempted read-only types, so a search inherited the manager's tier
+silently; the usage sheet showed it. The kit ships two agent files,
+agents/explore.md (the broad grep/locate sweep) and agents/lookup.md (one
+fact), that pin the cheapest model in their front matter (`model: haiku`,
+read-only tools, a small call cap, the one-turn line); drop them into
+.claude/agents/. The guard now holds read-only dispatches to the model
+rule too, taking the model from the call or from the agent file's pin,
+and the CHEAPEST tier's search row names the agent, not the built-in type.
+
 ## The scorecard (measure the company - added 2026-09-02, proven same day)
 
 Track, per model AND per manager, from the ledger itself (a small script

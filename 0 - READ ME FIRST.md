@@ -112,7 +112,10 @@ SUBAGENTS.md from the STEP 0 answers (org chart, the laws, a first
 assignments table, an empty ledger); delegate something small the same
 day to prove stamp -> brief -> verify -> ledger end to end; the stamp
 carries the WORKFLOW line (WORKFLOW_METHOD.md) and the INTENT line
-(INTENT_METHOD.md).
+(INTENT_METHOD.md). Copy agents/ to .claude/agents/ (kit v1.54): the
+explore and lookup employees pinned to the cheapest tier in their front
+matter; the brief guard reads the pin, so a search never inherits the
+manager's model.
 
 ## STEP 4 - the skills shelf and the hooks (SKILLS.md, HOOKS_METHOD.md)
 

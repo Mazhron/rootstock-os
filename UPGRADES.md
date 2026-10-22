@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.53** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.54** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2083,3 +2083,36 @@ same steps.
 README: "The seven ways it saves tokens" (a pointer line to the example),
 "What is in the box" (the new row), "Questions people ask" ("How much does
 it actually save?" points at the example).
+
+### v1.54 - 2026-10-22 - The search and lookup employees pinned to the cheapest tier (agents/, and the brief guard's model rule reaches read-only dispatches)
+WHAT: the usage sheet showed read-only searches running on the manager's
+tier: the harness's built-in Explore type carries no model, the brief
+guard exempted read-only types from THE EMPLOYEE MODEL RULE, so a
+model-less search inherited the top tier silently. Two project agent
+files now pin the cheapest model in their front matter (`model: haiku`,
+read-only tools, a small call cap, the one-turn line): agents/explore.md
+(the broad grep/locate sweep) and agents/lookup.md (one fact: a value, a
+signature, a ledger tail). The brief guard reads a dispatch's pin from
+.claude/agents/<type>.md and holds read-only types to the model rule
+too: a search passes when its model is in the call or pinned by its
+file, is refused when neither, or when either names the manager's tier;
+the two harness helpers that carry their own model (claude-code-guide,
+statusline-setup) pass as before. The refresh script gains the agents
+class (.claude/agents/*.md -> agents/, prose, and `--adopt` takes one).
+The CEO's ask (2026-10-22, after /usage): "give the search and lookup
+ones a cheaper model."
+CARRIES: agents/explore.md, agents/lookup.md (new); hooks/brief_guard.py
+(pinned_model, the read-only branch of missing_pieces, SEARCH_MODEL_MSG,
+eight selftest rows); reference tools/refresh_kit.py (the agents class);
+SUBAGENT_METHOD.md (THE PINNED SEARCH paragraph); HOOKS_METHOD.md (Tier
+4a's DISPATCH bullet); 0 - READ ME FIRST.md (STEP 3); README.md; this
+entry.
+GRAFT: copy agents/ to the project's .claude/agents/ (two files, generic:
+no project name to edit); take the brief guard's new copy, or graft
+pinned_model and the read-only branch of missing_pieces by hand into an
+adapted one, then `python tools/hooks/brief_guard.py --selftest`; point
+the SUBAGENTS assignments table's search row at the explore agent and
+add a lookup row; the refresh script's change matters only at the origin.
+README: "3. The Delegation Company" (the who-gets-what bullet), "The
+hooks" (the delegation truth set bullet), "What is in the box" (the
+`agents/` row), "Kit version".

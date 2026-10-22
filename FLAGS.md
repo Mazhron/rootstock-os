@@ -33,31 +33,33 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-21 18:24 | items 87 | GREEN 85 | YELLOW 2 | RED 0 | unflagged 0 | stale 3
+Updated 2026-10-22 09:10 | items 89 | GREEN 87 | YELLOW 2 | RED 0 | unflagged 0 | stale 4
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-10-13 14:13 |
+| 0 - READ ME FIRST.md | GREEN | STALE | fable | 2026-10-13 14:13 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | fable | 2026-10-19 10:26 |
+| HOOKS_METHOD.md | GREEN | ok | fable | 2026-10-22 09:10 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | LESSONS.md | GREEN | STALE | fable | 2026-10-19 12:32 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 14:13 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| UPGRADES.md | GREEN | ok | fable | 2026-10-19 10:26 |
+| SUBAGENT_METHOD.md | GREEN | ok | fable | 2026-10-22 09:10 |
+| UPGRADES.md | GREEN | ok | fable | 2026-10-22 09:10 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
+| agents/explore.md | GREEN | ok | fable | 2026-10-22 09:10 |
+| agents/lookup.md | GREEN | ok | fable | 2026-10-22 09:10 |
 | hooks/README.txt | GREEN | ok | fable | 2026-10-19 10:26 |
 | hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
-| hooks/brief_guard.py | GREEN | ok | fable | 2026-09-30 11:57 |
+| hooks/brief_guard.py | GREEN | ok | fable | 2026-10-22 09:10 |
 | hooks/delegation_auditor.py | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/diet_guard.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
@@ -99,7 +101,7 @@ Updated 2026-10-21 18:24 | items 87 | GREEN 85 | YELLOW 2 | RED 0 | unflagged 0 
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-10-13 14:14 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/readme_lint.py | GREEN | ok | fable | 2026-10-19 10:26 |
-| reference tools/refresh_kit.py | GREEN | ok | fable | 2026-10-13 13:33 |
+| reference tools/refresh_kit.py | GREEN | ok | fable | 2026-10-22 09:10 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/retrieval_eval.py | GREEN | ok | fable | 2026-10-13 11:45 |
 | reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 14:13 |
@@ -1575,3 +1577,38 @@ FLAG: Read-only re-flag after the refresh: generated content, matches its PURPOS
 SAYS: The harness slice of the one-right-way book, 41 entries whose Tags name balance, checkpoint, communication, cross-workstation and 27 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
 DOES: Derived by tools/split_knowledge.py from the root LESSONS.md; the only change is the new kit-install entry (48 entries, harness 41) and the backslash lesson's nuance line
 FLAG: Read-only re-flag after the refresh: generated content, matches its PURPOSE, nothing beyond the new paragraph
+
+### 2026-10-22 09:10 | agents/explore.md | GREEN | fable | WS2 | 25f9c06c
+SAYS: a read-only search employee for broad fan-out searches across the repo; it returns file:line pointers and a one-paragraph conclusion, never file dumps, on the cheapest model, so a search never runs on the manager's tier.
+DOES: A project agent file: front matter pins model haiku and read-only tools; the body is the employee's standing brief (one turn, pointers not dumps, no writes, a call cap, the STAMP and TOOLS lines) with the format header
+FLAG: Read-only after writing: the file does what its PURPOSE says, a pinned cheap searcher, nothing more; the brief guard reads the pin
+
+### 2026-10-22 09:10 | agents/lookup.md | GREEN | fable | WS2 | 9d99d2b1
+SAYS: a read-only lookup employee that answers one question with the exact value or lines and their file:line pointer, in one turn of tool calls, on the cheapest model, so a lookup never runs on the manager's tier.
+DOES: A project agent file: front matter pins model haiku and read-only tools; the body is the employee's standing brief (one turn, pointers not dumps, no writes, a call cap, the STAMP and TOOLS lines) with the format header
+FLAG: Read-only after writing: the file does what its PURPOSE says, a pinned cheap searcher, nothing more; the brief guard reads the pin
+
+### 2026-10-22 09:10 | hooks/brief_guard.py | GREEN | fable | WS2 | 3e1aac05
+SAYS: PreToolUse guard that refuses an Agent/Task dispatch to a work agent type when the brief is missing the stamp template (STAMP/TOOLS/ WORKFLOW), the INTENT line ask, the budget line or THE PRESERVATION LAW line; also refuses THE EMPLOYEE MODEL RULE (SUBAGENTS.md rule 6): a dispatch whose tool_input.model is missing/empty, or matches Fable (case-insensitive, even inside a longer id like "claude-fable-5-1"), since a model-less dispatch inherits the parent model (Fable), and Fable is never an employee; read-only agent types skip the brief pieces but keep the model rule, their model taken from the call or from the `model:` pin of .claude/agents/<type>.md (kit v1.54); silent for complete briefs and pinned searches.
+DOES: Kit v1.54: the brief guard reads a dispatch's pinned model from .claude/agents/<type>.md and holds read-only types to the model rule (selftest 0 failed); the refresh script copies .claude/agents/*.md to agents/; the method files and the graft log describe the same change
+FLAG: Re-flag after the v1.54 edit: each thing matches its PURPOSE line; no side effect beyond the described change
+
+### 2026-10-22 09:10 | reference tools/refresh_kit.py | GREEN | fable | WS2 | b65beba1
+SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, .claude/skills/*/SKILL.md, .claude/agents/*.md (kit v1.54, the pinned searchers), tools/hooks/*.py, the tools/*.py that have a reference copy, and the .claude/rules/*.md files named in PORTABLE_RULES), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; then derive the kit's LESSONS.md and knowledge/ tree through tools/split_knowledge.py (SPLIT; it writes those files and one knowledge_split_runs.txt line); `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
+DOES: Kit v1.54: the brief guard reads a dispatch's pinned model from .claude/agents/<type>.md and holds read-only types to the model rule (selftest 0 failed); the refresh script copies .claude/agents/*.md to agents/; the method files and the graft log describe the same change
+FLAG: Re-flag after the v1.54 edit: each thing matches its PURPOSE line; no side effect beyond the described change
+
+### 2026-10-22 09:10 | SUBAGENT_METHOD.md | GREEN | fable | WS2 | cafc5fce
+SAYS: A portable architecture for delegating work to sub-agent employees: the org chart (CEO, manager, employees), why it saves money, the seven laws, the assignments table, the scorecard, and bootstrap steps for a new project.
+DOES: Kit v1.54: the brief guard reads a dispatch's pinned model from .claude/agents/<type>.md and holds read-only types to the model rule (selftest 0 failed); the refresh script copies .claude/agents/*.md to agents/; the method files and the graft log describe the same change
+FLAG: Re-flag after the v1.54 edit: each thing matches its PURPOSE line; no side effect beyond the described change
+
+### 2026-10-22 09:10 | HOOKS_METHOD.md | GREEN | fable | WS2 | 7cc0aad9
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: Kit v1.54: the brief guard reads a dispatch's pinned model from .claude/agents/<type>.md and holds read-only types to the model rule (selftest 0 failed); the refresh script copies .claude/agents/*.md to agents/; the method files and the graft log describe the same change
+FLAG: Re-flag after the v1.54 edit: each thing matches its PURPOSE line; no side effect beyond the described change
+
+### 2026-10-22 09:10 | UPGRADES.md | GREEN | fable | WS2 | f7adb9ef
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: Kit v1.54: the brief guard reads a dispatch's pinned model from .claude/agents/<type>.md and holds read-only types to the model rule (selftest 0 failed); the refresh script copies .claude/agents/*.md to agents/; the method files and the graft log describe the same change
+FLAG: Re-flag after the v1.54 edit: each thing matches its PURPOSE line; no side effect beyond the described change

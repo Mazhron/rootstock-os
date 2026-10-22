@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.53** (2026-10-19). The graft log `UPGRADES.md` is the
+Kit version: **v1.54** (2026-10-22). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -494,7 +494,13 @@ asked at setup and revisited as models change - never assumed.
   writers on one file. And every Agent call sets its `model` field
   explicitly: the brief guard refuses a call with no model (it would
   silently inherit the manager's tier, which is never an employee) and
-  one that names that tier outright (v1.40).
+  one that names that tier outright (v1.40). Read-only searches were
+  the loophole: the harness's Explore type carries no model, so since
+  v1.54 the kit ships two agent files pinned to the cheapest tier
+  (`agents/explore.md`, `agents/lookup.md`, dropped into
+  `.claude/agents/`) and the guard holds read-only dispatches to the
+  same rule, passing a search whose model is in the call or in its
+  agent file.
 - Every brief opens with the manager's header (task id, date, workstation,
   model),
   SELF-CONTAINED, and carries a budget line: exceed ~30 tool calls or fail
@@ -736,8 +742,11 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
   tool itself: the brief guard refuses a work dispatch whose brief lacks
   the stamp template, the intent line, the budget line or the
   preservation line (read-only searcher types such as Explore and Plan
-  pass untouched), and since v1.40 one whose model is missing (which
-  silently inherits the manager's own tier) or names that tier outright;
+  carry no brief laws, but since v1.54 they carry the model rule: a
+  search passes when its model is in the call or pinned by its agent
+  file under `.claude/agents/`), and since v1.40 one whose model is
+  missing (which silently inherits the manager's own tier) or names that
+  tier outright;
   the delegation auditor reads the metered tool and
   token figures out of every result, names a fabricated report (zero
   metered calls) or an inflated tool count, and appends a pending
@@ -1323,6 +1332,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 | `SUBAGENT_METHOD.md` | The delegation company: org chart, seven laws, assignments table, scorecard, bootstrap |
 | `SKILLS.md` | The skills shelf: what each ritual-skill does and the skills rule |
 | `skills/` | The nine skills, ready to drop into `.claude/skills/` |
+| `agents/` | Two project agent files pinned to the cheapest tier (v1.54): `explore.md` (the grep/locate sweep) and `lookup.md` (one fact), ready to drop into `.claude/agents/`; the brief guard reads their `model:` pin, so a read-only search never inherits the manager's tier |
 | `rules/` | The first path-scoped rule, `wiki.md`: drop into `.claude/rules/`, loads only when Claude reads a markdown file; write your own game and text rules beside it |
 | `HOOKS_METHOD.md` | The hooks: the contract, the fifteen kit hooks, tiers, bootstrap |
 | `hooks/` | The fifteen hook scripts and `_hooklib.py`, the shared library they import (drop into `tools/hooks/`), `README.txt` with the per-hook setup steps, plus the settings template (merge into `.claude/settings.json`; since v1.40 it carries a permissions.deny block: destructive shell shapes and Read/Edit of .env files, key material and credentials) |
