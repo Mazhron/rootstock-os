@@ -246,9 +246,13 @@ def print_budget():
     body = [ln for ln in lines if not ln.startswith("#")]
     if header:
         print("  " + header[-1].lstrip("# "))
-    for ln in body[-2:]:
+    # THE SIXTH TRIM (2026-10-26, the loss test): the previous day's line
+    # prints only when it carries a verdict; otherwise it is one tail away
+    # in the ledger the header names, and today's line carries the trend.
+    shown = body[-2:] if len(body) > 1 and has_verdict(body[-2]) else body[-1:]
+    for ln in shown:
         print("  " + ln)
-    if any("CHECK:" in ln for ln in body[-2:]):
+    if any("CHECK:" in ln for ln in shown):
         print("  manager: a CHECK verdict names what went wrong - relay it verbatim.")
 
 
@@ -448,7 +452,7 @@ def all_clear(line):
     return bool(_ALL_CLEAR.search(line)) and not has_verdict(line)
 
 
-def roadmap_line(line, cap=200, head_cap=110, tail_cap=200):
+def roadmap_line(line, cap=200, head_cap=110, tail_cap=130):
     """THE DIGEST DIET (2026-09-29, the second trim): a roadmap line longer
     than `cap` prints as its first clause and its last clause (the NEXT /
     status clause), joined by ' ... '; the whole line stays in NEXT_STEPS.md,
@@ -586,7 +590,7 @@ def main():
     if "--selftest" in sys.argv:
         sys.exit(selftest())
     ap = argparse.ArgumentParser(description="Post-pull standup digest")
-    ap.add_argument("--commits", type=int, default=5)  # THE DIGEST DIET: was 12
+    ap.add_argument("--commits", type=int, default=3)  # THE DIGEST DIET: was 12
     ap.add_argument("--no-usage", action="store_true",
                     help="skip the usage-sheet refresh + THE BUDGET block")
     args = ap.parse_args()

@@ -1301,6 +1301,13 @@ quite a long time with nothing happening").
   line for the creative self-test arrived as backslash-n text, a GDScript
   parse error, the test printed MISSING and the capture hung. DO INSTEAD:
   Write tool for the script, chr() for the bytes, cat -A to check.
+- TRIED (2026-10-26, the digest trim): a replace() anchor carrying the
+  standup verdict regex (`\b(CHECK|FAIL...`) sent as a stdin heredoc
+  asserted "verdict re" not found on the first run; the same script written
+  to the scratchpad with the Write tool and run with `python -I <path>`
+  matched on the first try. FAILED BECAUSE: the doubled backslash collapsed
+  on the way in, as the NUANCE above says. DO INSTEAD: the Write tool from
+  the first draft whenever the anchor holds a backslash.
 - TRIED (2026-10-08, the clean-screen restore): a heredoc Python patch
   whose `old` string carried GDScript `\` continuations, two days after
   this lesson was written. FAILED BECAUSE: the escapes were rewritten on

@@ -21,7 +21,7 @@ the kind and the domain). Tokens are characters over four.
 ## The files
 | File | Kind | Domain | ~Tokens | Entries | What it holds |
 |---|---|---|---|---|---|
-| `knowledge/lessons/harness.md` | lessons | harness | 27,733 | 44 | THE ONE RIGHT WAY per task shape; Claude Code and the process around it: hooks, ledgers, delegation, git, the kit |
+| `knowledge/lessons/harness.md` | lessons | harness | 27,857 | 44 | THE ONE RIGHT WAY per task shape; Claude Code and the process around it: hooks, ledgers, delegation, git, the kit |
 | `knowledge/lessons/godot.md` | lessons | godot | 3,501 | 5 | THE ONE RIGHT WAY per task shape; the Godot engine: GDScript, scenes, resources, the editor, its tests |
 | `knowledge/lessons/2d.md` | lessons | 2d | 2,969 | 2 | THE ONE RIGHT WAY per task shape; 2D art and placement: sheets, slices, baselines, pixels |
 | `GODOT_FIELD_NOTES.md` | field notes | godot | 4,147 | 8 | Hard-won Godot 4.4 engine knowledge: rendering and performance costs, simulation architecture, GDScript and API gotchas, the measurement toolkit |
