@@ -341,8 +341,21 @@ SHOWN_ELSEWHERE = {
 # THE FIFTH TRIM (2026-09-29): a trailing word boundary, so a constant name such
 # as WARN_TOKENS in a ledger's prose is not a verdict; the readme_audit line
 # (600 bytes, 01:37) printed in full on that false match.
-_VERDICT = re.compile(r"\b(CHECK|FAIL|STALE|WARN|UNSYNCED|ERROR|STALL|MISSING)\b|\bRED [1-9]|\bmissing required: (?!none)")
+# THE SIXTH TRIM (2026-10-26, the loss test): a zero count ("WARN 0 | FAIL 0")
+# is an all-clear, not a verdict (the security_audit line, 400 bytes, printed
+# in full for a month on it); and a full line is capped at TAIL_CAP bytes with
+# the ledger named for the rest (the systems_audit narrative, 1.7k bytes).
+TAIL_CAP = 600
+_VERDICT = re.compile(r"\b(CHECK|FAIL|STALE|WARN|UNSYNCED|ERROR|STALL|MISSING)\b(?! 0\b)|\bRED [1-9]|\bmissing required: (?!none)")
 _DATE = re.compile(r"(\d{4}-\d{2}-\d{2})(?: (\d{2}:\d{2}))?")  # first date in the line
+
+
+def cap_tail(name, line, cap=TAIL_CAP):
+    """A full ledger line longer than `cap` prints its head and names the
+    ledger for the rest (the loss test: the rest stays one tail -1 away)."""
+    if len(line) <= cap:
+        return line
+    return "%s ... [+%d bytes: tail -1 docs/history/%s]" % (line[:cap].rstrip(), len(line) - cap, name)
 
 
 def has_verdict(line):
@@ -479,6 +492,8 @@ def selftest():
     check("CHECK is a verdict", has_verdict("2026-09-14 | WS1 | CHECK: spend +229%"))
     check("PASS clean is not", not has_verdict("2026-09-11 16:53 | WS2 | raingoal | 1/1 PASS"))
     check("RED 0 is not, RED 2 is", not has_verdict("| RED 0 |") and has_verdict("| RED 2 |"))
+    check("WARN 0 / FAIL 0 is not, FAIL 1 is", not has_verdict("| PASS 0 | WARN 0 | FAIL 0 |") and has_verdict("| FAIL 1 |"))
+    check("a long full line is capped and names its ledger", cap_tail("x_runs.txt", "v" * 700).endswith("tail -1 docs/history/x_runs.txt]") and cap_tail("x_runs.txt", "short") == "short")
     check("PROPOSE: none is not", not has_verdict("== PROPOSE: none"))
     check("a cliff is", has_verdict("cliffs: r8 LIFT STALL (<+5%)"))
     check("missing required: none is not", not has_verdict("20/20 present | missing required: none"))
@@ -702,7 +717,7 @@ def main():
     print("== LEDGER TAILS (docs/history/; full line = a verdict or new since the last standup%s; `tail -3 <ledger>` for a trend)"
           % (" " + since if since else ""))
     for name, line in full:
-        print("  %s: %s" % (name, line))
+        print("  %s: %s" % (name, cap_tail(name, line)))
     if quiet:
         legend = ("; ^exchange = written by THE LAST EXCHANGE above"
                   if any(q.endswith("^exchange") for q in quiet) else "")
