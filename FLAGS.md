@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-26 16:11 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 | stale 5
+Updated 2026-10-26 16:12 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 | stale 4
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -109,7 +109,7 @@ Updated 2026-10-26 16:11 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | reference tools/run_all.py | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/split_knowledge.py | GREEN | ok | fable | 2026-10-13 13:33 |
-| reference tools/standup.py | GREEN | STALE | fable | 2026-10-26 16:11 |
+| reference tools/standup.py | GREEN | ok | fable | 2026-10-26 16:12 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | reference tools/usage_window.py | GREEN | ok | fable | 2026-09-30 11:57 |
@@ -1632,3 +1632,8 @@ FLAG: the loss test holds: the verdict head prints, the rest is one tail -1 away
 SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
 DOES: prints the standup digest; the sixth trim: zero counts are all-clears, full ledger lines cap at 600 bytes, three commits, roadmap tails at 130 chars, the previous budget day only with a verdict
 FLAG: the loss test holds, every trimmed byte is one tail or one git log away by a path the digest names; selftest 0 failed; measured 11.5k with no usage
+
+### 2026-10-26 16:12 | reference tools/standup.py | GREEN | fable | WS2 | 48f27469
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: prints the standup digest; the sixth trim: zero counts are all-clears, full ledger lines cap at 600 bytes, three commits, roadmap tails at 130 chars, the previous budget day only with a verdict
+FLAG: re-flagged after the refresh (flag before refresh goes stale); measured 11894 bytes with usage, under 12000; selftest 0 failed
