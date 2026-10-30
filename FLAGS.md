@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-30 13:08 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 | stale 1
+Updated 2026-10-30 13:18 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 | stale 3
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -74,10 +74,10 @@ Updated 2026-10-30 13:08 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-30 13:08 |
+| knowledge/MANIFEST.md | GREEN | STALE | fable | 2026-10-30 13:08 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
 | knowledge/lessons/godot.md | GREEN | ok | fable | 2026-10-19 09:44 |
-| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-10-30 13:08 |
+| knowledge/lessons/harness.md | GREEN | STALE | fable | 2026-10-30 13:08 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |

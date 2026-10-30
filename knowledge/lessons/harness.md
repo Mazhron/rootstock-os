@@ -943,7 +943,7 @@ stop_tick.py (PROPOSAL NAMED); WORKFLOWS.md "Audit the operating system".
 
 ## An ask is a question with a recommended answer (a statement never asks, 2026-09-29)
 Tags: lessons, process, communication | Every [ASK] line put to Mazhron ends with a question mark, carries the manager's recommended answer first, and never shares a list with statements; a reply of "agreed" or "you decide" on any line must be enough
-Keys: ask, ASK items, ruling, rulings, are you asking me, statement or question, summaries, can't tell, recommended answer, relay ASK, what do you want, question mark, decision list, open questions, as a list, questions to me, list of questions, questions for me
+Keys: ASK items, ASK line, are you asking me, statement or question, can't tell, recommended answer, relay ASK, what do you want, question mark, decision list, open questions, as a list, questions to me, list of questions, questions for me, your rulings
 
 THE ONE RIGHT WAY: when a reply puts something to Mazhron, each item is
 one numbered line shaped "<the thing in a sentence>. <The question>?
