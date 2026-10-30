@@ -176,7 +176,13 @@ def _mine_exchange(path):
     u, a = events[ui], events[ai]
     if u[2].strip().lower().lstrip("/") == "standup":
         return None  # that's THIS session invoking standup - not an exchange
-    return (a[0], u[0], u[2], u[3], a[2])
+    # THE WHOLE TURN (the CEO 2026-10-30: "you performed work after the main
+    # summary (which is what I want the checkpoint to carry), so we need to
+    # be sure that summary is what is checkpointed"): a reply is every
+    # assistant text between the prompt and the end of the turn, joined,
+    # not the last short note after the tool calls.
+    asst_txt = "\n\n".join(e[2] for e in events[ui + 1:] if e[1] == "asst")
+    return (a[0], u[0], u[2], u[3], asst_txt)
 
 
 def print_last_exchange():
@@ -582,6 +588,23 @@ def selftest():
           == "1.) Correct, it removes")
     check("unwrap_paste leaves a command wrapper for the filter",
           unwrap_paste("<command-name>/clear</command-name>").startswith("<"))
+    import tempfile as _tf
+    _recs = [
+        {"type": "user", "timestamp": "t1", "message": {"content": "the question"}},
+        {"type": "assistant", "timestamp": "t2", "message": {"content": [{"type": "text", "text": "the main summary"}]}},
+        {"type": "assistant", "timestamp": "t3", "message": {"content": [{"type": "tool_use", "name": "Bash"}]}},
+        {"type": "user", "timestamp": "t4", "message": {"content": [{"type": "tool_result", "content": "ok"}]}},
+        {"type": "assistant", "timestamp": "t5", "message": {"content": [{"type": "text", "text": "the trailing note"}]}},
+    ]
+    # one fixture file in the OS temp dir, rewritten each run (never deleted:
+    # THE PRESERVATION LAW keeps scripts from removing anything)
+    _p = os.path.join(_tf.gettempdir(), "standup_selftest_mine.jsonl")
+    with open(_p, "w", encoding="utf-8") as _fh:
+        for _r in _recs:
+            _fh.write(json.dumps(_r) + "\n")
+    _got = _mine_exchange(_p)
+    check("the mined response is the whole turn, summary first (2026-10-30)",
+          _got is not None and _got[4] == "the main summary\n\nthe trailing note" and _got[2] == "the question")
     print("standup selftest: %d failed" % len(fails))
     return 1 if fails else 0
 

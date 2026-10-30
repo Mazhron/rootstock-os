@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.54** (2026-10-22). The graft log `UPGRADES.md` is the
+Kit version: **v1.55** (2026-10-30). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -592,7 +592,9 @@ because context lives in files, not in the conversation.
   once, then again every five tasks) or once more than 20% of the
   context budget is used (urgent under 30% remaining). The owner never has to ask: since v1.45 THE
   DUE LINE (formerly ADVISED MEANS DO IT) has both hooks print CHECKPOINT
-  DUE - DO IT, the context line fires on every prompt past 80%, and each
+  DUE - DO IT, the context line fires on every prompt past 80% (and
+  since v1.55 a plain "context gauge: N% remaining" line on every prompt
+  above it, so the owner sees the percent in every reply), and each
   such reply ends with the checkpoint (an open arc is checkpointed as
   open) until the /clear and the standup; "if the arc is closed" is no
   longer an escape. Since
@@ -630,7 +632,9 @@ because context lives in files, not in the conversation.
   judgment (state, open queue, next likely) at the next real one.
 - **Standup.** Every fresh session opens with one script that prints the
   last exchange (mined verbatim from the harness transcript on disk, so
-  it survives a mid-arc /clear), the state, ledger tails, the open roadmap, and THE BUDGET:
+  it survives a mid-arc /clear; since v1.55 the reply is every assistant
+  text of the final turn joined, so the answer is carried and not the
+  short note after the tool calls), the state, ledger tails, the open roadmap, and THE BUDGET:
   yesterday's and today's weighted spend judged against the previous seven
   active days, with the reason when something went wrong. In the origin
   project's measurements, a cleared session re-arms in about 15-20k
@@ -682,7 +686,8 @@ reminder. Fifteen ship in `hooks/`, wired by one settings file:
   **every reply** ticks the checkpoint counter when
   work actually happened. Both print CHECKPOINT DUE - DO IT at 8 tasks or
   under 80% of the context budget (the context line on every prompt past
-  it), and print CHECKPOINT URGENT at 15 tasks or under 30%, where the
+  it, and the plain percent line on every prompt above it since v1.55),
+  and print CHECKPOINT URGENT at 15 tasks or under 30%, where the
   Stop tick refuses to end the turn (once, then again every five tasks).
 - **Before compaction** a ledger line records what was at stake.
 - **Session end** is the checkpoint's net (v1.28): with nothing unbanked

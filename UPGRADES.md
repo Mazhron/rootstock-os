@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.54** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.55** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2116,3 +2116,32 @@ add a lookup row; the refresh script's change matters only at the origin.
 README: "3. The Delegation Company" (the who-gets-what bullet), "The
 hooks" (the delegation truth set bullet), "What is in the box" (the
 `agents/` row), "Kit version".
+
+### v1.55 - 2026-10-30 - The whole turn is the reply, and the percent line on every prompt
+WHAT: two corrections from the CEO after a consulting day. One: a reply
+that checkpoints did its answer, then its tool calls, then a two-line
+"checkpoint done" note; the transcript's last assistant text was the
+note, so the standup miner would have replayed that as the response and
+the summary the checkpoint exists to carry was only in the day file by
+hand. tools/standup.py's _mine_exchange now returns every assistant text
+of the final turn, joined in order, summary first; the selftest writes a
+five-record fixture and checks the join. Two: above the 80% line the
+prompt hook printed nothing about context, so two replies in a row gave
+no percent. tools/hooks/prompt_gauge.py now prints "context gauge: N%
+remaining (~Xk of ~Yk used)" on every prompt where no DUE or URGENT line
+already carries it, and the reply relays the number. The checkpoint
+skill gains THE WHOLE TURN (one final message: the answer, the percent,
+the marker; the day file holds that message) and THE PERCENT LINE. The
+CEO's words (2026-10-30): "Please be sure in the future to give me %
+used or left" and "you performed work after the main summary (which is
+what I want the checkpoint to carry), so we need to be sure that summary
+is what is checkpointed."
+CARRIES: reference tools/standup.py (_mine_exchange joins the turn; the
+selftest fixture), hooks/prompt_gauge.py (the percent line and its
+selftest), skills/checkpoint/SKILL.md (THE WHOLE TURN, THE PERCENT
+LINE), knowledge/lessons/harness.md (the 2026-10-30 lesson, derived).
+GRAFT: copy the three files over the installed ones; `python
+tools/standup.py --selftest` and `python tools/hooks/prompt_gauge.py
+--selftest` print 0 failed; the next prompt shows the percent line.
+README: "The hooks" (the context line on every prompt, now the percent
+above 80% too) and the standup line about the last exchange.

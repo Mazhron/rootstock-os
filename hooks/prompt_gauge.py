@@ -37,7 +37,8 @@ builder, never stdin or a real prompt).
 
 PURPOSE: UserPromptSubmit hook that stays silent on a normal turn and, when
   a threshold is crossed, prints the checkpoint counter line (8 tasks DUE,
-  15 dire) and the context-remaining line (DUE under 80%, on EVERY prompt
+  15 dire) and the context-remaining line (DUE under 80%, on EVERY prompt;
+  above 80% a plain "context gauge: N% remaining" line, relayed in the reply
   until the /clear - the CEO 2026-10-12: the hook orders the checkpoint, it
   does not advise one), plus since 2026-09-13
   a KIT UNSYNCED line when a portable original is newer than its kit copy,
@@ -93,6 +94,13 @@ def gauge_lines(n, load_):
                          "this reply with the checkpoint, and every reply after it "
                          "until the /clear + standup; an open arc is checkpointed "
                          "as open ~~" % (pct, load_ // 1000))
+        else:
+            # THE PERCENT LINE (the CEO 2026-10-30: "be sure in the future to
+            # give me % used or left"): above the 80% line the hook still
+            # prints the gauge, and the reply relays the percent.
+            lines.append("context gauge: %d%% remaining (~%dk of ~%dk used) - "
+                         "relay the percent in the reply"
+                         % (pct, load_ // 1000, cp.COMPACT_BUDGET // 1000))
     return lines
 
 
@@ -179,6 +187,11 @@ def _selftest():
     ok = any("CONTEXT" in x and "DUE" in x and "every reply after" in x
              for x in gauge_lines(0, advised_load))
     print(("PASS  " if ok else "FAIL  ") + "30-80% remaining gives CONTEXT DUE, every reply")
+    fails += not ok
+    quiet_load = int(cp.COMPACT_BUDGET * 0.10)  # 90% remaining
+    got = gauge_lines(0, quiet_load)
+    ok = len(got) == 1 and got[0].startswith("context gauge: 90% remaining") and "DUE" not in got[0]
+    print(("PASS  " if ok else "FAIL  ") + "above 80% remaining gives the plain percent line (2026-10-30)")
     fails += not ok
     try:
         import lesson_log as _ll

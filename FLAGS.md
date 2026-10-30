@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-26 16:12 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 | stale 4
+Updated 2026-10-30 13:05 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 | stale 5
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -49,7 +49,7 @@ Updated 2026-10-26 16:12 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | ok | fable | 2026-10-22 09:10 |
-| UPGRADES.md | GREEN | ok | fable | 2026-10-22 09:10 |
+| UPGRADES.md | GREEN | STALE | fable | 2026-10-22 09:10 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
 | WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
@@ -68,7 +68,7 @@ Updated 2026-10-26 16:12 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | hooks/lesson_advisor.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| hooks/prompt_gauge.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
+| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-10-30 13:05 |
 | hooks/session_end.py | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/session_start.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
@@ -109,7 +109,7 @@ Updated 2026-10-26 16:12 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | reference tools/run_all.py | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/split_knowledge.py | GREEN | ok | fable | 2026-10-13 13:33 |
-| reference tools/standup.py | GREEN | ok | fable | 2026-10-26 16:12 |
+| reference tools/standup.py | GREEN | ok | fable | 2026-10-30 13:05 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | reference tools/usage_window.py | GREEN | ok | fable | 2026-09-30 11:57 |
@@ -118,7 +118,7 @@ Updated 2026-10-26 16:12 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:10 |
-| skills/checkpoint/SKILL.md | GREEN | ok | fable | 2026-10-19 10:26 |
+| skills/checkpoint/SKILL.md | GREEN | ok | fable | 2026-10-30 13:05 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/flag/SKILL.md | GREEN | ok | fable-manager | 2026-09-29 16:38 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
@@ -1637,3 +1637,18 @@ FLAG: the loss test holds, every trimmed byte is one tail or one git log away by
 SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
 DOES: prints the standup digest; the sixth trim: zero counts are all-clears, full ledger lines cap at 600 bytes, three commits, roadmap tails at 130 chars, the previous budget day only with a verdict
 FLAG: re-flagged after the refresh (flag before refresh goes stale); measured 11894 bytes with usage, under 12000; selftest 0 failed
+
+### 2026-10-30 13:05 | reference tools/standup.py | GREEN | fable | WS2 | 5ee7307c
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: prints the standup digest; the mined reply is now every assistant text of the final turn joined in order, summary first, so a checkpoint reply split around tool calls still replays its answer; the selftest writes a five-record fixture in the OS temp dir and checks the join
+FLAG: does what PURPOSE says and nothing more; the fixture file is rewritten each run and never deleted (THE PRESERVATION LAW); selftest 0 failed
+
+### 2026-10-30 13:05 | hooks/prompt_gauge.py | GREEN | fable | WS2 | d0b9bc63
+SAYS: UserPromptSubmit hook that stays silent on a normal turn and, when a threshold is crossed, prints the checkpoint counter line (8 tasks DUE, 15 dire) and the context-remaining line (DUE under 80%, on EVERY prompt; above 80% a plain "context gauge: N% remaining" line, relayed in the reply until the /clear - the CEO 2026-10-12: the hook orders the checkpoint, it does not advise one), plus since 2026-09-13 a KIT UNSYNCED line when a portable original is newer than its kit copy, and since 2026-09-20 the LESSONS line naming the LESSONS.md entries whose Keys match the prompt, so the one right way is read before the first tool call, and since 2026-09-28 the ROUTE line naming the WORKFLOWS.md entries and the reference tools whose heading, WHEN line or Search keys the prompt hits, and since 2026-09-30 a live USAGE WINDOW line (tools/usage_window.py) when the rolling five-hour spend is already most of the seven-day peak.
+DOES: prints the checkpoint counter and context lines on every prompt: DUE under 80 percent, URGENT under 30, and since 2026-10-30 a plain context gauge percent line above 80 so the reply can relay the number; the kit line, the lesson line, the usage window line as before
+FLAG: matches its PURPOSE; the new line is the gauge it already measured, printed where it was silent; selftest 0 failed
+
+### 2026-10-30 13:05 | skills/checkpoint/SKILL.md | GREEN | fable | WS2 | b07dc50c
+SAYS: Close an arc safely: push, refresh the day file's WHERE WE LEFT OFF section with both sides of the final exchange verbatim, reset the task counter, and emit the safe-to-clear marker.
+DOES: closes an arc: loop, push, day file with both sides verbatim, reset, marker; now names THE WHOLE TURN (one final message carrying the answer, the percent and the marker is what the day file holds) and THE PERCENT LINE (every reply states the context percent)
+FLAG: the two additions are mechanics of step 2 and the gauge relay it already required, not new scope

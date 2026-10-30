@@ -51,7 +51,14 @@ SEQUENCE
      the response stored is the checkpoint reply itself, so write this
      section containing the reply you are ABOUT to send, then send
      exactly that text. The user must recognize their own words at the
-     next standup - a paraphrase is a failed checkpoint.
+     next standup - a paraphrase is a failed checkpoint. THE WHOLE TURN
+     (Mazhron 2026-10-30): the response is the MAIN SUMMARY, the answer,
+     not a short note sent after the tool calls; a checkpoint reply does
+     its tool work first and sends ONE final message that carries the
+     answer, the gauge percent and the marker, and that one message is
+     what the day file holds. (standup's miner joins every assistant text
+     of the turn, so an earlier summary is never lost, but the day file
+     is written by hand and must carry the summary itself.)
      (SAFETY NET: standup independently mines the true final exchange
      from the harness transcript, so a mid-arc /clear no longer loses
      post-checkpoint work - but this section remains the committed,
@@ -78,7 +85,10 @@ budget remains, CHECKPOINT at the end of the current reply and of every
 reply after it until the /clear (THE DUE LINE); under 30% remaining, treat it as
 URGENT and checkpoint before taking new work. Auto-compact is a lossy summary - the day file + standup are
 lossless, so clearing early is always the cheaper path. Relay the
-gauge line and its warnings verbatim, like the task warnings.
+gauge line and its warnings verbatim, like the task warnings. THE PERCENT
+LINE (Mazhron 2026-10-30: "be sure in the future to give me % used or
+left"): the prompt hook prints the percent on EVERY prompt, DUE or not,
+and every reply states it in one line, usually the last.
 
 THE NET UNDER THIS RITUAL (the owner's ask 2026-09-20): the SessionEnd
 hook (tools/hooks/session_end.py) runs at /clear. With nothing unbanked
