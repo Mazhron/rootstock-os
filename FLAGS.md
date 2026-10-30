@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-30 13:06 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 | stale 1
+Updated 2026-10-30 13:08 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 | stale 1
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -43,7 +43,7 @@ Updated 2026-10-30 13:06 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | fable | 2026-10-22 09:10 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | ok | fable | 2026-10-30 13:06 |
+| LESSONS.md | GREEN | ok | fable | 2026-10-30 13:08 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 14:13 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
@@ -74,10 +74,10 @@ Updated 2026-10-30 13:06 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-30 13:06 |
+| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-10-30 13:08 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
 | knowledge/lessons/godot.md | GREEN | ok | fable | 2026-10-19 09:44 |
-| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-10-30 13:06 |
+| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-10-30 13:08 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
@@ -1672,3 +1672,18 @@ FLAG: stale only because the refresh rewrote it; content matches its PURPOSE
 SAYS: The harness slice of the one-right-way book, 45 entries whose Tags name balance, checkpoint, communication, context gauge and 30 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
 DOES: re-flagged at v1.55: the file carries the 2026-10-30 entry or lesson (the whole turn as the reply, the percent line on every prompt); derived or appended by the refresh, no other change
 FLAG: stale only because the refresh rewrote it; content matches its PURPOSE
+
+### 2026-10-30 13:08 | LESSONS.md | GREEN | fable | WS2 | 0389e284
+SAYS: The lesson law and the entry shape of the one-right-way book, plus a pointer index: every one of the origin's 52 entries under the knowledge/lessons/<domain>.md file that holds it verbatim, so a project seeds its own LESSONS.md from the slices the manifest matched.
+DOES: re-flagged after the 2026-10-30 lesson amendment (the patch-script lesson gains the preserve guard, the fixture and the percent-format trials); derived by the refresh, no other change
+FLAG: stale only because the refresh rewrote it
+
+### 2026-10-30 13:08 | knowledge/MANIFEST.md | GREEN | fable | WS2 | da66b88a
+SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
+DOES: re-flagged after the 2026-10-30 lesson amendment (the patch-script lesson gains the preserve guard, the fixture and the percent-format trials); derived by the refresh, no other change
+FLAG: stale only because the refresh rewrote it
+
+### 2026-10-30 13:08 | knowledge/lessons/harness.md | GREEN | fable | WS2 | 81687b3c
+SAYS: The harness slice of the one-right-way book, 45 entries whose Tags name balance, checkpoint, communication, context gauge and 30 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: re-flagged after the 2026-10-30 lesson amendment (the patch-script lesson gains the preserve guard, the fixture and the percent-format trials); derived by the refresh, no other change
+FLAG: stale only because the refresh rewrote it

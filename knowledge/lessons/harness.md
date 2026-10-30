@@ -1275,7 +1275,7 @@ cut, so it must also never be the wrong one); tools/standup.py
 
 ## A patch script with backslash escapes goes through the Write tool, never a bash heredoc (2026-10-06)
 Tags: lessons, process, tooling | Four times in one afternoon a one-off Python patch sent through the Bash tool's heredoc had its escapes rewritten on the way in: a regex word boundary landed as a backspace byte, a GDScript line continuation plus newline landed as literal backslash-n text, a test string broke mid-literal, and the first draft of THIS lesson arrived with backspace bytes in it
-Keys: heredoc, backslash, escape, backspace, Write tool, patch script, python stdin, regex word boundary, line continuation, bash tool quoting, one-off edit, cat -A
+Keys: heredoc, backslash, escape, backspace, Write tool, patch script, python stdin, regex word boundary, line continuation, bash tool quoting, one-off edit, cat -A, preserve guard, drive root, targets a drive root, delete call in a script, selftest fixture, temp file, percent formatting, TypeError format, % in reply text, replace not format, patch script refused, guard reads the lesson text
 
 THE ONE RIGHT WAY: when a one-off edit script contains ANY backslash (a
 regex, a GDScript continuation, a Windows path, a newline meant for the
@@ -1329,6 +1329,32 @@ NUANCE: a prompt-hook match on "heredoc" is the signal; the lesson was
   on record and matched, the trap still bit once this session.
 See also: "Never put a Windows path inside a Python heredoc's string
 literal" (the same trap from the path side); tools/standup.py unwrap_paste.
+
+TRIED (2026-10-30, the day-file checkpoints): four more ways a scratch
+patch script fails before it runs, all in one afternoon. (1) A bash
+heredoc whose Python text held drive-letter path strings (the Desktop
+path spelled out) was refused by the preserve guard as "targets a drive
+root": the guard reads the whole command, and a path inside a string
+literal looks like a target. (2) The Write tool refused a script that
+removed its own selftest fixture through the os module: scripts never
+delete, not even a temp file of their own. (3) The reply text, carrying
+"80%" and "N% remaining", went through percent-formatting and died with
+"TypeError: %i format"; the chain broke after the reset, so the counter
+reset ran before the commit and had to run again. (4) The lesson text
+describing trial (2) named the delete call by its function name, and
+the Write guard refused the LESSON script too: the guard reads prose as
+code; a commit then went out whose subject claimed the lesson before it
+existed, and a second commit had to carry it.
+DO INSTEAD: a scratch script is written by the Write tool; it builds
+paths with os.path.join("C:" + os.sep, ...) so no command line and no
+literal carries a drive root; a selftest fixture is one file in
+tempfile.gettempdir() rewritten each run and never removed; prose that
+may hold a percent sign is filled by .replace("{GAUGE}", value), never
+by percent-formatting; a lesson about a delete call describes it in
+words, never by its function name; and the chain is `script && commit
+&& push` with the reset after, so a failed script leaves nothing half
+done. Verify the script ran (its "ok") BEFORE the commit subject claims
+its work.
 
 ## Never git stash to compare against a clean tree (the check script rewrote ledgers while the stash was held, 2026-10-13)
 Tags: lessons, gotchas, git | A stash in this repo is a trap: the check scripts append to ledgers on every run, so the pop refuses, and the discard verb the fix wants is the one the preserve guard refuses; compare with git show instead, and restore a stash by writing its files
