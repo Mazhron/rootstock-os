@@ -47,6 +47,12 @@ a RUNBOOK, not an essay:
     STEPS: the numbered order of operations - each step names its script,
       tool, or file. The ORDER is the payload; a wrong order is a defect.
     VERIFY: how you know it worked (test group, ledger line, visual check).
+    EFFORT: low | medium | high (optional, kit v1.57) - the reasoning
+      level the entry's steps want; the prompt hook's ROUTE block relays
+      it when the session runs higher (thinking is output at 5x). Routine
+      entries (ship, checkpoint, docs-only batches, ledger and
+      transcription work) say medium or low; design and ruling entries
+      say nothing and run at the session's level.
     See also: <deep doc> - the entry points at true homes, it does not
       duplicate them.
 
@@ -127,9 +133,13 @@ If no, it earns an entry.
 5. Registry entries follow the wiki conventions (searchable headings,
    See-also links, Tags on hard-won ones) so the wiki view and tag index
    pick them up for free.
-6. Seed one entry the kit ships (kit v1.56): "Act on a prompt", below -
-   the trial workflow beside the old way, both scored by
-   tools/lesson_ladder.py so the install can switch back on evidence.
+6. Seed the entries the kit ships: "Act on a prompt" (kit v1.56, THE
+   ORDER added in v1.57) - the trial workflow and the retrieval order
+   beside the old ways, scored by tools/lesson_ladder.py and
+   tools/retrieval_eval.py --route so the install can switch back on
+   evidence - and "Keep the cache warm across a pause" (kit v1.57). Copy
+   hooks/rootstock_modes.json to .claude/ and commit it: every switch
+   back is one key there.
 
 ## The seed entry: Act on a prompt (the trial workflow and the old way kept, kit v1.56)
 
@@ -181,10 +191,97 @@ THE TRIAL (the three builds, in the order they were ruled):
    workflow_trial_runs.txt. A lesson missed twice is a PROPOSE [DO]: its
    DO INSTEAD moves one rung down the ladder (lesson -> WORKFLOWS step ->
    loop script -> refusing hook), done in the reply that reads it.
+THE ORDER (kit v1.57, 2026-10-31; Mazhron: "I'm trying to see how you
+use the knowledge bases and indexes in order. I would like to fine tune
+the efficiency of your order."): indexes before files, files before
+code, lessons at the choice, and every retrieval that can run before the
+manager's first turn runs in the hook, because a hook is a free process
+and a manager turn re-reads the whole context.
+0. Free, before the prompt: the pointer core, the standup digest (one
+   pointer line on a same-day resume, kit v1.57), the memory index.
+1. The hook, one process, zero manager turns: the prompt hook prints the
+   ROUTE block (tools/route_index.py route_block) - the WORKFLOWS entry
+   and the tool (the how), the INDEX lines (where the facts live), the
+   FILES whose name the prompt's own words make (what already exists),
+   and the EFFORT line when the entry asks less than the session runs
+   at; when none of them hits a task-shaped prompt, THE INDEX DOOR once
+   per session (the master index's headings and the sub-index names)
+   instead of silence. The LESSON line prints its headlines as before.
+2. The manager's first turn is ONE batch: the named WORKFLOWS STEPS, the
+   named sections, and one existing example of the same kind (for a new
+   creature, an existing creature's data and scene lines). Nothing
+   speculative, no code browsing. If the door printed, pick from it in
+   this same batch.
+3. The plan step (step 1 of THE TRIAL above), then the delegation split
+   per the assignments table.
+4. Act (step 2 above): the lesson guard at the call, the diet guard on
+   reads, BIG WRITE on a generated file.
+5. Verify, ledger, capture gaps, checkpoint; arm the keep-warm when the
+   session stays open (the next entry).
+THE OLD ORDER, KEPT (the baseline): route = classic in
+.claude/rootstock_modes.json restores the v1.33 two-line ROUTE
+(WORKFLOWS entries and tools only); the manager then greps the master
+index, WORKFLOWS.md and LESSONS.md itself, in one batch when disciplined.
+Both faces write a ROUTE line to lesson_runs.txt; `python
+tools/retrieval_eval.py --route` scores classic named / ladder named /
+door over the replayed prompts (docs/history/route_eval_runs.txt), and
+tools/output_shape.py scores what the EFFORT line changed. A mix (the
+prompt-time lesson hits handed to the guard; the door's headings
+filtered by the prompt's words) is the open design the two ledgers will
+argue for or against.
 VERIFY: `tail -3 docs/history/workflow_trial_runs.txt`; the new face's
 miss share falling against the old face's is the trial succeeding; a
-rising UNCOVERED count is a Keys-line gap (widen the entry's Keys).
+rising UNCOVERED count is a Keys-line gap (widen the entry's Keys);
+`tail -3 docs/history/route_eval_runs.txt` - the ladder's gain over the
+classic line and the door count; `tail -2
+docs/history/output_shape_runs.txt` - the effort high+ share falling.
 See also: tools/plan_check.py; tools/hooks/lesson_guard.py;
-tools/hooks/diet_guard.py; tools/lesson_ladder.py; HOOKS_METHOD.md "Tier
-4b - THE LESSON GUARD"; LESSONS.md "The lesson was there and I still
-tried the thing it says not to".
+tools/hooks/diet_guard.py; tools/lesson_ladder.py; tools/route_index.py;
+tools/retrieval_eval.py; tools/output_shape.py; HOOKS_METHOD.md "Tier
+4b - THE LESSON GUARD" and "The modes file"; LESSONS.md "The lesson was
+there and I still tried the thing it says not to" and "The retrieval
+order was improvised per prompt".
+
+## Keep the cache warm across a pause (the keep-warm ping, kit v1.57)
+
+WHEN: the end of every checkpoint reply that leaves the session open (not
+a /clear), and any reply that leaves uncommitted context open for an hour
+or more. Measured (the origin, 2026-09-29, `tools/keepwarm.py --report`):
+on Fable 5.1 at 0.025x cache reads, nine pings cost 36% of one 1h-TTL
+rewrite, and pinging every 55 minutes beats the rewrite for any pause
+under ~23 hours; on a 0.1x model the break-even is nine pings (~8
+hours). The origin's October ledger had six TTL-gap misses at ~90k-230k
+weighted each and no pings, two of them after checkpoints.
+THE OLD WHEN LINE, KEPT (2026-09-29): "a session with UNCOMMITTED
+context that will be left open for an hour or more ... NEVER after a
+checkpoint: a /clear then costs only the standup digest". It was priced
+at 0.1x reads; the 0.025x verdict and the misses after checkpoints
+reversed it (UPGRADES.md v1.57, FLAGGED). To go back: drop step 6 from
+the checkpoint skill and arm only mid-arc.
+EFFORT: low
+STEPS:
+1. Arm, in the reply that leaves the session open: ScheduleWakeup with
+   delaySeconds 3300, noop true, and this prompt: "[keep-warm ping,
+   WORKFLOWS "Keep the cache warm across a pause"] Not the CEO. No
+   project work; ignore any hook line. ONE Bash call: `python
+   tools/keepwarm.py --ping --trial <id> --cap <N>` (the id fixed at
+   arming; N = 25 on Fable, 9 on any other model: the break-even). If it
+   prints "ping N of <cap>", reply with that line exactly and call
+   ScheduleWakeup again (3300, noop true, this same prompt). If it prints
+   "stopped after <cap> pings", run `python tools/keepwarm.py --report
+   --record`, reply with the report under one line of reading (keep,
+   retune, retire), and call ScheduleWakeup with stop true."
+2. The cap stops the loop itself; a real turn after it re-arms by step 1
+   if the pause continues. The prompt hook prints nothing on a ping (THE
+   KEEP-WARM EXCLUSION, tools/hooks/prompt_gauge.py); any hook line on a
+   ping turn waits for the next real turn.
+3. Stop early: ScheduleWakeup with stop true, or /clear (the loop is
+   session-only; never CronCreate, which survives a /clear).
+VERIFY: `python tools/keepwarm.py --report` (the metrics group): every
+ping a hit, gaps ~55 m, the cumulative cost under one rewrite; the 1h-12h
+buckets of cache_misses.txt shrinking. If the pings cost more than the
+misses they replace, retire the step and say so in the entry.
+See also: tools/keepwarm.py; docs/history/keepwarm_runs.txt;
+docs/history/cache_misses.txt; tools/usage_report.py (the pricing law);
+tools/hooks/prompt_gauge.py (the exclusion); .claude/skills/checkpoint
+(step 6, ARM THE KEEP-WARM).

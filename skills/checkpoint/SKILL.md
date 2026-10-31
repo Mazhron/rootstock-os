@@ -71,6 +71,14 @@ SEQUENCE
    counted as a task.
 5. End the reply with the marker, verbatim:
    "CHECKPOINT - safe to /clear. Nothing in this chat exists only in this chat."
+6. ARM THE KEEP-WARM (kit v1.57, the owner's yes 2026-10-31) when this
+   reply leaves the session open (the owner has not said they are
+   clearing now): one ScheduleWakeup per WORKFLOWS.md "Keep the cache
+   warm across a pause" (delaySeconds 3300, noop true, the ping prompt
+   from the entry; cap 25 on Fable, 9 elsewhere). A /clear ends it for
+   free; a pause of an hour or more is one cache rewrite saved (~90k-230k
+   weighted each on the origin's ledger). The old WHEN line (never after
+   a checkpoint) is kept in the entry; to go back, skip this step.
 
 The counter TICKS ITSELF (Stop hook, 2026-09-06) whenever a reply changed
 the tree or HEAD - never tick by hand, it double-counts. Relay its warnings
@@ -101,5 +109,6 @@ nothing; it is not a reason to skip this ritual.
 IF THE SCRIPTS/DAY FILES ARE MISSING (new project): bootstrap them per
 REPORTING_METHOD.md, or ask the user for their future-project kit.
 
-Search keys: checkpoint, safe to clear, day file, context budget, arc end.
+Search keys: checkpoint, safe to clear, day file, context budget, arc end,
+keep-warm, arm the ping.
 See also: standup skill (resumption side); ship skill (per-batch, smaller).

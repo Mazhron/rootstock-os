@@ -1695,3 +1695,48 @@ prompt-time LESSON LINE in prompt_gauge.py stays as the older twin.
 See also: tools/hooks/lesson_guard.py; tools/hooks/prompt_gauge.py (THE
 LESSON LINE); tools/hooks/lesson_advisor.py; HOOKS_METHOD.md "Tier 4b -
 THE LESSON GUARD"; docs/systems/tooling.md "The hooks".
+
+## The retrieval order was improvised per prompt ("Please add a gnome to my game" got no route line, 2026-10-31)
+Tags: lessons, harness, retrieval | The prompt hook does the whole retrieval (the how, where the facts live, what exists, the effort, the index door) before the manager's first turn; the manager reads what it names in one batch; the old two-line route kept as the baseline behind the modes file
+Keys: retrieval order, order of operations, which index first, where to look, knowledge base order, index door, route block, retrieval ladder, gnome, no route line, modes file, old way kept, switch back, fine tune the order
+
+THE ONE RIGHT WAY: let the hook retrieve. On a prompt, read the ROUTE
+block as the plan of the first turn: the WORKFLOWS entry (the how), the
+INDEX lines (where the facts live), the FILES (what exists), the EFFORT
+line (what the entry wants), and when it printed the door, pick the
+section from it; then make the first turn ONE batch of those reads plus
+one existing example of the same kind, and only then the code. Indexes
+before files, files before code, lessons at the choice.
+
+- TRIED (2026-10-31, the gnome test): the manager asked itself what it
+  does after a prompt and found no fixed order - the core's "grep the
+  index, then one section" with the synonyms it happened to think of,
+  one grep per turn, code first when undisciplined. FAILED BECAUSE: the
+  classic ROUTE matched only WORKFLOWS headings and tool Search keys, no
+  Keys line said gnome, and a silent hook left the order to the manager;
+  each improvised grep was a turn that re-read the whole context. DO
+  INSTEAD: route_block() in tools/route_index.py - four layers in one
+  process, the index door once per session when nothing hits, both faces
+  ledgered (ROUTE lines) and scored by `retrieval_eval.py --route`.
+- TRIED: a six-content-word floor for the door. FAILED BECAUSE: the
+  CEO's own test prompt is three content words after stopwords ("add",
+  "gnome", "game"), and lesson_log's crude stem turns "gnomes" into
+  "gnom" but leaves "gnome" whole, so the index line never met the
+  prompt. DO INSTEAD: the ladder's own floor (three content words, one
+  of them specific; game, add, file and their kind never count) and a
+  trailing-e-less comparison in the index and file layers only; the
+  classic matcher untouched.
+- NUANCE: the measure said where the tokens were not. The kit's hooks
+  inject ~9k a session; the rituals' duplicated output was 3% of output;
+  thinking at effort high was 62% of metered output and the TTL-gap
+  misses ~90k-230k weighted each. Fix the order for the quality of the
+  first turn; the effort line and the keep-warm step are for the tokens.
+- NUANCE (the CEO's standing rule, 2026-10-31): every new way ships with
+  its old way behind one key in .claude/rootstock_modes.json, the old
+  value named in the file, so the baseline is one flip away and a mix
+  can be built later from both.
+
+See also: tools/route_index.py; tools/hooks/prompt_gauge.py;
+tools/retrieval_eval.py (--route); tools/output_shape.py;
+WORKFLOW_METHOD.md "The seed entry: Act on a prompt" (THE ORDER);
+HOOKS_METHOD.md "The modes file"; UPGRADES.md v1.57.

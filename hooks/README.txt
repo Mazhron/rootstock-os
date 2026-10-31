@@ -10,7 +10,10 @@ INTENT: gives a receiving project the exact per-hook setup steps so the kit
   .claude/settings.json  <- settings.json (merge if one exists)
   .gitignore  <- .claude/hooks_state.json, .claude/settings.local.json,
                  .claude/fanout_state.json, .claude/diet_state.json,
-                 .claude/verify_state.json
+                 .claude/verify_state.json, .claude/lesson_state.json,
+                 .claude/lesson_guard_state.json, .claude/route_state.json
+  .claude/rootstock_modes.json  <- rootstock_modes.json (COMMIT it: the
+                 CEO's switches, kit v1.57, see THE MODES FILE below)
 The scripts import the checkpoint script from the folder above them
 (reference tools/checkpoint.py carries work_fingerprint + hook state).
 fanout_guard.py (Tier 2b, the catastrophe-only circuit breaker): keep
@@ -22,7 +25,7 @@ numbers through the /runaway skill (skills/runaway): `--limits` shows,
 `--set key=value` writes .claude/fanout_limits.json - COMMIT that file,
 it is the CEO's setting and travels with the repo.
 diet_guard.py (Tier 2c, kit v1.12; INDEX FIRST kit v1.15): nothing to
-fill in. Wire its Read|Bash|PowerShell PreToolUse entry (settings.json
+fill in. Wire its Read|Bash|PowerShell|Write PreToolUse entry (settings.json
 has it) and run `python tools/hooks/diet_guard.py --selftest`. It refuses
 exactly once: the FIRST whole read of a file past ~10k tokens per session
 comes back as the file's own index; the same call repeated passes with a
@@ -163,3 +166,22 @@ carry session=<id>, a PLAN STEP note fires once per session after three
 writes with no tools/plan_check.py run, and tools/lesson_ladder.py (the
 check group) scores the hits and misses of both lesson faces into
 docs/history/workflow_trial_runs.txt.
+
+THE MODES FILE (kit v1.57, 2026-10-31): copy hooks/rootstock_modes.json
+to .claude/rootstock_modes.json and COMMIT it (like fanout_limits.json).
+One key per v1.57 behaviour; the other value of each key is the old way
+(route = classic, resume_digest = full, big_write_warn = false,
+effort_line = false), named in the file's _old_ways block; no code edit
+to switch back. What v1.57 wires: the diet guard's PreToolUse matcher
+gains Write (settings.json has it; BIG WRITE, warn-only, once per file
+past ~4k tokens of content); prompt_gauge.py needs tools/route_index.py's
+route_block (copy route_index.py fresh) and reads the effort from the
+hook input or CLAUDE_EFFORT (the EFFORT line when the matched WORKFLOWS
+entry's `EFFORT:` level is below it); session_start.py prints one pointer
+line on a same-day resume (digest_size.txt trigger "resume-pointer");
+gitignore .claude/route_state.json (the index door once per session).
+Selftests: prompt_gauge, session_start, diet_guard, route_index. Tools
+beside them: keepwarm.py (the ping; the checkpoint skill's step 6 arms
+it, WORKFLOWS "Keep the cache warm across a pause") and output_shape.py
+(the metrics group: metered output against visible, the effort per
+request; `retrieval_eval.py --route` scores the two ROUTE faces).

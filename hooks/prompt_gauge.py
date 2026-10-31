@@ -32,6 +32,19 @@ of the last 7 days' worst 5-hour stretch; an ADVISED reading is also
 ledgered there. Silent otherwise, same zero-cost rule as the rest of this
 hook.
 
+Since 2026-10-31 (kit v1.57) THE ROUTE LINE has two faces, picked by the
+modes file (.claude/rootstock_modes.json, `route`): "ladder" prints
+tools/route_index.py's route_block() - the WORKFLOWS entries and tools as
+before, plus the INDEX lines where the facts live, the FILES that already
+exist, and an EFFORT line when the matched entry's `EFFORT:` level differs
+from the level this session runs at (the hook input's effort.level or the
+CLAUDE_EFFORT variable; the CEO 2026-10-31, after the measure that 62% of
+metered output was unseen thinking at effort high); when nothing hits a
+task-shaped prompt it prints THE INDEX DOOR once per session. "classic" is
+the v1.33 two-line ROUTE, byte-for-byte. Either face ledgers one ROUTE line
+(docs/history/lesson_runs.txt) so tools/retrieval_eval.py --route scores
+them against each other - the old way stays the baseline.
+
 Answers `--selftest` (house pattern: PASS/FAIL lines on the pure line
 builder, never stdin or a real prompt).
 
@@ -47,23 +60,44 @@ PURPOSE: UserPromptSubmit hook that stays silent on a normal turn and, when
   and since 2026-09-28 the ROUTE line naming the WORKFLOWS.md entries and the
   reference tools whose heading, WHEN line or Search keys the prompt hits,
   and since 2026-09-30 a live USAGE WINDOW line (tools/usage_window.py)
-  when the rolling five-hour spend is already most of the seven-day peak.
+  when the rolling five-hour spend is already most of the seven-day peak;
+  since 2026-10-31 the ROUTE has a ladder face (index lines, existing
+  files, the EFFORT line, the index door once per session) and a classic
+  face, chosen by the modes file, both ledgered.
 INTENT: relays the checkpoint and context thresholds and the kit-sync check
   at zero cost on a normal turn, so the manager checkpoints or refreshes the
   kit only when the harness itself has detected the need.
 
 Search keys: prompt hook, context gauge, 80 percent rule, task counter,
 kit unsynced, lessons line, lesson loop, route line, which script, usage
-window, live budget, rolling window.
+window, live budget, rolling window, route block, retrieval ladder, index
+door, effort line, modes file.
 See also: tools/checkpoint.py (thresholds + the transcript probe);
 tools/hooks/stop_tick.py (the tick that feeds the counter); tools/lesson_log.py
 (match_lines); tools/route_index.py (the route line); tools/usage_window.py
 (the five-hour/seven-day window line); LESSONS.md; WORKFLOWS.md.
 """
+import os
 import sys
 
-from _hooklib import read_input  # noqa: F401  (sets sys.path)
+from _hooklib import mode, read_input  # noqa: F401  (sets sys.path)
 import checkpoint as cp
+
+
+def effort_now(data, env=None):
+    """The effort level this session runs at, lowercase, or "" when the
+    harness did not say (the hook input's effort.level first, then the
+    CLAUDE_EFFORT variable the harness sets for hook commands)."""
+    env = os.environ if env is None else env
+    lvl = ""
+    eff = data.get("effort") if isinstance(data, dict) else None
+    if isinstance(eff, dict):
+        lvl = str(eff.get("level") or "")
+    elif isinstance(eff, str):
+        lvl = eff
+    if not lvl:
+        lvl = str(env.get("CLAUDE_EFFORT") or "")
+    return lvl.strip().lower()
 
 
 def gauge_lines(n, load_):
@@ -146,11 +180,27 @@ def main():
     # THE ROUTE LINE (the CEO 2026-09-28, after the ZTA article): the
     # WORKFLOWS entry and the tool this prompt already has, so the routing
     # is a lookup and not an inference. Silent when nothing matches.
+    # THE TWO FACES (kit v1.57, the CEO 2026-10-31: "keep the old way stored
+    # ... as a baseline"): route=ladder prints route_block() (the how, where
+    # the facts live, what exists, the effort, the index door once per
+    # session); route=classic prints the v1.33 match_lines() unchanged.
+    # Both ledger a ROUTE line so retrieval_eval --route can compare them.
+    _prompt = data.get("prompt") or ""
+    _routes = []
     try:
         import route_index as _ri
-        _routes = _ri.match_lines(data.get("prompt") or "")
+        if mode("route", "ladder") == "classic":
+            _routes = _ri.match_lines(_prompt)
+            _wf, _tl = _ri.match(_prompt) if _routes else ([], [])
+            _ri.route_record("classic", {"wf": len(_wf), "tools": len(_tl)}, _prompt)
+        else:
+            _eff = effort_now(data) if mode("effort_line", True) else ""
+            _routes, _counts = _ri.route_block(_prompt, data.get("session_id"), _eff)
+            if not mode("effort_line", True):
+                _routes = [x for x in _routes if not x.lstrip().startswith("EFFORT:")]
+            _ri.route_record("ladder", _counts, _prompt)
     except Exception:  # noqa: BLE001 - a hook never crashes the turn
-        _routes = []
+        _routes = _routes or []
     if _routes:
         print("[HOOK prompt_gauge] " + "\n".join(_routes))
     # THE USAGE WINDOW LINE (the CEO's ask 2026-09-30, Rootstock T-0930-RS-2):
@@ -216,6 +266,25 @@ def _selftest():
         fails += not ok
     except ImportError:
         print("FAIL  route_index.py missing next to lesson_log.py")
+        fails += 1
+    # v1.57: the effort reader and the modes switch, pure
+    ok = (effort_now({"effort": {"level": "High"}}, env={}) == "high"
+          and effort_now({}, env={"CLAUDE_EFFORT": "medium"}) == "medium"
+          and effort_now({}, env={}) == "")
+    print(("PASS  " if ok else "FAIL  ") + "effort_now reads the hook input, then CLAUDE_EFFORT, else empty")
+    fails += not ok
+    ok = mode("route", "ladder") in ("ladder", "classic") and isinstance(mode("effort_line", True), bool)
+    print(("PASS  " if ok else "FAIL  ") + "the modes file answers route and effort_line with valid values")
+    fails += not ok
+    try:
+        import route_index as _ri
+        _blk, _c = _ri.route_block(
+            "ship this docs-only batch: commit, export the changelog and push, no build", door=False)
+        ok = bool(_blk) and _c["wf"] >= 1
+        print(("PASS  " if ok else "FAIL  ") + "the ladder face names the same WORKFLOWS entry the classic face does")
+        fails += not ok
+    except (ImportError, AttributeError):
+        print("FAIL  route_index.py lacks route_block (v1.57)")
         fails += 1
     print("prompt_gauge selftest: %d failed" % fails)
     return 1 if fails else 0

@@ -171,6 +171,14 @@ read-only tools, a small call cap, the one-turn line); drop them into
 rule too, taking the model from the call or from the agent file's pin,
 and the CHEAPEST tier's search row names the agent, not the built-in type.
 
+THE EFFORT PIN (2026-10-31, kit v1.57): the two agent files also pin
+`effort: low`, so a search or a lookup never thinks at the manager's
+level. The origin's measure behind it: every manager request at effort
+high, 62% of the metered output unseen thinking (tools/output_shape.py).
+A work employee's effort is the brief's to name (the STAMP line already
+carries it); the harness takes the agent file's pin first, then the
+session's level.
+
 ## The scorecard (measure the company - added 2026-09-02, proven same day)
 
 Track, per model AND per manager, from the ledger itself (a small script

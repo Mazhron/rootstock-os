@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.56** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.57** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2208,3 +2208,109 @@ the first trial line. The old way needs nothing: it is the same ledger's
 MATCHED lines, and prompt_gauge.py's LESSON LINE stays wired.
 README: "The hooks" (the lesson guard bullet, sixteen hooks) and "What
 is in the box" (the hook counts, 40 working scripts).
+
+### v1.57 - 2026-10-31 - The retrieval ladder, the modes file, the effort line, the resume pointer, the big-write note and the keep-warm step; every old way kept behind one switch
+WHAT: Mazhron opened the rootstock-os session (2026-10-31) on "the
+processes for how Claude uses Rootstock for its workflows to produce
+better and more efficient responses while saving the most amount of
+tokens", then: "I'm trying to see how you use the knowledge bases and
+indexes in order. I would like to fine tune the efficiency of your
+order," with the test prompt "Please add a gnome to my game". The
+manager measured first (the origin's five newest WS2 sessions, 222
+requests): the kit's own hooks inject ~9k tokens a session, 84% of it
+the session-start digest, which fired 3.6 times a session (a resume
+~4.1k each, three inside one minute); the duplicated ritual output
+(day-file rewrite + verbatim relay) was 3% of output and not worth a
+ruling; two single Writes of generated install scripts cost 28.6k
+tokens of manager output; every request ran at effort high and 62% of
+the metered output (427k against ~164k visible) was thinking the
+transcript does not keep; the six cache misses of the four days were all
+TTL gaps at ~90k-230k weighted each while tools/keepwarm.py's own report
+had already ruled (2026-09-29) that pinging beats a rewrite for any
+pause under ~23 hours on Fable. And the route matcher, run on the gnome
+prompt against the origin's registry: "(no route line)" - fauna.md and
+"Cut and wire new creature or plant art" exist, no Keys line says gnome,
+so the order the manager retrieved in was improvised per prompt. Four
+asks were answered yes, and the order was ruled: indexes before files,
+files before code, lessons at the choice, and every retrieval that can
+run before the manager's first turn runs in the hook. Then: "Yes, build
+it. Please keep the old way stored somewhere appropriate. We always want
+the old ways stored for one, as a baseline, and two in case the new way
+is worse somehow or we could find a way to mix the two that would be
+better in the future."
+CARRIES: hooks/rootstock_modes.json (NEW, THE MODES FILE: copied to
+.claude/ and committed; route = ladder | classic, resume_digest =
+pointer | full, big_write_warn, effort_line; the old value of each key
+is the old way, named in its _old_ways block) and hooks/_hooklib.py
+(modes() and mode(), defaults in code); reference tools/route_index.py
+(route_block(): the classic matchers, then INDEX lines from
+docs/index/MASTER_INDEX.md and KNOWLEDGE_INDEX.md, then FILES whose name
+is made of the prompt's specific words, then the EFFORT line from the
+matched entry's `EFFORT:` field against the hook input's effort.level or
+CLAUDE_EFFORT, and THE INDEX DOOR once per session when nothing hits a
+prompt of three content words with one specific word; match_lines()
+kept byte for byte as the classic face; both faces ledger a ROUTE line
+in lesson_runs.txt; --block; the file walk cached per process; eleven
+new selftest checks); hooks/prompt_gauge.py (picks the face by the
+modes file, effort_now(), three selftest checks); hooks/session_start.py
+(THE RESUME POINTER: one line on a same-day resume, the whole digest on
+startup, clear, compact, a day change or resume_digest = full; ledgered
+as "resume-pointer"; seven selftest checks); hooks/diet_guard.py (BIG
+WRITE past 4k tokens of content, warn-only, once per file per session,
+off by the modes file; two selftest checks) and hooks/settings.json (its
+matcher gains Write; the format guard's SAFETY row still holds); agents/
+explore.md and lookup.md (`effort: low`); reference tools/keepwarm.py
+(NEW to the kit, the origin's tool unchanged: --ping, --report, the
+break-even at both read multipliers); reference tools/output_shape.py
+(NEW, the metrics group: per day the metered output against the visible
+output and the effort each request ran at, from the api-request records;
+CHECK when effort high or above covers 80% of requests and half the
+output is unseen); reference tools/retrieval_eval.py (--route: the two
+ROUTE faces over the replayed prompts, classic named / ladder named /
+door, one line per run in docs/history/route_eval_runs.txt); reference
+tools/run_all.py (output_shape in the metrics group); skills/checkpoint/
+SKILL.md (step 6, ARM THE KEEP-WARM) and SKILLS.md; WORKFLOW_METHOD.md
+(the entry template's EFFORT field; the seed entry "Act on a prompt"
+with THE ORDER and the old order kept; the second seed entry "Keep the
+cache warm across a pause" with its old WHEN line kept); HOOKS_METHOD.md
+("The modes file", the Tier 1 and 2c paragraphs, the change log);
+hooks/README.txt; SUBAGENT_METHOD.md (the effort pin); knowledge/
+lessons/harness.md and LESSONS.md ("The retrieval order was improvised
+per prompt"); knowledge/MANIFEST.md (the harness row).
+GRAFT: copy hooks/rootstock_modes.json to .claude/rootstock_modes.json
+and commit it; replace tools/hooks/_hooklib.py, prompt_gauge.py,
+session_start.py and diet_guard.py whole if the project took them
+unadapted, else graft modes()/mode(), the two-face route section with
+effort_now(), the resume branch with pointer_for(), last_digest_date()
+and resume_wants_full(), and the Write branch by hand; copy reference
+tools/route_index.py, keepwarm.py and output_shape.py fresh into tools/;
+graft route_eval() and the --route branch into tools/retrieval_eval.py;
+an Edit of .claude/settings.json adds Write to the diet guard's matcher;
+gitignore .claude/route_state.json; add ["tools/output_shape.py"] to
+run_all's metrics group after big_reads; add `effort: low` to the two
+agent files; add `EFFORT: medium` under the WHEN line of the registry's
+routine entries (ship, checkpoint, docs-only batches, ledger and
+transcription work) and leave design and ruling entries without one;
+graft the checkpoint skill's step 6 and both seed entries; set the
+session default with /effort medium and let the EFFORT line say when an
+arc wants high. Verify: the seven selftests print 0 failed; `python
+tools/route_index.py --block "<a prompt naming something that exists>"`
+names the file; a piped resume prints the pointer and digest_size.txt
+gains a "resume-pointer" line of under 200 tokens; a Write of 20,000
+characters prints BIG WRITE once; `python tools/output_shape.py` writes
+its first line; `python tools/retrieval_eval.py --route` writes its
+first line. THE OLD WAYS need nothing: flip the key in the modes file
+(route = classic, resume_digest = full, big_write_warn = false,
+effort_line = false) and the v1.33 line, the whole digest, the silent
+Write and the unprompted effort are back, with the same ledgers.
+FLAGGED (THE CONTRADICTION RULE): the origin's "Keep the cache warm"
+WHEN line said NEVER after a checkpoint, written when the ping was
+priced at 0.1x reads; the measured verdict at 0.025x and the October
+misses after checkpoints reverse it, so the kit's seed entry arms at
+every checkpoint that leaves the session open and keeps the old WHEN
+line on record. Mazhron's yes (2026-10-31) was to "make arming a step of
+the checkpoint ritual"; the reversal of the old line is named here so
+it is a ruling, not a drift.
+README: "The hooks" (the retrieval ladder and the modes file bullet)
+and "What is in the box" (the hooks/ row's modes file, 42 working
+scripts, the agents' effort pin).

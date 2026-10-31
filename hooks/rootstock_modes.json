@@ -1,0 +1,13 @@
+{
+  "_purpose": "THE MODES FILE (kit v1.57): the CEO's switches between a new behaviour and the old way it replaced; copy to .claude/rootstock_modes.json and COMMIT it. Every key's old value is the baseline; flip one key to switch back, no code edit. Read by tools/hooks/_hooklib.py modes().",
+  "route": "ladder",
+  "resume_digest": "pointer",
+  "big_write_warn": true,
+  "effort_line": true,
+  "_old_ways": {
+    "route": "classic - the v1.33 two-line ROUTE (WORKFLOWS entries + tools only, no index door, no files, no effort)",
+    "resume_digest": "full - the whole standup digest re-injected on every resume, as on startup and /clear",
+    "big_write_warn": "false - the diet guard says nothing about the size of a Write",
+    "effort_line": "false - no EFFORT line; the manager picks the effort unprompted"
+  }
+}

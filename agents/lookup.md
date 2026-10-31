@@ -2,6 +2,7 @@
 name: lookup
 description: Read-only lookup employee for a single fact (a ledger tail, a config value, a function's signature, a doc section). One turn of tool calls, a one-line answer with its file:line pointer. Pinned to the cheapest tier.
 model: haiku
+effort: low
 tools: Read, Grep, Glob, Bash
 ---
 

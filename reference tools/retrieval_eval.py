@@ -244,12 +244,82 @@ def ledger_line(ev, qs, hits, misses):
                c["named_trial"], len(ev["noisy"]), len(qs), hits, len(misses), verdict))
 
 
+# --------------------------------------------------- the route faces (v1.57) --
+ROUTE_LEDGER = os.path.join(ROOT, "docs", "history", "route_eval_runs.txt")
+
+
+def route_eval(items):
+    """THE TWO ROUTE FACES (kit v1.57): over the replayed prompts the matcher
+    reads, how many the classic ROUTE (workflows + tools) named, how many the
+    ladder named (those plus index lines and existing files), and how many
+    task-shaped prompts would have got the index door instead of silence.
+    -> {eligible, classic, ladder, door, silent, examples[]}."""
+    import route_index as _ri
+    out = {"eligible": 0, "classic": 0, "ladder": 0, "door": 0, "silent": 0, "examples": []}
+    files = _ri.file_list()
+    for text, _slice in items:
+        if len(_ll.words(text)) < _ll.MIN_PROMPT_WORDS:
+            continue
+        out["eligible"] += 1
+        wf, tl = _ri.match(text)
+        ih = _ri.index_hits(text)
+        fh = _ri.file_hits(text, walk=files)
+        if wf or tl:
+            out["classic"] += 1
+        if wf or tl or ih or fh:
+            out["ladder"] += 1
+            if not (wf or tl) and len(out["examples"]) < 8:
+                out["examples"].append((text, [e["heading"][:60] for _, e in ih] + [r for _, r in fh]))
+        elif len(_ll.words(text)) >= _ri.TOC_MIN_WORDS:
+            out["door"] += 1
+        else:
+            out["silent"] += 1
+    return out
+
+
+def route_report_lines(rv):
+    e = rv["eligible"] or 1
+    lines = ["", "== THE ROUTE FACES (v1.57; the ladder's gain over the classic line)",
+             "eligible prompts %d | classic named %d (%d%%) | ladder named %d (%d%%) | door instead of "
+             "silence %d | still silent (short) %d"
+             % (rv["eligible"], rv["classic"], 100 * rv["classic"] // e, rv["ladder"],
+                100 * rv["ladder"] // e, rv["door"], rv["silent"])]
+    for text, named in rv["examples"]:
+        lines.append("  ladder-only: %s -> %s" % (_short(text, 70), "; ".join(named)[:120]))
+    return lines
+
+
+def route_ledger_line(rv):
+    verdict = "PASS" if rv["ladder"] >= rv["classic"] else "WARN: the ladder named fewer than the classic line"
+    return "%s | %s | eligible %d | classic %d | ladder %d | door %d | gain +%d | %s" % (
+        datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), _ll.workstation(), rv["eligible"],
+        rv["classic"], rv["ladder"], rv["door"], rv["ladder"] - rv["classic"], verdict)
+
+
 def main(argv):
     if "--selftest" in argv:
         return _selftest()
     n = WINDOW
     if "-n" in argv:
         n = int(argv[argv.index("-n") + 1])
+    if "--route" in argv:
+        items = turns(sessions(), n)
+        rv = route_eval(items)
+        lines = route_report_lines(rv)
+        print("\n".join(lines))
+        line = route_ledger_line(rv)
+        try:
+            os.makedirs(os.path.dirname(ROUTE_LEDGER), exist_ok=True)
+            if not os.path.isfile(ROUTE_LEDGER):
+                with open(ROUTE_LEDGER, "w", encoding="utf-8") as fh:
+                    fh.write("# THE ROUTE FACES (append-only, tools/retrieval_eval.py --route): date time | "
+                             "ws | eligible | classic named | ladder named | door | gain | verdict. The "
+                             "classic line is the v1.33 baseline; the ladder is v1.57.\n")
+            append_unless_identical(ROUTE_LEDGER, line)
+        except OSError as exc:
+            print("ledger write failed: %s" % exc)
+        print("\n" + line)
+        return 0
     ents = _ll.entries()
     qs = queries()
     hits, misses = run_queries(qs, ents)

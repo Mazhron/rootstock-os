@@ -80,6 +80,7 @@ GROUPS = {
                 ["tools/usage_report.py"],
                 ["tools/wiki_heat.py"],
                 ["tools/big_reads.py"],
+                ["tools/output_shape.py"],   # THE OUTPUT SHAPE (2026-10-31, kit v1.57): metered output vs visible, the effort each request ran at; CHECK when high effort meets unseen output
                 ["tools/intent_report.py"],
                 ["tools/keepwarm.py", "--report"],   # THE KEEP-WARM TRIAL (2026-09-29): prices the session's ping turns; silent-ish when none
                 ["tools/fork_watch.py"],   # THE FORK WATCH (2026-10-05): forks of the public Rootstock repo; WARN only when one pulls ahead

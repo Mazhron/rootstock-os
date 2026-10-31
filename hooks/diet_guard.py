@@ -31,6 +31,11 @@ WHAT IT SAYS:
     session and already in context - denied once per fingerprint (the file
     changing resets it); the next identical call passes with a warning,
     the same repeat-passes mechanism as INDEX FIRST.
+  BIG WRITE (kit v1.57, warn-only, PreToolUse on Write): <file> is ~Nk
+    tokens of manager output, written at 5x - a generated or mechanical
+    file is employee or script work (the origin's measure: two single
+    Writes of install scripts cost 28.6k output tokens, ~143k weighted).
+    Off with big_write_warn = false in .claude/rootstock_modes.json.
 Shell shapes are warned at most WARN_CAP times per session per shape so a
 deliberate choice is not nagged; the big-read warning fires every time,
 because every big read is a fresh decision.
@@ -44,13 +49,16 @@ PURPOSE: PreToolUse guard on Read, Bash and PowerShell enforcing the read
   file in the same session, fingerprint (mtime_ns+size) unchanged since the
   admitted read, is denied once more as RE-READ and passes on repeat;
   forget_session_reads() clears a session's RE-READ marks (not its INDEX
-  FIRST marks) after a compaction empties the context.
+  FIRST marks) after a compaction empties the context; on Write (v1.57) it
+  warns once per file per session when the content is past about 4k tokens
+  of manager output, naming the employee or script route.
 INTENT: section or split ... should not require my approval ... part of the
   looping scripts
 
 Search keys: diet guard, read diet, output diet, big read, whole-file read,
 chatty command, limiter, pretooluse warn, 10k rule, re-read, RE-READ,
-fingerprint, admitted read, forget_session_reads.
+fingerprint, admitted read, forget_session_reads, big write, BIG WRITE,
+manager output, 5x.
 See also: tools/hooks/fanout_guard.py (the same warn shape); TOKEN_IDEAS.md
 ideas 15-18; WIKI_METHOD.md (the read diet + the output diet laws);
 tools/usage_report.py (the daily line that grades the outcome);
@@ -63,9 +71,10 @@ import re
 import sys
 import time
 
-from _hooklib import ROOT, emit, read_input
+from _hooklib import ROOT, emit, mode, read_input
 
 BIG_READ_TOK = 10_000         # the 10k rule (TOKEN_IDEAS 15)
+BIG_WRITE_TOK = 4_000         # THE BIG WRITE (v1.57): content past this is a 5x output question
 BYTES_PER_TOK = 4
 WARN_CAP = 3                  # shell-shape warnings per session per shape
 STATE = os.path.join(ROOT, ".claude", "diet_state.json")  # gitignored
@@ -347,6 +356,23 @@ def evaluate(data, state, now=None):
                                     "and re-read forever)%s" % (
                                         name, hint,
                                         "; last warning this session for this shape" if n == WARN_CAP else ""))
+    elif tool == "Write" and mode("big_write_warn", True):
+        # THE BIG WRITE (kit v1.57, the CEO's yes 2026-10-31): the manager's
+        # own output is the 5x pillar; a whole generated file typed through
+        # Write is the dearest way to produce it. Warn-only, once per file
+        # per session; the manager proceeds when the file needs its exact text.
+        content = tin.get("content") or ""
+        est = len(content.encode("utf-8", "replace")) // BYTES_PER_TOK
+        raw_path = tin.get("file_path") or ""
+        key = "write:" + _resolve(raw_path, cwd).replace("\\", "/").lower() if raw_path else "write:?"
+        if est >= BIG_WRITE_TOK and key not in offered:
+            offered[key] = now
+            msgs.append("BIG WRITE: %s is ~%s tokens of manager output (written at 5x) - a "
+                        "generated or mechanical file is employee or script work (SUBAGENT_METHOD: "
+                        "the cheapest tier regenerates artifacts; a script writes a document; "
+                        "a patch goes as an Edit); proceed only if it needs the manager's exact "
+                        "text (once per file per session)" % (os.path.basename(raw_path) or "?",
+                                                              _ktok(est)))
     if not msgs:
         return ("", state, "")
     return ("[HOOK diet_guard] " + " | ".join(msgs), state, action)
@@ -459,6 +485,16 @@ def _selftest():
           and "RE-READ" in reads[2] and all("READ DIET" in r for r in reads[3:])
           and all(r != "" for r in reads))
     check("junk input is silent", evaluate({}, {})[0] == "")
+
+    # THE BIG WRITE (v1.57): warn-only, past BIG_WRITE_TOK, once per file per session
+    bw = {}
+    gen = os.path.join(tmp, "generated_install.py")
+    first_w = run("Write", sess="bw", state=bw, file_path=gen, content="x" * (BIG_WRITE_TOK * 4 + 400))
+    again_w = run("Write", sess="bw", state=bw, file_path=gen, content="x" * (BIG_WRITE_TOK * 4 + 400))
+    check("big Write warns once with the size and the employee route",
+          "BIG WRITE" in first_w and "employee or script" in first_w and again_w == ""
+          and act("Write", sess="bw2", file_path=gen, content="x" * (BIG_WRITE_TOK * 4 + 400)) == "")
+    check("small Write is silent", run("Write", file_path=gen, content="x" * 2000) == "")
 
     # RE-READ dedup: a later whole read of a file already admitted this
     # session, unchanged, is denied once more; the next passes; a changed

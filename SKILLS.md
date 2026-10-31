@@ -147,3 +147,8 @@ Everwood-specific except named examples (marked "in Everwood").
   THE SECURITY QUESTION (v1.39's graft line the shelf had missed) and
   /brief step 1 THE EMPLOYEE MODEL RULE (v1.40's guard, now stated where
   the brief is composed). Nine skills, unchanged count.
+- 2026-10-31 (kit v1.57): /checkpoint gains step 6, ARM THE KEEP-WARM -
+  the ping loop armed at the end of a checkpoint reply that leaves the
+  session open (WORKFLOWS "Keep the cache warm across a pause"; the old
+  WHEN line, never after a checkpoint, kept on record in the entry).
+  Nine skills, unchanged count.

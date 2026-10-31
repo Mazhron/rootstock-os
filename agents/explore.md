@@ -2,6 +2,7 @@
 name: explore
 description: Read-only search employee for broad fan-out searches across the repo (where is X handled, which files mention Y). Returns conclusions and file:line pointers, never file dumps. Use for any grep or locate sweep. Pinned to the cheapest tier.
 model: haiku
+effort: low
 tools: Read, Grep, Glob, Bash
 ---
 

@@ -60,6 +60,37 @@ def context(event, text):
                                  "additionalContext": text}})
 
 
+MODES = os.path.join(ROOT, ".claude", "rootstock_modes.json")   # committed: the CEO's switches
+MODES_DEFAULT = {
+    "route": "ladder",           # prompt hook ROUTE: "ladder" (v1.57, four layers + the index door) | "classic" (v1.33, workflows + tools)
+    "resume_digest": "pointer",  # SessionStart on resume: "pointer" (v1.57, one line) | "full" (the whole digest, the old way)
+    "big_write_warn": True,      # diet guard on Write: a BIG WRITE note past ~4k tokens of content (v1.57) | False = silent
+    "effort_line": True,         # prompt hook: the EFFORT line when the matched entry asks another level (v1.57) | False
+}
+
+
+def modes():
+    """THE MODES FILE (the CEO 2026-10-31, kit v1.57: "keep the old way
+    stored ... as a baseline, and in case the new way is worse"): every
+    behaviour v1.57 added sits behind one key here; the old code path stays
+    in place and is selected by flipping the key. Missing file or key means
+    the default above; a parse error means the defaults, never a crash."""
+    out = dict(MODES_DEFAULT)
+    try:
+        with open(MODES, encoding="utf-8") as fh:
+            data = json.load(fh)
+        if isinstance(data, dict):
+            out.update({k: v for k, v in data.items() if k in MODES_DEFAULT})
+    except Exception:
+        pass
+    return out
+
+
+def mode(key, default=None):
+    """One switch's value (see modes())."""
+    return modes().get(key, MODES_DEFAULT.get(key, default))
+
+
 def project_version():
     try:
         import re

@@ -1687,3 +1687,18 @@ FLAG: stale only because the refresh rewrote it
 SAYS: The harness slice of the one-right-way book, 45 entries whose Tags name balance, checkpoint, communication, context gauge and 30 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
 DOES: re-flagged after the 2026-10-30 lesson amendment (the patch-script lesson gains the preserve guard, the fixture and the percent-format trials); derived by the refresh, no other change
 FLAG: stale only because the refresh rewrote it
+
+### 2026-10-31 19:43 | reference tools/keepwarm.py | GREEN | fable | WS2 | 5f746ae6
+SAYS: Run and measure the cache keep-warm ping. `--ping` is what the scheduled ping turn calls: it appends one line to the ledger (time, ping N of 16, live context tokens, the trial id) and prints the exact reply the ping turn gives, or the stop line at the cap. `--report` reads the session's transcript and prices every ping turn from the harness's own usage records: cache read, cache write, output, the weighted cost, the context growth each ping left behind (the residue), hit or MISS, and the break-even against the one cache rewrite the pings exist to prevent, at both cache-read multipliers (0.025 on Fable 5.1, 0.1 on every other model), so the short-pause and the long-pause cases each get a number.
+DOES: Carried into the kit unchanged from the origin (v1.57): --ping appends one PING line and prints the ping reply or the stop line at the cap; --report prices the session's ping turns from the harness usage records at both read multipliers and names the break-even; --selftest 0 failed; writes only ledger appends, deletes nothing
+FLAG: Read-only audit of the copy against the origin's file: byte-identical; the kit's seed entry and the checkpoint skill's step 6 name it
+
+### 2026-10-31 19:43 | reference tools/output_shape.py | GREEN | fable | WS2 | edfa0b3a
+SAYS: Measure, per day and over the last seven active days, the metered output tokens against the output visible in the transcript (text, tool inputs, kept thinking) and the effort level of each request, write the report and one ledger line, and say CHECK when effort runs high on most requests while most output is unseen thinking.
+DOES: Walks the repo's harness transcript folder recursively, sums metered output per day against the visible output (text, tool inputs, kept thinking) and reads output_config.effort from the api-request records; rewrites docs/history/output_shape.txt and appends one ledger line; CHECK only when effort high+ covers 80% of requests and half the output is unseen; selftest 9 checks, 0 failed
+FLAG: Does what the PURPOSE says; the slug match is case-insensitive because the harness lowers the drive letter on some installs
+
+### 2026-10-31 19:43 | hooks/rootstock_modes.json | GREEN | fable | WS2 | 749534b8
+SAYS: (no PURPOSE line)
+DOES: A JSON of four switches (route, resume_digest, big_write_warn, effort_line) with the old way of each named in _old_ways; read by _hooklib.modes() with defaults in code; copied to .claude/ and committed; no code runs from it
+FLAG: The CEO's standing rule of 2026-10-31 made mechanical: every v1.57 behaviour one flip from its old way

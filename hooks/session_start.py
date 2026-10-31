@@ -23,11 +23,22 @@ every injected digest appends one line to docs/history/digest_size.txt
 (bytes + a bytes/4 token estimate + the trigger) so digest bloat shows up
 in a ledger instead of only being felt.
 
+THE RESUME POINTER (kit v1.57, the CEO's yes 2026-10-31): the ledger showed
+3.6 fires per session on the origin, resume fires at ~4.1k tokens each,
+three of them inside one minute. A resume reopens the same conversation,
+so the digest injected at its start is still in context; this hook now
+injects one pointer line on resume (trigger "resume-pointer" in the ledger)
+and the whole digest only when the day changed since this workstation's
+last digest, or when the modes file says resume_digest = "full" (the old
+way, kept). startup, clear and compact always get the whole digest.
+
 PURPOSE: SessionStart hook that runs tools/standup.py and injects its digest
   into the manager's context on startup, resume, /clear and after a
   compaction, with a header telling the manager not to re-run standup and
   how to relay the last exchange; also runs the session group itself when
-  it has not run today (THE LOOP LAW) and ledgers the digest's byte size.
+  it has not run today (THE LOOP LAW) and ledgers the digest's byte size;
+  on a same-day resume it injects one pointer line instead of the digest
+  (resume_digest = full in the modes file restores the old way).
 INTENT: closes the gap where after a /clear the manager has no memory of the
   session, by re-injecting the last exchange, state and roadmap tails
   automatically instead of relying on anyone remembering to run standup;
@@ -35,7 +46,7 @@ INTENT: closes the gap where after a /clear the manager has no memory of the
   measured rather than assumed.
 
 Search keys: session start hook, auto standup, resume after clear, compact,
-loop law, session group, digest size.
+loop law, session group, digest size, resume pointer, modes file.
 See also: tools/standup.py (the digest); tools/run_all.py (THE LOOP LEDGER,
 last_run); docs/history/loop_runs.txt; docs/history/digest_size.txt;
 .claude/skills/standup (the ritual this automates); tools/hooks/_hooklib.py.
@@ -46,10 +57,48 @@ import subprocess
 import sys
 import time
 
-from _hooklib import ROOT, TOOLS, context, read_input
+from _hooklib import ROOT, TOOLS, context, mode, read_input
 import checkpoint as cp
 
 DIGEST_SIZE_LEDGER = os.path.join(ROOT, "docs", "history", "digest_size.txt")
+
+
+def pointer_for(loop_line):
+    """THE RESUME POINTER (v1.57): the one-line injection on a same-day resume."""
+    return ("[HOOK session_start | trigger: resume] The conversation resumed intact; the "
+            "standup digest injected at its start still stands and standup.py was NOT re-run "
+            "(THE RESUME POINTER, kit v1.57; resume_digest = \"full\" in "
+            ".claude/rootstock_modes.json restores the whole digest). If the digest is no "
+            "longer in context, run `python tools/standup.py` once. %s" % (loop_line or ""))
+
+
+def last_digest_date(ws, path=DIGEST_SIZE_LEDGER):
+    """The date (YYYY-MM-DD) of this workstation's newest digest_size.txt
+    line, or "" when there is none. Reads the tail only."""
+    try:
+        with open(path, "rb") as fh:
+            fh.seek(0, os.SEEK_END)
+            size = fh.tell()
+            fh.seek(max(0, size - 8192))
+            tail = fh.read().decode("utf-8", "replace").splitlines()
+    except OSError:
+        return ""
+    for ln in reversed(tail):
+        parts = [p.strip() for p in ln.split("|")]
+        if len(parts) >= 5 and parts[1] == ws and not ln.startswith("#"):
+            return parts[0][:10]
+    return ""
+
+
+def resume_wants_full(source, resume_mode, last_date, today):
+    """Pure: does this SessionStart get the whole digest? Everything but a
+    resume does; a resume does when the old way is selected or the day
+    changed since this workstation's last digest."""
+    if source != "resume":
+        return True
+    if resume_mode == "full":
+        return True
+    return last_date != today
 
 
 def header_for(source):
@@ -146,6 +195,13 @@ def main():
     data = read_input()
     source = data.get("source", "?")
     note = loop_note()
+    if not resume_wants_full(source, mode("resume_digest", "pointer"),
+                             last_digest_date(cp.which_ws()),
+                             datetime.date.today().isoformat()):
+        text = pointer_for(note)
+        log_digest_size(text, "resume-pointer")
+        context("SessionStart", text)
+        return
     out = run_standup()
     digest = (note + "\n\n" + out) if note else out
     full_text = header_for(source) + "\n\n" + digest
@@ -194,6 +250,38 @@ def _selftest():
     line = _digest_line("x" * 400, "WS1", "startup", now)
     ok = ("| WS1 | 400 | 100 | startup" in line)
     print(("PASS  " if ok else "FAIL  ") + "_digest_line: bytes + bytes//4 + trigger")
+    fails += not ok
+
+    # THE RESUME POINTER (v1.57)
+    ok = (resume_wants_full("startup", "pointer", "2026-10-31", "2026-10-31") is True
+          and resume_wants_full("clear", "pointer", "2026-10-31", "2026-10-31") is True
+          and resume_wants_full("compact", "pointer", "2026-10-31", "2026-10-31") is True)
+    print(("PASS  " if ok else "FAIL  ") + "resume_wants_full: startup, clear and compact always get the digest")
+    fails += not ok
+    ok = resume_wants_full("resume", "pointer", "2026-10-31", "2026-10-31") is False
+    print(("PASS  " if ok else "FAIL  ") + "resume_wants_full: a same-day resume gets the pointer")
+    fails += not ok
+    ok = (resume_wants_full("resume", "pointer", "2026-10-30", "2026-10-31") is True
+          and resume_wants_full("resume", "pointer", "", "2026-10-31") is True)
+    print(("PASS  " if ok else "FAIL  ") + "resume_wants_full: a day change or no ledger gets the digest")
+    fails += not ok
+    ok = resume_wants_full("resume", "full", "2026-10-31", "2026-10-31") is True
+    print(("PASS  " if ok else "FAIL  ") + "resume_wants_full: resume_digest=full is the old way")
+    fails += not ok
+    import tempfile
+    tmpd = tempfile.mkdtemp(prefix="digest_size_")
+    p = os.path.join(tmpd, "digest_size.txt")
+    with open(p, "w", encoding="utf-8") as fh:
+        fh.write("# header\n2026-10-29 16:03 | WS2 | 21920 | 5480 | startup\n"
+                 "2026-10-30 14:54 | WS1 | 15651 | 3912 | resume\n"
+                 "2026-10-30 15:10 | WS2 | 15393 | 3848 | clear\n")
+    ok = last_digest_date("WS2", p) == "2026-10-30" and last_digest_date("WS1", p) == "2026-10-30" \
+        and last_digest_date("WS9", p) == "" and last_digest_date("WS2", p + ".missing") == ""
+    print(("PASS  " if ok else "FAIL  ") + "last_digest_date: newest line per workstation, empty when none")
+    fails += not ok
+    ptr = pointer_for("[loop] session group last ran 09:00 today")
+    ok = "trigger: resume" in ptr and "NOT re-run" in ptr and "[loop]" in ptr and len(ptr) < 700
+    print(("PASS  " if ok else "FAIL  ") + "pointer_for: one short line carrying the trigger and the loop note")
     fails += not ok
 
     print("session_start selftest: %d failed" % fails)

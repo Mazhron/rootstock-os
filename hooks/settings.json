@@ -140,7 +140,7 @@
         ]
       },
       {
-        "matcher": "Read|Bash|PowerShell",
+        "matcher": "Read|Bash|PowerShell|Write",
         "hooks": [
           {
             "type": "command",

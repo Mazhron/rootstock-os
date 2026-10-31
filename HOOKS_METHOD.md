@@ -78,7 +78,13 @@ TIER 1 - the resumption + checkpoint loop:
 1. `session_start.py` (SessionStart, all sources): runs the standup
    script and injects the digest with a relay instruction. Resumption no
    longer depends on anyone typing "standup"; after an auto-compaction the
-   digest re-anchors the summary.
+   digest re-anchors the summary. THE RESUME POINTER (kit v1.57): on a
+   same-day resume it injects one line instead (the conversation is
+   intact, the digest already in it; ledgered as "resume-pointer", ~100
+   tokens against ~4k), the whole digest on startup, clear, compact, a
+   day change, or resume_digest = full in the modes file (the old way).
+   The origin's ledger before it: 3.6 fires a session, three resumes
+   inside one minute.
 2. `stop_tick.py` (Stop): ticks the checkpoint counter ONLY when work
    happened - `work_fingerprint()` in the checkpoint script = HEAD + the
    working tree's porcelain status minus bookkeeping files. A Q&A reply
@@ -125,6 +131,23 @@ TIER 1 - the resumption + checkpoint loop:
    or Search keys the prompt hits (reference tools/route_index.py, the
    lesson matcher; at most two of each), so "does software already
    handle this" is a lookup and not the manager's inference each turn.
+   THE RETRIEVAL LADDER (kit v1.57, the CEO 2026-10-31: "fine tune the
+   efficiency of your order"; his test prompt "Please add a gnome to my
+   game" got no line at all): with route = ladder in the modes file the
+   hook prints route_block() instead - the same WORKFLOWS entries and
+   tools, then the INDEX lines of docs/index/MASTER_INDEX.md and
+   KNOWLEDGE_INDEX.md the prompt's specific words hit, then the FILES
+   whose name those words make (gnome.tscn), then an EFFORT line when
+   the matched entry's `EFFORT:` level is below the level the session
+   runs at (the hook input's effort.level or CLAUDE_EFFORT; a hook can
+   read the effort, not set it, so the line names the /effort command),
+   and when none of the four hits a prompt of three content words with
+   one specific word, THE INDEX DOOR once per session (the master
+   index's headings and the sub-index names; .claude/route_state.json,
+   gitignored). route = classic prints the v1.33 line byte for byte.
+   Both faces ledger a ROUTE line in lesson_runs.txt; `python
+   tools/retrieval_eval.py --route` scores classic named / ladder named
+   / door over the replayed prompts.
 4. `pre_compact.py` (PreCompact): one ledger line per compaction
    (when/WS/version/manual-auto/context/unbanked tasks) in
    docs/history/compact_runs.txt; a system message on auto.
@@ -246,11 +269,20 @@ than a cooldown.
   report.
 
 TIER 2c - THE DIET GUARD (`diet_guard.py`, PreToolUse on Read|Bash|
-PowerShell; kit v1.12, the origin CEO's ruling 2026-09-10 after the
+PowerShell|Write; kit v1.12, the origin CEO's ruling 2026-09-10 after the
 weighted-usage insight: only the tokens that count against the plan
 matter, and under those weights the manager's context is written at
 1.25x and every tool result rides in it forever). Nothing to type; one
 refusal shape only (INDEX FIRST, kit v1.15), the rest warn-only:
+- BIG WRITE (kit v1.57, the CEO's yes 2026-10-31): a Write whose content
+  is past ~4k tokens gets one warn-only note per file per session - the
+  manager's output is the 5x pillar, and on the origin two single Writes
+  of generated install scripts cost 28.6k output tokens (~143k weighted);
+  the note names the employee or script route (SUBAGENT_METHOD's
+  cheapest tier regenerates artifacts) and the manager proceeds when the
+  file needs its exact text. Off with big_write_warn = false in the
+  modes file. The format guard's SAFETY row (Read, Bash) still holds
+  with Write added to the matcher.
 - INDEX FIRST (kit v1.15, the origin CEO's order 2026-09-10 PM: "section
   or split as necessary ... should not require my approval ... part of
   the looping scripts"): the FIRST whole read of a big file per file per
@@ -597,6 +629,36 @@ once), so it is no longer pinned;
 Notification -> an OS toast when the manager waits on permission or
 idles after a long employee run.
 
+## The modes file (kit v1.57 - every new way beside its old way, one key each)
+Tags: hooks, process, baseline | .claude/rootstock_modes.json: the CEO's switches between each v1.57 behaviour and the old way it replaced; the old path stays in the code and is selected by the key
+
+The CEO's standing rule (2026-10-31, on the retrieval ladder): "Please
+keep the old way stored somewhere appropriate. We always want the old
+ways stored for one, as a baseline, and two in case the new way is worse
+somehow or we could find a way to mix the two that would be better in
+the future." LESSONS "Give a system a second face" said it for game
+systems; this is the same law for the hooks. hooks/rootstock_modes.json
+is copied to .claude/rootstock_modes.json and COMMITTED (like
+fanout_limits.json, the CEO's setting travels with the repo);
+tools/hooks/_hooklib.py modes() reads it with the defaults in code, so a
+missing file or key means the new way and a parse error never crashes a
+hook. The keys and their old values:
+
+- route: ladder (v1.57) | classic (v1.33, the two-line ROUTE).
+- resume_digest: pointer (v1.57) | full (the whole digest on resume).
+- big_write_warn: true (v1.57) | false (the diet guard silent on Write).
+- effort_line: true (v1.57) | false (no EFFORT line).
+
+Switching back is one flip, no code edit, and no ledger changes shape:
+both route faces write ROUTE lines, both resume shapes write
+digest_size.txt lines, so tools/retrieval_eval.py --route and the
+digest ledger compare the faces from the same data. A new behaviour
+added to a hook after v1.57 earns a key here in the same batch, with its
+old value named in the file's _old_ways block; a behaviour without an
+old way (a new refusal) does not. The CEO flips a key by saying so; the
+manager never flips one on its own, and a mix of two faces is a design
+the ledgers argue for first.
+
 ## Bootstrap (new project)
 
 1. Copy the kit's hooks/ folder to the project's tools/hooks/ (or wherever
@@ -834,3 +896,9 @@ idles after a long employee run.
   kit from the Acme install (Mazhron: "Please add this workflow to
   Rootstock and push to Git. We want Rootstock to keep the old workflow as
   a backup and as a benchmark."); UPGRADES.md v1.56.
+- 2026-10-31 kit v1.57: the retrieval ladder in prompt_gauge.py's ROUTE
+  (the index lines, the existing files, the EFFORT line, the index door),
+  THE RESUME POINTER in session_start.py, BIG WRITE in diet_guard.py
+  (Write joins its matcher), and THE MODES FILE that keeps every old way
+  one key away (Mazhron: "We always want the old ways stored ... as a
+  baseline"); UPGRADES.md v1.57.
