@@ -114,7 +114,8 @@ def main():
     if action == "written":
         ll.record("WRITTEN", reason or "LESSONS.md edited this turn")
     elif action == "block":
-        ll.record("ADVISED", "; ".join(s for s in sigs if not s.startswith("WRITTEN")))
+        ll.record("ADVISED", "session=%s | %s" % (data.get("session_id") or "?",
+                                                "; ".join(s for s in sigs if not s.startswith("WRITTEN"))))
         emit({"decision": "block", "reason": reason})
     sys.exit(0)
 

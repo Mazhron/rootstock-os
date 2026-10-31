@@ -63,6 +63,7 @@ GROUPS = {
                 ["tools/format_lint.py", "--quiet"],
                 ["tools/purpose_audit.py", "--pending"],
                 ["tools/lesson_log.py", "--check"],   # THE LESSON LOOP (2026-09-20): entry shape + advised/written counts
+                ["tools/lesson_ladder.py"],   # THE TRIAL LEDGER (2026-10-30): the lesson loop's two faces scored over lesson_runs.txt, hits and misses, PROPOSE [DO] down a rung
                 ["tools/split_knowledge.py", "--check"],   # THE KNOWLEDGE SPLIT (2026-10-13, NS-38 phase 2): the kit's knowledge/ tree in step with LESSONS.md; STALE is a refresh_kit reminder, never a FAIL
                 ["tools/law_gaps.py"],   # THE LAW LEDGERS (2026-09-29): the archive sweep + the workflow-rule proxy, WARN lines only
                 ["tools/guard_replay.py", "--days", "7", "--record"],   # THE GUARD REPLAY (2026-09-30, a serio-focus take): the guards over the last week of recorded calls, WARN on a LOST rule

@@ -177,6 +177,16 @@
             "timeout": 15
           }
         ]
+      },
+      {
+        "matcher": "Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit|Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"${CLAUDE_PROJECT_DIR:-.}/tools/hooks/lesson_guard.py\"",
+            "timeout": 15
+          }
+        ]
       }
     ],
     "PostToolUse": [

@@ -72,7 +72,7 @@ and an UPGRADES entry.
   prompt, stop, compact and shell-command hooks; a PostToolUse hook on
   every Write/Edit must stay a pattern match with no heavy imports.
 
-## The kit hooks (hooks/ - fifteen scripts + _hooklib + settings.json)
+## The kit hooks (hooks/ - sixteen scripts + _hooklib + settings.json; the sixteenth, lesson_guard.py, is Tier 4b below)
 
 TIER 1 - the resumption + checkpoint loop:
 1. `session_start.py` (SessionStart, all sources): runs the standup
@@ -519,6 +519,74 @@ exist and numbers to agree; whether the diff matches the claims and
 whether an OK verdict is earned stays the manager's judgment, audited
 through the ledgers.
 
+## Tier 4b - THE LESSON GUARD (lesson_guard.py, PreToolUse on Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit|Agent|Task)
+
+Tags: hooks, lessons, learning loop | The lesson at the choice: the DO INSTEAD surfaced on the tool call, not only on the prompt; the prompt-time line stays wired as the older twin
+
+THE ASK (Mazhron 2026-10-30): "Many times, you will look at a problem,
+perform a task, then look at a lesson after it fails, and say something
+like 'I tried the thing I wasn't supposed to try which is in lessons
+that says not to do it.' Why does that keep happening?" Then: "Lets try
+the fix for the hook, please keep a reference to the old hook somewhere
+so we don't lose it. There may be a way to mix them in the future."
+
+WHY THE OLD LOOP MISSED (the manager's diagnosis, LESSONS.md "The lesson
+was there and I still tried the thing it says not to"): the prompt-time
+LESSON LINE (prompt_gauge.py, kit v1.26) matches the PROMPT's words, and
+the trap lives in a sub-step the prompt never names; a hit printed a
+headline, not the DO INSTEAD; lessons describe the wrong path that looked
+right, which looks right again to every fresh session; and the Stop-side
+lesson_advisor.py fires AFTER the fail-then-pass, so the loop recorded
+mistakes well and prevented none.
+
+WHAT IT DOES: on each shell, write, edit or sub-agent call it gathers the
+call's text (the command; the file path plus the edit text; the brief),
+runs tools/lesson_log.py's own matcher (match, the same Keys lines and
+scoring the prompt-time line uses) and, for each hit not yet shown for
+that tool in this session, injects as additionalContext one line: the
+entry's line number, heading and its DO INSTEAD clauses joined (THE ONE
+RIGHT WAY when an entry has none), capped at 260 characters. Warn-only:
+it never refuses. Silent on a call that edits or runs the lesson
+machinery itself (LESSONS.md, lesson_log.py, the two lesson hooks).
+State: .claude/lesson_guard_state.json (gitignored; the session id and
+the shown set, reset when the session changes). Ledger: one `SURFACED |
+<tool> | <entries>` line per hit in docs/history/lesson_runs.txt, next
+to MATCHED (the prompt-time line) and ADVISED (the Stop end), so the
+three ends of the loop are measured in one file.
+
+THE OLD WAY, KEPT: prompt_gauge.py's LESSON LINE is untouched and still
+wired. Both run. THE MIX, when wanted: the prompt-time line writes its
+hits for the turn (a state file keyed by session) and the guard skips an
+entry the prompt already named; or the guard falls silent on tools the
+prompt-time line covered that turn. Neither is built; the SURFACED lines
+are the data to decide with (a lesson surfaced and violated anyway is the
+next refusing hook).
+
+THE TRIAL (Mazhron 2026-10-30, "Keep our current work flow on record,
+lets try the new work flow... keep track of the hits and misses (ledger
+them)"): three builds over the one ledger, WORKFLOWS.md "Act on a
+prompt: the trial workflow and the old way kept". (1) The plan step,
+tools/plan_check.py: the arc's steps through the same matchers before
+the first write, a PLAN line per run; this guard notes once per session
+when three writes pass with no plan_check run. (2) The session read set
+widened to small files in diet_guard.py: a repeat whole read of an
+unchanged small file gets one RE-READ (small) note, warn-only, cleared
+by compaction like the big-file marks. (3) The ladder,
+tools/lesson_ladder.py in the check group: SURFACED (new face) and
+MATCHED (old face) each carry a session id now (lesson_advisor.py's
+ADVISED too) and are paired with a following ADVISED of the same
+session within 20 minutes as a MISS, else a HIT; UNCOVERED counts the
+ADVISED neither face preceded; one line per run in
+docs/history/workflow_trial_runs.txt; a lesson missed twice is a
+PROPOSE [DO] to move its DO INSTEAD one rung down (lesson -> WORKFLOWS
+step -> loop script -> refusing hook). The old way is the same ledger
+read on its MATCHED lines; the switch back is one settings.json edit.
+
+Test: `python tools/hooks/lesson_guard.py --selftest` (17 checks, pure);
+pipe one call whose command carries an entry's Keys words twice, the
+first injects, the second is silent. `python tools/plan_check.py
+--selftest`, `python tools/lesson_ladder.py --selftest`.
+
 ## Tier 4 (still pinned - the origin project's FUTURE_FEATURES.md)
 
 SubagentStop refusing an employee's stop when its report lacks the stamp /
@@ -743,3 +811,26 @@ idles after a long employee run.
   preamble says the DO lines are the first reply's work; stop_tick.py
   refuses once per prompt when the reply names a [DO] proposal its
   ledger still raises; six selftest cases carry the incident reply.
+- 2026-10-30 WS2 (Acme Co Program): THE LESSON GUARD (Tier 4b,
+  lesson_guard.py). Mazhron asked why the manager keeps trying the thing
+  a lesson says not to and then finding the lesson after the failure;
+  the diagnosis (prompt-time match, headline not DO INSTEAD, fresh
+  sessions, Stop-side loop) and the fix (the same matcher run on the
+  tool call, the DO INSTEAD injected once per entry per tool per
+  session, SURFACED ledgered) are above. The prompt-time LESSON LINE
+  stays wired by Mazhron's ruling ("keep a reference to the old hook
+  somewhere so we don't lose it. There may be a way to mix them in the
+  future").
+- 2026-10-30 WS2 (Acme Co Program): THE TRIAL WORKFLOW. Mazhron: "Keep
+  our current work flow on record, lets try the new work flow you just
+  suggested. We should keep track of the hits and misses (ledger them)
+  so we can keep track of success or failure of the new workflow
+  concept." The plan step (plan_check.py), the small-file read set
+  (diet_guard.py), the ladder (lesson_ladder.py, the check group,
+  workflow_trial_runs.txt), session ids on SURFACED and ADVISED, the
+  PLAN STEP note in lesson_guard.py. The old way stays on record in
+  WORKFLOWS.md "Act on a prompt" with its one-edit switch back.
+- 2026-10-31 kit v1.56: the trial workflow and the lesson guard join the
+  kit from the Acme install (Mazhron: "Please add this workflow to
+  Rootstock and push to Git. We want Rootstock to keep the old workflow as
+  a backup and as a benchmark."); UPGRADES.md v1.56.

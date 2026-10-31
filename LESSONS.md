@@ -101,6 +101,7 @@ knowledge/lessons/harness.md (45):
 - A read-only search dispatched without a model runs on the manager's tier (pin the model in an agent file, 2026-10-22)
 - Install Rootstock into a new project from a sibling install's patch map (the Acme install, 2026-10-26)
 - A checkpoint reply is one final message carrying the summary, and every reply states the context percent (2026-10-30)
+- The lesson was there and I still tried the thing it says not to (why the prompt-time match misses, 2026-10-30)
 
 knowledge/lessons/godot.md (5):
 - Write an engine resource file (.tres, .tscn) from a script or shell

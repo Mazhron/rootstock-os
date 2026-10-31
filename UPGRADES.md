@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.55** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.56** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2145,3 +2145,66 @@ tools/standup.py --selftest` and `python tools/hooks/prompt_gauge.py
 --selftest` print 0 failed; the next prompt shows the percent line.
 README: "The hooks" (the context line on every prompt, now the percent
 above 80% too) and the standup line about the last exchange.
+
+### v1.56 - 2026-10-31 - The trial workflow: the lesson at the choice, the plan step, the small-file read set and the ladder, with the old way kept as the benchmark
+WHAT: the lesson loop had three ends and prevented nothing. Mazhron
+(2026-10-30, the Acme install): "Many times, you will look at a problem,
+perform a task, then look at a lesson after it fails, and say something
+like 'I tried the thing I wasn't supposed to try which is in lessons that
+says not to do it.' Why does that keep happening?" The diagnosis: the
+prompt-time LESSON LINE matches the prompt's words and the trap lives in
+a sub-step the prompt never names; a hit prints a headline, not the DO
+INSTEAD; every fresh session finds the wrong path as right as the last
+one did; the Stop-side advisor fires after the failure. Then: "Lets think
+about pre selection, selection and post selection of tools, context,
+lessons, workflows. How can we streamline this..." and "Keep our current
+work flow on record, lets try the new work flow you just suggested. We
+should keep track of the hits and misses (ledger them)... keep a record
+of the old way." And on 2026-10-31: "Please add this workflow to
+Rootstock and push to Git. We want Rootstock to keep the old workflow as
+a backup and as a benchmark." The principle: knowledge moves down a
+ladder as it proves itself (lesson -> WORKFLOWS step -> loop script ->
+refusing hook), each rung cheaper at the moment of use and harder to
+violate; the ladder script is the rule for when a thing moves.
+CARRIES: hooks/lesson_guard.py (NEW, Tier 4b: PreToolUse on shell,
+writes, edits and briefs; the call's text through lesson_log.py's
+matcher; each hit's DO INSTEAD injected once per entry per tool per
+session; SURFACED ledgered with the session id; the PLAN STEP note once
+per session after three unplanned writes; 17 selftest checks);
+hooks/settings.json (its PreToolUse entry); reference
+tools/plan_check.py (NEW: the arc's steps scored against LESSONS and the
+route index before the first write, a PLAN line per run); reference
+tools/lesson_ladder.py (NEW, the check group: MATCHED = the old face,
+SURFACED = the new face, each paired with an ADVISED of the same session
+within 20 minutes as a MISS, else a HIT; UNCOVERED and PLAN counted; one
+line per run in docs/history/workflow_trial_runs.txt; a lesson missed
+twice is a PROPOSE [DO] down a rung); hooks/diet_guard.py (the session
+read set widened to small files: one RE-READ (small) note per file per
+session, warn-only, cleared by compaction; five selftest checks);
+hooks/lesson_advisor.py (the ADVISED line carries session=<id>);
+reference tools/run_all.py (the ladder in the check group);
+hooks/README.txt (the guard's paragraph); HOOKS_METHOD.md ("Tier 4b -
+THE LESSON GUARD", the kit list heading, the changelog);
+WORKFLOW_METHOD.md ("The seed entry: Act on a prompt", the old way on
+record with its one-edit switch back, bootstrap step 6);
+knowledge/lessons/harness.md and LESSONS.md ("The lesson was there and I
+still tried the thing it says not to"); knowledge/MANIFEST.md (the
+harness row's size and count).
+GRAFT: copy hooks/lesson_guard.py, reference tools/plan_check.py and
+reference tools/lesson_ladder.py fresh into the project's tools/hooks/
+and tools/; an Edit of .claude/settings.json adds the lesson_guard
+PreToolUse entry (matcher Bash|PowerShell|Write|Edit|MultiEdit|
+NotebookEdit|Agent|Task, timeout 15); gitignore
+.claude/lesson_guard_state.json; replace hooks/diet_guard.py and
+hooks/lesson_advisor.py whole if the project took them unadapted, else
+graft the small_repeat branch and the session= prefix by hand; add
+["tools/lesson_ladder.py"] to run_all.py's check group after the lesson
+lint; copy the WORKFLOW_METHOD.md seed entry into the project's
+WORKFLOWS.md; the tooling table gains the guard's row and the diet
+guard's note. Verify: the three selftests print 0 failed; one piped call
+whose command carries an entry's Keys words injects the DO INSTEAD and
+the same call again is silent; `python tools/lesson_ladder.py` writes
+the first trial line. The old way needs nothing: it is the same ledger's
+MATCHED lines, and prompt_gauge.py's LESSON LINE stays wired.
+README: "The hooks" (the lesson guard bullet, sixteen hooks) and "What
+is in the box" (the hook counts, 40 working scripts).

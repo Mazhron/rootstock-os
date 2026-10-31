@@ -1652,3 +1652,46 @@ See also: the checkpoint skill (.claude/skills/checkpoint/SKILL.md,
 "THE WHOLE TURN", "THE PERCENT LINE"); "If the hook says checkpoint
 advised, I shouldn't have to type /checkpoint"; "A pasted prompt starts
 with "<" like a harness wrapper".
+
+## The lesson was there and I still tried the thing it says not to (why the prompt-time match misses, 2026-10-30)
+Tags: lessons, process, learning loop, hooks | A lesson matched on the prompt's words rarely reaches the choice it guards; the match must run on the action, phrased as the action, and the Stop-side advisor only records
+Keys: lesson missed, tried anyway, lesson after it fails, prompt-time match, lesson at the choice, lesson guard, DO INSTEAD surfaced, why does that keep happening, sub-step trap
+
+THE ONE RIGHT WAY: a lesson protects a choice only if it is in front of
+the chooser at the moment of the choice, in the words of the choice. The
+prompt names an outcome; the trap lives in a sub-step the prompt never
+mentions; so match the lessons against the TOOL CALL (the command, the
+file path and edit text, the brief), not only the prompt, and print the DO
+INSTEAD, not the headline. tools/hooks/lesson_guard.py does this; the
+prompt-time LESSON LINE in prompt_gauge.py stays as the older twin.
+
+- TRIED (2026-09-20 to 2026-10-30, the loop as built): the prompt hook
+  matched the prompt's words against the Keys lines and printed up to
+  three headlines; the Stop hook asked for a lesson after a FAIL then
+  PASS. FAILED BECAUSE: four causes stacked. (1) The match saw the
+  prompt, never the plan: "fix the gap" matched, but the lesson about step
+  four of a six-step plan never did. (2) A hit printed a headline and a
+  one-line brief; the TRIED / FAILED BECAUSE / DO INSTEAD sat in a
+  1000-line body the read-cheap rule steers away from, so the topic was
+  recognized and the plan proceeded unchanged. (3) Lessons describe the
+  wrong path that looked right, and every session starts fresh, so it
+  looks exactly as right again; judgment-shaped entries are recognized in
+  hindsight, not while choosing. (4) The loop closed at Stop, after the
+  failure: 69 TRIED blocks across 44 entries say the recording end works
+  and the preventing end did not exist. Mazhron 2026-10-30: "you will look
+  at a problem, perform a task, then look at a lesson after it fails...
+  Why does that keep happening?" DO INSTEAD: the action-time match
+  (lesson_guard.py, PreToolUse on shell, writes and briefs; once per entry
+  per tool per session; the DO INSTEAD clauses joined and capped); and a
+  lesson violated twice becomes a refusing hook, the way the bash guard
+  and the preserve guard already are.
+- NUANCE: both hooks run on purpose (Mazhron: "keep a reference to the old
+  hook somewhere so we don't lose it. There may be a way to mix them in
+  the future"); the mix, when wanted, is the prompt-time line handing its
+  hits to the guard so a lesson the prompt already named is not repeated
+  at the action. The SURFACED ledger lines in lesson_runs.txt are the
+  measure: a lesson surfaced and then violated anyway is the next hook.
+
+See also: tools/hooks/lesson_guard.py; tools/hooks/prompt_gauge.py (THE
+LESSON LINE); tools/hooks/lesson_advisor.py; HOOKS_METHOD.md "Tier 4b -
+THE LESSON GUARD"; docs/systems/tooling.md "The hooks".

@@ -147,3 +147,19 @@ missing remote is a skip). Test: `python tools/hooks/session_end.py
 then `echo {"reason":"clear"} | python tools/hooks/session_end.py` on
 a clean pushed tree and read docs/history/session_end_runs.txt's tail:
 "already checkpointed".
+
+lesson_guard.py (Tier 4b, 2026-10-30, THE LESSON AT THE CHOICE): nothing
+to fill in. Wire its Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit|
+Agent|Task PreToolUse entry (settings.json has it), gitignore
+.claude/lesson_guard_state.json, run `python tools/hooks/lesson_guard.py
+--selftest`. It needs tools/lesson_log.py (the matcher it shares with
+prompt_gauge.py's prompt-time LESSON LINE, which stays wired as the older
+twin). Warn-only: it injects the DO INSTEAD of each LESSONS.md entry whose
+Keys hit the call's text, once per entry per tool per session, and
+ledgers one SURFACED line per hit in docs/history/lesson_runs.txt. Test:
+pipe a call whose command carries an entry's Keys words twice; the first
+prints, the second is silent. The trial (2026-10-30): SURFACED lines
+carry session=<id>, a PLAN STEP note fires once per session after three
+writes with no tools/plan_check.py run, and tools/lesson_ladder.py (the
+check group) scores the hits and misses of both lesson faces into
+docs/history/workflow_trial_runs.txt.

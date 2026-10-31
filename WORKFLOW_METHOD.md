@@ -127,3 +127,64 @@ If no, it earns an entry.
 5. Registry entries follow the wiki conventions (searchable headings,
    See-also links, Tags on hard-won ones) so the wiki view and tag index
    pick them up for free.
+6. Seed one entry the kit ships (kit v1.56): "Act on a prompt", below -
+   the trial workflow beside the old way, both scored by
+   tools/lesson_ladder.py so the install can switch back on evidence.
+
+## The seed entry: Act on a prompt (the trial workflow and the old way kept, kit v1.56)
+
+Tags: workflows, lessons, learning loop | The kit's one shipped WORKFLOWS.md entry: the old prompt-time lesson loop on record as the benchmark, the trial (plan step, lesson at the choice, the ladder) beside it, both faces over one ledger
+
+Copy the entry below into the project's WORKFLOWS.md at install (or at
+the v1.56 graft). The old way is kept on purpose (Mazhron 2026-10-31:
+"We want Rootstock to keep the old workflow as a backup and as a
+benchmark"): the ladder scores both faces from the same ledger, and the
+switch back is one settings.json edit.
+
+## Act on a prompt: the trial workflow and the old way kept (2026-10-30)
+
+WHEN: every arc, from 2026-10-30, until the trial ledger
+(docs/history/workflow_trial_runs.txt) says which way wins. Mazhron:
+"Keep our current work flow on record, lets try the new work flow you
+just suggested. We should keep track of the hits and misses (ledger
+them) so we can keep track of success or failure of the new workflow
+concept." Both ways are faces over ONE data set, docs/history/
+lesson_runs.txt (LESSONS.md "Give a system a second face"): switching
+back changes no ledger and loses no history.
+THE OLD WAY (on record; the switch back): the prompt arrives; the prompt
+hook matches its words against the LESSONS.md Keys lines and prints up to
+three headlines (MATCHED) and the ROUTE line; the manager reads the named
+sections and acts; at Stop, lesson_advisor.py asks for a lesson after a
+fail-then-pass or an error (ADVISED); the lesson is written. To switch
+back: an Edit of .claude/settings.json removes the lesson_guard.py
+PreToolUse entry, step 1 below is skipped, and the ladder keeps scoring
+the old face alone.
+THE TRIAL (the three builds, in the order they were ruled):
+1. PRE-SELECTION, the plan step: before the first write of an arc,
+   `python tools/plan_check.py "step" "step" ...` with one line per
+   step naming its tool, file or script; read each step's LESSON (with
+   its DO INSTEAD), WORKFLOW and TOOL hits and adjust the plan. The guard
+   notes once per session when three writes pass with no plan checked.
+   The run is a PLAN line in lesson_runs.txt.
+2. SELECTION, the lesson at the choice: act; lesson_guard.py injects the
+   DO INSTEAD of every lesson the call's own text hits (SURFACED, once
+   per entry per tool per session); diet_guard.py notes a repeat whole
+   read of an unchanged small file once (RE-READ (small)) and still
+   refuses the big ones once (INDEX FIRST, RE-READ). Files are written
+   with Write and edited with Edit; the shell runs things (LESSONS.md
+   "Apply a long batch of file edits from the shell").
+3. POST-SELECTION, the ladder: Stop works as before; the check loop runs
+   `python tools/lesson_ladder.py`, which pairs each MATCHED (old face)
+   and SURFACED (new face) with an ADVISED within 20 minutes of the same
+   session as a MISS, else a HIT, counts the ADVISED neither face saw
+   coming (UNCOVERED) and the PLAN lines, and appends one line to
+   workflow_trial_runs.txt. A lesson missed twice is a PROPOSE [DO]: its
+   DO INSTEAD moves one rung down the ladder (lesson -> WORKFLOWS step ->
+   loop script -> refusing hook), done in the reply that reads it.
+VERIFY: `tail -3 docs/history/workflow_trial_runs.txt`; the new face's
+miss share falling against the old face's is the trial succeeding; a
+rising UNCOVERED count is a Keys-line gap (widen the entry's Keys).
+See also: tools/plan_check.py; tools/hooks/lesson_guard.py;
+tools/hooks/diet_guard.py; tools/lesson_ladder.py; HOOKS_METHOD.md "Tier
+4b - THE LESSON GUARD"; LESSONS.md "The lesson was there and I still
+tried the thing it says not to".

@@ -263,6 +263,33 @@ def evaluate(data, state, now=None):
     msgs = []
     action = ""
 
+    def small_repeat(raw_path, info):
+        """THE SESSION READ SET (the trial workflow, Mazhron 2026-10-30): a
+        whole read of a small file is remembered by fingerprint; a later whole
+        read of the same file, unchanged since, gets ONE note (never a
+        refusal) - it is already in context. Compaction clears the set
+        (pre_compact.py forget_session_reads), so a post-compaction read is
+        silent. Yesterday's budget line counted 105 small whole reads against
+        26 section reads; this is the measure's hook end."""
+        resolved = _resolve(raw_path, cwd)
+        key = resolved.replace("\\", "/").lower()
+        fp = _fingerprint(resolved)
+        if fp is None:
+            return None
+        prev = admitted.get(key)
+        if prev is None or prev != fp:
+            admitted[key] = fp
+            reread_offered.pop(key, None)
+            return None
+        if key in reread_offered:
+            return None
+        reread_offered[key] = now
+        name = os.path.basename(raw_path.strip("\"'"))
+        return ("", "RE-READ (small): %s is unchanged since its whole read this session (~%s "
+                    "tokens) and is already in context; Grep the section or Read with "
+                    "offset/limit (if the context was compacted since, read on - this note "
+                    "is once per file per session)" % (name, _ktok(info[0])))
+
     def whole_read(raw_path):
         """One big whole read: the first per file per session is denied with
         the index (INDEX FIRST); the next admitted read of the same file
@@ -270,8 +297,10 @@ def evaluate(data, state, now=None):
         is denied once more (RE-READ) and passes on repeat; a changed file
         (different fingerprint) always passes and resets the mark."""
         info = file_size_info(raw_path, cwd)
-        if not (info and info[0] >= BIG_READ_TOK):
+        if not info:
             return None
+        if info[0] < BIG_READ_TOK:
+            return small_repeat(raw_path, info)
         name = os.path.basename(raw_path.strip("\"'"))
         resolved = _resolve(raw_path, cwd)
         key = resolved.replace("\\", "/").lower()
@@ -359,6 +388,27 @@ def _selftest():
     def act(tool, sess="s1", state=None, **tin):
         return evaluate({"tool_name": tool, "tool_input": tin, "cwd": tmp,
                          "session_id": sess}, state if state is not None else {})[2]
+
+    rs = {}
+    s1 = evaluate({"tool_name": "Read", "tool_input": {"file_path": small}, "cwd": tmp,
+                   "session_id": "rs"}, rs)
+    s2 = evaluate({"tool_name": "Read", "tool_input": {"file_path": small}, "cwd": tmp,
+                   "session_id": "rs"}, rs)
+    s3 = evaluate({"tool_name": "Read", "tool_input": {"file_path": small}, "cwd": tmp,
+                   "session_id": "rs"}, rs)
+    check("first small whole Read is silent", s1[0] == "" and s1[2] == "")
+    check("second identical small Read gets the RE-READ note, no deny",
+          "RE-READ (small)" in s2[0] and s2[2] == "")
+    check("the small RE-READ note is once per file per session", s3[0] == "")
+    with open(small, "a", encoding="utf-8") as fh:
+        fh.write("changed\n")
+    s4 = evaluate({"tool_name": "Read", "tool_input": {"file_path": small}, "cwd": tmp,
+                   "session_id": "rs"}, rs)
+    check("a changed small file reads silently and re-baselines", s4[0] == "")
+    forget_session_reads("rs", rs)
+    s5 = evaluate({"tool_name": "Read", "tool_input": {"file_path": small}, "cwd": tmp,
+                   "session_id": "rs"}, rs)
+    check("compaction clears the small read set too", s5[0] == "")
 
     st = {}
     first = evaluate({"tool_name": "Read", "tool_input": {"file_path": big}, "cwd": tmp,
