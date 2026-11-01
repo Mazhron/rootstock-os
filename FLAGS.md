@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-30 13:18 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 | stale 3
+Updated 2026-10-31 21:12 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 | stale 23
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -41,37 +41,39 @@ Updated 2026-10-30 13:18 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | fable | 2026-10-22 09:10 |
+| HOOKS_METHOD.md | GREEN | STALE | fable | 2026-10-22 09:10 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | ok | fable | 2026-10-30 13:08 |
+| LESSONS.md | GREEN | STALE | fable | 2026-10-30 13:08 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 14:13 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
-| SKILLS.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| SUBAGENT_METHOD.md | GREEN | ok | fable | 2026-10-22 09:10 |
-| UPGRADES.md | GREEN | ok | fable | 2026-10-30 13:06 |
+| SKILLS.md | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:47 |
+| SUBAGENT_METHOD.md | GREEN | STALE | fable | 2026-10-22 09:10 |
+| UPGRADES.md | GREEN | STALE | fable | 2026-10-30 13:06 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
-| WORKFLOW_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
+| WORKFLOW_METHOD.md | GREEN | STALE | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
-| agents/explore.md | GREEN | ok | fable | 2026-10-22 09:10 |
-| agents/lookup.md | GREEN | ok | fable | 2026-10-22 09:10 |
-| hooks/README.txt | GREEN | ok | fable | 2026-10-19 10:26 |
-| hooks/_hooklib.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
+| agents/explore.md | GREEN | STALE | fable | 2026-10-22 09:10 |
+| agents/lookup.md | GREEN | STALE | fable | 2026-10-22 09:10 |
+| hooks/README.txt | GREEN | STALE | fable | 2026-10-19 10:26 |
+| hooks/_hooklib.py | GREEN | STALE | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/brief_guard.py | GREEN | ok | fable | 2026-10-22 09:10 |
 | hooks/delegation_auditor.py | GREEN | ok | fable | 2026-10-01 16:55 |
-| hooks/diet_guard.py | GREEN | ok | fable | 2026-09-30 11:57 |
+| hooks/diet_guard.py | GREEN | STALE | fable | 2026-09-30 11:57 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/hygiene_guard.py | GREEN | ok | fable | 2026-09-20 03:21 |
-| hooks/lesson_advisor.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| hooks/lesson_advisor.py | GREEN | STALE | fable | 2026-09-20 03:21 |
+| hooks/lesson_guard.py | - | UNFLAGGED | - | - |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| hooks/prompt_gauge.py | GREEN | ok | fable | 2026-10-30 13:05 |
+| hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-10-30 13:05 |
+| hooks/rootstock_modes.json | GREEN | ok | fable | 2026-10-31 19:43 |
 | hooks/session_end.py | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| hooks/session_start.py | GREEN | ok | fable | 2026-09-29 00:24 |
-| hooks/settings.json | GREEN | ok | fable | 2026-10-01 16:55 |
+| hooks/session_start.py | GREEN | STALE | fable | 2026-09-29 00:24 |
+| hooks/settings.json | GREEN | STALE | fable | 2026-10-01 16:55 |
 | hooks/stop_tick.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | knowledge/MANIFEST.md | GREEN | STALE | fable | 2026-10-30 13:08 |
@@ -94,19 +96,23 @@ Updated 2026-10-30 13:18 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | reference tools/guard_replay.py | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
+| reference tools/keepwarm.py | GREEN | STALE | fable | 2026-10-31 19:43 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
 | reference tools/ledger_trends.py | GREEN | ok | fable | 2026-10-13 12:52 |
+| reference tools/lesson_ladder.py | - | UNFLAGGED | - | - |
 | reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
+| reference tools/output_shape.py | GREEN | ok | fable | 2026-10-31 19:43 |
+| reference tools/plan_check.py | - | UNFLAGGED | - | - |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-10-13 14:14 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/readme_lint.py | GREEN | ok | fable | 2026-10-19 10:26 |
 | reference tools/refresh_kit.py | GREEN | ok | fable | 2026-10-22 09:10 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
-| reference tools/retrieval_eval.py | GREEN | ok | fable | 2026-10-13 11:45 |
+| reference tools/retrieval_eval.py | GREEN | STALE | fable | 2026-10-13 11:45 |
 | reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 14:13 |
-| reference tools/route_index.py | GREEN | ok | fable | 2026-09-28 23:37 |
-| reference tools/run_all.py | GREEN | ok | sonnet-flag-1013c | 2026-10-13 13:32 |
+| reference tools/route_index.py | GREEN | STALE | fable | 2026-09-28 23:37 |
+| reference tools/run_all.py | GREEN | STALE | sonnet-flag-1013c | 2026-10-13 13:32 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/split_knowledge.py | GREEN | ok | fable | 2026-10-13 13:33 |
 | reference tools/standup.py | GREEN | ok | fable | 2026-10-30 13:05 |
@@ -118,7 +124,7 @@ Updated 2026-10-30 13:18 | items 89 | GREEN 88 | YELLOW 1 | RED 0 | unflagged 0 
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:10 |
-| skills/checkpoint/SKILL.md | GREEN | ok | fable | 2026-10-30 13:05 |
+| skills/checkpoint/SKILL.md | GREEN | STALE | fable | 2026-10-30 13:05 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/flag/SKILL.md | GREEN | ok | fable-manager | 2026-09-29 16:38 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
