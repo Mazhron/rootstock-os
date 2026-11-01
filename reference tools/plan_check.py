@@ -1,4 +1,4 @@
-"""THE PLAN STEP (the trial workflow, Mazhron 2026-10-30): score an arc's steps
+"""THE PLAN STEP (the trial workflow, the CEO 2026-10-30): score an arc's steps
 against the lesson book and the route index BEFORE the first write.
 
 The prompt names an outcome; the trap lives in a sub-step the prompt never
@@ -15,7 +15,7 @@ PURPOSE: print, for each plan step given on the command line, a file or
   stdin, the LESSONS.md entries (with their DO INSTEAD), WORKFLOWS.md
   entries and loop scripts whose Keys hit the step's words, and ledger one
   PLAN line per run.
-INTENT: Mazhron 2026-10-30: "Lets think about pre selection, selection and
+INTENT: the CEO 2026-10-30: "Lets think about pre selection, selection and
   post selection of tools, context, lessons, workflows. How can we
   streamline this so we get the best and most efficient results without
   errors." - the manager's own diagnosis: nothing matched the plan, only

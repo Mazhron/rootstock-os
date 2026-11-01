@@ -273,7 +273,7 @@ def evaluate(data, state, now=None):
     action = ""
 
     def small_repeat(raw_path, info):
-        """THE SESSION READ SET (the trial workflow, Mazhron 2026-10-30): a
+        """THE SESSION READ SET (the trial workflow, the CEO 2026-10-30): a
         whole read of a small file is remembered by fingerprint; a later whole
         read of the same file, unchanged since, gets ONE note (never a
         refusal) - it is already in context. Compaction clears the set

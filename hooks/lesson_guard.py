@@ -1,8 +1,8 @@
 """PreToolUse hook: THE LESSON AT THE CHOICE - the lesson is surfaced when the
-action is about to happen, not only when the prompt is typed (Mazhron
+action is about to happen, not only when the prompt is typed (the CEO
 2026-10-30).
 
-THE OLD WAY STAYS WIRED (kept on purpose, Mazhron: "keep a reference to the
+THE OLD WAY STAYS WIRED (kept on purpose, the CEO: "keep a reference to the
 old hook somewhere so we don't lose it. There may be a way to mix them in
 the future"): tools/hooks/prompt_gauge.py THE LESSON LINE (the CEO
 2026-09-20) matches the PROMPT's words against every LESSONS.md Keys line
@@ -16,7 +16,7 @@ prompt-time line hand its hits to this one so a lesson the prompt already
 named is not repeated at the action, or let this one fall silent on the
 tools the prompt-time line covered.
 
-WHY IT EXISTS (Mazhron's question 2026-10-30: "you will look at a problem,
+WHY IT EXISTS (the CEO's question 2026-10-30: "you will look at a problem,
 perform a task, then look at a lesson after it fails... Why does that keep
 happening?"): the prompt names an outcome and the trap lives in a sub-step
 the prompt never mentions, so the prompt-time match misses it; when it hits,
@@ -24,7 +24,7 @@ it prints a headline and the DO INSTEAD is in a 1000-line body; and the
 Stop-side advisor (lesson_advisor.py) closes the loop AFTER the failure.
 Nothing fired at the moment of the choice, phrased as the choice. This does.
 
-THE TRIAL (Mazhron 2026-10-30, "lets try the new work flow... keep track of
+THE TRIAL (the CEO 2026-10-30, "lets try the new work flow... keep track of
 the hits and misses"): every SURFACED ledger line carries session=<id> so
 tools/lesson_ladder.py can pair it with the Stop hook's ADVISED line of the
 same session (a MISS) or not (a HIT). THE PLAN STEP NOTE: when a session
@@ -38,7 +38,7 @@ PURPOSE: PreToolUse hook on shell, write, edit and sub-agent calls that
   entry per tool per session, ledgering one SURFACED line per hit with the
   session id; and notes once per session when writes begin with no plan
   step run.
-INTENT: Mazhron 2026-10-30: "Lets try the fix for the hook, please keep a
+INTENT: the CEO 2026-10-30: "Lets try the fix for the hook, please keep a
   reference to the old hook somewhere so we don't lose it. There may be a
   way to mix them in the future." - the lesson in front of the manager at
   the moment of the choice, in the words of the choice.

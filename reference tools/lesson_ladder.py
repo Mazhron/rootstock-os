@@ -1,4 +1,4 @@
-"""THE LADDER (the trial workflow's scorer, Mazhron 2026-10-30): the lesson
+"""THE LADDER (the trial workflow's scorer, the CEO 2026-10-30): the lesson
 loop's two faces scored over the one ledger, and the lesson that keeps
 failing as a lesson proposed one rung down.
 
@@ -22,7 +22,7 @@ PURPOSE: read docs/history/lesson_runs.txt, pair MATCHED (old face) and
   misses per face, count UNCOVERED advisories and PLAN lines, print a
   PROPOSE [DO] for any lesson missed twice, and append one line to
   docs/history/workflow_trial_runs.txt (run_all check group).
-INTENT: Mazhron 2026-10-30: "We should keep track of the hits and misses
+INTENT: the CEO 2026-10-30: "We should keep track of the hits and misses
   (ledger them) so we can keep track of success or failure of the new
   workflow concept." and "keep a record of the old way."
 

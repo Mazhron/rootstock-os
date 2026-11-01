@@ -1,4 +1,4 @@
-"""THE KEEP-WARM TRIAL (Mazhron 2026-09-29, going to bed: "Please make sure we
+"""THE KEEP-WARM TRIAL (the CEO 2026-09-29, going to bed: "Please make sure we
 are keeping real data to find whats best for short vs long term options.
 Stick to the maximum of 16 pings and then give me feedback at the end.")
 

@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.56** (2026-10-31). The graft log `UPGRADES.md` is the
+Kit version: **v1.57** (2026-10-31). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
