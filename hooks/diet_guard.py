@@ -367,7 +367,7 @@ def evaluate(data, state, now=None):
         key = "write:" + _resolve(raw_path, cwd).replace("\\", "/").lower() if raw_path else "write:?"
         if est >= BIG_WRITE_TOK and key not in offered:
             offered[key] = now
-            msgs.append("BIG WRITE: %s is ~%s tokens of manager output (written at 5x) - a "
+            msgs.append("BIG WRITE: %s is %s tokens of manager output (written at 5x) - a "
                         "generated or mechanical file is employee or script work (SUBAGENT_METHOD: "
                         "the cheapest tier regenerates artifacts; a script writes a document; "
                         "a patch goes as an Edit); proceed only if it needs the manager's exact "
