@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-10-31 21:12 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 | stale 23
+Updated 2026-11-02 00:07 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 | stale 25
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -74,7 +74,7 @@ Updated 2026-10-31 21:12 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 
 | hooks/session_end.py | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/session_start.py | GREEN | STALE | fable | 2026-09-29 00:24 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-10-01 16:55 |
-| hooks/stop_tick.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
+| hooks/stop_tick.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | knowledge/MANIFEST.md | GREEN | STALE | fable | 2026-10-30 13:08 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
@@ -85,7 +85,7 @@ Updated 2026-10-31 21:12 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/check_claude_md.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/check_wiki_links.py | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:37 |
-| reference tools/checkpoint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
+| reference tools/checkpoint.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | reference tools/contribution_lint.py | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |

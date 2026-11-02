@@ -232,14 +232,13 @@ def main():
     ctx_dire = False
     load_ = cp.context_load()
     if load_ is not None:
-        remaining = max(0.0, 1.0 - load_ / float(cp.COMPACT_BUDGET))
-        pct = round(remaining * 100)
+        remaining = cp.context_remaining(load_)
         if remaining < 0.30:
             level, ctx_dire = "dire", True
-            parts.append("CONTEXT %d%% remaining, ~%dk used" % (pct, load_ // 1000))
+            parts.append(cp.context_phrase(load_))
         elif remaining < 0.80:
             level = level or "advised"
-            parts.append("CONTEXT %d%% remaining (80%% rule)" % pct)
+            parts.append(cp.context_phrase(load_) + "; 80% rule")
 
     # THE FORMAT LAW's Stop twin (the CEO 2026-09-13): while the live settings
     # file has a safety hook unwired, narrowed or pointed at a missing script,

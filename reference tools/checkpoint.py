@@ -168,28 +168,38 @@ def context_load():
     return None
 
 
+def context_remaining(load_):
+    """Fraction of the auto-compact budget still free, clamped to [0, 1]."""
+    return max(0.0, 1.0 - load_ / float(COMPACT_BUDGET))
+
+
+def context_phrase(load_):
+    """THE ONE GAUGE SHAPE (the CEO 2026-11-02: "when a checkpoint isn't due,
+    I still like the format of the context remaining and used"): every hook
+    and tool that reports context prints this same phrase, due or not -
+    "CONTEXT: 75% remaining, ~228k used of ~925k (25% used)"."""
+    remaining = context_remaining(load_)
+    return ("CONTEXT: %d%% remaining, ~%dk used of ~%dk (%d%% used)"
+            % (round(remaining * 100), load_ // 1000, COMPACT_BUDGET // 1000,
+               round((1.0 - remaining) * 100)))
+
+
 def report_context():
     load_ = context_load()
     if load_ is None:
         return
-    remaining = max(0.0, 1.0 - load_ / float(COMPACT_BUDGET))
-    line = ("context gauge: ~%dk of ~%dk auto-compact budget used "
-            "(%d%% remaining)" % (load_ // 1000, COMPACT_BUDGET // 1000,
-                                  round(remaining * 100)))
+    remaining = context_remaining(load_)
+    phrase = context_phrase(load_)
     if remaining < 0.30:
-        print("!!!!! CHECKPOINT URGENT (CONTEXT: %d%% remaining) !!!!!"
-              % round(remaining * 100))
-        print(line)
+        print("!!!!! CHECKPOINT URGENT (%s) !!!!!" % phrase)
         print("Auto-compact is close. Checkpoint + /clear NOW - a compact is")
         print("a lossy summary; the day file + standup are lossless.")
     elif remaining < 0.80:
-        print("~~ CHECKPOINT DUE - DO IT (CONTEXT: %d%% remaining; the CEO's "
-              "80%% rule) ~~" % round(remaining * 100))
-        print(line)
+        print("~~ CHECKPOINT DUE - DO IT (%s; the CEO's 80%% rule) ~~" % phrase)
         print("Suggest checkpoint + /clear at the next arc boundary - every")
         print("turn re-reads this whole session.")
     else:
-        print(line)
+        print("context gauge (%s)" % phrase)
 
 
 def report(n):
@@ -232,6 +242,11 @@ def main():
         state[ws] = {"fp": work_fingerprint(), "at": now + " (checkpoint)"}
         save_hook_state(state)
         print("checkpoint counter reset - marker may be emitted.")
+        load_ = context_load()
+        if load_ is not None:
+            # the marker carries the gauge (the CEO 2026-11-02), so the
+            # manager has the exact phrase to paste into it
+            print("marker tail: (%s; 0 task(s))" % context_phrase(load_))
         return
     report(n)
     report_context()

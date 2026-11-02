@@ -111,30 +111,27 @@ def gauge_lines(n, load_):
                      "ship if mid-batch, then end this reply with the checkpoint; "
                      "an open arc is checkpointed as open ~~" % n)
     if load_ is not None:
-        remaining = max(0.0, 1.0 - load_ / float(cp.COMPACT_BUDGET))
-        pct = round(remaining * 100)
+        remaining = cp.context_remaining(load_)
+        phrase = cp.context_phrase(load_)   # the one gauge shape (2026-11-02)
         if remaining < 0.30:
-            lines.append("!!!!! CHECKPOINT URGENT (CONTEXT: %d%% remaining, ~%dk "
-                         "used) - checkpoint + /clear NOW; auto-compact is lossy "
-                         "!!!!!" % (pct, load_ // 1000))
+            lines.append("!!!!! CHECKPOINT URGENT (%s) - checkpoint + /clear NOW; "
+                         "auto-compact is lossy !!!!!" % phrase)
         elif remaining < 0.80:
             # THE DUE LINE (the CEO 2026-10-12: "change this hook from
             # advising a checkpoint to DO the checkpoint ... Any conversation
             # after should have a checkpoint happen until the clear/standup
             # ritual is complete"): this fires on EVERY prompt past the 80%
             # line, and every one of those replies ends with a checkpoint.
-            lines.append("~~ CHECKPOINT DUE (CONTEXT: %d%% remaining, ~%dk used; "
-                         "the CEO's 80%% rule) - DO IT: ship if mid-batch, then end "
-                         "this reply with the checkpoint, and every reply after it "
-                         "until the /clear + standup; an open arc is checkpointed "
-                         "as open ~~" % (pct, load_ // 1000))
+            lines.append("~~ CHECKPOINT DUE (%s; the CEO's 80%% rule) - DO IT: ship "
+                         "if mid-batch, then end this reply with the checkpoint, and "
+                         "every reply after it until the /clear + standup; an open "
+                         "arc is checkpointed as open ~~" % phrase)
         else:
             # THE PERCENT LINE (the CEO 2026-10-30: "be sure in the future to
-            # give me % used or left"): above the 80% line the hook still
-            # prints the gauge, and the reply relays the percent.
-            lines.append("context gauge: %d%% remaining (~%dk of ~%dk used) - "
-                         "relay the percent in the reply"
-                         % (pct, load_ // 1000, cp.COMPACT_BUDGET // 1000))
+            # give me % used or left"; 2026-11-02: same shape as the DUE line):
+            # above the 80% line the hook still prints the gauge, and the
+            # reply relays it.
+            lines.append("context gauge (%s) - relay the gauge in the reply" % phrase)
     return lines
 
 
@@ -240,8 +237,9 @@ def _selftest():
     fails += not ok
     quiet_load = int(cp.COMPACT_BUDGET * 0.10)  # 90% remaining
     got = gauge_lines(0, quiet_load)
-    ok = len(got) == 1 and got[0].startswith("context gauge: 90% remaining") and "DUE" not in got[0]
-    print(("PASS  " if ok else "FAIL  ") + "above 80% remaining gives the plain percent line (2026-10-30)")
+    ok = (len(got) == 1 and got[0].startswith("context gauge (CONTEXT: 90% remaining, ")
+          and "of ~" in got[0] and "(10% used)" in got[0] and "DUE" not in got[0])
+    print(("PASS  " if ok else "FAIL  ") + "above 80% remaining gives the plain gauge line, same shape (2026-11-02)")
     fails += not ok
     try:
         import lesson_log as _ll

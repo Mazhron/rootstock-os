@@ -69,8 +69,11 @@ SEQUENCE
 4. Run `python tools/checkpoint.py --reset` LAST - it also stores the
    Stop hook's work fingerprint, so the checkpoint commit itself is not
    counted as a task.
-5. End the reply with the marker, verbatim:
-   "CHECKPOINT - safe to /clear. Nothing in this chat exists only in this chat."
+5. End the reply with the marker, the gauge tail pasted from --reset's
+   "marker tail:" line (Mazhron 2026-11-02 - the same shape every hook
+   prints, due or not):
+   "CHECKPOINT - safe to /clear (CONTEXT: 75% remaining, ~228k used of
+   ~925k (25% used); 0 task(s)). Nothing in this chat exists only in this chat."
 6. ARM THE KEEP-WARM (kit v1.57, the owner's yes 2026-10-31) when this
    reply leaves the session open (the owner has not said they are
    clearing now): one ScheduleWakeup per WORKFLOWS.md "Keep the cache
