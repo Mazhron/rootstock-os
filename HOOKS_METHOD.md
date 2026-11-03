@@ -274,6 +274,18 @@ weighted-usage insight: only the tokens that count against the plan
 matter, and under those weights the manager's context is written at
 1.25x and every tool result rides in it forever). Nothing to type; one
 refusal shape only (INDEX FIRST, kit v1.15), the rest warn-only:
+- TRIP DIET (2026-11-03, the CEO after reading Code Mode and
+  programmatic tool calling - "the AI writes the whole trip as code ...
+  runs once in a sandbox ... returns only the answer"): the third
+  same-shaped call in a row on a new target (Edit, Write, Read by file;
+  Bash, PowerShell by verb) gets one warn-only note per shape per
+  session naming the targets and the move - the rest of the trip as one
+  script run once that prints a verdict (LESSONS.md "The one-script
+  trip"). A repeat on the same target is a retry and does not count; a
+  shell call that is itself a script (a heredoc, `python -`, a .py run,
+  three or more chained steps) resets the run - it IS the move. Edit
+  joins the matcher for it. Off with trip_diet_warn = false in the modes
+  file.
 - BIG WRITE (kit v1.57, the CEO's yes 2026-10-31): a Write whose content
   is past ~4k tokens gets one warn-only note per file per session - the
   manager's output is the 5x pillar, and on the origin two single Writes

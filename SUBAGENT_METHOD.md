@@ -65,6 +65,14 @@ Tags: delegation, process, architecture | Seven cardinal laws: brief, stamp, ver
    reads, greps and checks go in one turn, never one per turn, because
    every extra turn re-reads the whole growing context; only a step that
    needs the previous result waits.
+   THE SANDBOX IS CHOSEN BY THE WORK (2026-11-03, after Code Mode and
+   programmatic tool calling): a trip of mechanical steps - the same
+   edit across files, a check per item, a loop over a CLI or an API - is
+   a SCRIPT the manager writes and runs once, printing a verdict; it is
+   cheaper than any employee and nothing intermediate enters anyone's
+   context. An employee is the sandbox when each step needs judgment (an
+   understand-this read, a review, a design call). LESSONS.md "The
+   one-script trip"; the diet guard's TRIP DIET note at the third call.
 2. EVERY EMPLOYEE STAMPS ITS WORK. Every brief ends by requiring:
    "STAMP: model=<model> effort=<low|med|high> est_tokens=<rough>
     task=<3-5 words> confidence=<high|med|low>"

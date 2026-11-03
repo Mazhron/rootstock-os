@@ -27,6 +27,9 @@ WHAT IT SAYS:
     Section-read it (Grep "^## " then offset/limit, or sed -n A,Bp) or, if
     this is an understand-this step, delegate the reading to an employee.
   OUTPUT DIET: <shape> - add a limiter (| head -n, -n N, --stat, -q ...).
+  TRIP DIET: N <shape> calls in a row (<targets>) - the rest of this trip
+    is one script run once that prints a verdict (the third same-shaped
+    call on a new target; once per shape per session; warn-only).
   RE-READ (diet guard): <file> is unchanged since its whole read this
     session and already in context - denied once per fingerprint (the file
     changing resets it); the next identical call passes with a warning,
@@ -51,14 +54,18 @@ PURPOSE: PreToolUse guard on Read, Bash and PowerShell enforcing the read
   forget_session_reads() clears a session's RE-READ marks (not its INDEX
   FIRST marks) after a compaction empties the context; on Write (v1.57) it
   warns once per file per session when the content is past about 4k tokens
-  of manager output, naming the employee or script route.
+  of manager output, naming the employee or script route; on the third
+  same-shaped call in a row on a new target (Edit, Write, Read by file;
+  Bash, PowerShell by verb) it notes TRIP DIET once per shape per session
+  (2026-11-03, code mode): the rest of the trip as one script run once.
 INTENT: section or split ... should not require my approval ... part of the
   looping scripts
 
 Search keys: diet guard, read diet, output diet, big read, whole-file read,
 chatty command, limiter, pretooluse warn, 10k rule, re-read, RE-READ,
 fingerprint, admitted read, forget_session_reads, big write, BIG WRITE,
-manager output, 5x.
+manager output, 5x, trip diet, TRIP DIET, one-script trip, code mode,
+programmatic tool calling, same-shaped calls.
 See also: tools/hooks/fanout_guard.py (the same warn shape); TOKEN_IDEAS.md
 ideas 15-18; WIKI_METHOD.md (the read diet + the output diet laws);
 tools/usage_report.py (the daily line that grades the outcome);
@@ -77,6 +84,7 @@ BIG_READ_TOK = 10_000         # the 10k rule (TOKEN_IDEAS 15)
 BIG_WRITE_TOK = 4_000         # THE BIG WRITE (v1.57): content past this is a 5x output question
 BYTES_PER_TOK = 4
 WARN_CAP = 3                  # shell-shape warnings per session per shape
+TRIP_N = 3                    # THE TRIP DIET (2026-11-03): same-shaped calls in a row before the note
 STATE = os.path.join(ROOT, ".claude", "diet_state.json")  # gitignored
 KEEP_SESSIONS = 20
 
@@ -256,6 +264,36 @@ def _index_first(name, est, lines, index):
             % (name, _ktok(est), lines if lines is not None else "?", "\n  ".join(index)))
 
 
+_SCRIPTY = re.compile(r"<<\s*['\"]?\w+|python3?\s+-c?\s|\bpython3?\s+\S+\.py\b", re.I)
+_LEAD_CD = re.compile(r"^\s*(?:cd\s+(?:\"[^\"]*\"|'[^']*'|\S+)\s*(?:&&|;)\s*)+", re.I)
+
+
+def _trip_shape(tool, tin):
+    """THE TRIP DIET's eye (2026-11-03): -> (shape, target) for a call that
+    can be one step of a trip, ("", "") for a call that is not counted, and
+    (None, "") for a shell call that is itself a script - a heredoc, a
+    `python -`, a .py run, three or more chained steps - which resets the
+    run because it IS the move the note asks for."""
+    if tool in ("Edit", "Write", "Read"):
+        p = tin.get("file_path") or ""
+        return (tool, os.path.basename(p.strip("\"'")).lower()) if p else ("", "")
+    if tool in ("Bash", "PowerShell"):
+        cmd = (tin.get("command") or "").strip()
+        if not cmd:
+            return ("", "")
+        if _SCRIPTY.search(cmd) or len(re.split(r"&&|;|\|\||\n", cmd)) >= 3:
+            return (None, "")
+        body = _LEAD_CD.sub("", cmd)
+        m = re.match(r"\S+", body)
+        if not m:
+            return ("", "")
+        verb = m.group(0).lower().rsplit("/", 1)[-1]
+        if verb in ("cd", "echo", "pwd", "ls", "dir"):
+            return ("", "")
+        return ("shell " + verb, body)
+    return ("", "")
+
+
 def evaluate(data, state, now=None):
     """-> (message or "", state, action). action is "" or "deny" (the
     index-first refusal). Pure apart from the clock and the disk."""
@@ -373,6 +411,33 @@ def evaluate(data, state, now=None):
                         "a patch goes as an Edit); proceed only if it needs the manager's exact "
                         "text (once per file per session)" % (os.path.basename(raw_path) or "?",
                                                               _ktok(est)))
+    # THE TRIP DIET (the CEO 2026-11-03, after Code Mode / programmatic tool
+    # calling: "the AI writes the whole trip as code ... runs once in a
+    # sandbox ... returns only the answer"): three same-shaped calls in a row
+    # on different targets are a trip walked one tool call at a time, every
+    # result written into the context at 1.25x. One warn-only note per shape
+    # per session; a repeat on the same target is a retry and does not
+    # count; a shell call that is itself a script resets the run.
+    if tool and mode("trip_diet_warn", True):
+        shape, target = _trip_shape(tool, tin)
+        trip = s.setdefault("trip", {"shape": "", "items": []})
+        if shape is None:
+            s["trip"] = {"shape": "", "items": []}
+        elif shape:
+            if trip["shape"] != shape:
+                trip = s["trip"] = {"shape": shape, "items": [target]}
+            elif target not in trip["items"]:
+                trip["items"].append(target)
+            key = "trip:" + shape
+            if len(trip["items"]) >= TRIP_N and key not in offered:
+                offered[key] = now
+                names = [t if len(t) <= 40 else t[:37] + "..." for t in trip["items"]]
+                msgs.append("TRIP DIET: %d %s calls in a row (%s) - the rest of this trip is "
+                            "ONE script run once that prints a verdict (counts, PASS/FAIL, the "
+                            "few lines needed); each call's result here is written into the "
+                            "context at 1.25x and re-read forever (LESSONS.md \"The one-script "
+                            "trip\"; once per shape per session)"
+                            % (len(trip["items"]), shape, ", ".join(names)))
     if not msgs:
         return ("", state, "")
     return ("[HOOK diet_guard] " + " | ".join(msgs), state, action)
@@ -532,6 +597,40 @@ def _selftest():
                           "session_id": "rr-other"}, rr)
     check("a different session is unaffected by rr's RE-READ state",
           diff_sess[2] == "deny" and "INDEX FIRST" in diff_sess[0])
+
+    # THE TRIP DIET (2026-11-03): the third same-shaped call on a new target
+    # gets one note per shape per session; a retry does not count; a script
+    # in between resets the run.
+    td = {}
+    e = [run("Edit", sess="td", state=td, file_path=n, old_string="x", new_string="y")
+         for n in ("a.py", "b.py", "c.py", "d.py")]
+    check("three Edits on different files get one TRIP DIET note, the fourth is silent",
+          e[0] == "" and e[1] == "" and "TRIP DIET" in e[2] and "a.py, b.py, c.py" in e[2]
+          and "ONE script" in e[2] and e[3] == "")
+    td2 = {}
+    for _ in range(TRIP_N + 1):
+        same = run("Edit", sess="td2", state=td2, file_path="a.py", old_string="x", new_string="y")
+    check("repeated Edits of the same file are a retry, not a trip", same == "")
+    td3 = {}
+    run("Edit", sess="td3", state=td3, file_path="a.py", old_string="x", new_string="y")
+    run("Edit", sess="td3", state=td3, file_path="b.py", old_string="x", new_string="y")
+    mid = run("Bash", sess="td3", state=td3, command="python - <<'EOF'\nprint(1)\nEOF")
+    third = run("Edit", sess="td3", state=td3, file_path="c.py", old_string="x", new_string="y")
+    check("a script in between resets the run and is never counted", mid == "" and third == "")
+    td4 = {}
+    b = [run("Bash", sess="td4", state=td4, command="sed -n %d,%dp small.md" % (i, i + 5))
+         for i in (1, 10, 20)]
+    check("three same-verb shell calls on new targets get the note",
+          b[0] == "" and b[1] == "" and "TRIP DIET" in b[2] and "shell sed" in b[2])
+    td5 = {}
+    run("Edit", sess="td5", state=td5, file_path="a.py", old_string="x", new_string="y")
+    run("Edit", sess="td5", state=td5, file_path="b.py", old_string="x", new_string="y")
+    run("Bash", sess="td5", state=td5, command="git status --short")
+    back = run("Edit", sess="td5", state=td5, file_path="c.py", old_string="x", new_string="y")
+    check("a different shape in between starts a new run", back == "")
+    td6 = {}
+    chained = run("Bash", sess="td6", state=td6, command="cd x && git add -A && git commit -q -m m && git push")
+    check("a chained three-step shell line is a script, not a trip step", chained == "")
 
     print("diet_guard selftest: %d failed" % len(fails))
     return 1 if fails else 0

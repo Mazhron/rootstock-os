@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-11-02 00:07 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 | stale 25
+Updated 2026-11-03 11:26 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 | stale 27
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -70,7 +70,7 @@ Updated 2026-11-02 00:07 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-10-30 13:05 |
-| hooks/rootstock_modes.json | GREEN | ok | fable | 2026-10-31 19:43 |
+| hooks/rootstock_modes.json | GREEN | STALE | fable | 2026-10-31 19:43 |
 | hooks/session_end.py | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/session_start.py | GREEN | STALE | fable | 2026-09-29 00:24 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-10-01 16:55 |
@@ -78,7 +78,7 @@ Updated 2026-11-02 00:07 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | knowledge/MANIFEST.md | GREEN | STALE | fable | 2026-10-30 13:08 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
-| knowledge/lessons/godot.md | GREEN | ok | fable | 2026-10-19 09:44 |
+| knowledge/lessons/godot.md | GREEN | STALE | fable | 2026-10-19 09:44 |
 | knowledge/lessons/harness.md | GREEN | STALE | fable | 2026-10-30 13:08 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |

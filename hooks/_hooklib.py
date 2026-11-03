@@ -66,6 +66,7 @@ MODES_DEFAULT = {
     "resume_digest": "pointer",  # SessionStart on resume: "pointer" (v1.57, one line) | "full" (the whole digest, the old way)
     "big_write_warn": True,      # diet guard on Write: a BIG WRITE note past ~4k tokens of content (v1.57) | False = silent
     "effort_line": True,         # prompt hook: the EFFORT line when the matched entry asks another level (v1.57) | False
+    "trip_diet_warn": True,      # diet guard: a TRIP DIET note at the third same-shaped call in a row (2026-11-03) | False = silent
 }
 
 
