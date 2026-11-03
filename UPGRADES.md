@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.57** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.58** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2314,3 +2314,82 @@ it is a ruling, not a drift.
 README: "The hooks" (the retrieval ladder and the modes file bullet)
 and "What is in the box" (the hooks/ row's modes file, 42 working
 scripts, the agents' effort pin).
+
+### v1.58 - 2026-11-03 - The verbatim opener, the safeguard fix, the brief diet, two more digest trims and the ledger merge; grown in the Acme Co install and carried back to the origin
+WHAT: five things an install (Acme Co Program, WS1 and WS2) grew in
+three days of daily use and Mazhron asked to have in the kit ("Please
+update rootstock with any of the changes we made to save token and
+start the handoff verbatim after a clear and any other changes that
+should be pushed there", 2026-11-03). THE SAFEGUARD FIX: the whole-turn
+replay (the v1.57-era rule that a reply is every text segment of its
+turn) re-emitted the manager's working narration verbatim at every
+standup, nested one level deeper each session, until the harness's
+safeguard flagged three sessions in one morning on prompts that could
+not be reworded; the miner now replays the FINAL message of the
+manager's last turn only, strips any quoted exchange nested inside it
+and caps each side at 2000 characters (was 8000; the day file's copy
+12000 to 2000). THE VERBATIM OPENER: with that guard in the miner the
+opener quotes BOTH sides word for word again (Mazhron 2026-11-03 15:35:
+"I prefer a verbatim opener. Even if it costs a little bit more."); the
+paraphrase the fix had added for a day cost him recognition of the
+reply for no safety it added. THE BRIEF DIET: wave 5's employee briefs
+were ~1,700 words each, ~450 of them the same rules block retyped; the
+fixed text (the stamp footer, the budget line, the one-turn line, the
+diff rule, the preservation law, the scope line) moves into one file
+the employee reads by path, and the brief carries a four-line RULES
+block plus the task. THE SIXTH AND SEVENTH DIGEST TRIMS: the day file's
+whole-turn exchange copy no longer prints twice under the verbatim
+block; and "WARN 0 | FAIL 0" is a count of nothing, not a verdict, so an
+all-clear audit line stops printing in full at every standup. THE
+LEDGER MERGE: when two workstations both append the hook ledgers, the
+pull conflicts on every one of them; merge_ledgers.py resolves them by
+file class (append-only ledgers union-merge, generated reports take
+ours and regenerate, the state file keeps the newest line per key) and
+deletes nothing. With them the lesson loop's two fixes: a DISMISSED
+line cancels a false ADVISED by an appended line, never an edit, and a
+lesson surfaced on both faces before one ADVISED is one miss, not two;
+and the lesson hook's advisory names the See also line the format lint
+requires, so a new entry is never written short of it.
+CARRIES: reference tools/standup.py (final_pair, strip_nested_relay,
+the 2000 cap, the sixth and seventh trims, selftest cases for each);
+hooks/session_start.py (header_for: the verbatim relay instruction
+naming the ruling and the guard); hooks/session_end.py (the day-file
+cap 2000); hooks/lesson_advisor.py (the See also line named); reference
+tools/lesson_ladder.py (ONE FAILURE, ONE MISS; the DISMISSED cancel);
+reference tools/lesson_log.py (--dismiss, the twice-recorded result
+counted once); reference tools/merge_ledgers.py (NEW); skills/standup/
+SKILL.md and skills/checkpoint/SKILL.md (THE VERBATIM OPENER, the final
+message stored, the checkpoint names THIS machine's day file);
+skills/brief/SKILL.md (the four-line RULES block) and skills/brief/
+EMPLOYEE_RULES.md (NEW, the fixed text); reference tools/refresh_kit.py
+(a skill's sibling .md files are paired beside its SKILL.md, so the
+rules file reaches the kit); knowledge/lessons/<domain>.md
+and LESSONS.md (nine entries: the push skipped for a missing remote,
+the SAME DAY line, the refused findings write, the ladder [DO] on one
+false ADVISED, the edit script's line-ending anchor, the header from
+the first Write, the whole-turn reply SUPERSEDED, the safeguard flag
+that repeats across rephrasings, the /brief diet).
+GRAFT: replace tools/standup.py, tools/hooks/session_start.py,
+tools/hooks/session_end.py, tools/hooks/lesson_advisor.py,
+tools/lesson_ladder.py and tools/lesson_log.py whole if the project took
+them unadapted (re-apply each CONFIG block, re-run each `--selftest`),
+else graft by hand: final_pair + strip_nested_relay + the 2000 caps and
+the two trims into standup.py, header_for's wording into
+session_start.py, the cap into session_end.py, the See also line into
+lesson_advisor.py, the DISMISSED cancel and the seen set into the
+ladder and the log. Copy merge_ledgers.py fresh into tools/ (only a
+project with two workstations needs it; wire it into the pull step of
+"Bring a new workstation up to par"). Copy skills/brief/EMPLOYEE_RULES.md
+beside the project's brief skill, set its root path, and graft the
+RULES block into the skill's step 3; graft THE VERBATIM OPENER wording
+into the standup and checkpoint skills' step 2 and the checkpoint's
+day-file rule. Append the nine lessons to the project's LESSONS.md
+verbatim. Verify: `python tools/standup.py --selftest` 0 failed and a
+standup after /clear prints both sides of the last exchange in quote
+blocks under 2000 characters each with no nested "USER'S LAST PROMPT"
+inside; the three hooks' selftests 0 failed; a brief passes the brief
+guard with the four-line block alone; `python tools/merge_ledgers.py`
+after a conflicted pull leaves no conflict markers and stages the files.
+README: "The standup digest" rows (seven trims, the last 2026-11-03; the
+verbatim opener) and "What is in the box" (43 working scripts, the brief
+skill's rules file).

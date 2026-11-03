@@ -72,7 +72,7 @@ LEDGER_NAME = os.path.join("docs", "history", "session_end_runs.txt")
 DAYS_REL = os.path.join("docs", "history", "days")
 BOOKKEEPING_PREFIX = "docs/history/"
 SECTION = "## WHERE WE LEFT OFF"
-_CAP = 12000  # chars per side written to the day file
+_CAP = 2000  # chars per side written to the day file (was 12000; the safeguard fix, 2026-11-03 PM)
 
 
 def git(args, cwd, timeout=30):

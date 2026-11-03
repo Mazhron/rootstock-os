@@ -24,7 +24,17 @@ a no-verdict ledger line stamped inside THE LAST EXCHANGE's window was
 written by the exchange the digest already replays verbatim, so it
 collapses to `name date ^exchange`; THE LOOP groups the run_all groups
 that share a last-run stamp on one line; the auto "changelog: export"
-commits are skipped (git log has them).
+commits are skipped (git log has them). THE SIXTH TRIM (2026-10-31): the
+day file's copy of the exchange is now written in the whole-turn shape
+(a THE LAST EXCHANGE: label, then the CEO: / The manager: paragraphs)
+and the quote-shape filter let it print under the verbatim block, a
+duplicate under the loss test; diet_exchange_copy drops either shape
+when the transcript replayed it, and the "omitted here" line prints
+only when something was dropped. THE SEVENTH TRIM (2026-11-03): a verdict
+word followed by a zero count ("WARN 0 | FAIL 0", the security audit's
+all-clear shape) is a count, not a verdict; the 11-02 audit line (450
+bytes) printed in full at every standup for two days on that match, one
+`tail -1` away. has_verdict blanks the zero counts before it looks.
 
 THE BUDGET (the CEO 2026-09-10, TOKEN_IDEAS 20): the digest refreshes the
 usage sheet silently (tools/usage_report.py --quiet, incremental, ~2 s)
@@ -106,7 +116,7 @@ def _local_stamp(ts):
         return ts or "?"
 
 
-_CAP = 8000  # chars replayed per side; the full text stays in the transcript
+_CAP = 2000  # chars replayed per side (was 8000; the safeguard fix, 2026-11-03 PM); the full text stays in the transcript
 
 # THE PASTE UNWRAP (2026-10-06): a prompt the owner pastes into the chat box
 # arrives as <pasted_content id="..."> ... </pasted_content id="..."> and so
@@ -165,6 +175,43 @@ def _mine_exchange(path):
                                 and b.get("type") == "text")
                 if txt.strip():
                     events.append((rec.get("timestamp", ""), "asst", txt, 0))
+    return final_pair(events)
+
+
+_RELAY_HEADS = ("THE LAST EXCHANGE", "LAST PROMPT", "LAST RESPONSE")
+
+
+def strip_nested_relay(text):
+    """THE RELAY NEVER NESTS (the CEO, 2026-11-03 PM): a manager reply that
+    opened a session carries its own relay of the previous exchange; mining
+    that reply and relaying it again nests the quote one level deeper each
+    session (the 11-03 day file held three levels). Those relay blocks (a
+    THE LAST EXCHANGE / LAST PROMPT / LAST RESPONSE head and the `>` lines
+    under it) are dropped from the mined response; the rest is kept."""
+    kept, dropping = [], False
+    for ln in (text or "").splitlines():
+        s = ln.strip().lstrip("> ").strip("*# ").upper()
+        if any(h in s for h in _RELAY_HEADS):
+            dropping = True
+            continue
+        if dropping and (ln.strip().startswith(">") or not ln.strip()):
+            continue
+        dropping = False
+        kept.append(ln)
+    return "\n".join(kept).strip()
+
+
+def final_pair(events):
+    """(asst_ts, user_ts, user_txt, imgs, asst_txt) for the final human
+    prompt and the FINAL TEXT SEGMENT of the turn that answered it, or None.
+
+    THE FINAL-SEGMENT RULE (the CEO, 2026-11-03 PM, reverting the morning's
+    whole-turn rule): the final message of a turn is the one written to
+    stand alone; the segments before it are working narration between tool
+    calls. Replaying that narration verbatim, nested one level deeper per
+    session, is what the safeguard reads as reasoning extraction and it
+    stopped three sessions on 11-03. The final segment is the reply; any
+    relay nested inside it is stripped (strip_nested_relay)."""
     ai = next((i for i in range(len(events) - 1, -1, -1)
                if events[i][1] == "asst"), None)
     if ai is None:
@@ -176,13 +223,7 @@ def _mine_exchange(path):
     u, a = events[ui], events[ai]
     if u[2].strip().lower().lstrip("/") == "standup":
         return None  # that's THIS session invoking standup - not an exchange
-    # THE WHOLE TURN (the CEO 2026-10-30: "you performed work after the main
-    # summary (which is what I want the checkpoint to carry), so we need to
-    # be sure that summary is what is checkpointed"): a reply is every
-    # assistant text between the prompt and the end of the turn, joined,
-    # not the last short note after the tool calls.
-    asst_txt = "\n\n".join(e[2] for e in events[ui + 1:] if e[1] == "asst")
-    return (a[0], u[0], u[2], u[3], asst_txt)
+    return (a[0], u[0], u[2], u[3], strip_nested_relay(a[2]))
 
 
 def print_last_exchange():
@@ -368,9 +409,14 @@ def cap_tail(name, line, cap=TAIL_CAP):
     return "%s ... [+%d bytes: tail -1 docs/history/%s]" % (line[:cap].rstrip(), len(line) - cap, name)
 
 
+# THE SEVENTH TRIM (2026-11-03): "WARN 0" or "FAIL 0" is a count of nothing,
+# not a verdict; blanked before the verdict words are looked for.
+_ZERO_COUNT = re.compile(r"\b(FAIL|WARN|ERROR|MISSING|STALE)\s+0\b")
+
+
 def has_verdict(line):
     """True when a ledger line carries something the manager must see."""
-    return bool(_VERDICT.search(line))
+    return bool(_VERDICT.search(_ZERO_COUNT.sub("", line)))
 
 
 def line_stamp(line):
@@ -492,6 +538,45 @@ def first_clause(summary, cap=150):
     return cut if len(cut) <= cap else cut[:cap].rstrip() + "..."
 
 
+_EXCHANGE_QUOTE_HEADS = ("MAZHRON'S LAST PROMPT", "MANAGER'S LAST RESPONSE",
+                         "USER'S LAST PROMPT")
+_LABEL = re.compile(r"^[A-Z][A-Z0-9 /'-]{3,}:")  # STATE:, OPEN QUEUE / NEXT LIKELY:
+
+
+def diet_exchange_copy(lines, replayed):
+    """THE SIXTH TRIM (2026-10-31): the day file's WHERE WE LEFT OFF carries
+    its own copy of the exchange; when the transcript block above replayed
+    it verbatim, the copy is a duplicate under the loss test. Two shapes:
+    the quote shape (a MAZHRON'S LAST PROMPT / MANAGER'S LAST RESPONSE /
+    USER'S LAST PROMPT head and its `>` lines) and the whole-turn shape
+    (a THE LAST EXCHANGE: label, then the CEO: / The manager: paragraphs
+    up to the next ALL-CAPS label or the section's end). Returns (kept,
+    dropped); without a replay nothing is dropped."""
+    if not replayed:
+        return list(lines), False
+    kept, dropped, quoting, in_block = [], False, False, False
+    for ln in lines:
+        s = ln.strip()
+        if s.startswith(_EXCHANGE_QUOTE_HEADS):
+            quoting, dropped = True, True
+            continue
+        if quoting and (s.startswith(">") or s == ""):
+            continue
+        quoting = False
+        if s.startswith("THE LAST EXCHANGE"):
+            in_block, dropped = True, True
+            continue
+        if in_block:
+            if _LABEL.match(s):
+                in_block = False
+            else:
+                continue
+        kept.append(ln)
+    while kept and not kept[-1].strip():
+        kept.pop()
+    return kept, dropped
+
+
 def selftest():
     fails = []
 
@@ -532,6 +617,11 @@ def selftest():
     check("all_clear: PASS clean is", all_clear("2026-09-28 23:45 | WS1 | 139 | 0 | PASS | clean"))
     check("all_clear: a CHECK is not", not all_clear("2026-09-28 | WS1 | CHECK: spend +30%"))
     check("all_clear: numbers alone are not", not all_clear("2026-09-28 23:45 | WS1 | 15 | 2.1 | x.md (3)"))
+    # THE SEVENTH TRIM (2026-11-03): a zero count is not a verdict, a nonzero one is.
+    check("has_verdict: WARN 0 | FAIL 0 is a count, not a verdict",
+          not has_verdict("2026-11-02 12:03 | WS1 | hand-walked only | PASS 0 | WARN 0 | FAIL 0 | prose"))
+    check("has_verdict: WARN 2 still is", has_verdict("2026-11-02 12:03 | WS1 | PASS 0 | WARN 2 | FAIL 0"))
+    check("all_clear: the zero-count audit line is", all_clear("2026-11-02 12:03 | WS1 | PASS 0 | WARN 0 | FAIL 0"))
     full, quiet = tails_plan([("f_runs.txt", "2026-09-28 23:45 | WS1 | PASS | clean",
                                "2026-09-28 21:02 | WS1 | PASS | clean"),
                               ("g_runs.txt", "2026-09-28 23:45 | WS1 | PASS | clean",
@@ -588,6 +678,37 @@ def selftest():
           == "1.) Correct, it removes")
     check("unwrap_paste leaves a command wrapper for the filter",
           unwrap_paste("<command-name>/clear</command-name>").startswith("<"))
+    turn = [("t0", "user", "go?", 0), ("t1", "asst", "Yes, because.", 0),
+            ("t2", "asst", "CHECKPOINT - safe to /clear.", 0)]
+    got = final_pair(turn)
+    check("final_pair replays the final text segment only",
+          got[4] == "CHECKPOINT - safe to /clear.")
+    check("final_pair stamps the turn at its last segment", got[0] == "t2")
+    nested = ("Done.\n\n**THE LAST EXCHANGE** (session x):\n\n> **the CEO:** go\n\n"
+              "> **Manager:** went\n\nState: v1\nUSER'S LAST PROMPT (verbatim):\n"
+              "> hi\nNext: y")
+    check("the relay never nests: a quoted exchange inside the reply is dropped",
+          strip_nested_relay(nested) == "Done.\n\nState: v1\nNext: y")
+    check("a reply without a relay is kept whole",
+          strip_nested_relay("a\n> quoted code\nb") == "a\n> quoted code\nb")
+    older = final_pair([("s0", "user", "old", 0), ("s1", "asst", "stale", 0)] + turn)
+    check("final_pair starts at the final human prompt",
+          older[2] == "go?" and older[4] != "stale")
+    check("final_pair ignores this session's standup",
+          final_pair([("t0", "user", "/standup", 0), ("t1", "asst", "x", 0)]) is None)
+    day = ["STATE: v1", "", "OPEN QUEUE / NEXT LIKELY:", "1. x", "",
+           "THE LAST EXCHANGE:", 'the CEO: "add it"', "The manager: done,",
+           "and pushed."]
+    kept, dropped = diet_exchange_copy(day, True)
+    check("sixth trim drops the whole-turn exchange copy", dropped and kept == day[:4])
+    kept, dropped = diet_exchange_copy(day, False)
+    check("sixth trim keeps the copy without a replay", not dropped and kept == day)
+    quoted = ["STATE: v1", "MAZHRON'S LAST PROMPT (verbatim):", "> add it", "",
+              "MANAGER'S LAST RESPONSE (verbatim):", "> done", "NEXT: y"]
+    kept, dropped = diet_exchange_copy(quoted, True)
+    check("the quote shape still drops", dropped and kept == ["STATE: v1", "NEXT: y"])
+    kept, dropped = diet_exchange_copy(["STATE: v1", "NEXT: y"], True)
+    check("nothing to drop reports no omission", not dropped and kept == ["STATE: v1", "NEXT: y"])
     import tempfile as _tf
     _recs = [
         {"type": "user", "timestamp": "t1", "message": {"content": "the question"}},
@@ -603,8 +724,10 @@ def selftest():
         for _r in _recs:
             _fh.write(json.dumps(_r) + "\n")
     _got = _mine_exchange(_p)
-    check("the mined response is the whole turn, summary first (2026-10-30)",
-          _got is not None and _got[4] == "the main summary\n\nthe trailing note" and _got[2] == "the question")
+    # the 2026-10-30 whole-turn rule was reverted by THE FINAL-SEGMENT RULE
+    # (2026-11-03 PM, the safeguard fix): the mined response is the final segment.
+    check("the mined response is the final text segment (2026-11-03 PM)",
+          _got is not None and _got[4] == "the trailing note" and _got[2] == "the question")
     print("standup selftest: %d failed" % len(fails))
     return 1 if fails else 0
 
@@ -651,19 +774,11 @@ def main():
             # at 33k bytes): when the transcript block above already replayed
             # the exchange verbatim, the day file's copy of the same quote
             # blocks is not printed twice - only its STATE / NEXT lines.
-            quoting = False
-            for ln in wm.group(0).splitlines()[1:]:
-                s = ln.strip()
-                if replayed:
-                    if s.startswith(("MAZHRON'S LAST PROMPT", "MANAGER'S LAST RESPONSE",
-                                     "USER'S LAST PROMPT")):
-                        quoting = True
-                        continue
-                    if quoting and (s.startswith(">") or s == ""):
-                        continue
-                    quoting = False
+            # THE SIXTH TRIM (2026-10-31): both exchange shapes, one helper.
+            kept, dropped = diet_exchange_copy(wm.group(0).splitlines()[1:], replayed)
+            for ln in kept:
                 print("  " + ln)
-            if replayed:
+            if dropped:
                 print("  (prompt + response omitted here: the transcript block above is the verbatim record)")
         else:
             print("  (no WHERE WE LEFT OFF section yet - see the file's "

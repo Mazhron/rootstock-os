@@ -11,7 +11,9 @@ PURPOSE: Compose and dispatch a sub-agent (employee) brief that follows the
 INTENT: So delegated work stays safe and reviewable: the employee starts
   self-contained, is capped at about 30 tool calls, never deletes, respects
   the fan-out limits, and the manager logs an intent claim and ledgers the
-  outcome afterward.
+  outcome afterward. Since the /brief diet (Mazhron 2026-11-03) the fixed
+  rules live in EMPLOYEE_RULES.md beside this file and the brief carries
+  the task plus a four-line pointer, never the rules rewritten.
 
 Read SUBAGENTS.md RULES + ASSIGNMENTS first (never the ledger unless
 appending/auditing). Then compose the brief with ALL of:
@@ -24,22 +26,28 @@ appending/auditing). Then compose the brief with ALL of:
    refuses a work dispatch whose model is missing or names that tier.
 2. SELF-CONTAINED CONTEXT: everything the employee needs inline or by exact
    file/section pointer - an employee starts with an EMPTY context and must
-   not wander the repo discovering things.
-3. TOKEN BUDGET LINE, verbatim: "If you exceed ~30 tool calls or fail the
-   same step twice, STOP and report what you have."
-   THE ONE-TURN LINE (rule 7, kit v1.43, 2026-10-05 - a public reply to
-   Mazhron's Rootstock comment, Ken Brown: "call all tools in a single
-   call"), verbatim: "Independent reads, greps and checks go in ONE turn,
-   never one per turn; only a step that needs the previous result waits."
-   Every extra turn re-reads the employee's whole growing context; the
-   auditor's tools= count against its turn count shows who obeys.
-4. REPORT FORMAT: write files directly; report `git diff --stat` + changed
-   hunks + a short summary. NEVER paste whole file bodies back.
-5. THE WORKFLOW LINE (rule 11): for a repeatable multi-step task, NAME the
-   WORKFLOWS.md entry and paste its STEPS into the brief; the employee's
-   stamp ends with "WORKFLOW: matched <entry> | GAP: <uncovered process> |
-   n/a".
-6. THE FAN-OUT CHECK (rule 12): before dispatch, count. A handful of
+   not wander the repo discovering things. A task type with a standing
+   contract (the mockup: mock/BRIEF.md) is pointed at by path, never pasted;
+   the brief then holds only the task, the data each verb must change, the
+   probe lines and the pointers.
+3. THE RULES BLOCK (the diet, 2026-11-03): four lines, verbatim, the root
+   filled in, that point at the fixed text and keep the tokens the brief
+   guard checks for (STAMP:, TOOLS:, WORKFLOW:, INTENT:, "STOP and report",
+   "THE PRESERVATION LAW"); nothing from EMPLOYEE_RULES.md is restated:
+   ```
+   RULES (binding; read this file first, by path): <root>\.claude\skills\brief\EMPLOYEE_RULES.md
+   - THE PRESERVATION LAW holds (no deletion code, no delete command); past ~30 tool calls or the same step failed twice, STOP and report what you have.
+   - Independent reads in ONE turn; fix what is wrong inside your files and say so, report what is outside them; report the diff, never whole files.
+   - End your report with the four footer lines of that file: STAMP: ... / TOOLS: ... / WORKFLOW: matched <entry named below> | GAP: ... | n/a / INTENT: <the task in your own words>.
+   ```
+   A task-specific exception to a law (a mockup page's splice is its Delete
+   verb) is one added clause, not a rewrite of the law.
+4. THE WORKFLOW AND INTENT POINTERS (rules 11 and 14): for a repeatable
+   multi-step task, NAME the WORKFLOWS.md entry and paste its STEPS (only
+   the steps, never the whole entry); if the task rests on a ruling whose
+   why matters, `Grep "^## " INTENT.md` and PASTE that section (never "see
+   INTENT.md"). "Never touch" names the files other employees own.
+5. THE FAN-OUT CHECK (rule 12): before dispatch, count. A handful of
    employees in this batch (4 is the habit), no employee that spawns
    employees, no Workflow tool unless Mazhron asked for it. Needs dozens?
    That is a design problem - split, script, or ask - not a bigger
@@ -48,35 +56,28 @@ appending/auditing). Then compose the brief with ALL of:
    stop and report; never resume the same loop and never raise a limit
    to get past it.
 
-7. THE PRESERVATION LINE (rule 13, 2026-09-10), verbatim in every brief:
-   "THE PRESERVATION LAW: your work contains NO deletion code and runs no
-   delete command; move or retire instead (tools/retire.py,
-   tools/cold_shelf.py); a harness hook refuses writes containing
-   deletion calls. If the task seems to need a deletion, STOP and report."
-8. THE INTENT LINE (rule 14, 2026-09-13): if the task rests on a ruling
-   whose why matters, `Grep "^## " INTENT.md` and PASTE the relevant
-   section into the brief (never "see INTENT.md"). Every brief ends by
-   requiring "INTENT: <one line: what you understood the task to be, in
-   your own words>" after the STAMP/TOOLS/WORKFLOW lines.
-
 AFTER THE EMPLOYEE RETURNS
 - Log the INTENT line as a claim (`python tools/intent_log.py --claim
   --actor <model> --task "..." --mine "<the line>"`) and resolve it once
   verified with ALL THREE flags (`python tools/intent_log.py --resolve <id>
-  --theirs "<the task as you meant it>" --verdict SAME|SIMILAR|DIFFERENT
-  --source inferred|stated`; the tool refuses a resolve missing any one,
-  2026-10-13); a
-  correction goes through /correct (tools/correction_log.py, actor = the
-  model) which resolves the claim DIFFERENT itself.
+  --theirs "<the task as you meant it, 15 words at most>" --verdict
+  SAME|SIMILAR|DIFFERENT --source inferred|stated`; the tool refuses a
+  resolve missing any one, 2026-10-13); a correction goes through /correct
+  (tools/correction_log.py, actor = the model) which resolves the claim
+  DIFFERENT itself.
 - Verify cheap, in order: tests/probes first, spot-read the diff second,
   full read only on smell.
 - Watch for fabrication (it has happened): claims must match the diff.
-- LEDGER the outcome in SUBAGENTS.md (append-only, with correction tally).
+- LEDGER the outcome in SUBAGENTS.md (append-only, with correction tally):
+  the line's free text is 60 words at most; the diff and the ledger of
+  tools say the rest.
 - A reported WORKFLOW GAP gets captured in the same batch: write the
   WORKFLOWS.md entry, or brief a haiku with the employee's report + the
   entry template (WORKFLOW_METHOD.md).
 
 The manager keeps: design, laws, architecture, verification, pushes.
 
-Search keys: delegation, employee brief, sub-agent, stamp, fabrication check.
-See also: SUBAGENTS.md (this project's table); SUBAGENT_METHOD.md (portable).
+Search keys: delegation, employee brief, sub-agent, stamp, fabrication check,
+brief diet, rules block.
+See also: EMPLOYEE_RULES.md (beside this file: the fixed text); SUBAGENTS.md
+(this project's table); SUBAGENT_METHOD.md (portable); mock/BRIEF.md.

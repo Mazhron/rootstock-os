@@ -2,7 +2,8 @@
 updated and pushed whenever it is discussed").
 
 PURPOSE: copy every portable ORIGINAL to its grab-copy in the kit folder
-  (repo-root MDs, .claude/skills/*/SKILL.md, .claude/agents/*.md (kit
+  (repo-root MDs, every .md in each .claude/skills/<name>/ dir (SKILL.md
+  and its siblings, kit v1.58), .claude/agents/*.md (kit
   v1.54, the pinned searchers), tools/hooks/*.py, the tools/*.py that have
   a reference copy, and the .claude/rules/*.md files
   named in PORTABLE_RULES), with the one substitution the
@@ -90,8 +91,16 @@ def pairs():
     if os.path.isdir(SKILLS_DIR):
         for s in sorted(os.listdir(SKILLS_DIR)):
             src = os.path.join(SKILLS_DIR, s, "SKILL.md")
-            if os.path.isfile(src):
-                out.append((src, "skills/%s/SKILL.md" % s, False))
+            if not os.path.isfile(src):
+                continue
+            # kit v1.58: a skill may carry sibling .md files beside SKILL.md
+            # (brief/EMPLOYEE_RULES.md, the fixed text an employee reads by
+            # path); every .md in the skill dir is paired, SKILL.md first.
+            for f in sorted(os.listdir(os.path.join(SKILLS_DIR, s)),
+                            key=lambda x: (x != "SKILL.md", x)):
+                if f.endswith(".md"):
+                    out.append((os.path.join(SKILLS_DIR, s, f),
+                                "skills/%s/%s" % (s, f), False))
     if os.path.isdir(AGENTS_DIR):
         for f in sorted(os.listdir(AGENTS_DIR)):
             if f.endswith(".md"):

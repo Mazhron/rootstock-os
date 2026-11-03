@@ -14,15 +14,26 @@ INTENT: The script mines the true final exchange from the harness
 1. If a [HOOK session_start] block is already in context, the digest
    was injected automatically - do NOT run the script again. Otherwise
    run `python tools/standup.py` from the repo root.
-2. Relay THE LAST EXCHANGE block FIRST and VERBATIM: the user's last
-   prompt AND the manager's last response exactly as the script prints
-   them, word for word in quote blocks - never summarized, condensed, or
-   paraphrased (the user must recognize their own words). The script mines
-   these from the HARNESS TRANSCRIPT (ground truth on disk), so they are
-   the true final exchange even after a mid-arc /clear - trust the script's
-   block over the day file's checkpoint-time copy. Then relay state and
-   next-likely from WHERE WE LEFT OFF. After a /clear the user has nothing -
-   give it back unprompted.
+2. Relay THE LAST EXCHANGE block FIRST: the user's last prompt exactly
+   as the script prints it, word for word in a quote block - never
+   summarized, condensed, or paraphrased (the user must recognize their
+   own words). The manager's last response is relayed VERBATIM too, in
+   its own quote block, exactly as the script prints it (THE VERBATIM
+   OPENER, Mazhron 2026-11-03 15:35: "I prefer a verbatim opener. Even
+   if it costs a little bit more." - this supersedes the paraphrase half
+   of THE SAFEGUARD FIX of the same afternoon). What the safeguard fix
+   keeps: the script's block is the FINAL text segment of the turn, any
+   nested relay stripped, capped at 2000 chars per side, so quoting it
+   cannot nest a replay inside a replay (the nested copy of working text
+   was what the safeguard read as reasoning extraction, and it killed
+   three sessions on 11-03 AM). Never quote more than the script's block,
+   and never the working lines between tool calls. The
+   script mines the exchange from the HARNESS TRANSCRIPT (ground truth
+   on disk): the prompt and the FINAL text segment of the reply, with any
+   nested relay stripped - trust the script's block over the day file's
+   checkpoint-time copy. Then relay state and next-likely from WHERE WE
+   LEFT OFF. After a /clear the user has nothing - give it back
+   unprompted.
 3. Then THE BUDGET block: relay its last line or two (yesterday and
    today so far: weighted spend vs the previous 7 active days, top
    pillar, cache misses, reads). A CHECK verdict is relayed VERBATIM -

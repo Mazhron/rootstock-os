@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-11-03 11:26 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 | stale 27
+Updated 2026-11-03 16:50 | items 97 | GREEN 90 | YELLOW 5 | RED 0 | unflagged 2 | stale 24
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -65,14 +65,14 @@ Updated 2026-11-03 11:26 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/hygiene_guard.py | GREEN | ok | fable | 2026-09-20 03:21 |
-| hooks/lesson_advisor.py | GREEN | STALE | fable | 2026-09-20 03:21 |
+| hooks/lesson_advisor.py | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | hooks/lesson_guard.py | - | UNFLAGGED | - | - |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-10-30 13:05 |
 | hooks/rootstock_modes.json | GREEN | STALE | fable | 2026-10-31 19:43 |
-| hooks/session_end.py | YELLOW | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| hooks/session_start.py | GREEN | STALE | fable | 2026-09-29 00:24 |
+| hooks/session_end.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
+| hooks/session_start.py | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-10-01 16:55 |
 | hooks/stop_tick.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
@@ -99,15 +99,16 @@ Updated 2026-11-03 11:26 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 
 | reference tools/keepwarm.py | GREEN | STALE | fable | 2026-10-31 19:43 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
 | reference tools/ledger_trends.py | GREEN | ok | fable | 2026-10-13 12:52 |
-| reference tools/lesson_ladder.py | - | UNFLAGGED | - | - |
-| reference tools/lesson_log.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| reference tools/lesson_ladder.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
+| reference tools/lesson_log.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
+| reference tools/merge_ledgers.py | GREEN | ok | fable manager E-2026-11-03-28 follow-up | 2026-11-03 16:50 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/output_shape.py | GREEN | ok | fable | 2026-10-31 19:43 |
 | reference tools/plan_check.py | - | UNFLAGGED | - | - |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-10-13 14:14 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/readme_lint.py | GREEN | ok | fable | 2026-10-19 10:26 |
-| reference tools/refresh_kit.py | GREEN | ok | fable | 2026-10-22 09:10 |
+| reference tools/refresh_kit.py | GREEN | ok | fable manager E-2026-11-03-28 follow-up | 2026-11-03 16:50 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/retrieval_eval.py | GREEN | STALE | fable | 2026-10-13 11:45 |
 | reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 14:13 |
@@ -115,7 +116,7 @@ Updated 2026-11-03 11:26 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 
 | reference tools/run_all.py | GREEN | STALE | sonnet-flag-1013c | 2026-10-13 13:32 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/split_knowledge.py | GREEN | ok | fable | 2026-10-13 13:33 |
-| reference tools/standup.py | GREEN | ok | fable | 2026-10-30 13:05 |
+| reference tools/standup.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-09-29 00:24 |
 | reference tools/usage_window.py | GREEN | ok | fable | 2026-09-30 11:57 |
@@ -123,15 +124,16 @@ Updated 2026-11-03 11:26 | items 95 | GREEN 91 | YELLOW 1 | RED 0 | unflagged 3 
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| skills/brief/SKILL.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:10 |
-| skills/checkpoint/SKILL.md | GREEN | STALE | fable | 2026-10-30 13:05 |
+| skills/brief/EMPLOYEE_RULES.md | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
+| skills/brief/SKILL.md | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
+| skills/checkpoint/SKILL.md | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/flag/SKILL.md | GREEN | ok | fable-manager | 2026-09-29 16:38 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/preserve/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/runaway/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/ship/SKILL.md | GREEN | ok | fable | 2026-09-30 12:22 |
-| skills/standup/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
+| skills/standup/SKILL.md | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | 0 - READ ME FIRST, CLAUDE.md | GREEN | GONE | sonnet-fd1 | 2026-09-13 12:20 |
 | .github/workflows/contribution-lint.yml | YELLOW | GONE | fable | 2026-10-13 14:13 |
 | community/code/README.md | GREEN | GONE | fable | 2026-10-13 14:13 |
@@ -1708,3 +1710,73 @@ FLAG: Does what the PURPOSE says; the slug match is case-insensitive because the
 SAYS: (no PURPOSE line)
 DOES: A JSON of four switches (route, resume_digest, big_write_warn, effort_line) with the old way of each named in _old_ways; read by _hooklib.modes() with defaults in code; copied to .claude/ and committed; no code runs from it
 FLAG: The CEO's standing rule of 2026-10-31 made mechanical: every v1.57 behaviour one flip from its old way
+
+### 2026-11-03 16:49 | hooks/session_start.py | GREEN | sonnet E-2026-11-03-28 | WS1 | 25bf0700
+SAYS: SessionStart hook that runs tools/standup.py and injects its digest into the manager's context on startup, resume, /clear and after a compaction, with a header telling the manager not to re-run standup and how to relay the last exchange; also runs the session group itself when it has not run today (THE LOOP LAW) and ledgers the digest's byte size; on a same-day resume it injects one pointer line instead of the digest (resume_digest = full in the modes file restores the old way).
+DOES: On SessionStart runs run_all.py session if it has not run today (600 s cap), runs standup.py (100 s cap) and injects the digest with a header asking for a verbatim quote-block relay of both sides; on a same-day resume injects one pointer line; appends one line to digest_size.txt.
+FLAG: Matches PURPOSE and header: the verbatim-relay instruction and the loop run are both described, every subprocess is time capped, failures never block the digest, selftest is pure.
+
+### 2026-11-03 16:49 | hooks/lesson_advisor.py | GREEN | sonnet E-2026-11-03-28 | WS1 | a6b42719
+SAYS: Stop hook that scans the turn's transcript slice for trial-and- error signals and refuses to end the turn once with LESSON ADVISED when it finds one, so the manager captures the lesson in LESSONS.md or the wiki before the turn ends; silent otherwise, never the same slice twice.
+DOES: On Stop scans the turn's transcript slice for trial and error signals, refuses once per signature with LESSON ADVISED (now naming the See also line), saves a per-transcript line pointer in .claude/lesson_state.json and appends ADVISED or WRITTEN to lesson_runs.txt.
+FLAG: Matches PURPOSE and header. Loop guarded by stop_hook_active and the signature check. State and ledger writes are described in the header though not in the PURPOSE line; the See also change is in the reason text only.
+
+### 2026-11-03 16:49 | hooks/session_end.py | YELLOW | sonnet E-2026-11-03-28 | WS1 | 932ebec8
+SAYS: SessionEnd hook that, when the session ends with work unbanked (changes outside docs/history/ or commits not on origin), mines the final exchange from the transcript, refreshes the day file's WHERE WE LEFT OFF as an AUTO section, commits, pushes to origin and the backup mirror, and resets the checkpoint counter; it does nothing but ledger when the tree was already checkpointed.
+DOES: On SessionEnd, when work outside docs/history or an unpushed commit exists, mines the final exchange (capped 2000 chars per side), rewrites today's day file (old WHERE WE LEFT OFF kept as SUPERSEDED), stages the whole tree with add-all, commits, pushes to origin, runs backup_push.py and resets the counter; otherwise ledgers one line.
+FLAG: Matches in substance but: PURPOSE does not mention the 2000 char cap or the nested relay strip, while the section text still calls the exchange verbatim; the add-all stages every untracked file with no secrets-family check of its own (relies on gitignore; the bash guard does not see a hook subprocess); the commit trailer hard-codes Co-Authored-By Claude Fable 5.1 whatever model ran. Fix later: state the cap in PURPOSE, add a secrets-family refusal before the add-all, drop or parameterize the trailer.
+
+### 2026-11-03 16:49 | reference tools/standup.py | YELLOW | sonnet E-2026-11-03-28 | WS1 | cf8eaa40
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: Prints the digest: mines the final user prompt and the FINAL text segment of the manager's last turn from harness transcripts (nested relay stripped, each side capped at 2000 chars), then day file, budget (runs usage_report.py --quiet, which writes its ledgers), THE LOOP, ledger_trends.py proposals, core line via subprocess, commits, notes, ledger tails, roadmap and open questions.
+FLAG: PURPOSE says the exchange is mined but not that it is the final segment only, stripped of relay blocks and capped; the printed label still says verbatim while strip_nested_relay silently drops any reply line matching THE LAST EXCHANGE, LAST PROMPT or LAST RESPONSE and the quoted lines after it (truncation is announced, the strip is not). The usage_report.py refresh side effect is in the header, not the PURPOSE. Fix: add the final segment, strip and cap to PURPOSE and say relay-stripped in the label.
+
+### 2026-11-03 16:49 | reference tools/lesson_ladder.py | YELLOW | sonnet E-2026-11-03-28 | WS1 | 3b248588
+SAYS: read docs/history/lesson_runs.txt, pair MATCHED (old face) and SURFACED (new face) events with a following ADVISED to count hits and misses per face, count UNCOVERED advisories and PLAN lines, print a PROPOSE [DO] for any lesson missed twice, and append one line to docs/history/workflow_trial_runs.txt (run_all check group).
+DOES: Reads lesson_runs.txt, pairs MATCHED and SURFACED with a following ADVISED within 20 min as hits and misses per face, cancels an ADVISED that a later DISMISSED line of its thread takes back, counts a lesson once per distinct ADVISED, proposes PROPOSE DO for a lesson missed twice, appends one line to workflow_trial_runs.txt.
+FLAG: Behavior is sound and selftested, but PURPOSE and the module docstring do not mention the DISMISSED cancel or the one failure one miss rule (only a code comment does), and the docstring still says a MATCHED or SURFACED followed by ADVISED is a MISS with no exception. Fix: add both rules to PURPOSE.
+
+### 2026-11-03 16:49 | reference tools/lesson_log.py | YELLOW | sonnet E-2026-11-03-28 | WS1 | 0b9162f1
+SAYS: Serve the lesson loop's three ends: match a prompt against the Keys lines of LESSONS.md entries and name the ones to read first; scan a transcript slice for trial-and-error signals so the Stop hook can advise a lesson; lint the entries' shape and ledger the counts for the check loop.
+DOES: Matches a prompt to LESSONS.md Keys lines, scans a transcript slice for trial and error signals (a result recorded twice now counts once per tool id), lints the entries and ledgers the counts, and with --dismiss appends a DISMISSED line to lesson_runs.txt.
+FLAG: PURPOSE still says three ends; --dismiss is a fourth, a ledger write, and the ledger kinds list (MATCHED, ADVISED, WRITTEN, CHECK) omits DISMISSED. Only the Usage block names it. Fix: update PURPOSE and the kinds list.
+
+### 2026-11-03 16:49 | reference tools/merge_ledgers.py | YELLOW | sonnet E-2026-11-03-28 | WS1 | d210e9fd
+SAYS: after `git pull --rebase --autostash` (or a merge) conflicts on the
+DOES: After a conflicted pull, for EVERY unmerged file reported by git diff --diff-filter=U: generated reports take stage 2, ledger_heads and checkpoint_state keep newest per key, everything else is union merged (markers dropped, theirs lines already in ours skipped) and rewritten whole, then staged; --dry-run writes nothing.
+FLAG: Matches its stated mechanism and deletes nothing, but it is not scoped to docs/history: a conflicted source file, wiki page or LESSONS.md would be union merged with both sides kept and staged as resolved, silently hiding a real conflict. Union also drops a repeated identical line from theirs. Fix: refuse (list and skip) any unmerged path outside docs/history/ and say so in PURPOSE.
+
+### 2026-11-03 16:49 | reference tools/refresh_kit.py | YELLOW | sonnet E-2026-11-03-28 | WS1 | 375efb65
+SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, .claude/skills/*/SKILL.md, .claude/agents/*.md (kit v1.54, the pinned searchers), tools/hooks/*.py, the tools/*.py that have a reference copy, and the .claude/rules/*.md files named in PORTABLE_RULES), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; then derive the kit's LESSONS.md and knowledge/ tree through tools/split_knowledge.py (SPLIT; it writes those files and one knowledge_split_runs.txt line); `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
+DOES: Copies each portable original to its kit grab-copy (owner name substitution in scripts), now pairing every .md in a skill folder with SKILL.md first; derives LESSONS.md and knowledge/ via split_knowledge.py; --check compares kit to originals and the public clone; --adopt adds a new reference file; never deletes.
+FLAG: PURPOSE still says .claude/skills/*/SKILL.md, stale since v1.58 pairs every .md in the folder (EMPLOYEE_RULES.md). --adopt of a skill dir still copies only SKILL.md, so a new sibling .md is missed until the next refresh (a gap, not a harm). Fix: update the PURPOSE line and make adopt copy sibling .md files.
+
+### 2026-11-03 16:49 | skills/standup/SKILL.md | GREEN | sonnet E-2026-11-03-28 | WS1 | d70caf68
+SAYS: Open a session: print the standup digest and hand back the last exchange (prompt and response) and project state before anything else.
+DOES: Tells the manager to skip a second standup run when the hook injected it, relay the last prompt and last response each verbatim in a quote block (THE VERBATIM OPENER), then budget line, summary and the question.
+FLAG: Matches PURPOSE and INTENT. The verbatim rule, the final segment, the nested relay strip and the 2000 char cap are consistent with standup.py and the session_start header. Step 2 is long but unambiguous.
+
+### 2026-11-03 16:49 | skills/checkpoint/SKILL.md | YELLOW | sonnet E-2026-11-03-28 | WS1 | 1153041b
+SAYS: Close an arc safely: push, refresh the day file's WHERE WE LEFT OFF section with both sides of the final exchange verbatim, reset the task counter, and emit the safe-to-clear marker.
+DOES: Instructs: run the loop, push and backup, rewrite this machine's day file WHERE WE LEFT OFF with the prompt verbatim and the final message of the turn (about 2000 chars, never re-quoting a relay), commit, reset the counter, print the marker, and arm a ScheduleWakeup keep-warm when the session stays open.
+FLAG: PURPOSE says both sides of the exchange verbatim, but the body stores the manager side as the final message capped at about 2000 chars, a conclusion not a transcript; and PURPOSE omits the step 6 keep-warm wakeup (a scheduled spend, capped 25 on Fable, 9 elsewhere). Names this machine's day file as intended. Fix: reword PURPOSE (final message, capped) and mention the keep-warm.
+
+### 2026-11-03 16:49 | skills/brief/SKILL.md | GREEN | sonnet E-2026-11-03-28 | WS1 | bfcc3a45
+SAYS: Compose and dispatch a sub-agent (employee) brief that follows the delegation laws, stamped, self-contained, budget-capped, diff-only reporting, then verify cheap and ledger the outcome.
+DOES: Tells the manager how to compose an employee brief (stamp, self-contained context, the four line RULES block pointing at EMPLOYEE_RULES.md, workflow and intent pointers, fan-out check), then log the intent claim, verify and ledger the outcome.
+FLAG: Matches PURPOSE and INTENT (the diet is in INTENT). The four line block keeps the tokens the brief guard checks and restates nothing from EMPLOYEE_RULES.md. The fan-out guard is respected, never raised.
+
+### 2026-11-03 16:49 | skills/brief/EMPLOYEE_RULES.md | GREEN | sonnet E-2026-11-03-28 | WS1 | 0a082619
+SAYS: the fixed text every employee brief used to carry verbatim, written once here so the brief carries the task and a four-line pointer; an employee reads this file first and is bound by all of it.
+DOES: Fixed text an employee reads once by path: seven laws (one turn, budget, preservation, scope, no client data, shell, fan-out), the diff only report shape and the four line footer.
+FLAG: Matches PURPOSE and INTENT; nothing hidden. The deletion law is stated strongly and the one carve-out (splicing an in-memory list in a mockup) is narrow and brief-gated.
+
+### 2026-11-03 16:50 | reference tools/merge_ledgers.py | GREEN | fable manager E-2026-11-03-28 follow-up | WS1 | 48a46199
+SAYS: after `git pull --rebase --autostash` (or a merge) conflicts on the
+DOES: After a conflicted pull, resolves only the conflicted files under docs/history/ by class (union, ours and regenerate, newest per key) and stages them; any other conflicted path is listed and skipped for a hand; deletes nothing
+FLAG: The audit's YELLOW (not scoped to docs/history) fixed the same hour: the scope check, the skipped count, the docstring
+
+### 2026-11-03 16:50 | reference tools/refresh_kit.py | GREEN | fable manager E-2026-11-03-28 follow-up | WS1 | defb0b23
+SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, every .md in each .claude/skills/<name>/ dir (SKILL.md and its siblings, kit v1.58), .claude/agents/*.md (kit v1.54, the pinned searchers), tools/hooks/*.py, the tools/*.py that have a reference copy, and the .claude/rules/*.md files named in PORTABLE_RULES), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; then derive the kit's LESSONS.md and knowledge/ tree through tools/split_knowledge.py (SPLIT; it writes those files and one knowledge_split_runs.txt line); `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
+DOES: Copies every portable original to its kit grab-copy: root MDs, every .md in each skill dir, agents, hooks, the paired tools, with the owner-name substitution; derives the knowledge split; adopts a new tool or skill dir on request
+FLAG: The audit's YELLOW (PURPOSE said SKILL.md only) fixed: the PURPOSE names the sibling .md pairing of v1.58; adopt of a skill dir still copies SKILL.md only, the next refresh carries the siblings, a gap not a harm

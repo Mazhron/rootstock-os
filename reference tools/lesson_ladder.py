@@ -94,11 +94,22 @@ def score(events, since=None):
     """The counts dict for the events at or after `since` (a datetime or None)."""
     evs = [e for e in events if since is None or e["t"] >= since]
     advised = [e for e in evs if e["kind"] == "ADVISED"]
+    # A DISMISSED line (lesson_log.py --dismiss) cancels the newest earlier ADVISED of
+    # its thread: a false advisory (no command failed) is taken back by an appended
+    # line, never an edit, so the lessons it paired with score as hits (2026-11-02).
+    cancelled = set()
+    for d in (e for e in evs if e["kind"] == "DISMISSED"):
+        for a in reversed(advised):
+            if id(a) not in cancelled and a["t"] <= d["t"] and _same_thread(a, d):
+                cancelled.add(id(a))
+                break
+    advised = [a for a in advised if id(a) not in cancelled]
     window = datetime.timedelta(minutes=PAIR_MINUTES)
     res = {"old": {"n": 0, "hit": 0, "miss": 0}, "new": {"n": 0, "hit": 0, "miss": 0},
            "uncovered": 0, "plans": sum(1 for e in evs if e["kind"] == "PLAN"),
            "misses_by_lesson": {}}
     covered = set()
+    seen = {}  # lesson line -> the distinct advisories it paired with
     for e in evs:
         face = "old" if e["kind"] == "MATCHED" else ("new" if e["kind"] == "SURFACED" else None)
         if not face:
@@ -115,7 +126,13 @@ def score(events, since=None):
             res[face]["miss"] += 1
             covered.add(id(pair))
             for ln in e["lessons"]:
-                res["misses_by_lesson"][ln] = res["misses_by_lesson"].get(ln, 0) + 1
+                # ONE FAILURE, ONE MISS (2026-11-03): a lesson surfaced on both
+                # faces (MATCHED at the prompt, SURFACED at the tool call) before
+                # one ADVISED is one failure, not two. The rung proposal counts
+                # the DISTINCT advisories a lesson paired with; the per-face
+                # miss counts above still count every pairing (the trial's score).
+                seen.setdefault(ln, set()).add(id(pair))
+    res["misses_by_lesson"] = {ln: len(ads) for ln, ads in seen.items()}
     res["uncovered"] = sum(1 for a in advised if id(a) not in covered)
     return res
 
@@ -211,6 +228,32 @@ def _selftest():
     ln = line(r, "WS2", "all", datetime.datetime(2026, 10, 30, 15, 0))
     ok("the ledger line has every column", ln.count(" | ") == 7 and "miss 2" in ln and ln.startswith("2026-10-30 15:00 | WS2 | all |"))
     ok("an empty ledger scores to zeros", score(parse("")) ["new"]["n"] == 0 and verdict(score([])) == "ok")
+    txt3 = (
+        "2026-11-02 11:50 | WS1 | SURFACED | session=E | Bash | LESSONS.md line 108 \"H\"\n"
+        "2026-11-02 11:52 | WS1 | SURFACED | session=E | Edit | LESSONS.md line 108 \"H\"\n"
+        "2026-11-02 11:56 | WS1 | ADVISED | session=E | the same command ran 2 times after an error\n"
+        "2026-11-02 12:10 | WS1 | DISMISSED | session=E | no command failed; the result was recorded twice\n"
+    )
+    r3 = score(parse(txt3))
+    ok("a DISMISSED line cancels the ADVISED before it, so its pairings are hits and nothing is proposed",
+       r3["new"] == {"n": 2, "hit": 2, "miss": 0} and r3["uncovered"] == 0 and verdict(r3) == "ok")
+    txt4 = txt3.replace("session=E | no command failed", "session=F | no command failed")
+    r4 = score(parse(txt4))
+    ok("a DISMISSED from another session leaves the ADVISED standing",
+       r4["new"]["miss"] == 2 and r4["uncovered"] == 0)
+    ok("one ADVISED behind two surfacings of a lesson is ONE miss of it, no rung proposed",
+       r4["misses_by_lesson"].get(108) == 1 and verdict(r4) == "ok")
+    txt5 = (
+        "2026-11-03 10:11 | WS1 | MATCHED | LESSONS.md line 108 \"H\"\n"
+        "2026-11-03 10:19 | WS1 | SURFACED | session=G | Bash | LESSONS.md line 108 \"H\"\n"
+        "2026-11-03 10:19 | WS1 | ADVISED | session=G | a FAIL was followed by a PASS\n"
+        "2026-11-03 11:00 | WS1 | SURFACED | session=G | Edit | LESSONS.md line 108 \"H\"\n"
+        "2026-11-03 11:05 | WS1 | ADVISED | session=G | an error was followed by a fix\n"
+    )
+    r5 = score(parse(txt5))
+    ok("both faces on one failure count once; a second failure makes the second miss and the proposal",
+       r5["old"]["miss"] == 1 and r5["new"]["miss"] == 2
+       and r5["misses_by_lesson"].get(108) == 2 and "line 108" in verdict(r5))
     print("lesson_ladder selftest: %d failed" % fails)
     return 1 if fails else 0
 

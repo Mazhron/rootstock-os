@@ -80,7 +80,7 @@ def decide(sigs, mine):
     reason = ("[HOOK lesson_advisor] LESSON ADVISED (%s) - ADVISED MEANS DO IT (THE LESSON LAW, "
               "the CEO 2026-09-20): before this turn ends, write or amend the LESSONS.md entry "
               "for this task shape (heading in a prompt's words; Tags + Keys lines; THE ONE RIGHT "
-              "WAY; TRIED / FAILED BECAUSE / DO INSTEAD), or put the fact in its topic file under "
+              "WAY; TRIED / FAILED BECAUSE / DO INSTEAD; a See also: line, the lint fails without it), or put the fact in its topic file under "
               "a Tags line, or say in one line why there is no lesson here. Then end the turn; "
               "this hook does not refuse the same turn twice." % "; ".join(real))
     return "block", reason

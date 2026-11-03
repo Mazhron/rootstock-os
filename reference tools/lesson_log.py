@@ -16,6 +16,8 @@ Usage:
     python tools/lesson_log.py --scan [transcript.jsonl] # signals in the newest turn slice
     python tools/lesson_log.py --check                   # lint LESSONS.md + ledger line (run_all check)
     python tools/lesson_log.py --selftest
+    python tools/lesson_log.py --dismiss "<why the last ADVISED was false>" [--session <id>]
+        # appends a DISMISSED line; the ladder cancels the newest earlier ADVISED of that thread (2026-11-02)
 
 THE LEDGER: docs/history/lesson_runs.txt, append-only, one line per event:
 date time | ws | kind | detail. Kinds: MATCHED (the prompt hook named
@@ -224,6 +226,7 @@ def signals(recs):
     corrections = 0
     book_written = False
     result_of = {}     # tool_use id -> (name, command)
+    seen_results = set()  # a result the harness records twice (a hook's added context) counts once (2026-11-02)
     order = 0
     for r in recs:
         for b in _blocks(r):
@@ -244,6 +247,10 @@ def signals(recs):
                     if d:
                         agent_descs.append(d)
             elif t == "tool_result":
+                rid = b.get("tool_use_id")
+                if rid in seen_results:
+                    continue
+                seen_results.add(rid)
                 order += 1
                 txt = _result_text(b)
                 err = bool(b.get("is_error")) or bool(ERROR_RE.search(txt[:4000]))
@@ -421,6 +428,12 @@ def _selftest():
              tu("1", "Bash", command="ls"), tr("1", "a b c"),
              tu("2", "Bash", command="ls"), tr("2", "a b c")]
     ok("a clean turn has no signal (a repeated command without an error is fine)", signals(quiet) == [])
+    twice = [{"type": "user", "message": {"content": "hello"}},
+             tu("1", "Bash", command="sed -n 1,5p LESSONS.md"),
+             tr("1", "FAILED BECAUSE: error: prose the command printed"),
+             tr("1", "FAILED BECAUSE: error: prose the command printed")]
+    ok("a result the harness records twice is one run, not a repeat after an error",
+       not any("ran 2 times" in s for s in signals(twice)))
     ok("the slice starts at the last typed prompt", user_text_indexes(recs) == [0, 17])
     print("lesson_log selftest: %d failed" % fails)
     return 1 if fails else 0
@@ -435,6 +448,19 @@ def main(argv):
         prompt = " ".join(argv[argv.index("--match") + 1:])
         lines = match_lines(prompt)
         print("\n".join(lines) if lines else "no matching lesson (score < %d)" % MIN_SCORE)
+        return 0
+    if "--dismiss" in argv:
+        i = argv.index("--dismiss")
+        why = argv[i + 1] if i + 1 < len(argv) and not argv[i + 1].startswith("--") else ""
+        if not why:
+            print("--dismiss needs the reason in quotes (why the last ADVISED was false: no command failed, ...)")
+            return 1
+        sess = "?"
+        if "--session" in argv and argv.index("--session") + 1 < len(argv):
+            sess = argv[argv.index("--session") + 1]
+        record("DISMISSED", "session=%s | %s" % (sess, why))
+        print("DISMISSED recorded (cancels the newest earlier ADVISED of this workstation%s): %s"
+              % (" and session" if sess != "?" else "", why))
         return 0
     if "--scan" in argv:
         rest = argv[argv.index("--scan") + 1:]

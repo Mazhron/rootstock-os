@@ -42,23 +42,30 @@ SEQUENCE
    write or amend the LESSONS.md entry before pushing.
 1. Push everything (tree clean, remote up to date), then
    `python tools/backup_push.py` (THE LOCAL MIRROR + THE BROWSABLE COPY).
-2. Refresh the NEWEST day file's `## WHERE WE LEFT OFF` section
-   (docs/history/days/YYYY-MM-DD-WS#.md; create today's file + a
-   days_index.txt line if it does not exist). The section carries:
+2. Refresh THIS MACHINE's newest day file's `## WHERE WE LEFT OFF`
+   section (docs/history/days/YYYY-MM-DD-WS#.md where WS# is
+   tools/workstation_survey.ws_name(), NEVER the file the standup's
+   SAME DAY line named, which is the newest by timestamp and may be the
+   other machine's - LESSONS "The standup's SAME DAY line"; create
+   today's file + a days_index.txt line if it does not exist). The section carries:
    - USER'S LAST PROMPT (VERBATIM - copied word for word, unabridged,
      in a fenced quote block; NEVER condensed or paraphrased)
-   - MANAGER'S LAST RESPONSE (VERBATIM) - BOTH sides, always. MECHANICS:
-     the response stored is the checkpoint reply itself, so write this
-     section containing the reply you are ABOUT to send, then send
-     exactly that text. The user must recognize their own words at the
-     next standup - a paraphrase is a failed checkpoint. THE WHOLE TURN
-     (Mazhron 2026-10-30): the response is the MAIN SUMMARY, the answer,
-     not a short note sent after the tool calls; a checkpoint reply does
-     its tool work first and sends ONE final message that carries the
-     answer, the gauge percent and the marker, and that one message is
-     what the day file holds. (standup's miner joins every assistant text
-     of the turn, so an earlier summary is never lost, but the day file
-     is written by hand and must carry the summary itself.)
+   - MANAGER'S LAST RESPONSE - BOTH sides, always. MECHANICS (THE
+     SAFEGUARD FIX, Mazhron 2026-11-03 PM, reverting the morning's
+     whole-turn rule): the response stored is the FINAL MESSAGE of the
+     turn, the one written to stand alone, capped at about 2000
+     characters and never containing a quoted copy of an earlier
+     exchange (a relay never nests). The working lines written between
+     tool calls are not the reply. If the assessment that matters was
+     given earlier in the turn, restate its conclusion in the final
+     message so the final message carries it. The user must recognize
+     their own prompt at the next standup; the reply side is the
+     conclusion, not a transcript. THE VERBATIM OPENER (Mazhron
+     2026-11-03 15:35: "I prefer a verbatim opener. Even if it costs a
+     little bit more."): the next standup quotes this stored reply
+     word for word, so write it to be read back; a session opener's own
+     final message never re-quotes the relay it just gave (the miner
+     strips a nested relay, but the day file copy is written by hand).
      (SAFETY NET: standup independently mines the true final exchange
      from the harness transcript, so a mid-arc /clear no longer loses
      post-checkpoint work - but this section remains the committed,
