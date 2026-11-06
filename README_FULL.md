@@ -319,7 +319,12 @@ replaces a hook output past about 10KB with a 2KB preview and a file path,
 and 26 of those 27 digests were over the line (10.2KB to 16.4KB). The
 manager read the file back by a Read each time, so the resume still landed,
 but as a preview, a tool call and a result instead of one injection. A
-digest under 10KB arrives whole; that is the next trim's target.
+digest under 10KB arrives whole. Since v1.61 the session-start hook
+delivers the head under the cap itself and parks the rest in
+`.claude/standup_tail.txt`, named section by section in a DIGEST TAIL
+line (THE CAP SPLIT), and the eighth trim took the digest's own fat:
+the hook's header, long commit subjects, a verdict two ledgers carried,
+verdicts older than a week (HOOKS_METHOD.md Tier 1 #1).
 
 ## The four pillars, and two companions
 

@@ -5,7 +5,7 @@
 **Keep the context small, make clearing the chat lossless, let cheap
 sub-agents do the reading.**
 
-Kit version: **v1.60** (2026-11-06). The graft log `UPGRADES.md` is the
+Kit version: **v1.61** (2026-11-06). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 Rootstock is a folder of method files, scripts, skills and hooks you hand
@@ -50,7 +50,10 @@ too, and the usage sheet prints that beside the savings every run. Metered
 on the origin since 2026-10-02: ~61k tokens over 272 injections, 1.0% of
 the new context written in the same window (the prompt gauge ~280 tokens a
 prompt, the standup digest ~600 a session as the harness delivers it, a
-guard's note under 130).
+guard's note under 130). The same meter found the harness cuts any hook
+output past 10,000 characters to a 2 KB preview; since v1.61 the session
+hook delivers a head under that cap itself and parks the rest in one
+named file, nothing dropped.
 
 ## Three ways in (pick a level)
 
