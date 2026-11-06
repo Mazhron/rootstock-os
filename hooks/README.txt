@@ -8,7 +8,13 @@ PURPOSE: Installation notes for the Rootstock hooks folder: what each hook
 INTENT: gives a receiving project the exact per-hook setup steps so the kit
   installs correctly instead of by trial and error.
   tools/hooks/  <- these .py files (bash_guard.py: fill PROJECT RULES and BARE_DOORS)
-  .claude/settings.json  <- settings.json (merge if one exists)
+  .claude/settings.json  <- settings.json (merge if one exists); kit v1.60,
+                 THE INSTALL LEVELS: settings.lean.json (the deny block, no
+                 hook) or settings.standard.json (eleven entries: the session
+                 loop, the three safety guards, the delegation pair) are the
+                 two smaller levels; a level moves up by merging the next
+                 file's entries, never a reinstall (0 - READ ME FIRST.md
+                 STEP 0 item 7; the stamp carries `| level: <name>`)
   .gitignore  <- .claude/hooks_state.json, .claude/settings.local.json,
                  .claude/fanout_state.json, .claude/diet_state.json,
                  .claude/verify_state.json, .claude/lesson_state.json,

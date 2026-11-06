@@ -59,6 +59,23 @@ recorded in the install stamp (see MISSING PREREQUISITES).
    | <date time> | <kind> | <domain>`) for the CEO to push as a pull
    request. Nothing leaves the machine without that yes; a no is never
    asked again until the CEO changes the stamp.
+7. THE INSTALL LEVEL (kit v1.60, after a reader's review: "offer it in
+   tiers instead of all or nothing"): lean, standard or full. LEAN is an
+   afternoon and wires no hook: STEP 1 (the pointer core, the master
+   index, rules/wiki.md, the core lint) and from STEP 2 only the day
+   file, standup.py and checkpoint.py with their two skills (/checkpoint
+   and /standup are one ritual: the checkpoint writes the day file, the
+   standup reads it back after /clear); hooks/settings.lean.json carries
+   the deny block alone. STANDARD adds the rest of STEP 2, STEP 3 (the
+   employees, agents/, /brief), the skills shelf and the eleven entries
+   of hooks/settings.standard.json: the session loop (session_start,
+   prompt_gauge, stop_tick, pre_compact, session_end), the three safety
+   guards (bash, preserve, diet) and the delegation pair (brief_guard,
+   delegation_auditor), with reference tools/lesson_log.py copied
+   beside them so the prompt gauge can name a lesson. FULL is every
+   step and hooks/settings.json. The stamp records the level; moving
+   up later is the next file's entries merged into .claude/settings.json
+   and the steps it adds, never a reinstall. No preference: standard.
 
 THE BROWNFIELD RULE (an existing project): inventory first, ADOPT what
 already plays each role under its own name, PROPOSE the install as a plan,
@@ -92,8 +109,9 @@ kit's LESSONS.md preamble (the law, the entry shape) followed by the
 entries of the knowledge/lessons/ files STEP 0 item 4 matched, verbatim.
 Create WORKFLOWS.md
 (WORKFLOW_METHOD.md) the day the first two-step process exists. Stamp the
-install: "Rootstock vX.Y installed <date> | updates: <policy>" in the
-project's CLAUDE.md itself (version: UPGRADES.md).
+install: "Rootstock vX.Y installed <date> | updates: <policy> | level:
+<lean|standard|full>" in the project's CLAUDE.md itself (version:
+UPGRADES.md; the level: STEP 0 item 7).
 
 ## STEP 2 - reporting + session rituals (REPORTING_METHOD.md, bootstrap)
 
@@ -122,8 +140,9 @@ manager's model.
 Copy skills/ to .claude/skills/ and SKILLS.md to the root; the nine
 rituals call the tools from steps 1-3, so they go live last. THE SKILLS
 RULE: a ritual born or amended updates its skill in the same batch.
-Then the hooks: copy hooks/ to tools/hooks/, merge the settings template
-into .claude/settings.json, fill the bash guard's PROJECT RULES from the
+Then the hooks: copy hooks/ to tools/hooks/, merge the level's settings
+file (settings.lean.json, settings.standard.json or settings.json, STEP
+0 item 7) into .claude/settings.json, fill the bash guard's PROJECT RULES from the
 STEP 0 laws, run every --selftest, pipe-test one real call
 (HOOKS_METHOD.md's tiers say what each guard refuses and why; only the
 CEO edits safety wiring). Then the loops that measure the loop, each in

@@ -101,7 +101,9 @@ PURPOSE: Mines the Claude Code harness JSONL transcripts for real per model
   per tool token usage and writes an aggregate usage sheet (CSV, TXT, XLSX,
   employee runs, and the daily budget line) totaled by day, week and month,
   plus usage_by_arc.txt (checkpoint to checkpoint) and cache_misses.txt +
-  cache_miss_runs.txt (every miss with its likely cause).
+  cache_miss_runs.txt (every miss with its likely cause), and since kit
+  v1.60 THE KIT'S OWN OVERHEAD block: what the hooks injected, metered from
+  the transcripts' hook attachments, per event, per month, with the cut count.
 INTENT: the CEO's ask 2026-09-03: 'one aggregate sheet, totals per day,
   week, and month for every model and every tool, CSV for humans plus TXT
   twin, scripted.'
@@ -132,7 +134,7 @@ DAILY_OUT = os.path.join(HIST, "usage_daily.txt")
 ARC_OUT = os.path.join(HIST, "usage_by_arc.txt")
 MISS_OUT = os.path.join(HIST, "cache_misses.txt")
 MISS_RUNS_OUT = os.path.join(HIST, "cache_miss_runs.txt")
-CACHE_VERSION = 5  # v3: weighted, cache misses, read-diet classes; v4: images
+CACHE_VERSION = 7  # v3: weighted, cache misses, read-diet classes; v4: images; v6-7: hook overhead
 # priced by pixels; v5: per-request timestamp log (reqs) for the per-arc
 # ledger + per-miss detail records (misses) for the cache-miss investigation
 BASELINE_ARCS = 5      # per-arc verdict baseline window
@@ -332,6 +334,33 @@ def parse_file(path, state, force_agent=False):
                     state["t_last"] = ts
             if rtype == "user" and not state.get("label"):
                 state["label"] = first_text(rec.get("message") or {})
+            # THE OVERHEAD BLOCK (kit v1.60, a reader's review 2026-11-06:
+            # "report the kit's own overhead right next to the savings"):
+            # every hook injection is an attachment record; its `rendered`
+            # text is what the model actually saw (the harness replaces an
+            # output past its ~10KB cap with a 2KB preview and a file path).
+            # Two record kinds carry it: hook_additional_context (SessionStart,
+            # the tool guards) and hook_success (UserPromptSubmit renders its
+            # stdout there; for the other events it renders nothing). Counting
+            # every record whose rendered text is non-empty takes both without
+            # a double count. Records exist from harness 2.1.x (the origin's
+            # first is 2026-10-03); older sessions meter as zero.
+            if rtype == "attachment":
+                att = rec.get("attachment") or {}
+                day = local_day(ts)
+                if att.get("type") in ("hook_additional_context", "hook_success") and day:
+                    rendered = rec.get("rendered")
+                    text = "".join(str(x.get("content", "")) for x in (rendered or [])
+                                   if isinstance(x, dict)) if isinstance(rendered, list) else ""
+                    if text:
+                        d = days.setdefault(day, {"models": {}, "tools": {}, "reads": blank_reads()})
+                        h = d.setdefault("hooks", {}).setdefault(
+                            att.get("hookName") or "?", {"n": 0, "chars": 0, "cut": 0})
+                        h["n"] += 1
+                        h["chars"] += len(text)
+                        if "<persisted-output>" in text:
+                            h["cut"] += 1
+                continue
             if rtype == "assistant":
                 msg = rec.get("message") or {}
                 day = local_day(rec.get("timestamp", ""))
@@ -478,6 +507,11 @@ def merge_bucket(tgt, d):
         for k, v in src[cls].items():
             r[cls][k] = r[cls].get(k, 0) + v
     r["grep"] += src.get("grep", 0)
+    hk = tgt.setdefault("hooks", {})
+    for name, v in (d.get("hooks") or {}).items():
+        t = hk.setdefault(name, {"n": 0, "chars": 0, "cut": 0})
+        for k in t:
+            t[k] += v.get(k, 0)
 
 
 def merge_days(all_days, days):
@@ -664,7 +698,8 @@ def write_txt(rows, emp_rows, ws):
         "",
         "SECTIONS: totals (all-time / month / week / day), then THE",
         "BREAKDOWNS at the bottom - the weighted pillars, cache misses, the",
-        "read diet, averages per request, the context window by month,",
+        "read diet, THE KIT'S OWN OVERHEAD (what the hooks inject, v1.60),",
+        "averages per request, the context window by month,",
         "averages per tool call, employee runs, averages per day. THE DAILY",
         "LINE with day-vs-previous-days verdicts is usage_daily.txt.",
         ""]
@@ -704,6 +739,7 @@ def write_txt(rows, emp_rows, ws):
         lines.append("")
     lines += pillar_lines(by)
     lines += diet_lines(ALL_DAYS, ws)
+    lines += overhead_lines(ALL_DAYS, ws)
     lines += breakdown_lines(by, emp_rows)
     lines += ["=" * 66, "AVERAGES (per active day)", "=" * 66]
     for (ptype, period, ws) in sorted(by):
@@ -890,6 +926,71 @@ def diet_lines(all_days, ws):
             mo, wn, ktok(r["whole"]["ctx"]), r["whole"].get("big", 0),
             ktok(r["whole"]["ctx"] // wn) if wn else "-", sn, ktok(r["section"]["ctx"]),
             r["grep"], ("%.0f%%" % (100.0 * sn / (sn + wn))) if (sn + wn) else "-"))
+    L.append("")
+    return L
+
+
+def overhead_totals(days):
+    """{hook event: {n, chars, cut}} summed over the given day buckets."""
+    out = {}
+    for d in days.values():
+        for name, v in (d.get("hooks") or {}).items():
+            t = out.setdefault(name, {"n": 0, "chars": 0, "cut": 0})
+            for k in t:
+                t[k] += v.get(k, 0)
+    return out
+
+
+def overhead_lines(all_days, ws):
+    """THE OVERHEAD BLOCK (kit v1.60): what the kit's own hooks put INTO the
+    context, beside the savings the rest of the sheet claims. A reader's
+    review of the public kit (2026-11-06) asked for exactly this figure.
+    Counted: every hook_additional_context attachment (SessionStart's
+    digest, the prompt gauge, the tool guards' notes), measured as the text
+    the model saw. Not counted: the Stop hooks' refusal lines (they arrive
+    as a turn, not an attachment) and the standup digest's byte ledger
+    (digest_size.txt measures the digest before the harness's ~10KB cut)."""
+    H = "=" * 66
+    L = [H, "THE KIT'S OWN OVERHEAD (what the hooks inject; a reader's ask, 2026-11-06)", H]
+    tot = overhead_totals(all_days)
+    if not tot:
+        L += ["   no hook injections in these transcripts (no hooks wired, or an older harness)", ""]
+        return L
+    inj = sum(v["n"] for v in tot.values())
+    tok = sum(v["chars"] for v in tot.values()) // 4
+    cut = sum(v["cut"] for v in tot.values())
+    first = min(day for day, d in all_days.items() if d.get("hooks"))
+    writes = 0  # the same window as the injections, never all-time against a month
+    for day, d in all_days.items():
+        if day < first:
+            continue
+        for key, m in d["models"].items():
+            if key.endswith("|main"):
+                writes += m["c5"] + m["c1"]
+    share = (100.0 * tok / writes) if writes else 0.0
+    L.append("   %s since %s (the first transcript with hook records): %s tokens injected over"
+             " %d injections = %.1f%% of the manager's cache writes in the same window (new"
+             " context, %s); re-read by every later turn like any other"
+             % (ws, first, ktok(tok), inj, share, ktok(writes)))
+    L.append("   per event (injections, ~tokens, avg/injection, cut to a 2KB preview past the"
+             " harness's ~10KB output cap):")
+    for name, v in sorted(tot.items(), key=lambda kv: -kv[1]["chars"]):
+        L.append("     %-24s %5d  %8s  %7s  %s" % (
+            name, v["n"], ktok(v["chars"] // 4), ktok(v["chars"] // 4 // max(1, v["n"])),
+            ("%d CUT" % v["cut"]) if v["cut"] else "-"))
+    if cut:
+        L.append("   CUT = the model saw a 2KB preview and a file path and had to Read the rest:"
+                 " a digest past ~10KB costs a tool call and a result (%d so far)" % cut)
+    months = {}
+    for day, d in all_days.items():
+        for name, v in (d.get("hooks") or {}).items():
+            t = months.setdefault(day[:7], {"n": 0, "chars": 0})
+            t["n"] += v["n"]
+            t["chars"] += v["chars"]
+    L.append("   by month: " + ", ".join("%s %s (%d)" % (mo, ktok(t["chars"] // 4), t["n"])
+                                         for mo, t in sorted(months.items())))
+    L.append("   not counted: Stop-hook refusal lines (a turn, not an attachment); the"
+             " digest's own bytes before the cut are docs/history/digest_size.txt")
     L.append("")
     return L
 

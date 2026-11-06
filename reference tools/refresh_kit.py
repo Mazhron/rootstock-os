@@ -56,7 +56,7 @@ ADAPTED = {"hooks/bash_guard.py"}          # hand-tailored kit copies: never ove
 SPLIT = {"LESSONS.md"}                     # derived by tools/split_knowledge.py (NS-38 phase 2): the kit copy is a pointer index, the entries live in knowledge/
 SUBST = [("the CEO's", "the CEO's"), ("the CEO", "the CEO")]   # scripts only; prose stays verbatim
 JUNK = {"__pycache__", ".git"}
-KEEP = {"README.md", "LICENSE", ".git"}    # kit-repo-only, never compared
+KEEP = {"README.md", "README_FULL.md", "LICENSE", ".git"}    # kit-repo-only, never compared
 # -----------------------------------------------------------------------
 
 

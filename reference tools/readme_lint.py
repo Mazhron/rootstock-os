@@ -38,13 +38,15 @@ says so) - the lint is a publish gate, not a workstation requirement.
 PURPOSE: Derives every countable README fact (laws, skills, hooks, reference
   tools, the box table, version, the graft README line, number word claims,
   prose claims) from the kit folder itself and compares it with what the
-  public README says, ledgering PASS, FAIL or SKIP each run.
+  public README says (README.md and README_FULL.md read as one text since
+  kit v1.60; the version line and the box must sit in README.md itself),
+  ledgering PASS, FAIL or SKIP each run.
 INTENT: the CEO 2026-09-13: 'What can we do to prevent the Readme from
   falling behind so far and missing information like that in the future?'
   'Lets build it.'
 
 Search keys: readme lint, readme parity, readme drift, kit readme, public
-readme, box table, count check, rootstock readme.
+readme, box table, count check, rootstock readme, README_FULL, long form.
 See also: tools/sync_kit_repo.py (the refusal); tools/readme_audit.py (the
 cadence for the unwritten-answer class); tools/ledger_trends.py (proposes
 an audit); WORKFLOWS.md "Edit the future-project kit (Rootstock)";
@@ -63,6 +65,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KIT_DIR = os.path.join(ROOT, "Future Project MDs")
 KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
 README = os.path.join(KIT_REPO, "README.md")
+README_FULL = os.path.join(KIT_REPO, "README_FULL.md")  # the long form (kit v1.60)
 UPGRADES = os.path.join(KIT_DIR, "UPGRADES.md")
 LAWS_FILE = os.path.join(KIT_DIR, "SUBAGENT_METHOD.md")
 LAWS_HEADING = re.compile(r"^## The (\w+) laws\s*$", re.M)
@@ -204,6 +207,24 @@ def to_num(tok):
     return NUMBER_WORDS.index(tok) if tok in NUMBER_WORDS else None
 
 
+def readme_text():
+    """README.md (the stranger's page) + README_FULL.md (the long form) as one
+    text (kit v1.60, after a reader's review split the public README): a count
+    or a claim is checked wherever it is stated, in either file."""
+    text = read(README)
+    if os.path.isfile(README_FULL):
+        text += "\n" + read(README_FULL)
+    return text
+
+
+def front_page_checks(front):
+    """The two things README.md must carry ITSELF (the sync reads its version
+    line; a stranger reads its box): a pointer in the long form is not enough."""
+    return [(bool(re.search(r"Kit version:\s*\**v\d+\.\d+", front)),
+             "README.md itself carries the kit version line", ""),
+            (BOX_HEADING in front, "README.md itself carries the box table", "")]
+
+
 def workstation():
     home = os.path.expanduser("~").lower()
     return "WS2" if "travis" in home else ("WS1" if "owner" in home else "WS?")
@@ -323,7 +344,7 @@ def main(argv):
         ledger("SKIP", None, [], 0)
         return 0
     t = truths()
-    res = checks(read(README), t)
+    res = front_page_checks(read(README)) + checks(readme_text(), t)
     fails = [r for r in res if not r[0]]
     status = "FAIL" if fails else "PASS"
     if not quiet:
@@ -342,11 +363,11 @@ def main(argv):
 def selftest():
     """Prove the checks bite: a README with the 09-13 slips must FAIL them."""
     t = truths()
-    good = read(README) if os.path.isfile(README) else None
+    good = readme_text() if os.path.isfile(README) else None
     if good is None:
         print("SELFTEST: SKIP (no README at %s)" % README)
         return 0
-    base = checks(good, t)
+    base = front_page_checks(read(README)) + checks(good, t)
     n = 0
     fail = 0
 

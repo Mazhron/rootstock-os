@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.59** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.60** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2447,3 +2447,62 @@ refused with the bare form named; the lesson guard's injected line for
 an entry with two TRIED bullets opens with the newest DO INSTEAD.
 README: "The lesson guard" (the plan step binding since v1.59) and "The
 shell guard" (the bare doors) bullets; the kit version line.
+
+### v1.60 - 2026-11-06 - The install levels, the stranger's README and the overhead block; a reader's review answered
+WHAT: a developer's Claude reviewed the public repo (2026-11-06) and
+said three things: offer it in tiers instead of all or nothing (eighteen
+hook entries on day one, "36" by the reviewer's count of the word
+command, which each entry carries twice; no way to tell which matter);
+write a
+README for a stranger (the current one reads like the author's lab
+notebook); make the savings checkable (Everwood-only receipts, no
+overhead figure beside them). THE INSTALL LEVELS: lean (the pointer
+core, the master index, one rule, the core lint, the day file with
+standup and checkpoint and their two skills; no hook;
+hooks/settings.lean.json carries the deny block alone), standard (lean
+plus the reporting runner and ledgers, the delegation company, the
+skills shelf, and hooks/settings.standard.json: the session loop, the
+three safety guards and the delegation pair, eleven entries), full
+(every step, hooks/settings.json). The stamp carries `| level: <name>`;
+a level moves up by merging the next file's entries, never a reinstall.
+Levels, not tiers: the hooks already have Tiers. THE STRANGER'S README:
+README.md is now one paragraph, the before-and-after of what sits in
+context, a three-command quickstart, the levels, the box and a linked
+glossary; the long form moved whole to README_FULL.md (the receipts,
+the pillars, the questions people ask); the parity lint reads both as
+one text and requires the version line and the box table in README.md
+itself. THE OVERHEAD BLOCK: the usage sheet meters what the hooks
+inject (the hook_additional_context attachments of the transcripts,
+the text the model actually saw) per event and per month, as a share
+of the cache writes it rides in, and counts the injections the harness
+cut to a 2KB preview and a file path because the output passed the
+harness's persisted-output cap, about 10KB. Found while building it:
+twenty-six of the origin's twenty-seven digest injections since October
+were cut (10.2KB to 16.4KB), and the manager read the file back by a
+Read each time (twenty-nine such Reads), so the resume still landed but
+as a preview, a tool call and a result instead of one injection; a
+digest under 10KB arrives whole. The sample project with a with-and-without
+script (the reviewer's third ask) is not in this entry; it is the next
+measured arc.
+CARRIES: hooks/settings.lean.json and hooks/settings.standard.json
+(new); hooks/README.txt (the levels lines); HOOKS_METHOD.md (Bootstrap
+step 2); 0 - READ ME FIRST.md (STEP 0 item 7, the stamp's level field,
+STEP 4); reference tools/readme_lint.py (README_FULL.md read as one
+text with README.md, the front-page check); reference
+tools/usage_report.py (the attachment branch, the hooks key, the
+OVERHEAD block, cache v6); the kit repo's README.md and README_FULL.md.
+GRAFT: an installed project changes nothing for the levels unless it
+wants fewer hooks: pick the level, keep only that file's entries in
+.claude/settings.json, add `| level: <name>` to the stamp. The overhead
+block: replace tools/usage_report.py whole if taken unadapted (CONFIG
+re-applied; the cache rebuilds itself on the version bump), else graft
+the attachment branch of parse_file, the hooks key in merge_bucket and
+overhead_lines into the project's copy. The README gate: only a project
+that publishes a fact-derived README with a long form adds the second
+file to its lint. Verify: `python tools/usage_report.py --quiet`, then
+the OVERHEAD block in usage_metrics.txt names every hook event;
+`python tools/readme_lint.py` PASS; each settings file parses with
+json.tool.
+README: the whole README.md (rewritten for a stranger: "Three ways in",
+the quickstart, the box) and README_FULL.md "The kit's own overhead"
+(under the receipts); the kit version line.

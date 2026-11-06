@@ -694,8 +694,18 @@ the ledgers argue for first.
 1. Copy the kit's hooks/ folder to the project's tools/hooks/ (or wherever
    its scripts live; the scripts locate the repo root from their own path
    and import the checkpoint script from the folder above them).
-2. Copy hooks/settings.json to .claude/settings.json (MERGE if the project
-   already has one - never replace its arrays). Validate with json.tool.
+2. Copy the install level's file to .claude/settings.json (MERGE if the
+   project already has one - never replace its arrays). Validate with
+   json.tool. THE INSTALL LEVELS (kit v1.60, after a reader's review:
+   "offer it in tiers instead of all or nothing"; levels, because the
+   hooks already have Tiers): hooks/settings.lean.json is the deny block
+   and no hook; hooks/settings.standard.json is eleven entries, the
+   session loop (session_start, prompt_gauge, stop_tick, pre_compact,
+   session_end), the three safety guards (bash, preserve, diet) and the
+   delegation pair (brief_guard, delegation_auditor); hooks/settings.json
+   is all eighteen. The install stamp carries `| level: <name>`; a
+   level moves up by merging the next file's entries and running the
+   front-door steps it adds, never by a reinstall.
 3. Gitignore `.claude/hooks_state.json` and `.claude/settings.local.json`.
 4. Make sure the project's checkpoint script has `work_fingerprint`,
    `load_hook_state`, `save_hook_state` (the kit's reference

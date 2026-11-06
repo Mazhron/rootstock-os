@@ -33,15 +33,15 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-11-06 14:27 | items 97 | GREEN 92 | YELLOW 4 | RED 0 | unflagged 1 | stale 23
+Updated 2026-11-06 14:47 | items 99 | GREEN 94 | YELLOW 4 | RED 0 | unflagged 1 | stale 20
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| 0 - READ ME FIRST.md | GREEN | STALE | fable | 2026-10-13 14:13 |
+| 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-11-06 14:47 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | STALE | sonnet | 2026-11-06 14:25 |
+| HOOKS_METHOD.md | GREEN | ok | fable | 2026-11-06 14:47 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | LESSONS.md | GREEN | STALE | fable | 2026-10-30 13:08 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
@@ -49,14 +49,14 @@ Updated 2026-11-06 14:27 | items 97 | GREEN 92 | YELLOW 4 | RED 0 | unflagged 1 
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| UPGRADES.md | GREEN | STALE | fable | 2026-10-30 13:06 |
+| UPGRADES.md | GREEN | ok | fable | 2026-11-06 14:47 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
 | WORKFLOW_METHOD.md | GREEN | STALE | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
 | agents/explore.md | GREEN | STALE | fable | 2026-10-22 09:10 |
 | agents/lookup.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| hooks/README.txt | GREEN | ok | fable | 2026-11-06 14:27 |
+| hooks/README.txt | GREEN | ok | fable | 2026-11-06 14:47 |
 | hooks/_hooklib.py | GREEN | STALE | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/brief_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
@@ -64,7 +64,7 @@ Updated 2026-11-06 14:27 | items 97 | GREEN 92 | YELLOW 4 | RED 0 | unflagged 1 
 | hooks/diet_guard.py | GREEN | STALE | fable | 2026-09-30 11:57 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
-| hooks/hygiene_guard.py | GREEN | ok | fable | 2026-09-20 03:21 |
+| hooks/hygiene_guard.py | GREEN | ok | fable | 2026-11-06 14:47 |
 | hooks/lesson_advisor.py | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | hooks/lesson_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
@@ -74,6 +74,8 @@ Updated 2026-11-06 14:27 | items 97 | GREEN 92 | YELLOW 4 | RED 0 | unflagged 1 
 | hooks/session_end.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | hooks/session_start.py | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-10-01 16:55 |
+| hooks/settings.lean.json | GREEN | ok | fable | 2026-11-06 14:47 |
+| hooks/settings.standard.json | GREEN | ok | fable | 2026-11-06 14:47 |
 | hooks/stop_tick.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | knowledge/MANIFEST.md | GREEN | STALE | fable | 2026-10-30 13:08 |
@@ -107,8 +109,8 @@ Updated 2026-11-06 14:27 | items 97 | GREEN 92 | YELLOW 4 | RED 0 | unflagged 1 
 | reference tools/plan_check.py | - | UNFLAGGED | - | - |
 | reference tools/purpose_audit.py | GREEN | ok | fable | 2026-10-13 14:14 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/readme_lint.py | GREEN | ok | fable | 2026-10-19 10:26 |
-| reference tools/refresh_kit.py | GREEN | ok | fable manager E-2026-11-03-28 follow-up | 2026-11-03 16:50 |
+| reference tools/readme_lint.py | GREEN | ok | fable | 2026-11-06 14:47 |
+| reference tools/refresh_kit.py | GREEN | ok | fable | 2026-11-06 14:47 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/retrieval_eval.py | GREEN | STALE | fable | 2026-10-13 11:45 |
 | reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 14:13 |
@@ -118,7 +120,7 @@ Updated 2026-11-06 14:27 | items 97 | GREEN 92 | YELLOW 4 | RED 0 | unflagged 1 
 | reference tools/split_knowledge.py | GREEN | ok | fable | 2026-10-13 13:33 |
 | reference tools/standup.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/usage_report.py | GREEN | ok | fable | 2026-09-29 00:24 |
+| reference tools/usage_report.py | GREEN | ok | fable | 2026-11-06 14:47 |
 | reference tools/usage_window.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | reference tools/version_hint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
@@ -1830,3 +1832,53 @@ FLAG: The 2026-11-06 yellow fixed in the same batch: the PURPOSE names the new r
 SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES and its BARE_DOORS tuple, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
 DOES: Installation notes per hook, now naming the BARE_DOORS tuple beside the PROJECT RULES block and the brief guard plan step
 FLAG: The 2026-11-06 yellow fixed in the same batch: the PURPOSE names the new rule; the plan mark needs a real run; BARE_DOORS ships empty
+
+### 2026-11-06 14:47 | hooks/settings.lean.json | GREEN | fable | WS1 | 964bcdbb
+SAYS: (no PURPOSE line)
+DOES: the permissions.deny block of settings.json and no hook entry; the lean install level's whole settings file (kit v1.60)
+FLAG: GREEN: derived from settings.json by the batch script, parses, carries nothing the level does not promise
+
+### 2026-11-06 14:47 | hooks/settings.standard.json | GREEN | fable | WS1 | ffbd4e58
+SAYS: (no PURPOSE line)
+DOES: the deny block and eleven hook entries: session_start, prompt_gauge, stop_tick, pre_compact, session_end, bash_guard, preserve_guard, diet_guard, brief_guard and delegation_auditor on PostToolUse and SubagentStop, each with its matcher and timeout as in settings.json
+FLAG: GREEN: a strict subset of settings.json made by filtering on script name; the front door's STEP 0 item 7 names the same eleven
+
+### 2026-11-06 14:47 | hooks/README.txt | GREEN | fable | WS1 | 20211f55
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES and its BARE_DOORS tuple, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: the per-hook install notes; v1.60 adds the install levels under the settings line: the two smaller files, how a level moves up, the stamp field
+FLAG: GREEN: notes only, no instruction a hook does not implement
+
+### 2026-11-06 14:47 | hooks/hygiene_guard.py | GREEN | fable | WS1 | 792e17ea
+SAYS: PostToolUse guard on Write, Edit and MultiEdit that, after an edit lands, hands the manager one line of context per applicable law: KIT REFRESH when a portable original changed, SEE-ALSO when a touched docs/systems section has no See also line, DASH when player-facing text received an em or en dash (this one BLOCKS), and IMPORT when a new asset needs the engine import run; stateless pattern matching only.
+DOES: the PostToolUse law reminder after an edit; the kit set now includes the two level settings files so an edit to either reminds of the kit refresh
+FLAG: GREEN: two names added to a set, selftest 0 failed, no new side effect
+
+### 2026-11-06 14:47 | reference tools/readme_lint.py | GREEN | fable | WS1 | 75a77a20
+SAYS: Derives every countable README fact (laws, skills, hooks, reference tools, the box table, version, the graft README line, number word claims, prose claims) from the kit folder itself and compares it with what the public README says (README.md and README_FULL.md read as one text since kit v1.60; the version line and the box must sit in README.md itself), ledgering PASS, FAIL or SKIP each run.
+DOES: lints README.md and README_FULL.md as one text against the kit folder; two new front-page checks require the version line and the box table in README.md itself; selftest 8/8
+FLAG: GREEN: PURPOSE amended to say the two-file read; the concatenation can let a must-not regex with re.S span the two files, the same risk the one file already carried
+
+### 2026-11-06 14:47 | reference tools/refresh_kit.py | GREEN | fable | WS1 | 3e147ed4
+SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, every .md in each .claude/skills/<name>/ dir (SKILL.md and its siblings, kit v1.58), .claude/agents/*.md (kit v1.54, the pinned searchers), tools/hooks/*.py, the tools/*.py that have a reference copy, and the .claude/rules/*.md files named in PORTABLE_RULES), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; then derive the kit's LESSONS.md and knowledge/ tree through tools/split_knowledge.py (SPLIT; it writes those files and one knowledge_split_runs.txt line); `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
+DOES: originals to kit copies; README_FULL.md joins KEEP, the kit-repo-only names never compared
+FLAG: GREEN: one name in a set
+
+### 2026-11-06 14:47 | reference tools/usage_report.py | GREEN | fable | WS1 | ec48b90b
+SAYS: Mines the Claude Code harness JSONL transcripts for real per model per tool token usage and writes an aggregate usage sheet (CSV, TXT, XLSX, employee runs, and the daily budget line) totaled by day, week and month, plus usage_by_arc.txt (checkpoint to checkpoint) and cache_misses.txt + cache_miss_runs.txt (every miss with its likely cause), and since kit v1.60 THE KIT'S OWN OVERHEAD block: what the hooks injected, metered from the transcripts' hook attachments, per event, per month, with the cut count.
+DOES: the usage sheet; v1.60 adds the attachment branch (hook_success and hook_additional_context records with rendered text, counted once each), the hooks key in the day bucket and merge, overhead_lines (per event, per month, the cut count, the share of same-window cache writes), cache v7
+FLAG: GREEN: PURPOSE amended to name the block; not counted and said so: the Stop hooks' refusal lines and sessions before the harness wrote attachments; the share's denominator is the same window as the numerator
+
+### 2026-11-06 14:47 | HOOKS_METHOD.md | GREEN | fable | WS1 | 65869d9b
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: the hooks method; Bootstrap step 2 names the three level files, the eleven and eighteen entry counts, the stamp field and the move-up rule
+FLAG: GREEN: matches the two json files and the front door
+
+### 2026-11-06 14:47 | 0 - READ ME FIRST.md | GREEN | fable | WS1 | 99273761
+SAYS: The kit's front door (and, for an existing install, the UPDATING section: graft only from a verified release): walks a receiving Claude through the install in order (ask the CEO first, including whether to take part in the kit's community and under what name, which the install stamp records; then the wiki, reporting and session rituals, the delegation company, the skills and hooks, the companions, the optional boards) by POINTING at each method file's bootstrap section, so the operating system lands the same way every time.
+DOES: the install runbook; STEP 0 item 7 asks the install level and says what each level lands, the stamp carries level, STEP 4 names the level's settings file
+FLAG: GREEN: the lean level's two-skill pairing (checkpoint writes, standup reads) is stated so a lean install is not half a ritual
+
+### 2026-11-06 14:47 | UPGRADES.md | GREEN | fable | WS1 | 43bd8b3f
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: the graft log; v1.60 entry (the levels, the stranger's README, the overhead block, the ~10KB cut finding) with CARRIES, GRAFT, README; version line v1.60
+FLAG: GREEN: the entry names the reviewer's third ask as not done, the sample project with a with-and-without script
