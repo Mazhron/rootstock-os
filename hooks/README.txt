@@ -18,7 +18,8 @@ INTENT: gives a receiving project the exact per-hook setup steps so the kit
   .gitignore  <- .claude/hooks_state.json, .claude/settings.local.json,
                  .claude/fanout_state.json, .claude/diet_state.json,
                  .claude/verify_state.json, .claude/lesson_state.json,
-                 .claude/lesson_guard_state.json, .claude/route_state.json
+                 .claude/lesson_guard_state.json, .claude/route_state.json,
+                 .claude/standup_tail.txt (THE CAP SPLIT, kit v1.61)
   .claude/rootstock_modes.json  <- rootstock_modes.json (COMMIT it: the
                  CEO's switches, kit v1.57, see THE MODES FILE below)
 The scripts import the checkpoint script from the folder above them
@@ -83,6 +84,12 @@ its header by `--rewrite` after a read-only look, never by hand; and
 `python tools/purpose_audit.py` creates FLAGS.md for the first audit
 (see CONTRIBUTING.md and skills/flag).
 
+THE CAP SPLIT (kit v1.61): the harness cuts a hook's injected context
+past 10,000 characters to a 2KB preview and a file path; session_start.py
+parks whole digest sections in .claude/standup_tail.txt in a fixed order
+until the head fits 9,500 and names them in a DIGEST TAIL line. Nothing
+to fill in; `python tools/hooks/session_start.py --selftest` covers it;
+digest_cap_split = false in the modes file is the old way.
 THE LOOP LAW (kit v1.21, 2026-09-14): session_start.py runs the parent
 loop's session group (reference tools/run_all.py) once a day before the
 digest and ledgers the digest's size (digest_size.txt); stop_tick.py warns

@@ -13,7 +13,11 @@ INTENT: The script mines the true final exchange from the harness
 
 1. If a [HOOK session_start] block is already in context, the digest
    was injected automatically - do NOT run the script again. Otherwise
-   run `python tools/standup.py` from the repo root.
+   run `python tools/standup.py` from the repo root. A DIGEST TAIL line
+   at the block's end (THE CAP SPLIT, kit v1.61) names the sections the
+   hook parked in .claude/standup_tail.txt to stay under the harness's
+   10,000-char injection cap: Read that file before planning an arc, a
+   cross-workstation step or a ledger trend, never to re-run the script.
 2. Relay THE LAST EXCHANGE block FIRST: the user's last prompt exactly
    as the script prints it, word for word in a quote block - never
    summarized, condensed, or paraphrased (the user must recognize their

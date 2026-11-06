@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-11-06 14:47 | items 99 | GREEN 94 | YELLOW 4 | RED 0 | unflagged 1 | stale 20
+Updated 2026-11-06 15:00 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 | stale 15
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -41,23 +41,23 @@ Updated 2026-11-06 14:47 | items 99 | GREEN 94 | YELLOW 4 | RED 0 | unflagged 1 
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | fable | 2026-11-06 14:47 |
+| HOOKS_METHOD.md | GREEN | ok | fable | 2026-11-06 15:00 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | STALE | fable | 2026-10-30 13:08 |
+| LESSONS.md | GREEN | ok | fable | 2026-11-06 15:00 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 14:13 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| UPGRADES.md | GREEN | ok | fable | 2026-11-06 14:47 |
+| UPGRADES.md | GREEN | ok | fable | 2026-11-06 15:00 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
 | WORKFLOW_METHOD.md | GREEN | STALE | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
 | agents/explore.md | GREEN | STALE | fable | 2026-10-22 09:10 |
 | agents/lookup.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| hooks/README.txt | GREEN | ok | fable | 2026-11-06 14:47 |
-| hooks/_hooklib.py | GREEN | STALE | sonnet-fmt1 | 2026-09-13 11:51 |
+| hooks/README.txt | GREEN | ok | fable | 2026-11-06 15:00 |
+| hooks/_hooklib.py | GREEN | ok | fable | 2026-11-06 15:00 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/brief_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/delegation_auditor.py | GREEN | ok | fable | 2026-10-01 16:55 |
@@ -70,18 +70,18 @@ Updated 2026-11-06 14:47 | items 99 | GREEN 94 | YELLOW 4 | RED 0 | unflagged 1 
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-10-30 13:05 |
-| hooks/rootstock_modes.json | GREEN | STALE | fable | 2026-10-31 19:43 |
+| hooks/rootstock_modes.json | GREEN | ok | fable | 2026-11-06 15:00 |
 | hooks/session_end.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
-| hooks/session_start.py | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
+| hooks/session_start.py | GREEN | ok | fable | 2026-11-06 15:00 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-10-01 16:55 |
 | hooks/settings.lean.json | GREEN | ok | fable | 2026-11-06 14:47 |
 | hooks/settings.standard.json | GREEN | ok | fable | 2026-11-06 14:47 |
 | hooks/stop_tick.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| knowledge/MANIFEST.md | GREEN | STALE | fable | 2026-10-30 13:08 |
+| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-11-06 15:00 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
 | knowledge/lessons/godot.md | GREEN | STALE | fable | 2026-10-19 09:44 |
-| knowledge/lessons/harness.md | GREEN | STALE | fable | 2026-10-30 13:08 |
+| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-11-06 15:00 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | reference tools/backup_push.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
@@ -100,7 +100,7 @@ Updated 2026-11-06 14:47 | items 99 | GREEN 94 | YELLOW 4 | RED 0 | unflagged 1 
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/keepwarm.py | GREEN | STALE | fable | 2026-10-31 19:43 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
-| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-10-13 12:52 |
+| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-11-06 15:00 |
 | reference tools/lesson_ladder.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | reference tools/lesson_log.py | GREEN | ok | sonnet | 2026-11-06 14:25 |
 | reference tools/merge_ledgers.py | GREEN | ok | fable manager E-2026-11-03-28 follow-up | 2026-11-03 16:50 |
@@ -118,7 +118,7 @@ Updated 2026-11-06 14:47 | items 99 | GREEN 94 | YELLOW 4 | RED 0 | unflagged 1 
 | reference tools/run_all.py | GREEN | STALE | sonnet-flag-1013c | 2026-10-13 13:32 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/split_knowledge.py | GREEN | ok | fable | 2026-10-13 13:33 |
-| reference tools/standup.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
+| reference tools/standup.py | GREEN | ok | fable | 2026-11-06 15:00 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/usage_report.py | GREEN | ok | fable | 2026-11-06 14:47 |
 | reference tools/usage_window.py | GREEN | ok | fable | 2026-09-30 11:57 |
@@ -135,7 +135,7 @@ Updated 2026-11-06 14:47 | items 99 | GREEN 94 | YELLOW 4 | RED 0 | unflagged 1 
 | skills/preserve/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/runaway/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/ship/SKILL.md | GREEN | ok | fable | 2026-09-30 12:22 |
-| skills/standup/SKILL.md | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
+| skills/standup/SKILL.md | GREEN | ok | fable | 2026-11-06 15:00 |
 | 0 - READ ME FIRST, CLAUDE.md | GREEN | GONE | sonnet-fd1 | 2026-09-13 12:20 |
 | .github/workflows/contribution-lint.yml | YELLOW | GONE | fable | 2026-10-13 14:13 |
 | community/code/README.md | GREEN | GONE | fable | 2026-10-13 14:13 |
@@ -1882,3 +1882,63 @@ FLAG: GREEN: the lean level's two-skill pairing (checkpoint writes, standup read
 SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
 DOES: the graft log; v1.60 entry (the levels, the stranger's README, the overhead block, the ~10KB cut finding) with CARRIES, GRAFT, README; version line v1.60
 FLAG: GREEN: the entry names the reviewer's third ask as not done, the sample project with a with-and-without script
+
+### 2026-11-06 15:00 | hooks/session_start.py | GREEN | fable | WS1 | 18b47dbc
+SAYS: SessionStart hook that runs tools/standup.py and injects its digest into the manager's context on startup, resume, /clear and after a compaction, with a header telling the manager not to re-run standup and how to relay the last exchange; also runs the session group itself when it has not run today (THE LOOP LAW) and ledgers the digest's byte size; on a same-day resume it injects one pointer line instead of the digest (resume_digest = full in the modes file restores the old way); past the harness's 10,000-char injection cap it parks whole sections in .claude/standup_tail.txt in a fixed order and ends the head with a DIGEST TAIL line naming them (THE CAP SPLIT, kit v1.61; digest_cap_split = false injects the whole text, the old way).
+DOES: runs standup.py, prepends the loop note and the trimmed header, and since v1.61 splits an injection past INJECT_CAP 9,500 into a head it chooses and a tail written to .claude/standup_tail.txt (sections in TAIL_ORDER, the exchange and the day file never), ending the head with a DIGEST TAIL line; the ledger keeps the whole digest's bytes with head and tail in the trigger field; a failed tail write injects the whole text
+FLAG: GREEN: PURPOSE names the split and the old way behind digest_cap_split; eight selftest cases; the file write is the one new side effect and it is named, gitignored and regenerated
+
+### 2026-11-06 15:00 | reference tools/standup.py | GREEN | fable | WS1 | 8b0cce4e
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: prints the digest; the eighth trim caps commit subjects at 160, prints a verdict two ledgers carry once (=other on the quiet lines) and collapses a verdict older than the previous standup and a week to its word; tails_plan takes today for the tests
+FLAG: GREEN: docstring's EIGHTH TRIM paragraph says each; the verdict is never dropped, only its body; selftest 0 failed
+
+### 2026-11-06 15:00 | reference tools/ledger_trends.py | GREEN | fable | WS1 | 7da90399
+SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop, the lesson loop, the retrieval evaluation, the grain scan), plus one thing that is not a ledger: the kit clone three folders up (`git log -1` there, read-only, and a byte comparison of the kit folder against it, for the push schedule), compares them against tunable thresholds, and prints proposed rule changes, each tagged [DO] (a script, hook or employee carries it out in the reply that reads it) or [ASK] (only the owner can answer); it applies nothing itself.
+DOES: proposals from the ledgers; the stale loop groups now share one line; digest_warn_bytes default is 10,000, the harness's measured injection cap
+FLAG: GREEN: a wording collapse and a default; the owner's trend_limits.json still says 12000 and overrides it
+
+### 2026-11-06 15:00 | hooks/_hooklib.py | GREEN | fable | WS1 | b5d0c87e
+SAYS: Shared plumbing every hook imports: reads the harness's JSON from stdin, emits JSON back for deny, block or context decisions, and resolves the project version; import-only, no side effects on its own.
+DOES: the shared hook library; MODES_DEFAULT gains digest_cap_split True
+FLAG: GREEN: one default beside the others
+
+### 2026-11-06 15:00 | hooks/rootstock_modes.json | GREEN | fable | WS1 | 471a6851
+SAYS: (no PURPOSE line)
+DOES: the CEO's switches; digest_cap_split true with its old way (the whole digest injected, the harness cuts it)
+FLAG: GREEN: the v1.57 pattern, one key and its old way
+
+### 2026-11-06 15:00 | HOOKS_METHOD.md | GREEN | fable | WS1 | 5fec3bc2
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: the hooks method; Tier 1 #1 gains THE CAP SPLIT paragraph (the measured cap, the order, the ledger field, the mode) and the modes list its key; the verbatim opener and safeguard rulings now stated here since the header lost them
+FLAG: GREEN: matches the hook's constants and order
+
+### 2026-11-06 15:00 | hooks/README.txt | GREEN | fable | WS1 | 9cdc5d5e
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES and its BARE_DOORS tuple, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: the per-hook install notes; the cap split paragraph and the standup_tail gitignore entry
+FLAG: GREEN: notes only
+
+### 2026-11-06 15:00 | skills/standup/SKILL.md | GREEN | fable | WS1 | aa395ef2
+SAYS: Open a session: print the standup digest and hand back the last exchange (prompt and response) and project state before anything else.
+DOES: the session opener; step 1 says what the DIGEST TAIL line means and when to Read the tail file
+FLAG: GREEN: one sentence, consistent with the hook
+
+### 2026-11-06 15:00 | UPGRADES.md | GREEN | fable | WS1 | 3d6242fe
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: the graft log; v1.61 entry (the cap split, the eighth trim, the lesson) with CARRIES, GRAFT, README; version line v1.61
+FLAG: GREEN: the GRAFT names whole-file and by-hand paths and a verify step tied to the ledger's trigger field
+
+### 2026-11-06 15:00 | LESSONS.md | GREEN | fable | WS1 | bfc7a70d
+SAYS: The lesson law and the entry shape of the one-right-way book, plus a pointer index: every one of the origin's 68 entries under the knowledge/lessons/<domain>.md file that holds it verbatim, so a project seeds its own LESSONS.md from the slices the manifest matched.
+DOES: the pointer index to knowledge/; the new harness entry on the 10,000-char injection cap is indexed
+FLAG: GREEN: derived by split_knowledge.py
+
+### 2026-11-06 15:00 | knowledge/lessons/harness.md | GREEN | fable | WS1 | fa22d03a
+SAYS: The harness slice of the one-right-way book, 60 entries whose Tags name balance, budget, checkpoint, communication and 37 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: the harness lessons; gains the injection-cap entry (measured on claude-vscode 2.1.289, the CLI unmeasured, the number may move)
+FLAG: GREEN: the entry states its measurement scope and how to re-measure
+
+### 2026-11-06 15:00 | knowledge/MANIFEST.md | GREEN | fable | WS1 | 04ee267f
+SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
+DOES: one row per knowledge file; the harness row's count and size moved with the new entry
+FLAG: GREEN: derived

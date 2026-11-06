@@ -35,6 +35,18 @@ word followed by a zero count ("WARN 0 | FAIL 0", the security audit's
 all-clear shape) is a count, not a verdict; the 11-02 audit line (450
 bytes) printed in full at every standup for two days on that match, one
 `tail -1` away. has_verdict blanks the zero counts before it looks.
+THE EIGHTH TRIM (2026-11-06, the day the harness's 10,000-char injection
+cap was measured; LESSONS.md "A hook injection past 10,000 characters"):
+a commit subject prints its first 160 chars (git log has the rest); a
+verdict sentence two ledgers carry (output_shape.txt and its _runs twin)
+prints once, the shorter line collapsing to `name date =other`; a verdict
+older than the previous standup AND older than seven days collapses to
+`name date VERDICT` on the quiet lines - the verdict stays visible, the
+body is one `tail -1` away; and the session_start header lost the dated
+quotes it carried (they live in HOOKS_METHOD.md). The delivery itself is
+the hook's: past the cap it parks whole sections in a named file (THE
+CAP SPLIT, tools/hooks/session_start.py); this script prints the whole
+digest and digest_size.txt measures the whole, as before.
 
 THE BUDGET (the CEO 2026-09-10, TOKEN_IDEAS 20): the digest refreshes the
 usage sheet silently (tools/usage_report.py --quiet, incremental, ~2 s)
@@ -53,13 +65,15 @@ INTENT: the CEO 2026-09-02: 'this goes along with my rules of creating a
   script for everything.'
 
 Search keys: standup, pull digest, session start, catch-up, the budget,
-weighted spend, digest diet, loss test, quiet ledgers. See also: TOKEN_IDEAS.md ideas 7 + 20; docs/history/
+weighted spend, digest diet, loss test, quiet ledgers, eighth trim, stale
+verdict, commit cap, cap split. See also: TOKEN_IDEAS.md ideas 7 + 20; docs/history/
 ledgers; NEXT_STEPS.md; tools/usage_report.py (the daily line).
 See also: TOKEN_IDEAS.md ideas 7 and 20; docs/history ledgers;
   NEXT_STEPS.md; tools/usage_report.py (the daily line);
   tools/ledger_trends.py (the proposals block).
 """
 import argparse
+import datetime
 import glob
 import json
 import os
@@ -401,6 +415,57 @@ _VERDICT = re.compile(r"\b(CHECK|FAIL|STALE|WARN|UNSYNCED|ERROR|STALL|MISSING)\b
 _DATE = re.compile(r"(\d{4}-\d{2}-\d{2})(?: (\d{2}:\d{2}))?")  # first date in the line
 
 
+STALE_VERDICT_DAYS = 7   # THE EIGHTH TRIM: a verdict this old and already shown collapses to its word
+COMMIT_CAP = 160         # THE EIGHTH TRIM: a commit subject's first 160 chars; git log has the rest
+
+
+def commit_line(line, cap=COMMIT_CAP):
+    """A long commit subject prints its head and says where the rest is."""
+    if len(line) <= cap:
+        return line
+    return line[:cap].rstrip() + " ... [git log]"
+
+
+def verdict_word(line):
+    """The first verdict token of a line ('FAIL', 'CHECK', 'RED 2'), else ''."""
+    m = _VERDICT.search(_ZERO_COUNT.sub("", line))
+    return m.group(0) if m else ""
+
+
+def _days_old(stamp, today):
+    try:
+        d = datetime.date.fromisoformat(stamp[:10])
+    except ValueError:
+        return None
+    return (today - d).days
+
+
+def dedupe_verdicts(full):
+    """THE EIGHTH TRIM: when the verdict sentence of one full line (from its
+    verdict word to the end) sits inside another full line of a different
+    ledger, the shorter line is a duplicate: it leaves `full` and comes back
+    as a quiet entry 'name date =other'. Returns (full, quiet_extra)."""
+    kept, extra = [], []
+    for name, line in full:
+        blanked = _ZERO_COUNT.sub("", line)
+        m = _VERDICT.search(blanked)
+        sentence = blanked[m.start():].strip() if m else ""
+        twin = None
+        if len(sentence) >= 20:
+            for other, oline in full:
+                if other != name and len(oline) > len(line) and sentence in _ZERO_COUNT.sub("", oline):
+                    twin = other
+                    break
+        if twin:
+            st = line_stamp(line)
+            short = name[:-4] if name.endswith(".txt") else name
+            extra.append("%s %s =%s" % (short, st[5:10] if st else "-",
+                                       twin[:-4] if twin.endswith(".txt") else twin))
+        else:
+            kept.append((name, line))
+    return kept, extra
+
+
 def cap_tail(name, line, cap=TAIL_CAP):
     """A full ledger line longer than `cap` prints its head and names the
     ledger for the rest (the loss test: the rest stays one tail -1 away)."""
@@ -443,7 +508,7 @@ def in_window(stamp, window):
                 and window[0] <= stamp <= window[1])
 
 
-def tails_plan(ledgers, since, window=None):
+def tails_plan(ledgers, since, window=None, today=None):
     """ledgers: [(name, newest_line[, previous_line])] -> (full: [(name, line)],
     quiet: [name date]). Full when the line has a verdict or is newer than
     `since`; quiet otherwise. THE REPEATED ALL-CLEAR (2026-09-29, the second
@@ -455,6 +520,7 @@ def tails_plan(ledgers, since, window=None):
     exchange, which the digest replays verbatim above - a duplicate, so it
     collapses to 'name date ^exchange'."""
     full, quiet = [], []
+    today = today or datetime.date.today()
     for row in ledgers:
         name, line = row[0], row[1]
         prev = row[2] if len(row) > 2 else ""
@@ -463,7 +529,15 @@ def tails_plan(ledgers, since, window=None):
         st = line_stamp(line)
         short = name[:-4] if name.endswith(".txt") else name
         if has_verdict(line):
-            full.append((name, line))
+            age = _days_old(st, today) if st else None
+            # THE EIGHTH TRIM: shown at an earlier standup and older than a
+            # week - the verdict word stays on the quiet lines, the body is
+            # one `tail -1` away. A line with no stamp cannot be judged old.
+            if (st and since and st <= since and age is not None
+                    and age > STALE_VERDICT_DAYS):
+                quiet.append("%s %s %s" % (short, st[5:10], verdict_word(line)))
+            else:
+                full.append((name, line))
         elif st and since and st > since:
             if in_window(st, window):
                 quiet.append("%s %s ^exchange" % (short, st[5:10]))
@@ -473,6 +547,8 @@ def tails_plan(ledgers, since, window=None):
                 full.append((name, line))
         else:
             quiet.append("%s %s" % (short, st[5:10] if st else "-"))
+    full, extra = dedupe_verdicts(full)
+    quiet.extend(extra)
     return full, quiet
 
 
@@ -590,6 +666,31 @@ def selftest():
     check("WARN 0 / FAIL 0 is not, FAIL 1 is", not has_verdict("| PASS 0 | WARN 0 | FAIL 0 |") and has_verdict("| FAIL 1 |"))
     check("a long full line is capped and names its ledger", cap_tail("x_runs.txt", "v" * 700).endswith("tail -1 docs/history/x_runs.txt]") and cap_tail("x_runs.txt", "short") == "short")
     check("PROPOSE: none is not", not has_verdict("== PROPOSE: none"))
+    # THE EIGHTH TRIM (2026-11-06)
+    long_subject = "abcdef1 " + "word " * 60
+    check("commit_line caps a long subject at 160 and names git log",
+          len(commit_line(long_subject)) <= 160 + len(" ... [git log]")
+          and commit_line(long_subject).endswith("[git log]") and commit_line("abc short") == "abc short")
+    today = datetime.date(2026, 11, 6)
+    since = "2026-11-03 10:23"
+    old_fail = ("contribution_lint_runs.txt", "2026-10-13 12:42 | 1 | 1 | FAIL")
+    new_fail = ("test_runs.txt", "2026-11-05 09:00 | 2 | FAIL 2")
+    unstamped = ("output_shape.txt", "VERDICT: CHECK: effort high on 100% of 56 requests")
+    f, q = tails_plan([old_fail, new_fail, unstamped], since, today=today)
+    check("a verdict older than the last standup and a week collapses to its word on the quiet lines",
+          "contribution_lint_runs 10-13 FAIL" in q and old_fail not in f)
+    check("a recent verdict and an unstamped verdict stay full",
+          new_fail in f and unstamped in f)
+    twin = ("output_shape_runs.txt",
+            "2026-11-03 10:24 | WS1 | active days 7 | CHECK: effort high on 100% of 56 requests")
+    f, q = tails_plan([unstamped, twin], since, today=today)
+    check("the shorter of two lines carrying one verdict sentence collapses to =other",
+          twin in f and unstamped not in f and "output_shape - =output_shape_runs" in q)
+    f, q = tails_plan([("a_runs.txt", "2026-11-05 | CHECK: alpha beta gamma delta"),
+                       ("b_runs.txt", "2026-11-05 | CHECK: alpha beta gamma delta epsilon")],
+                      since, today=today)
+    check("a different verdict sentence is not a twin (prefix alone is not containment)",
+          len(f) == 1 and f[0][0] == "b_runs.txt" and "a_runs 11-05 =b_runs" in q)
     check("a cliff is", has_verdict("cliffs: r8 LIFT STALL (<+5%)"))
     check("missing required: none is not", not has_verdict("20/20 present | missing required: none"))
     check("a constant name is not (WARN_TOKENS)", not has_verdict("3 WRONG applied (WARN_TOKENS 1,000 to 1,500 at two README lines"))
@@ -604,10 +705,16 @@ def selftest():
     full, quiet = tails_plan([("a_runs.txt", "2026-09-14 17:00 | new"),
                               ("b_runs.txt", "2026-09-10 | old | PASS"),
                               ("c_runs.txt", "2026-09-01 | FAIL"),
-                              ("usage_daily.txt", "2026-09-14 | CHECK")], "2026-09-14 16:39")
+                              ("d_runs.txt", "2026-09-12 | FAIL"),
+                              ("usage_daily.txt", "2026-09-14 | CHECK")], "2026-09-14 16:39",
+                             today=datetime.date(2026, 9, 14))
     check("newer than the last standup prints in full", ("a_runs.txt", "2026-09-14 17:00 | new") in full)
-    check("old and clean collapses to name + date", quiet == ["b_runs 09-10"])
-    check("old with a verdict prints in full", any(n == "c_runs.txt" for n, _ in full))
+    check("old and clean collapses to name + date", "b_runs 09-10" in quiet)
+    # THE EIGHTH TRIM (2026-11-06): shown before and older than a week ->
+    # the verdict word on the quiet lines; a verdict two days old stays full.
+    check("old with a verdict older than a week collapses to its word",
+          "c_runs 09-01 FAIL" in quiet and not any(n == "c_runs.txt" for n, _ in full))
+    check("old with a verdict inside the week prints in full", any(n == "d_runs.txt" for n, _ in full))
     check("shown-elsewhere ledgers are skipped", not any(n == "usage_daily.txt" for n, _ in full))
     check("first_clause cuts at ';'", first_clause("Pulled WS2; then more") == "Pulled WS2")
     check("first_clause cuts at ' then '", first_clause("I0002 explained then THE AUDIT") == "I0002 explained")
@@ -809,7 +916,7 @@ def main():
     if log:
         for ln in log.splitlines():
             if keep_commit(ln):
-                print("  " + ln)
+                print("  " + commit_line(ln))
     else:
         print("  (no git history - not a git repo, or git unavailable)")
 

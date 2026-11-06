@@ -97,7 +97,7 @@ DEFAULTS = {
     "systems_audit_day_files": 10,   # day files written since the last systems audit
     "open_question_days": 7,         # an OPEN question waited this many days
     "lesson_advised_unwritten": 3,    # ADVISED lines in 7 d with no WRITTEN line and no new entry (THE LESSON LOOP, 2026-09-20)
-    "digest_warn_bytes": 12000,      # the standup digest's byte size (24000 before THE DIGEST DIET, 2026-09-14: ~6-8k after it)
+    "digest_warn_bytes": 10000,      # the standup digest's byte size (24000 before THE DIGEST DIET, 2026-09-14; 12000 to 2026-11-06, then the harness's measured 10,000-char injection cap: LESSONS.md "A hook injection past 10,000 characters")
     "kit_push_days": 2,              # THE PUSH SCHEDULE (NS-38, the CEO 2026-10-13: the kit pulls and pushes "once per day or two")
     "loop_stale_days": {             # per run_all group: days since last run
         "session": 2, "metrics": 2, "check": 2, "regen": 7, "probes": 14, "tests": 7,
@@ -454,11 +454,16 @@ def proposals(th=None):
         if group not in latest or dt > latest[group]:
             latest[group] = dt
     now = datetime.datetime.now()
+    # THE EIGHTH TRIM (2026-11-06): one line for every stale group, not one
+    # line per group (three identical sentences were 400 bytes of digest).
+    stale_groups = []
     for group, max_days in th["loop_stale_days"].items():
         last = latest.get(group)
         if last is not None and (now - last).days > max_days:
-            out.append("PROPOSE (loop_runs.txt): %s last ran %d d ago - the loop law says the "
-                       "main loop calls it; check the session_start hook." % (group, (now - last).days))
+            stale_groups.append("%s %d d" % (group, (now - last).days))
+    if stale_groups:
+        out.append("PROPOSE (loop_runs.txt): %s since the last run - the loop law says the "
+                   "main loop calls them; check the session_start hook." % ", ".join(stale_groups))
     # 14. lesson_runs.txt (THE LESSON LOOP, the CEO 2026-09-20): the Stop hook
     # kept advising a lesson and none was written - either the signals are
     # noise (tune lesson_log.py) or the law is being skipped; the owner decides.

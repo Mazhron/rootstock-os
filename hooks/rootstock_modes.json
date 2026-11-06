@@ -5,11 +5,13 @@
   "big_write_warn": true,
   "effort_line": true,
   "trip_diet_warn": true,
+  "digest_cap_split": true,
   "_old_ways": {
     "route": "classic - the v1.33 two-line ROUTE (WORKFLOWS entries + tools only, no index door, no files, no effort)",
     "resume_digest": "full - the whole standup digest re-injected on every resume, as on startup and /clear",
     "big_write_warn": "false - the diet guard says nothing about the size of a Write",
     "effort_line": "false - no EFFORT line; the manager picks the effort unprompted",
-    "trip_diet_warn": "false - the diet guard says nothing about same-shaped calls in a row"
+    "trip_diet_warn": "false - the diet guard says nothing about same-shaped calls in a row",
+    "digest_cap_split": "false - the whole digest is injected and the harness cuts it to a 2KB preview past 10,000 characters"
   }
 }

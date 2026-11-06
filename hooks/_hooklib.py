@@ -67,6 +67,7 @@ MODES_DEFAULT = {
     "big_write_warn": True,      # diet guard on Write: a BIG WRITE note past ~4k tokens of content (v1.57) | False = silent
     "effort_line": True,         # prompt hook: the EFFORT line when the matched entry asks another level (v1.57) | False
     "trip_diet_warn": True,      # diet guard: a TRIP DIET note at the third same-shaped call in a row (2026-11-03) | False = silent
+    "digest_cap_split": True,    # session_start: past the 10,000-char injection cap, park sections in .claude/standup_tail.txt (v1.61) | False = inject whole, the harness cuts
 }
 
 

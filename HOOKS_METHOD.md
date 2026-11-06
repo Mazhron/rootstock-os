@@ -85,6 +85,31 @@ TIER 1 - the resumption + checkpoint loop:
    day change, or resume_digest = full in the modes file (the old way).
    The origin's ledger before it: 3.6 fires a session, three resumes
    inside one minute.
+   THE CAP SPLIT (kit v1.61, 2026-11-06): the harness (entry point
+   claude-vscode, 2.1.289, measured from the transcripts; LESSONS.md "A
+   hook injection past 10,000 characters arrives as a 2KB preview and a
+   file path") persists a hook's additionalContext past 10,000 characters
+   and injects a 2KB preview plus the path; 26 of the origin's 27 digests
+   since October were cut that way and read back by a Read. The hook now
+   measures the injection and, past INJECT_CAP (9,500), moves whole
+   sections to .claude/standup_tail.txt in a fixed order (the roadmap,
+   the WS notes, recent days, the ledger tails' quiet lines, commits, the
+   core line, the loop, the ledger verdicts, open questions, the
+   proposals last; THE LAST EXCHANGE, WHERE WE LEFT OFF and the day line
+   never) until the head fits, and ends the head with a DIGEST TAIL line
+   naming each moved section and its size: nothing dropped, the tail one
+   Read away by section. digest_size.txt keeps the whole digest's bytes
+   (the diet ritual measures the digest, not the delivery) and the
+   trigger field says `clear (head N, tail M)`. digest_cap_split = false
+   in the modes file injects the whole text, the old way. THE EIGHTH TRIM
+   landed the same day in standup.py (commit subjects capped, a verdict
+   two ledgers carry printed once, verdicts older than a week collapsed
+   to their word) and in this hook's header, which lost the dated quotes
+   it carried: THE VERBATIM OPENER (Mazhron 2026-11-03 15:35, "I prefer
+   a verbatim opener. Even if it costs a little bit more.") and THE
+   SAFEGUARD FIX of the same afternoon (the block is the final message,
+   nested relay stripped, 2000 chars a side) are stated here and in the
+   standup skill, and the header says them in one sentence.
 2. `stop_tick.py` (Stop): ticks the checkpoint counter ONLY when work
    happened - `work_fingerprint()` in the checkpoint script = HEAD + the
    working tree's porcelain status minus bookkeeping files. A Q&A reply
@@ -678,6 +703,8 @@ hook. The keys and their old values:
 - resume_digest: pointer (v1.57) | full (the whole digest on resume).
 - big_write_warn: true (v1.57) | false (the diet guard silent on Write).
 - effort_line: true (v1.57) | false (no EFFORT line).
+- digest_cap_split: true (v1.61) | false (the whole digest injected; the
+  harness cuts it to a 2KB preview past 10,000 characters).
 
 Switching back is one flip, no code edit, and no ledger changes shape:
 both route faces write ROUTE lines, both resume shapes write

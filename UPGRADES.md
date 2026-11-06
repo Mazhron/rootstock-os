@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.60** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.61** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2506,3 +2506,56 @@ json.tool.
 README: the whole README.md (rewritten for a stranger: "Three ways in",
 the quickstart, the box) and README_FULL.md "The kit's own overhead"
 (under the receipts); the kit version line.
+
+### v1.61 - 2026-11-06 - The cap split and the eighth trim: the digest delivered under the harness's 10,000-char injection cap
+WHAT: the overhead block of v1.60 found that the harness (entry point
+claude-vscode, 2.1.289) persists a hook's additionalContext past 10,000
+characters and injects a 2KB preview plus a file path: 26 of the
+origin's 27 standup digests since October were cut that way, invisible
+to digest_size.txt (which measures the script, not the delivery), and
+read back by a Read each time. THE CAP SPLIT: session_start.py measures
+the injection and, past INJECT_CAP (9,500 characters), moves whole
+sections to .claude/standup_tail.txt in a fixed order (the roadmap, the
+WS notes, recent days, the ledger tails' quiet lines, commits, the core
+line, the loop, the ledger verdicts, open questions, the proposals
+last; THE LAST EXCHANGE, WHERE WE LEFT OFF and the day line never)
+until the head fits, and ends the head with a DIGEST TAIL line naming
+each moved section and its size; nothing is dropped, the tail is one
+Read away by section; the ledger keeps the whole digest's bytes and
+its trigger field says head and tail; digest_cap_split = false in the
+modes file is the old way. THE EIGHTH TRIM, the same day, by the loss
+test: the hook's header lost the dated quotes it carried (~1,460 to
+~800 characters; the rulings live in HOOKS_METHOD.md and the standup
+skill), a commit subject prints its first 160 characters, a verdict
+sentence two ledgers carry prints once, a verdict older than the
+previous standup and a week collapses to its word on the quiet lines,
+and ledger_trends prints one line for every stale loop group instead
+of one per group; its digest_warn_bytes default is the cap, 10,000.
+The lesson is in the harness domain (LESSONS.md "A hook injection past
+10,000 characters arrives as a 2KB preview and a file path").
+CARRIES: hooks/session_start.py (header_for, INJECT_CAP, TAIL_ORDER,
+sections, split_for_cap, write_tail, main, eight selftest cases);
+hooks/_hooklib.py and hooks/rootstock_modes.json (digest_cap_split);
+reference tools/standup.py (THE EIGHTH TRIM: commit_line,
+verdict_word, dedupe_verdicts, tails_plan's stale collapse, five
+selftest cases); reference tools/ledger_trends.py (the loop line, the
+10,000 default); HOOKS_METHOD.md (Tier 1 #1, the modes list);
+hooks/README.txt; skills/standup/SKILL.md (step 1); knowledge/lessons/
+harness.md (the lesson); the kit repo's README.md and README_FULL.md.
+GRAFT: replace tools/hooks/session_start.py and tools/standup.py whole
+if taken unadapted (CONFIG re-applied, `--selftest` re-run), else
+graft by hand: header_for shortened, the CAP SPLIT block (constants,
+sections, short_name, tail_line, split_for_cap, write_tail) and the
+five main() lines into the hook; commit_line, verdict_word, _days_old,
+dedupe_verdicts and the two tails_plan changes into standup. Add
+digest_cap_split to the modes file and _hooklib's defaults, gitignore
+.claude/standup_tail.txt, add the lesson to the project's book and the
+skill's step-1 sentence. A project whose digest never passes 10,000
+characters sees no change in delivery. Verify: `python
+tools/hooks/session_start.py --selftest` and `python tools/standup.py
+--selftest` 0 failed; after the next /clear, digest_size.txt's newest
+line says `clear (head N, tail M)` with N under 9,500 when the digest
+is over the cap, and the OVERHEAD block's SessionStart row shows no
+new CUT.
+README: README.md "What it costs you back" and README_FULL.md "The
+kit's own overhead" (the cap split sentence); the kit version line.
