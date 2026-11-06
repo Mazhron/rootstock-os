@@ -227,7 +227,13 @@ project's examples: no delete/move in the builds folder (build zips are
 never deleted), tests only through the runner script (never set the test
 env var by hand), no em/en dashes in commit text (subjects become the
 public changelog), no shell writes/redirects into engine resource files
-(the BOM gotcha).
+(the BOM gotcha). The fourth rule (C0003, 2026-11-06, grown in the Acme
+install): THE BARE DOORS - a script in the guard's BARE_DOORS tuple (an
+install's production doors, empty in the kit; the Acme deploy was the
+first) wrapped in a cd
+prefix, a chain, a pipe or a redirect is refused with the bare form
+named, because the allow rule matches only the bare call and a wrapped
+one goes to the auto-mode classifier, which refuses it.
 
 TIER 2b - THE FAN-OUT GUARD (`fanout_guard.py`, PreToolUse on EVERY
 tool; kit v1.9, the CEO's ask 2026-09-10 after a public report of a
@@ -521,7 +527,11 @@ per moment:
   Read-only searcher agent types carry no brief laws; since kit v1.54
   they carry the model rule, the model taken from the call or from the
   agent file's `model:` pin (.claude/agents/<type>.md), so a search
-  never inherits the manager's tier.
+  never inherits the manager's tier. THE PLAN STEP (C0003, 2026-11-06):
+  a work dispatch is also refused while the session has no
+  tools/plan_check.py run on record (the lesson guard's per-session
+  state file), so the arc's steps meet the lessons and workflows before
+  the first employee; read-only types need no plan.
 - RESULT: delegation_auditor.py (PostToolUse on Agent|Task) - reads the
   harness-metered tool/token figures out of the result (the numbers no
   model can fake): 0 metered calls on a work task = the fabrication
@@ -566,6 +576,14 @@ through the ledgers.
 ## Tier 4b - THE LESSON GUARD (lesson_guard.py, PreToolUse on Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit|Agent|Task)
 
 Tags: hooks, lessons, learning loop | The lesson at the choice: the DO INSTEAD surfaced on the tool call, not only on the prompt; the prompt-time line stays wired as the older twin
+
+NEWEST FIRST (C0003, 2026-11-06): the injected line joins an entry's DO
+INSTEAD clauses newest first, because an entry's truth moves to its
+latest TRIED or DONE bullet while its first clause goes stale, and the
+260-character cap used to cut exactly the clause that carried the fix
+(the wrapped deploy, refused twice). The lesson guard's per-session
+state also records whether tools/plan_check.py ran, which the brief
+guard reads for THE PLAN STEP (Tier 4a).
 
 THE ASK (Mazhron 2026-10-30): "Many times, you will look at a problem,
 perform a task, then look at a lesson after it fails, and say something

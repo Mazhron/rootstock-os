@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-11-03 16:50 | items 97 | GREEN 90 | YELLOW 5 | RED 0 | unflagged 2 | stale 24
+Updated 2026-11-06 14:27 | items 97 | GREEN 92 | YELLOW 4 | RED 0 | unflagged 1 | stale 23
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -41,7 +41,7 @@ Updated 2026-11-03 16:50 | items 97 | GREEN 90 | YELLOW 5 | RED 0 | unflagged 2 
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | STALE | fable | 2026-10-22 09:10 |
+| HOOKS_METHOD.md | GREEN | STALE | sonnet | 2026-11-06 14:25 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | LESSONS.md | GREEN | STALE | fable | 2026-10-30 13:08 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
@@ -56,17 +56,17 @@ Updated 2026-11-03 16:50 | items 97 | GREEN 90 | YELLOW 5 | RED 0 | unflagged 2 
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
 | agents/explore.md | GREEN | STALE | fable | 2026-10-22 09:10 |
 | agents/lookup.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| hooks/README.txt | GREEN | STALE | fable | 2026-10-19 10:26 |
+| hooks/README.txt | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/_hooklib.py | GREEN | STALE | sonnet-fmt1 | 2026-09-13 11:51 |
-| hooks/bash_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
-| hooks/brief_guard.py | GREEN | ok | fable | 2026-10-22 09:10 |
+| hooks/bash_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
+| hooks/brief_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/delegation_auditor.py | GREEN | ok | fable | 2026-10-01 16:55 |
 | hooks/diet_guard.py | GREEN | STALE | fable | 2026-09-30 11:57 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/hygiene_guard.py | GREEN | ok | fable | 2026-09-20 03:21 |
 | hooks/lesson_advisor.py | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
-| hooks/lesson_guard.py | - | UNFLAGGED | - | - |
+| hooks/lesson_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-10-30 13:05 |
@@ -100,7 +100,7 @@ Updated 2026-11-03 16:50 | items 97 | GREEN 90 | YELLOW 5 | RED 0 | unflagged 2 
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
 | reference tools/ledger_trends.py | GREEN | ok | fable | 2026-10-13 12:52 |
 | reference tools/lesson_ladder.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
-| reference tools/lesson_log.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
+| reference tools/lesson_log.py | GREEN | ok | sonnet | 2026-11-06 14:25 |
 | reference tools/merge_ledgers.py | GREEN | ok | fable manager E-2026-11-03-28 follow-up | 2026-11-03 16:50 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/output_shape.py | GREEN | ok | fable | 2026-10-31 19:43 |
@@ -1780,3 +1780,53 @@ FLAG: The audit's YELLOW (not scoped to docs/history) fixed the same hour: the s
 SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, every .md in each .claude/skills/<name>/ dir (SKILL.md and its siblings, kit v1.58), .claude/agents/*.md (kit v1.54, the pinned searchers), tools/hooks/*.py, the tools/*.py that have a reference copy, and the .claude/rules/*.md files named in PORTABLE_RULES), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; then derive the kit's LESSONS.md and knowledge/ tree through tools/split_knowledge.py (SPLIT; it writes those files and one knowledge_split_runs.txt line); `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
 DOES: Copies every portable original to its kit grab-copy: root MDs, every .md in each skill dir, agents, hooks, the paired tools, with the owner-name substitution; derives the knowledge split; adopts a new tool or skill dir on request
 FLAG: The audit's YELLOW (PURPOSE said SKILL.md only) fixed: the PURPOSE names the sibling .md pairing of v1.58; adopt of a skill dir still copies SKILL.md only, the next refresh carries the siblings, a gap not a harm
+
+### 2026-11-06 14:25 | hooks/bash_guard.py | YELLOW | sonnet | WS1 | 5d079c2c
+SAYS: Kit-relative version of the PreToolUse guard on Bash and PowerShell: GENERIC RULES (no --no-verify, no plain force push, the format law's shell twin blocking shell writes into the hook-wiring settings file) plus a PROJECT RULES block of commented Everwood-derived templates for a receiving project to fill with its own laws.
+DOES: Refuses no-verify commits, plain force pushes and shell writes to settings files; new: refuses any command that names python on a BARE_DOORS script unless it is the whole command (no cd, chain, pipe or redirect), with the bare form named. Reads the command only, writes nothing.
+FLAG: Matches in substance but the PURPOSE line omits the BARE_DOORS refusal. BARE_DOORS ships seeded with the Acme path tools/deploy_droplet.py, an install-specific door in a generic kit file; the regex also fires on a quoted mention such as echo "python tools/deploy_droplet.py". Fix: add the bare-doors rule to PURPOSE, ship BARE_DOORS empty or commented.
+
+### 2026-11-06 14:25 | hooks/brief_guard.py | YELLOW | sonnet | WS1 | 176db9a8
+SAYS: PreToolUse guard that refuses an Agent/Task dispatch to a work agent type when the brief is missing the stamp template (STAMP/TOOLS/ WORKFLOW), the INTENT line ask, the budget line or THE PRESERVATION LAW line; also refuses THE EMPLOYEE MODEL RULE (SUBAGENTS.md rule 6): a dispatch whose tool_input.model is missing/empty, or matches Fable (case-insensitive, even inside a longer id like "claude-fable-5-1"), since a model-less dispatch inherits the parent model (Fable), and Fable is never an employee; read-only agent types skip the brief pieces but keep the model rule, their model taken from the call or from the `model:` pin of .claude/agents/<type>.md (kit v1.54); silent for complete briefs and pinned searches.
+DOES: Refuses an Agent/Task dispatch missing the brief pieces or the model rule (read-only types keep only the model rule); new: refuses a work dispatch until the lesson guard's state file (.claude/lesson_guard_state.json) shows plan_check.py ran this session. Read-only: reads the state file and agent files, writes nothing.
+FLAG: Matches in substance but the PURPOSE line omits THE PLAN STEP refusal, a second reason a dispatch is denied. Also fails closed when the state file is absent and the plan mark can be set by any shell text containing plan_check.py. Fix: add the plan step to PURPOSE and INTENT (the CEO 2026-10-30 quote is in the code comment).
+
+### 2026-11-06 14:25 | hooks/lesson_guard.py | YELLOW | sonnet | WS1 | a66f943d
+SAYS: PreToolUse hook on shell, write, edit and sub-agent calls that matches the call's text against LESSONS.md Keys lines and injects each hit's DO INSTEAD (or THE ONE RIGHT WAY) as additionalContext, once per entry per tool per session, ledgering one SURFACED line per hit with the session id; and notes once per session when writes begin with no plan step run.
+DOES: Matches each tool call's text against LESSONS.md Keys lines and injects the DO INSTEAD lines (now joined newest first, capped at 260 chars), ledgers SURFACED lines, notes once after three writes with no plan; new: track_plan sets planned=true in .claude/lesson_guard_state.json when a shell command text contains plan_check.py, which brief_guard reads to allow dispatch.
+FLAG: Matches in substance but PURPOSE omits that its state file now gates dispatches in brief_guard. Weak spot: any Bash text containing the substring plan_check.py (a grep, an echo) marks the plan as run, a cheap way around THE PLAN STEP refusal; unintended, not a deliberate bypass. Fix: mark planned only when the command starts with python and plan_check.py, and state the gate in PURPOSE.
+
+### 2026-11-06 14:25 | reference tools/lesson_log.py | GREEN | sonnet | WS1 | 593174c8
+SAYS: Serve the lesson loop's three ends: match a prompt against the Keys lines of LESSONS.md entries and name the ones to read first; scan a transcript slice for trial-and-error signals so the Stop hook can advise a lesson; lint the entries' shape and ledger the counts for the check loop.
+DOES: Matches prompts against LESSONS.md Keys, scans a transcript slice for trial-and-error signals (the FAIL-then-PASS signal now reads runner-shaped lines only via RUN_FAIL_RE), lints entries and appends to docs/history/lesson_runs.txt. No deletions, no spawns.
+FLAG: Does what PURPOSE says and nothing more; the FAIL-then-PASS narrowing is a precision fix inside the stated scan. Its ledger write is described in its docstring.
+
+### 2026-11-06 14:25 | HOOKS_METHOD.md | GREEN | sonnet | WS1 | 7e578d20
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: Documents the hook contract, kit roster and tiers; new text describes THE BARE DOORS (Tier 2), THE PLAN STEP (Tier 4a) and the lesson guard's NEWEST FIRST paragraph, all matching the code in the three hooks.
+FLAG: Doc matches the hooks' behavior and the PURPOSE (documenting kit hooks) covers the additions. Only gap: it does not say BARE_DOORS ships seeded with an Acme path.
+
+### 2026-11-06 14:25 | hooks/README.txt | YELLOW | sonnet | WS1 | ae112676
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: Installation notes per hook; new lines say the brief guard also refuses a work dispatch until plan_check.py has run this session (lesson guard state). Nothing else changed in behavior.
+FLAG: New lines are accurate, but the file's PURPOSE promises what each hook needs filled in and says nothing of bash_guard.py's BARE_DOORS tuple, which now needs the install's own doors. Fix: add a BARE_DOORS line to the bash_guard note and PURPOSE.
+
+### 2026-11-06 14:27 | hooks/bash_guard.py | GREEN | fable | WS1 | 0754c093
+SAYS: Kit-relative version of the PreToolUse guard on Bash and PowerShell: GENERIC RULES (no --no-verify, no plain force push, the format law's shell twin blocking shell writes into the hook-wiring settings file, the bare doors: BARE_DOORS, an install's production scripts admitted only as the whole command and refused when wrapped, kit v1.59) plus a PROJECT RULES block of commented Everwood-derived templates for a receiving project to fill with its own laws.
+DOES: Refuses the generic shell laws (no --no-verify, no plain force push, the settings-file shell write), a BARE_DOORS script wrapped in a cd, chain, pipe or redirect (the tuple ships empty; the selftest sets its own door), plus the PROJECT RULES templates
+FLAG: The 2026-11-06 yellow fixed in the same batch: the PURPOSE names the new rule; the plan mark needs a real run; BARE_DOORS ships empty
+
+### 2026-11-06 14:27 | hooks/brief_guard.py | GREEN | fable | WS1 | b7f212ce
+SAYS: PreToolUse guard that refuses an Agent/Task dispatch to a work agent type when the brief is missing the stamp template (STAMP/TOOLS/ WORKFLOW), the INTENT line ask, the budget line or THE PRESERVATION LAW line; since kit v1.59 also refuses THE PLAN STEP: a work dispatch in a session whose lesson-guard state file carries no plan_check.py run (no file counts as no run); also refuses THE EMPLOYEE MODEL RULE (SUBAGENTS.md rule 6): a dispatch whose tool_input.model is missing/empty, or matches Fable (case-insensitive, even inside a longer id like "claude-fable-5-1"), since a model-less dispatch inherits the parent model (Fable), and Fable is never an employee; read-only agent types skip the brief pieces but keep the model rule, their model taken from the call or from the `model:` pin of .claude/agents/<type>.md (kit v1.54); silent for complete briefs and pinned searches.
+DOES: Refuses a work dispatch missing the stamp, intent, budget or preservation pieces, the employee model rule, and since v1.59 THE PLAN STEP read from the lesson guard state file (absent counts as no run)
+FLAG: The 2026-11-06 yellow fixed in the same batch: the PURPOSE names the new rule; the plan mark needs a real run; BARE_DOORS ships empty
+
+### 2026-11-06 14:27 | hooks/lesson_guard.py | GREEN | fable | WS1 | 635b6b3f
+SAYS: PreToolUse hook on shell, write, edit and sub-agent calls that matches the call's text against LESSONS.md Keys lines and injects each hit's DO INSTEAD (or THE ONE RIGHT WAY) as additionalContext, once per entry per tool per session, ledgering one SURFACED line per hit with the session id; and notes once per session when writes begin with no plan step run. Its per-session state file also carries the plan mark (a `python tools/plan_check.py` run), which the brief guard reads for THE PLAN STEP (kit v1.59).
+DOES: Matches each call text against LESSONS Keys and injects the DO INSTEAD newest first; its state file counts writes and marks a plan run only on a python plan_check.py command segment, which the brief guard reads
+FLAG: The 2026-11-06 yellow fixed in the same batch: the PURPOSE names the new rule; the plan mark needs a real run; BARE_DOORS ships empty
+
+### 2026-11-06 14:27 | hooks/README.txt | GREEN | fable | WS1 | 488400ab
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES and its BARE_DOORS tuple, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: Installation notes per hook, now naming the BARE_DOORS tuple beside the PROJECT RULES block and the brief guard plan step
+FLAG: The 2026-11-06 yellow fixed in the same batch: the PURPOSE names the new rule; the plan mark needs a real run; BARE_DOORS ships empty

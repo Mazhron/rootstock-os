@@ -1,12 +1,13 @@
 Rootstock hooks (the version is UPGRADES.md's). Install per HOOKS_METHOD.md 'Bootstrap':
 
 PURPOSE: Installation notes for the Rootstock hooks folder: what each hook
-  file needs filled in or wired (bash_guard.py's PROJECT RULES,
+  file needs filled in or wired (bash_guard.py's PROJECT RULES and its
+  BARE_DOORS tuple,
   fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG
   block) and the gitignore entries a new project needs.
 INTENT: gives a receiving project the exact per-hook setup steps so the kit
   installs correctly instead of by trial and error.
-  tools/hooks/  <- these .py files (bash_guard.py: fill PROJECT RULES)
+  tools/hooks/  <- these .py files (bash_guard.py: fill PROJECT RULES and BARE_DOORS)
   .claude/settings.json  <- settings.json (merge if one exists)
   .gitignore  <- .claude/hooks_state.json, .claude/settings.local.json,
                  .claude/fanout_state.json, .claude/diet_state.json,
@@ -124,7 +125,9 @@ THE DELEGATION TRUTH SET (Tier 4a, kit v1.30, three hooks): nothing to
 fill in. brief_guard.py (PreToolUse on Agent|Task, a REFUSAL): a dispatch
 to a work agent type whose brief is missing the stamp template, the
 INTENT line, the budget line or the preservation line is refused with
-the pieces named; read-only searcher types (Explore, Plan) pass.
+the pieces named; read-only searcher types (Explore, Plan) pass. Since
+C0003 (2026-11-06) a work dispatch is also refused until the session has
+run tools/plan_check.py once (THE PLAN STEP; the lesson guard's state).
 delegation_auditor.py (PostToolUse on Agent|Task): reads the
 harness-metered tool/token figures out of every sub-agent result - 0
 metered calls on a work task is the fabrication tell, a TOOLS-line

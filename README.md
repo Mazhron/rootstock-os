@@ -12,7 +12,7 @@ chat completely lossless.
 Grown in [Everwood](https://github.com/Mazhron/Everwood), an idle/clicker
 game built end to end with Claude, by **Mazhron (Travis Rhoda)**.
 
-Kit version: **v1.58** (2026-11-03). The graft log `UPGRADES.md` is the
+Kit version: **v1.59** (2026-11-06). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 ---
@@ -717,7 +717,10 @@ reminder. Sixteen ship in `hooks/`, wired by one settings file:
   twice move one rung down, to a workflow step, a script or a refusing
   hook. `plan_check.py` is the pre-selection end: the arc's steps scored
   against the lessons and the routes before the first write; the guard
-  asks for it once per session after three unplanned writes.
+  asks for it once per session after three unplanned writes, and since
+  v1.59 the brief guard refuses a work dispatch until it has run once
+  that session (the plan step binding, the CEO's correction of
+  2026-11-06); the injected DO INSTEAD line reads newest clause first.
 - **The retrieval ladder and the modes file** (v1.57) fix the order the
   manager retrieves in. The CEO's test prompt, "Please add a gnome to my
   game", got no ROUTE line at all, because no Keys line said gnome, so the
@@ -738,7 +741,9 @@ reminder. Sixteen ship in `hooks/`, wired by one settings file:
   a way to mix the two"), and `retrieval_eval.py --route` scores the two
   ROUTE faces against each other from one ledger.
 - **The shell guard** refuses what the CEO's laws forbid (no force push, no
-  skipped hooks, plus the project's own rules). Beside it, at zero runtime
+  skipped hooks, plus the project's own rules; since v1.59 a bare door, a
+  production script the allow rule admits only as the whole command,
+  refused when wrapped in a cd, a chain, a pipe or a redirect). Beside it, at zero runtime
   cost, the kit settings file's permissions.deny block (v1.40) refuses a
   Read or Edit of .env files, key material and credential folders, and
   the destructive shell one-liners.

@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.58** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.59** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2393,3 +2393,57 @@ after a conflicted pull leaves no conflict markers and stages the files.
 README: "The standup digest" rows (seven trims, the last 2026-11-03; the
 verbatim opener) and "What is in the box" (43 working scripts, the brief
 skill's rules file).
+
+### v1.59 - 2026-11-06 - The plan step binding, the bare doors, the newest DO INSTEAD first and the runner-shaped signal; grown in the Acme Co install and carried back to the origin
+WHAT: four hook changes from one correction in the Acme Co install
+(C0003, 2026-11-06). The deploy to the server was refused for the
+second time with the permission in place, because the call was wrapped
+in a cd and a pipe and the allow rule matches only the bare call; and
+the lesson that said so was on the books both times. Mazhron: "Ok, so
+this happens a lot. I've already built the permission. You know I have
+it, it was supposed to be in your lessons or workflows. You have to do
+the deploy by itself. But whenever we get here, I feel like you don't
+read lessons or workflows or something in the correct order. So you
+keep getting it wrong. You do the same thing with a pass-fail test ...
+Perhaps there needs to be a planning step set against the workflows,
+then you look at lessons against your plans and workflows as not to
+have the same problems and fight against them when you already know
+the fix?" THE PLAN STEP, binding: the brief guard refuses a work
+dispatch until the session has run plan_check.py once (the lesson
+guard's per-session state records the run), so every step of an arc
+meets every lesson and workflow before the first employee; read-only
+searcher types still pass. THE BARE DOORS: the shell guard carries a
+BARE_DOORS tuple (an install's production doors; the Acme deploy
+script the first) and refuses a door wrapped in a cd prefix, a chain,
+a pipe or a redirect with the bare form named, before the auto-mode
+classifier sees it. NEWEST FIRST: the lesson guard joins an entry's DO
+INSTEAD clauses newest first, because the truth of an entry moves to
+its latest TRIED bullet and the 260-character cap used to cut exactly
+the clause that carried the fix. THE RUNNER-SHAPED SIGNAL: the lesson
+log's FAIL-then-PASS scan reads runner-shaped lines only (a verdict
+word with a count or a test name), never the word inside a grep of a
+test's source, which had counted a read as a failure.
+CARRIES: hooks/brief_guard.py (THE PLAN STEP, load_plan_state and the
+refusal text); hooks/lesson_guard.py (track_plan, the per-session plan
+mark; do_instead reversed); hooks/bash_guard.py (BARE_DOORS, the
+wrapped-door refusal, eight selftest cases); reference
+tools/lesson_log.py (the runner-shaped line filter); HOOKS_METHOD.md
+(Tier 2's fourth rule, Tier 4a's plan step, the lesson guard's NEWEST
+FIRST paragraph); hooks/README.txt (the brief guard's plan step line).
+GRAFT: replace tools/hooks/brief_guard.py, tools/hooks/lesson_guard.py
+and tools/lesson_log.py whole if the project took them unadapted
+(re-apply each CONFIG block, re-run each `--selftest`), else graft by
+hand: load_plan_state and the PLAN_MSG refusal into the brief guard,
+track_plan and the reversed do_instead into the lesson guard, the
+runner-shaped filter into lesson_log. The shell guard is adapted in
+every install: add the BARE_DOORS tuple and the wrapped-door block
+before verdict()'s final return, with the install's own door scripts in
+the tuple (empty where the project has no production door), and the
+eight cases in its selftest with the install's door name. Verify: the
+four selftests 0 failed; an Agent dispatch to a work type in a fresh
+session is refused with THE PLAN STEP named until
+`python tools/plan_check.py "step"` has run; a wrapped door call is
+refused with the bare form named; the lesson guard's injected line for
+an entry with two TRIED bullets opens with the newest DO INSTEAD.
+README: "The lesson guard" (the plan step binding since v1.59) and "The
+shell guard" (the bare doors) bullets; the kit version line.

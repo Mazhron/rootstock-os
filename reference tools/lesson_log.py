@@ -209,6 +209,14 @@ CORRECTION_RE = re.compile(
     r"^\s*correction\b|/correct\b|wrong (file|number|value|species|thing))", re.I)
 ERROR_RE = re.compile(r"(traceback|error:|\bFAIL\b|not found|no such file|command not found|"
                       r"is not recognized|refused|denied|exit code [1-9])", re.I)
+# A FAIL then a PASS counts only on runner-shaped lines (a test tag, an n/m
+# count, a selftest's two-space PASS/FAIL, CHECK PASS, SMOKE PASS): the bare
+# word in a grep of a test's source or in a relayed ledger is not a run
+# (C0003, 2026-11-06: the advisor asked for a lesson on a FAIL that was the
+# test file's own `"PASS" : "FAIL"` template line, printed by a grep).
+RUN_FAIL_RE = re.compile(r"(?m)^\s*(?:[A-Z0-9]+TEST FAIL(?:ED)?\b|\S+ \d+/\d+ FAIL\b|FAIL {2}\S)")
+RUN_PASS_RE = re.compile(r"(?m)^\s*(?:[A-Z0-9]+TEST (?:PASS|DONE)\b|\S+ \d+/\d+ PASS\b|PASS {2}\S|"
+                         r"[A-Z ]*CHECK PASS\b|SMOKE PASS\b)")
 BOOK_NAME = os.path.basename(BOOK).lower()
 # intent_log.py --resolve prints "I0048 resolved different (stated): ..."; only that
 # line counts (a digest or day file QUOTING a past DIFFERENT is not this turn's).
@@ -259,10 +267,10 @@ def signals(recs):
                     cmds.setdefault(cmd, []).append(err)
                 elif name in ("Edit", "Write", "MultiEdit", "NotebookEdit") and b.get("is_error"):
                     edit_misses += 1
-                if re.search(r"\bFAIL\b", txt) and fail_at is None:
+                if RUN_FAIL_RE.search(txt) and fail_at is None:
                     fail_at = order
-                elif fail_at is not None and order > fail_at and re.search(r"\bPASS\b", txt) \
-                        and not re.search(r"\bFAIL\b", txt):
+                elif fail_at is not None and order > fail_at and RUN_PASS_RE.search(txt) \
+                        and not RUN_FAIL_RE.search(txt):
                     pass_after_fail = True
                 if DIFFERENT_RE.search(txt):
                     different = True

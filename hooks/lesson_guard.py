@@ -37,7 +37,9 @@ PURPOSE: PreToolUse hook on shell, write, edit and sub-agent calls that
   hit's DO INSTEAD (or THE ONE RIGHT WAY) as additionalContext, once per
   entry per tool per session, ledgering one SURFACED line per hit with the
   session id; and notes once per session when writes begin with no plan
-  step run.
+  step run. Its per-session state file also carries the plan mark (a
+  `python tools/plan_check.py` run), which the brief guard reads for THE
+  PLAN STEP (kit v1.59).
 INTENT: the CEO 2026-10-30: "Lets try the fix for the hook, please keep a
   reference to the old hook somewhere so we don't lose it. There may be a
   way to mix them in the future." - the lesson in front of the manager at
@@ -111,7 +113,10 @@ def do_instead(entry):
         m = re.search(r"THE ONE RIGHT WAY:\s*(.+?)(?=\n\n|\n- |\Z)", flat, re.S)
         if m:
             clauses.append(" ".join(m.group(1).split()))
-    out = " / ".join(clauses)
+    # Newest first (C0003, 2026-11-06): an entry's truth moves to its latest
+    # TRIED / DONE bullet while the first clause goes stale, and the cap below
+    # used to cut exactly the clause that carried the fix.
+    out = " / ".join(reversed(clauses))
     return (out[:LINE_CAP - 3] + "...") if len(out) > LINE_CAP else out
 
 
@@ -119,12 +124,17 @@ def fresh_state(session_id):
     return {"session": session_id, "shown": [], "writes": 0, "planned": False, "plan_noted": False}
 
 
+# THE PLAN MARK (kit v1.59): only a run of the script sets it, never a grep or
+# an echo that names it (the purpose audit of 2026-11-06, yellow -> green).
+PLAN_RUN_RE = re.compile(r"(^|[\s;&|(])python\s+(\S*\W)?plan_check\.py\b")
+
+
 def track_plan(state, session_id, tool_name, text):
     """(state, note or ""): counts writes, marks a plan_check run, notes once."""
     state = dict(state or {})
     if state.get("session") != session_id:
         state = fresh_state(session_id)
-    if tool_name in ("Bash", "PowerShell") and "plan_check.py" in (text or ""):
+    if tool_name in ("Bash", "PowerShell") and PLAN_RUN_RE.search(text or ""):
         state["planned"] = True
     note = ""
     if tool_name in WRITE_TOOLS:
@@ -231,8 +241,8 @@ def _selftest():
         "- TRIED (d): z. DO INSTEAD: the second fix.",
         "- NUANCE: n.", "", "See also: s."]}
     di = do_instead(e)
-    ok("DO INSTEAD clauses are joined and unwrapped",
-       di == "the first fix, continued on the next line. / the second fix.")
+    ok("DO INSTEAD clauses are joined and unwrapped, newest first (C0003)",
+       di == "the second fix. / the first fix, continued on the next line.")
     e2 = {"heading": "H2", "line": 9, "body": ["THE ONE RIGHT WAY: only this.", "", "See also: s."]}
     ok("no DO INSTEAD falls back to THE ONE RIGHT WAY", do_instead(e2) == "only this.")
     long_e = {"heading": "L", "line": 1, "body": ["- TRIED: a. DO INSTEAD: " + "w " * 400]}
@@ -240,7 +250,7 @@ def _selftest():
     hits = [(2, e), (2, e2)]
     lines, st = decide(hits, {}, "S1", "Bash")
     ok("a first hit injects one line per entry with its line number",
-       len(lines) == 2 and "line 7" in lines[0] and "DO INSTEAD: the first fix" in lines[0])
+       len(lines) == 2 and "line 7" in lines[0] and "DO INSTEAD: the second fix" in lines[0])
     lines2, st = decide(hits, st, "S1", "Bash")
     ok("the same entry is silent on the same tool in the same session", lines2 == [])
     lines3, st = decide(hits, st, "S1", "Edit")

@@ -11,7 +11,9 @@ Adding a rule = one more block here + its line in the tooling doc's
 
 PURPOSE: Kit-relative version of the PreToolUse guard on Bash and
   PowerShell: GENERIC RULES (no --no-verify, no plain force push, the format
-  law's shell twin blocking shell writes into the hook-wiring settings file)
+  law's shell twin blocking shell writes into the hook-wiring settings file,
+  the bare doors: BARE_DOORS, an install's production scripts admitted only
+  as the whole command and refused when wrapped, kit v1.59)
   plus a PROJECT RULES block of commented Everwood-derived templates for a
   receiving project to fill with its own laws.
 INTENT: gives a new project the generic shell-level laws for free and a
@@ -39,6 +41,10 @@ SETTINGS_WRITE = re.compile(
     r"|(\b(set-content|out-file|add-content)\b[^|;\n]*" + _T + r")"
     r"|(\bsed\s+-i\S*\s+(\S+\s+)?" + _T + r")"
     r"|(open\([^)]*settings\.json[^)]*[\"'][wa])", re.I)
+
+# THE BARE DOORS (C0003, 2026-11-06): scripts whose allow rule matches only the bare
+# `python <script> <verb>` as the whole command; an install adds its own doors here.
+BARE_DOORS = ()   # empty in the kit; the Acme install lists its deploy script
 
 
 def verdict(cmd):
@@ -93,10 +99,27 @@ def verdict(cmd):
     #         re.search(r">{1,2}\s*\"?[^\s\"|;]*\.tres\b", low):
     #     return ("Write resource files with the Write/Edit tool, never a shell redirect.")
 
+    # THE BARE DEPLOY (C0003, 2026-11-06): the allow rule in settings.local.json
+    # matches only the bare `python <door> <verb>` as the whole command; a cd
+    # prefix, a chain, a pipe or a redirect hands the call to the auto-mode
+    # classifier, which refuses a production deploy. Violated twice (2026-11-05
+    # 16:17 and 2026-11-06 13:2x) in the Acme install, so the wrapped form is
+    # refused here, before the classifier sees it, with the bare form named.
+    for door in BARE_DOORS:
+        d = re.escape(door)
+        if re.search(r"(^|[\s;&|(])python\s+" + d, low) \
+                and not re.fullmatch(r"\s*python\s+" + d + r"(\s+[^|&;><\n]*)?\s*", cmd):
+            return ("THE BARE DEPLOY: run `python %s <verb>` as the WHOLE command, "
+                    "alone in its call: no cd prefix, no chain, no pipe, no redirect. The allow rule "
+                    "matches only that shape; a wrapped call goes to the classifier, which refuses it "
+                    "(WORKFLOWS \"Deploy to the droplet\" step 3; C0003)." % door)
+
     return None
 
 
 def _selftest():
+    global BARE_DOORS
+    BARE_DOORS = ("tools/deploy_droplet.py",)   # the selftest's own door
     cases = [
         ("echo x > .claude/settings.json", True),
         ("cat .claude/settings.json", False),
@@ -110,6 +133,15 @@ def _selftest():
         ("git push --force", True),
         ("git push --force-with-lease", False),
         ("git commit --no-verify -m x", True),
+        # THE BARE DEPLOY (C0003): the bare command passes, any wrap is refused
+        ("python tools/deploy_droplet.py deploy", False),
+        ("python tools/deploy_droplet.py status", False),
+        ("python tools/deploy_droplet.py deploy main", False),
+        ("cd \"C:/Users/x/Acme Co Program\" && python tools/deploy_droplet.py deploy 2>&1 | tail -6", True),
+        ("python tools/deploy_droplet.py deploy | tail -3", True),
+        ("python tools/deploy_droplet.py deploy && tail -1 docs/history/deploy_runs.txt", True),
+        ("python tools/deploy_droplet.py deploy > out.txt", True),
+        ("grep -n deploy_droplet.py WORKFLOWS.md | head", False),
     ]
     fails = 0
     for cmd, expect in cases:

@@ -21,7 +21,9 @@ own model (claude-code-guide, statusline-setup) pass as before.
 PURPOSE: PreToolUse guard that refuses an Agent/Task dispatch to a work
   agent type when the brief is missing the stamp template (STAMP/TOOLS/
   WORKFLOW), the INTENT line ask, the budget line or THE PRESERVATION LAW
-  line; also refuses THE EMPLOYEE MODEL RULE (SUBAGENTS.md rule 6): a
+  line; since kit v1.59 also refuses THE PLAN STEP: a work dispatch in a
+  session whose lesson-guard state file carries no plan_check.py run (no
+  file counts as no run); also refuses THE EMPLOYEE MODEL RULE (SUBAGENTS.md rule 6): a
   dispatch whose tool_input.model is missing/empty, or matches Fable
   (case-insensitive, even inside a longer id like "claude-fable-5-1"),
   since a model-less dispatch inherits the parent model (Fable), and
@@ -136,6 +138,38 @@ def missing_pieces(prompt, subagent_type, model=_MODEL_UNCHECKED, pinned=""):
     return gaps
 
 
+# THE PLAN STEP (the CEO 2026-10-30, binding since C0003 2026-11-06: "Perhaps
+# there needs to be a planning step set against the workflows, then you look
+# at lessons against your plans and workflows"): a work dispatch is refused
+# until this session has run tools/plan_check.py once. The lesson guard marks
+# the run in its per-session state file (lesson_guard.track_plan); this guard
+# only reads it. Read-only types (a search, a lookup, a plan) need no plan.
+PLAN_STATE = os.path.join(ROOT, ".claude", "lesson_guard_state.json")
+PLAN_MSG = ("THE PLAN STEP (the CEO 2026-10-30, binding since C0003 2026-11-06): no employee "
+            "before the arc's plan is scored. Run `python tools/plan_check.py \"step\" \"step\" ...` "
+            "with the arc's steps, each naming its tool, file or script, read every DO INSTEAD it "
+            "prints against its step, then dispatch (WORKFLOWS \"Build a Step 4 item in two halves\" "
+            "step 0).")
+
+
+def load_plan_state(path=PLAN_STATE):
+    """The lesson guard's state, or {} when absent or unreadable."""
+    import json
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def needs_plan(kind, state, session_id):
+    """True for a work dispatch in a session that has not run the plan step."""
+    if (kind or "").lower() in READONLY_TYPES:
+        return False
+    return not (isinstance(state, dict) and state.get("session") == session_id and bool(state.get("planned")))
+
+
 def main():
     data = read_input()
     if data.get("tool_name") not in ("Agent", "Task"):
@@ -149,6 +183,8 @@ def main():
              "/brief skill (SUBAGENTS.md rules 3, 6, 11, 13, 14 paste the exact lines); "
              "read-only searches go to the Explore or Plan agent type instead."
              % "; ".join(gaps))
+    if needs_plan(kind, load_plan_state(), data.get("session_id", "")):
+        deny("[HOOK brief_guard] " + PLAN_MSG)
     sys.exit(0)
 
 
@@ -200,6 +236,17 @@ def _selftest():
     ok("a missing agents dir means no pin", pinned_model("explore", os.path.join(ROOT, "no-such-dir")) == "")
     ok("two-arg callers are unaffected (model left unchecked by default)",
        missing_pieces(full, "general-purpose") == [])
+    # THE PLAN STEP (C0003): a work dispatch needs this session's plan_check run.
+    ok("a work dispatch with no plan this session is refused",
+       needs_plan("general-purpose", {"session": "s1", "planned": False}, "s1"))
+    ok("a work dispatch after the plan step passes",
+       not needs_plan("general-purpose", {"session": "s1", "planned": True}, "s1"))
+    ok("another session's plan does not count",
+       needs_plan("general-purpose", {"session": "s0", "planned": True}, "s1"))
+    ok("no state at all is refused", needs_plan("claude", {}, "s1"))
+    ok("an explore search needs no plan", not needs_plan("Explore", {}, "s1"))
+    ok("a lookup needs no plan", not needs_plan("lookup", {}, "s1"))
+    ok("a missing state file reads as empty", load_plan_state(os.path.join(ROOT, "no-such-file.json")) == {})
     print("brief_guard selftest: %d failed" % fails)
     return 1 if fails else 0
 
