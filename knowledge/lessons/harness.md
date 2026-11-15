@@ -2414,8 +2414,8 @@ way a stranger would, against the tag: every line of SHA256SUMS equals
   have been pushed unverified; a release pushes only the tag it just made
   and signed, and refuses when a local tag of that name already exists.
 
-See also: reference tools/release_kit.py; CONTRIBUTING.md "How a release is
-made"; SECURITY_METHOD.md.
+See also: the kit's release script (release_kit, in the kit repo only);
+CONTRIBUTING.md "How a release is made"; SECURITY_METHOD.md.
 
 ## A kit installed inside its own clone is excluded from git before its first file lands (the local install, 2026-11-15)
 Tags: lessons, kit, install, release | To work on the kit with the kit, it is installed in the kit's own clone; every install path goes into the clone's own exclude file FIRST, and the lints and the release read those lines, so nothing of the install can be staged, counted or published
@@ -2441,8 +2441,9 @@ and copied to its install twin, never the other way round.
   local install, because the install's scripts are untracked on purpose.
   Say so in the report; it is not a broken guard.
 
-See also: UPGRADES.md v1.64; reference tools/release_kit.py (the excludes
-it writes and reads); "Edit the kit's original, never its grab-copy" above.
+See also: UPGRADES.md v1.64; the kit's release script (release_kit, in
+the kit repo only: the excludes it writes and reads); "Edit the kit's
+original, never its grab-copy" above.
 
 ## A selftest that compares against today builds its dates from today (fixed dates passed on the day they were written and failed every day after, 2026-11-15)
 Tags: lessons, harness, testing, ledgers | The ledger helper's selftest wrote lines stamped with one fixed day and expected the "same result today" skip to fire; the skip compares the stamp to the real date, so the test passed on that day only and printed FAIL in three installs for two months

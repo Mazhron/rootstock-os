@@ -63,6 +63,9 @@ RUNS_HEADER = (
 TOKEN_EXT_RE = re.compile(
     r"[\w][\w./-]*\.(?:md|py|gd|gdshader|tscn|json)\b", re.UNICODE)
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)")
+# A double-bracket token that is the syntax's own placeholder word is prose ABOUT the
+# syntax ("banked memory bodies quote [[links]] to files"), never a link (2026-11-15).
+SYNTAX_WORDS = {"name", "names", "link", "links"}
 MDLINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
 SKIP_ROOT_WALK = {".git", ".godot", "__pycache__"}
 SEARCH_ROOTS = ["docs", "tools", "scripts", "shaders", "data", "scenes", "Future Project MDs",
@@ -216,7 +219,7 @@ def scan_file(path, bmap, wiki_basenames, is_claude_md):
             continue
         for m in WIKILINK_RE.finditer(ln):
             name = strip_punct(m.group(1))
-            if not name:
+            if not name or name.lower() in SYNTAX_WORDS:
                 continue
             key = (idx, "[[%s]]" % name)
             if key in seen_on_line:
