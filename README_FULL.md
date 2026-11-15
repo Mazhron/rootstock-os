@@ -1013,7 +1013,13 @@ flag from someone other than the author when possible, nothing deleted,
 no em or en dashes), the two community paths (text to the inbox, code
 to its own lane, three pull-request checks never wired into your
 project), the README lint that must pass when the README changes, and
-the signed, checksummed release.
+the signed, checksummed release. Since v1.63 the release starts in this
+repo: `python "reference tools/release_kit.py"` pulls, runs the format
+lint and the README lint (either one failing refuses the release),
+prints the flag tally, writes `SHA256SUMS`, commits, pushes and makes
+the version's signed tag; `--check` runs the gates alone. Until v1.62
+the kit's files were copies made by a script in the origin project and
+a release could only start there.
 
 ### The two companions (WORKFLOW_METHOD.md, WORKSTATION_METHOD.md)
 
@@ -1248,6 +1254,13 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   (checksum matches)` before it lists a single graft; on a mismatch it
   prints `UNVERIFIED` and lists nothing. Graft only from a VERIFIED
   release, and tell the kit's owner about an UNVERIFIED one.
+- **The kit is its own source (kit v1.63).** Every file here is edited
+  here and released from here by `reference tools/release_kit.py`; no
+  other project has to exist for a release to happen. The origin
+  project takes its updates by graft like any other install. One thing
+  still arrives from outside: the lessons under `knowledge/lessons/`
+  are the origin project's book, split by domain and contributed by it,
+  which is why those files say not to edit them here.
 - **You choose the noise level.** The stamp carries your update policy -
   `ask` (default: present the grafts, you pick), `auto` (apply everything,
   report after), `relevant` (only offer grafts that benefit your project;

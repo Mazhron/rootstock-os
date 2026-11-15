@@ -66,13 +66,16 @@ reference tools/retire.py (files) and reference tools/cold_shelf.py
 (wiki sections). Audit the project's existing scripts for deletion
 calls when installing and bring each to the CEO.
 hygiene_guard.py (Tier 3, kit v1.16, the first PostToolUse hook):
-rewrite its CONFIG block for the project (the portable MD names, the
-kit folder, the skills/hooks dirs, the core file + its lint command,
+rewrite its CONFIG block for the project (the skills/hooks dirs, the
+core file + its lint command; the portable MD names and the kit folder
+ONLY in a project that publishes kit things from a kit folder of its
+own - the default since kit v1.63 leaves both empty, a receiving project,
 the wiki dirs to lint, the player-text patterns, the assets folder),
 wire its Write|Edit|MultiEdit PostToolUse entry (settings.json has it),
 run `python tools/hooks/hygiene_guard.py --selftest`. No state file.
 After every edit it says the law that applies to that file: refresh the
-kit copy (and the public README), add the missing See-also line, fix a
+kit copy and the public README (a publishing project only; a receiving
+project hears nothing about the kit), add the missing See-also line, fix a
 forbidden character in player-facing text (the one BLOCK), run the
 import after a new asset. The /preserve skill (skills/preserve) is the
 preservation law's front: retire, shelve, or the twice-acknowledged

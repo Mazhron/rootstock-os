@@ -36,11 +36,12 @@ Run after EVERY completed batch of work; the user should never have to ask.
 5. Builds (projects that ship binaries): run the build script
    (`python tools/make_builds.py` in Everwood). NEVER delete older build
    zips - old versions are the "before" side of dev-log comparisons.
-6. Kit sync (projects that publish a kit): if the batch touched any
-   future-project-kit file, run the kit sync script (in Everwood:
-   `python tools/sync_kit_repo.py` pushes the public Rootstock repo; it
-   REFUSES while the README's version lags or the README parity lint
-   fails - fix the README or the kit, never bypass).
+6. Kit release (only a batch that edited the kit repo itself, a clone
+   of rootstock-os; a project that only USES the kit skips this step):
+   from the clone's root run `python "reference tools/release_kit.py"`.
+   It REFUSES while the README's version lags or the README parity lint
+   fails - fix the README or the kit, never bypass. Since kit v1.63 the
+   kit repo is its own source; no project publishes it from a copy.
 7. The checkpoint counter ticks itself (Stop hook) - relay any warning
    the hook prints; never tick by hand (it double-counts). Hookless
    machines only: `python tools/checkpoint.py --tick`.

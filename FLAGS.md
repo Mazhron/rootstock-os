@@ -33,30 +33,42 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-11-15 10:22 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 | stale 27
+Updated 2026-11-15 15:07 | items 112 | GREEN 96 | YELLOW 5 | RED 0 | unflagged 11 | stale 25
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
+| .github/ISSUE_TEMPLATE/bug.yml | - | UNFLAGGED | - | - |
+| .github/ISSUE_TEMPLATE/code_proposal.yml | - | UNFLAGGED | - | - |
+| .github/ISSUE_TEMPLATE/config.yml | - | UNFLAGGED | - | - |
+| .github/ISSUE_TEMPLATE/field_notes.yml | - | UNFLAGGED | - | - |
+| .github/ISSUE_TEMPLATE/gotcha.yml | - | UNFLAGGED | - | - |
+| .github/ISSUE_TEMPLATE/lesson.yml | - | UNFLAGGED | - | - |
+| .github/PULL_REQUEST_TEMPLATE.md | - | UNFLAGGED | - | - |
+| .github/workflows/contribution-lint.yml | YELLOW | ok | fable | 2026-10-13 14:13 |
 | 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-11-06 14:47 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
+| CONTRIBUTING.md | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | fable | 2026-11-15 10:18 |
+| HOOKS_METHOD.md | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | LESSONS.md | GREEN | STALE | fable | 2026-11-06 15:00 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
-| SECURITY.md | GREEN | ok | fable | 2026-10-13 14:13 |
+| SECURITY.md | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| UPGRADES.md | GREEN | ok | fable | 2026-11-15 10:18 |
+| UPGRADES.md | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
 | WORKFLOW_METHOD.md | GREEN | STALE | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
 | agents/explore.md | GREEN | STALE | fable | 2026-10-22 09:10 |
 | agents/lookup.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| hooks/README.txt | GREEN | ok | fable | 2026-11-15 10:18 |
+| community/README.md | - | UNFLAGGED | - | - |
+| community/TEMPLATE.md | - | UNFLAGGED | - | - |
+| community/code/README.md | GREEN | ok | fable | 2026-10-13 14:13 |
+| community/inbox/README.md | - | UNFLAGGED | - | - |
+| hooks/README.txt | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | hooks/_hooklib.py | GREEN | ok | fable | 2026-11-15 10:18 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/brief_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
@@ -64,7 +76,7 @@ Updated 2026-11-15 10:22 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 
 | hooks/diet_guard.py | GREEN | ok | fable | 2026-11-15 10:22 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
-| hooks/hygiene_guard.py | GREEN | ok | fable | 2026-11-06 14:47 |
+| hooks/hygiene_guard.py | GREEN | ok | second Claude, read-only, two passes (v1.63) | 2026-11-15 15:07 |
 | hooks/lesson_advisor.py | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | hooks/lesson_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
@@ -94,7 +106,7 @@ Updated 2026-11-15 10:22 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 
 | reference tools/correction_log.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
-| reference tools/format_lint.py | GREEN | ok | fable | 2026-10-01 16:55 |
+| reference tools/format_lint.py | GREEN | ok | second Claude, read-only, two passes (v1.63) | 2026-11-15 15:07 |
 | reference tools/guard_replay.py | GREEN | STALE | sonnet-flag-1013d | 2026-10-13 14:09 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
@@ -107,13 +119,14 @@ Updated 2026-11-15 10:22 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/output_shape.py | GREEN | ok | fable | 2026-10-31 19:43 |
 | reference tools/plan_check.py | - | UNFLAGGED | - | - |
-| reference tools/purpose_audit.py | GREEN | STALE | fable | 2026-10-13 14:14 |
+| reference tools/purpose_audit.py | GREEN | ok | second Claude, read-only, two passes (v1.63) | 2026-11-15 15:07 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/readme_lint.py | GREEN | STALE | fable | 2026-11-06 14:47 |
+| reference tools/readme_lint.py | GREEN | ok | second Claude, read-only, two passes (v1.63) | 2026-11-15 15:07 |
 | reference tools/refresh_kit.py | GREEN | STALE | fable | 2026-11-06 14:47 |
+| reference tools/release_kit.py | YELLOW | ok | second Claude, read-only, two passes (v1.63) | 2026-11-15 15:07 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/retrieval_eval.py | GREEN | STALE | fable | 2026-10-13 11:45 |
-| reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 14:13 |
+| reference tools/rootstock_update_check.py | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | reference tools/route_index.py | GREEN | STALE | fable | 2026-09-28 23:37 |
 | reference tools/run_all.py | GREEN | STALE | sonnet-flag-1013c | 2026-10-13 13:32 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
@@ -130,15 +143,13 @@ Updated 2026-11-15 10:22 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 
 | skills/brief/SKILL.md | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | skills/checkpoint/SKILL.md | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | skills/correct/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
-| skills/flag/SKILL.md | GREEN | ok | fable-manager | 2026-09-29 16:38 |
+| skills/flag/SKILL.md | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | skills/intent/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/preserve/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
 | skills/runaway/SKILL.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:48 |
-| skills/ship/SKILL.md | GREEN | ok | fable | 2026-09-30 12:22 |
+| skills/ship/SKILL.md | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | skills/standup/SKILL.md | GREEN | ok | fable | 2026-11-06 15:00 |
 | 0 - READ ME FIRST, CLAUDE.md | GREEN | GONE | sonnet-fd1 | 2026-09-13 12:20 |
-| .github/workflows/contribution-lint.yml | YELLOW | GONE | fable | 2026-10-13 14:13 |
-| community/code/README.md | GREEN | GONE | fable | 2026-10-13 14:13 |
 <!-- tally:end -->
 
 ## The flags (append-only, newest last)
@@ -1977,3 +1988,68 @@ FLAG: Matches the settings templates and the hook
 SAYS: PreToolUse guard on Read, Bash and PowerShell enforcing the read diet and output diet: warns when a shell command shape (git log, git diff, recursive listing, install) has no limiter, and on the first whole read of a file over about 10k tokens in a session it denies once and returns the file's own section or function index instead; the same call repeated afterward passes with a warning only; a LATER whole read of that same file in the same session, fingerprint (mtime_ns+size) unchanged since the admitted read, is denied once more as RE-READ and passes on repeat; forget_session_reads() clears a session's RE-READ marks (not its INDEX FIRST marks) after a compaction empties the context; on Write (v1.57) it warns once per file per session when the content is past about 4k tokens of manager output, naming the employee or script route; on the third same-shaped call on a new target within the last six counted calls (Edit, MultiEdit, Write, Read by file; Bash, PowerShell by verb; Grep by pattern, one place per call) it notes TRIP DIET once per shape per session (2026-11-03, code mode): the rest of the trip as one script run once; with trip_diet_refuse = true (v1.62, off by default) that call is denied once instead and passes on repeat; it appends one line per note and per outcome (HEEDED, WALKED, MOVED-ON), and one MCP-RUN line per silent run of a single MCP tool, to docs/history/trip_diet_runs.txt; `--trips` prints that ledger's tally and writes nothing.
 DOES: PreToolUse guard: INDEX FIRST and RE-READ refusals, READ, OUTPUT and BIG WRITE notes, and the TRIP DIET note counted over a six call window for Edit, MultiEdit, Write, Read, shell verbs and one-pattern Greps; queues ledger lines that main appends to docs/history/trip_diet_runs.txt; --trips prints the tally read-only; trip_diet_refuse denies the third call once when switched on; MCP runs are counted silently
 FLAG: Matches PURPOSE after the v1.62 rewrite of the trip block; the only new write is the trip ledger, which PURPOSE names; the selftest (64 checks, 0 failed) now reads the code defaults instead of the project's modes file; pipe-tested in a sandbox copy in both modes
+
+### 2026-11-15 15:07 | reference tools/release_kit.py | YELLOW | second Claude, read-only, two passes (v1.63) | WS? | d99bd5a1
+SAYS: release the kit from inside its own repo: pull fast-forward only, run the publish gates (the format lint, the README version line, the README parity lint; the purpose audit's tally is printed, its colours never refuse, an audit that fails to run does), write SHA256SUMS from the bytes git will publish, commit and push whatever changed, and make the one signed tag for the kit version. `--check` runs the gates and stops; `--dry-run` also shows what a release would commit and whether the tag would be made.
+DOES: Pulls fast-forward, runs the format lint, the version check and the README lint, prints the flag tally, stages, writes SHA256SUMS from the staged blobs, commits, pushes, and makes or pushes one signed tag on main; --check stops after the gates, --dry-run prints the commit and tag plan.
+FLAG: Pass 1 found the checksums hashed the working copy (15 of 115 published lines wrong on a Windows clone), a silent audit crash, an unchecked staging and a tag push that was never retried; all fixed and confirmed in pass 2 against a throwaway repo. Pass 2 found one gap: a hand-made local tag missing on the remote was pushed unverified. The author closed it after the pass (unfit_tag: annotated, signature block, ancestor of HEAD, with two selftest rows), so that fix is unaudited: yellow until a third read. Known edges, none present today: a symlink entry is hashed as its link text; a tracked .pyc would be published with no line.
+
+### 2026-11-15 15:07 | reference tools/purpose_audit.py | GREEN | second Claude, read-only, two passes (v1.63) | WS? | 8a714c78
+SAYS: keep the kit's flag ledger (FLAGS.md in the kit folder): every kit thing's latest flag (GREEN / YELLOW / RED), who gave it and when, whether the thing changed since (STALE), the ones nobody has audited yet (UNFLAGGED), and the tally - regenerated in place from the entries; `--flag` appends one entry (SAYS = the thing's own PURPOSE line, DOES = what the reviewer found it actually does, FLAG = why the color).
+DOES: Lists the kit's things and their flag state, regenerates the tally, files --flag entries; inside the kit repo it walks the repo itself, counts community/ and .github/ files as items, skips only the top-level front matter, ledgers nothing and keeps its lock in the temp folder; a project with no kit folder gets SKIP.
+FLAG: All three pass 1 findings fixed (uncounted flags on repo-only files, a crash with no kit folder, an over-wide top-level filter). After pass 2 the author added one docstring paragraph naming what is not an item; no code changed. Open, minor: --flag with no kit folder but a clone beside the project still fails at the write.
+
+### 2026-11-15 15:07 | reference tools/readme_lint.py | GREEN | second Claude, read-only, two passes (v1.63) | WS? | f9bf2aed
+SAYS: Derives every countable README fact (laws, skills, hooks, reference tools, the box table, version, the graft README line, number word claims, prose claims) from the kit folder itself and compares it with what the public README says (README.md and README_FULL.md read as one text since kit v1.60; the version line and the box must sit in README.md itself), ledgering PASS, FAIL or SKIP each run.
+DOES: Derives the law, skill, hook, reference-tool and box counts, the version and the claims from the kit and compares them with README.md plus README_FULL.md; inside the kit repo it checks the repo against its own README and ledgers nothing; with no kit to compare it prints SKIP in a run and in the selftest.
+FLAG: All three pass 1 findings fixed (the ledger folder is created, the selftest is guarded, dot entries are left out of the box check). A stray non-dot top-level entry still fails the box check, which is the gate working as intended.
+
+### 2026-11-15 15:07 | reference tools/format_lint.py | GREEN | second Claude, read-only, two passes (v1.63) | WS? | fc18c72a
+SAYS: check every kit thing (a script, a hook, a skill, a method file, the hooks README, the settings template) and its repo original for the one header the filing system needs - PURPOSE, INTENT, Search keys, See also - plus the safety wiring in settings.json; report PASS/FAIL per file with the reason; on request rewrite ONLY the missing scaffold lines, never the body.
+DOES: Checks every kit thing for the PURPOSE, INTENT, Search keys and See also header and the settings safety wiring; inside the kit repo it walks the repo minus its own front matter, checks no second copies and writes no ledger; the selftest fixture now wires every script in the safety table.
+FLAG: Nothing wrong found in either pass. After pass 2 the author acted on its note that a session's .claude folder in the kit repo would be linted: .claude, .vscode and .idea at the kit's top level are out of scope, with one selftest row changed to match. Cosmetic, open: the FAIL hint still names tools/format_lint.py.
+
+### 2026-11-15 15:07 | hooks/hygiene_guard.py | GREEN | second Claude, read-only, two passes (v1.63) | WS? | a13e882c
+SAYS: PostToolUse guard on Write, Edit and MultiEdit that, after an edit lands, hands the manager one line of context per applicable law: KIT REFRESH when a portable original changed, SEE-ALSO when a touched docs/systems section has no See also line, DASH when player-facing text received an em or en dash (this one BLOCKS), and IMPORT when a new asset needs the engine import run; stateless pattern matching only.
+DOES: After an edit lands, hands the manager one line per applicable law (see-also, dash, import, the core lint); with the default CONFIG, a receiving project, the kit refresh lines are silent; a project that names a kit folder gets them as before; the selftest has a branch for each.
+FLAG: Code and header agree; the receiving branch passes 21 checks and the publishing branch 26. Unchanged and stated in the header: the dash and asset defaults are still the origin's and an install rewrites the block.
+
+### 2026-11-15 15:07 | reference tools/rootstock_update_check.py | GREEN | fable (author, v1.63) | WS? | 929d45a8
+SAYS: Reads the project's install stamp from CLAUDE.md, fetches the kit's current UPGRADES.md (a local clone if configured, else the public repo over HTTPS), and prints any graft entries newer than the install plus what the CEO's update policy says to do about them; it only reports, a manager Claude performs the actual grafts by hand. It pins to the kit's release tag (vX.Y) and verifies UPGRADES.md against the tag's SHA256SUMS before it reports; a mismatch stops the report, a missing tag is flagged unverified and still lists main's grafts. The checksum proves the files match the release, not who signed it: the tag's signature is checked by hand (git tag -v, or the Verified badge in the repo's tags view). With KIT_CLONE set it runs git pull on that clone first (a second network reach) and verifies against the clone's own SHA256SUMS, unpinned.
+DOES: Reads the install stamp, pins to the kit's signed tag or reads a local clone, verifies UPGRADES.md against SHA256SUMS and lists the newer grafts; in clone mode it now also tries the file with CRLF turned back to LF.
+FLAG: One function added (verify_clone_text) and two selftest rows, after the audit of the release script showed a Windows clone printed UNVERIFIED over line endings alone. Author's flag: not read by the second Claude.
+
+### 2026-11-15 15:07 | UPGRADES.md | GREEN | fable (author, v1.63) | WS? | 1b6c1b32
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: The append-only graft log; the v1.63 entry records the direction flip, the release script, the gates run in place, the checksum fix, the flag ledger's wider count, the hygiene guard's default and what did not move.
+FLAG: Matches its purpose; the entry carries WHAT, CARRIES, GRAFT and README and the version line reads v1.63.
+
+### 2026-11-15 15:07 | CONTRIBUTING.md | GREEN | fable (author, v1.63) | WS? | 5c6dcd91
+SAYS: the two guardrails every Rootstock update passes through - THE FORMAT (one header on every thing, checked by script and enforced by a hook) and THE PURPOSE AUDIT (a read-only comparison of what a thing says against what it does, flagged green / yellow / red and filed in FLAGS.md) - and, since kit v1.49, THE COMMUNITY PATH (text into the inbox by pull request behind the contribution lint; since v1.51 code into a never-wired code lane behind three CI checks, and a change to a kit file as a proposal in an issue) - written so a contributor, a maintainer and any Claude apply them the same way.
+DOES: The format law, the purpose audit and the community path; a new paragraph says how a release is made since v1.63 and the format section names the in-repo command.
+FLAG: Matches its purpose; the release paragraph agrees with release_kit.py as audited.
+
+### 2026-11-15 15:07 | SECURITY.md | GREEN | fable (author, v1.63) | WS? | 141b645b
+SAYS: the kit's security policy for readers and contributors - which parts of Rootstock execute on a machine and only after whose yes, which parts can never execute, what the community gate refuses, and the private door for reporting a problem - so nobody has to guess whether pulling this repo is safe.
+DOES: The security policy; Verifying a release now names the release script, says the checksums are the published bytes from v1.63 on, which lines were wrong before, and how to hash on a Windows clone.
+FLAG: Matches its purpose; the statement about the 15 earlier lines was checked against the v1.62 tag (100 of 115 lines matched the published blobs).
+
+### 2026-11-15 15:07 | HOOKS_METHOD.md | GREEN | fable (author, v1.63) | WS? | d55d6add
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: The hooks method; Tier 3 rule 1 says the kit refresh rule speaks only in a publishing project, the companion paragraph names the release script, the selftest count and Bootstrap step 9 follow the new default.
+FLAG: Matches its purpose and the hygiene guard as audited (21 and 26 checks counted by running both branches).
+
+### 2026-11-15 15:07 | hooks/README.txt | GREEN | fable (author, v1.63) | WS? | 54b27e5b
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES and its BARE_DOORS tuple, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: The per-hook setup notes; the hygiene guard's lines say the kit folder and portable names are for a publishing project only and a receiving project hears nothing about the kit.
+FLAG: Matches its purpose and the hook's default CONFIG.
+
+### 2026-11-15 15:07 | skills/ship/SKILL.md | GREEN | fable (author, v1.63) | WS? | d88cf43f
+SAYS: Ship a completed batch: commit with a player-readable subject, push, and (in projects with builds) refresh build zips without deleting old ones.
+DOES: The ship ritual; step 6 is now the kit release, run from a clone of the kit repo, skipped by a project that only uses the kit.
+FLAG: Matches its purpose; the step names the script that exists and its two refusals.
+
+### 2026-11-15 15:07 | skills/flag/SKILL.md | GREEN | fable (author, v1.63) | WS? | 1dd003d1
+SAYS: the ritual behind FLAGS.md - one kit thing at a time, the auditor reads it, compares the stated purpose with the behaviour, gives it a color, explains the color in the entry, and never touches the thing.
+DOES: The flag ritual; step 6 says a wrong line is fixed where the thing lives (a kit thing in the kit repo) and step 7 says FLAGS.md goes out with the next release.
+FLAG: Matches its purpose; wording only, the ritual is unchanged.

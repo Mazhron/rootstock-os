@@ -1008,19 +1008,25 @@ law_gaps.py (the named corpus comment); "Apply an audit's findings with a
 batch edit script (anchors quoted from a report)".
 
 ## Edit the kit's original, never its grab-copy (refresh_kit reverts the copy silently, 2026-09-29)
-Tags: lessons, process, kit, rootstock | A method file exists three times (repo root, the kit folder, the public mirror); only the repo-root original holds an edit, because refresh_kit copies it over the other two on every run
-Keys: kit copy reverted, refresh_kit pairs, Future Project MDs, WIKI_METHOD edit lost, sync_kit_repo, grab-copy, original vs copy, method file fix, README audit fix in a method file
+Tags: lessons, process, kit, rootstock | Since kit v1.63 (2026-11-15) the clone of rootstock-os holds the one original of every kit thing and Everwood's copy is an install's; before that a method file existed three times and only the repo-root original held an edit
+Keys: kit copy reverted, refresh_kit pairs, Future Project MDs, WIKI_METHOD edit lost, sync_kit_repo, grab-copy, original vs copy, method file fix, README audit fix in a method file, where to edit a kit thing, source of truth, direction flip, release_kit, kit unreleased
 
-THE ONE RIGHT WAY: before a batch edit touches any file under "Future
-Project MDs/", ask refresh_kit which original owns it (`python -c "import
-sys; sys.path.insert(0,'tools'); import refresh_kit as r; print(r.pairs())"`
-or WORKFLOWS "Edit the future-project kit" step 1) and point the edit at
-THAT path: the repo-root METHOD.md, tools/<script>.py, .claude/skills/,
-.claude/rules/. Then `python tools/refresh_kit.py` carries it to the kit
-folder and `python tools/sync_kit_repo.py` to the mirror. A file with no
-original (UPGRADES.md, the domain notes, the public README) is edited where
-it lives. Check the edit landed with a grep of the ORIGINAL after the
-refresh, not of the copy before it.
+THE ONE RIGHT WAY (since kit v1.63, 2026-11-15, the direction flip): a
+kit thing is edited in the clone of rootstock-os, where it is the
+original, and released from the clone's root with `python "reference
+tools/release_kit.py"`. Everwood's own copy of the thing (the repo-root
+METHOD.md, tools/<script>.py, tools/hooks/, .claude/skills/) is an
+install's copy and takes the change by graft in the same batch. Nothing
+under "Future Project MDs/" is edited: that folder is the retired v1.62
+copy and no script reads it. One thing still flows the other way: a
+lesson is written in THIS book and `python tools/split_knowledge.py`
+carries it into the clone's knowledge/ tree. Check the edit landed with
+`git -C <the clone> diff --stat`; `python tools/refresh_kit.py --check`
+says KIT UNRELEASED until the release ran.
+BEFORE v1.63 the rule was the reverse, and the TRIED lines below happened
+under it: the repo-root original was the home, `python tools/refresh_kit.py`
+carried it to the kit folder and `python tools/sync_kit_repo.py` to the
+mirror, and an edit made in a copy was silently reverted.
 
 - TRIED (2026-09-29, the README audit's WARN_TOKENS catch): the batch edit
   script pointed at "Future Project MDs/WIKI_METHOD.md", printed "wrote",
@@ -1039,9 +1045,18 @@ refresh, not of the copy before it.
   <file> -not -path "./Future Project MDs/*"` or the pairs() call above
   BEFORE the script is written; and read "refreshed <file>" in any
   refresh or sync output as "the copy just lost whatever you put there".
+- NUANCE (2026-11-15, kit v1.62 then v1.63): the v1.62 batch was made in
+  Everwood's originals and mirrored out, and Mazhron asked why a Rootstock
+  release could only start inside Everwood ("Rootstock was meant to work
+  independently of Everwood"; "Source of truth - This should be
+  rootstock-os"). The flip made the clone the original the same day.
+  tools/refresh_kit.py and tools/sync_kit_repo.py still exist by name:
+  they copy nothing and say where the work moved, so an old runbook line
+  that names them costs one printed pointer, never an overwritten kit.
 
 See also: WORKFLOWS.md "Edit the future-project kit (Rootstock)";
-tools/refresh_kit.py (pairs); "Apply an audit's findings with a batch edit
+tools/refresh_kit.py (the KIT line); the kit repo's "reference
+tools/release_kit.py"; "Apply an audit's findings with a batch edit
 script" above (the anchor rule; add the path rule to it).
 
 ## Close a proposal with the number its rule reads (the measure line by the proposal's own formula, 2026-09-29)

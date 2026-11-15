@@ -85,12 +85,20 @@ lint's own path rule in the first place.
 
 Every release is checkable (kit v1.51). The repo root carries `SHA256SUMS`,
 one hash line for every file except `.git` and build junk, written by the
-sync script before each commit. From v1.51 on each kit version is also one
-SIGNED annotated tag, `v<kit version>`, created and pushed by the sync
-script after the push; an unsigned tag is never made, and a machine
-without the signing key prints a refusal instead. To check a release by
-hand, compare the hash of each file you pulled against its line in
-`SHA256SUMS`, and confirm the tag's signature shows as verified in the
+release script (`reference tools/release_kit.py` since v1.63; a script in
+the origin project before that) before each commit. From v1.51 on each
+kit version is also one SIGNED annotated tag, `v<kit version>`, created
+and pushed by the same script after the push; an unsigned tag is never
+made, and a machine without the signing key prints a refusal instead.
+From v1.63 on the hashes are taken from the bytes git publishes; in the
+releases up to v1.62 the lines for README.md, README_FULL.md, LICENSE and
+the files under community/ and .github/ were taken from a Windows working
+copy (CRLF line endings) and do not match a downloaded file, while every
+other line does.
+To check a release by hand, compare the hash of each file you pulled against its line in
+`SHA256SUMS` (on a Windows clone git may have checked text files out with
+CRLF line endings: hash what git stores, `git show HEAD:<file> | sha256sum`,
+or a downloaded copy), and confirm the tag's signature shows as verified in the
 repo's tags view on GitHub. The update checker
 (`reference tools/rootstock_update_check.py`) does the checksum half of
 that before it lists grafts: it fetches `SHA256SUMS` and `UPGRADES.md` at the tag, and

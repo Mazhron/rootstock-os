@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.62** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.63** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2635,3 +2635,133 @@ other ledgers. Verify: `python tools/hooks/diet_guard.py --selftest`
 files one call at a time the ledger holds a NOTE line and its grade.
 README: README.md "Glossary" (the diet) and README_FULL.md "The hooks"
 (the diet guard's bullet); the kit version line.
+
+### v1.63 - 2026-11-15 - The kit is its own source: edited in rootstock-os and released from rootstock-os
+WHAT: Until v1.62 every file in this repo was a COPY. The originals
+lived in the origin project (its repo-root method files, tools/hooks,
+tools, .claude/skills); one script there copied them into a kit folder
+and a second mirrored that folder here, ran the gates, wrote the
+checksums and made the signed tag. A release could therefore only
+start inside the origin project, and an edit made here was overwritten
+by the next mirror. The CEO, 2026-11-15: "Rootstock was meant to work
+independently of Everwood." and, asked where the source should live,
+"Source of truth - This should be rootstock-os". THE DIRECTION FLIP:
+this repo is now the source. A kit thing is edited here; the release
+starts here; the origin project is an install like any other and takes
+its updates by graft. THE RELEASE SCRIPT (reference tools/
+release_kit.py, run from the repo root): a fast-forward pull, then the
+gates (the format lint and the README parity lint refuse on a FAIL;
+the README version line must equal this file's; the purpose audit's
+tally is printed and never refuses), then SHA256SUMS, the commit, the
+push and the version's one signed tag, made on main only and never
+unsigned, moved or deleted. `--check` runs the gates and stops;
+`--dry-run` shows what a release would commit; copied into a project it
+finds no kit around it and refuses before any git verb. THE GATES RUN
+IN PLACE: format_lint.py, readme_lint.py and purpose_audit.py now
+recognise the kit repo around them (the graft log and the front door
+beside their folder) and check it directly; the repo's own README,
+license, checksums, community/ and .github/ are not kit things, and no
+ledger line is written there (the kit repo keeps no docs/history; the
+release commit and its tag are the record). In a project the three
+behave as before. Two repairs ride along: the format lint's selftest
+fixture had not followed the safety table (brief_guard,
+delegation_auditor, verify_advisor and session_end were unwired in it,
+so "fully wired settings pass" failed), and the README lint, given a
+kit clone but no kit folder to compare it with, now prints SKIP where
+it used to stop on a missing file. THE CHECKSUMS ARE THE PUBLISHED
+BYTES: SHA256SUMS was written from the working copy, and a Windows
+clone checks text files out with CRLF while the repo and every
+download carry LF, so 15 of the 115 lines published up to v1.62 (the
+two READMEs, the license, community/ and .github/) never matched a
+downloaded file; the update checker verifies UPGRADES.md alone, which
+happened to stay LF, so no install saw it. The release now stages
+first and hashes the staged bytes, what git publishes, on any machine.
+A read-only audit of the release script by a second Claude found this
+before the first release ran. The other half of the same fault sat in
+the update checker: pointed at a local clone it hashed the clone's
+working copy of UPGRADES.md, so a Windows clone whose git had checked
+the file out with CRLF printed "UNVERIFIED local clone: checksum
+mismatch" over nothing; it now also tries the file with its line
+endings put back (verify_clone_text). Build junk and a session's own folders
+(__pycache__, *.pyc, .claude/, .vscode/, .idea/) are named in the
+clone's own .git/info/exclude before anything runs: one compiled file
+went out under the v1.62 tag because a script had been run inside the
+clone; it was removed from main the same day and the tag was left
+where it was. A tag that was signed but not pushed is pushed on the
+next run, and a release made without a version bump says how far the
+existing tag is behind. THE FLAG LEDGER SEES THE WHOLE REPO: files
+under community/ and .github/ could be flagged but were never counted,
+so a RED on the CI workflow or on a contributed script would still
+have printed "RED 0"; they are items now (counted, STALE when
+changed), and only the repo's own README pair, license, checksums and
+.gitignore are left out, at the top level alone. THE HYGIENE GUARD'S
+DEFAULT: its KIT REFRESH
+lines ("this is a portable original, refresh its copy in the kit
+folder, then sync") described the origin's old shape and shipped as the
+default CONFIG; the default is now a RECEIVING project (KIT_MDS empty,
+KIT_DIR blank, the rule silent), the shape one install had already
+adapted by hand, and a project that publishes kit things from a kit
+folder of its own names both. The ship skill's step 6 and the flag
+skill's steps 6 and 7 say release where they said sync. WHAT DID NOT
+MOVE: the lessons under
+knowledge/lessons/, knowledge/MANIFEST.md and the pointer index in
+LESSONS.md are still the origin project's book split by domain
+(reference tools/split_knowledge.py), contributed by that project when
+its book grows; their headers say so and they are not edited here.
+refresh_kit.py and split_knowledge.py stay in reference tools/ for a
+project that keeps a kit folder of its own; this repo no longer runs
+the first.
+CARRIES: reference tools/release_kit.py (new: is_kit, gates,
+staged_rows, write_checksums, ensure_excludes, tag_plan, ensure_tag,
+`--check`, `--dry-run`, `--selftest`); reference tools/format_lint.py,
+readme_lint.py and purpose_audit.py (IN_KIT, KIT_ONLY, the kit folder
+resolved to the repo itself, no ledger inside the kit repo;
+format_lint's selftest fixture; readme_lint's SKIP in a run and in the
+selftest, its ledger folder made when missing, dot entries left out of
+the box check; purpose_audit's TOP_SKIP, its SKIP when a project has no
+kit folder, its lock in the temp folder when inside the kit repo);
+reference tools/rootstock_update_check.py (verify_clone_text, two
+selftest rows); hooks/hygiene_guard.py (the receiving-project CONFIG, the
+`if not KIT_DIR` return, the selftest's two branches); HOOKS_METHOD.md
+(Tier 3 rule 1, the companion paragraph, the selftest count, Bootstrap
+step 9); hooks/README.txt; skills/ship/SKILL.md (step 6);
+skills/flag/SKILL.md (steps 6 and 7); knowledge/lessons/harness.md
+("Edit the kit's original, never its grab-copy": the rule reversed, the
+old one kept beside it); CONTRIBUTING.md ("How a release is made");
+SECURITY.md ("Verifying a release"); the kit repo's README.md and
+README_FULL.md.
+GRAFT: an ordinary install takes nothing it must act on: the release
+machinery is the kit repo's own, and release_kit.py is NOT copied into
+a project. An install that carries format_lint.py, readme_lint.py or
+purpose_audit.py unadapted may replace each whole (CONFIG block
+re-applied, `--selftest` re-run: format_lint 0 failed, purpose_audit 0
+failed); adapted, graft the selftest fixture rows, the README lint's
+SKIP condition and the purpose audit's TOP_SKIP and SKIP lines, or skip
+the entry and record the skip. An install whose purpose audit names
+its own root as the kit folder will see its nested README.md files
+become items (unflagged until audited); that is the intended reading.
+The update checker: add verify_clone_text below verify_text and call
+it in verify_release's clone branch, or take the file whole (CONFIG
+re-applied, `--selftest` PASS); an install that reads the kit over the
+network needs nothing. The
+hygiene guard: an install whose CONFIG still names a kit folder it does
+not have (KIT_DIR = "Future Project MDs", the old default) has been
+told to refresh copies that do not exist; set KIT_MDS = set(), KIT_DIR
+= "", KIT_SYNC and README_HINT = "none", add the `if not KIT_DIR:
+return None` line after the core-lint block of kit_refresh and the
+selftest's else branch, or take the file whole and re-apply the rest of
+its CONFIG (`--selftest` 0 failed, 21 checks). An install already
+adapted that way changes nothing. Reword the project's ship step 6 and
+flag steps 6 and 7 from the kit's skills, and take the lesson's new
+ONE RIGHT WAY into the project's book if it carries that entry. An
+install that grows kit things itself (the origin's old shape: a kit
+folder inside the project, a refresh script, a mirror script) retires
+both scripts, names its clone of this repo as KIT_DIR in the three
+lints' CONFIG, edits kit things in the clone and releases from there.
+Whoever releases needs a signing key on that machine (SECURITY.md).
+Verify, inside a clone of this repo: `python "reference
+tools/release_kit.py" --selftest` prints PASS and `--check` prints
+"gates passed".
+README: README.md (the version line, the box row for reference tools/,
+"Updating, taking part, origin"); README_FULL.md ("The format law and
+the purpose audit", "Updating an installed project").

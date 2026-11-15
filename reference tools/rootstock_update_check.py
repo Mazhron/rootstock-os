@@ -122,6 +122,14 @@ def verify_text(text_bytes, sums, name):
     return bool(want) and hashlib.sha256(text_bytes).hexdigest() == want
 
 
+def verify_clone_text(raw, sums, name):
+    """verify_text for a file read from a CLONE's working copy: the checksums
+    name the bytes git publishes (LF), and a Windows clone checks text out
+    with CRLF, so the file is also tried with its line endings put back
+    (kit v1.63; before it such a clone printed UNVERIFIED over nothing)."""
+    return verify_text(raw, sums, name) or verify_text(raw.replace(b"\r\n", b"\n"), sums, name)
+
+
 def selftest():
     sample = ("%s  UPGRADES.md\n%s  README.md\n%s  skills/ship/SKILL.md\n"
               % ("a" * 64, "b" * 64, "c" * 64))
@@ -137,6 +145,8 @@ def selftest():
         ("verify match", verify_text(body, good, "UPGRADES.md")),
         ("verify changed byte", not verify_text(body + b"x", good, "UPGRADES.md")),
         ("verify missing name", not verify_text(body, {}, "UPGRADES.md")),
+        ("clone with CRLF working copy verifies", verify_clone_text(body.replace(b"\n", b"\r\n"), good, "UPGRADES.md")),
+        ("clone with a changed byte still fails", not verify_clone_text(body.replace(b"\n", b"x\r\n"), good, "UPGRADES.md")),
         ("raw_url", raw_url("v1.51", "SHA256SUMS") ==
          "https://raw.githubusercontent.com/Mazhron/rootstock-os/v1.51/SHA256SUMS"),
         ("parse_entries version", kv == (1, 2)),
@@ -156,7 +166,7 @@ def verify_release(kit_v, text):
             raw = open(os.path.join(KIT_CLONE, "UPGRADES.md"), "rb").read()
         except OSError:
             return "unverified", text, "UNVERIFIED local clone (no SHA256SUMS)"
-        if verify_text(raw, sums, "UPGRADES.md"):
+        if verify_clone_text(raw, sums, "UPGRADES.md"):
             return "verified", text, "VERIFIED local clone"
         return "mismatch", text, "UNVERIFIED local clone: checksum mismatch"
     tag = "v%d.%d" % kit_v

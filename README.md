@@ -5,8 +5,8 @@
 **Keep the context small, make clearing the chat lossless, let cheap
 sub-agents do the reading.**
 
-Kit version: **v1.62** (2026-11-15). The graft log `UPGRADES.md` is the
-single source of truth; this line is checked against it on every sync.
+Kit version: **v1.63** (2026-11-15). The graft log `UPGRADES.md` is the
+single source of truth; this line is checked against it on every release.
 
 Rootstock is a folder of method files, scripts, skills and hooks you hand
 to Claude Code inside your own repo. It is for anyone running a real
@@ -155,7 +155,7 @@ less than 80% of the context is left.
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual |
 | `SECURITY.md` | The security policy: what pulling the repo runs (nothing), what the community gate refuses, the private door for reporting |
 | `SECURITY_METHOD.md` | The pre-production security audit: the gate before anything with a backend, a key or user data goes public |
-| `reference tools/` | 43 working scripts to adapt, not rewrite: standup, checkpoint, the core lint, the usage sheet (with the overhead block), the runner, the update check, and the rest of the loops (README_FULL.md lists every one) |
+| `reference tools/` | 44 working scripts to adapt, not rewrite: standup, checkpoint, the core lint, the usage sheet (with the overhead block), the runner, the update check, the rest of the loops, and `release_kit.py`, the script that releases this repo (README_FULL.md "Updating an installed project") |
 | `UPGRADES.md` | The graft log: the kit version and how each update lands on an installed project |
 | `CONTRIBUTING.md` | The format law and the purpose audit: the header every thing carries, the read-only flag ritual |
 | `FLAGS.md` | The flag ledger: every kit thing's latest green, yellow or red, tallied, append-only |
@@ -175,6 +175,10 @@ signed tag and verifies `SHA256SUMS` first. Contributions go through
 your yes. The kit was grown by **Mazhron (Travis Rhoda)** with Claude in
 [Everwood](https://github.com/Mazhron/Everwood); a developer's own review
 of this repo shaped v1.60 (the levels, this page, the overhead figure).
+Since v1.63 this repo is the kit's source of truth: it is edited here and
+released from here (`python "reference tools/release_kit.py"`: the gates,
+the checksums, the signed tag), and the origin project is one install
+among the others.
 
 ## License
 

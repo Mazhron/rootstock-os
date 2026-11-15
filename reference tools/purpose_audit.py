@@ -17,6 +17,7 @@ INTENT: the CEO 2026-09-13: "Claude MUST compare the purpose and intent of
   future review."
 
     python tools/purpose_audit.py                     # status: every item, its flag, STALE/UNFLAGGED; tally; ledger line
+    python "reference tools/purpose_audit.py"         # the same, run inside the kit repo (kit v1.63; no ledger there)
     python tools/purpose_audit.py --pending           # only the items that need an audit (unflagged or stale)
     python tools/purpose_audit.py --flag "hooks/preserve_guard.py" --color green --by fable \\
         --does "<what it actually does>" --note "<why this color; what to fix if not green>"
@@ -44,12 +45,18 @@ and counts match the file leaves FLAGS.md byte-identical, so the loop's
 audit never makes the mirror check cry KIT UNSYNCED over nothing (Q0003,
 the CEO 2026-09-14: option 2, fix the cause).
 
+What is NOT an item: the repo's own front matter at the kit's top level
+(README.md, README_FULL.md, LICENSE, SHA256SUMS, .gitignore), FLAGS.md
+itself, and a session's own folders inside the kit repo. Everything else
+there is, community/ and .github/ included (kit v1.63). A project with no
+kit folder at all gets one SKIP line and exit 0.
+
 Search keys: purpose audit, flags, green yellow red, flag ledger, FLAGS.md,
 read-only audit, stale flag, unflagged, contributor review, says does.
 See also: tools/format_lint.py (the header the SAYS line comes from);
-"Future Project MDs/FLAGS.md" (the ledger itself); "Future Project
-MDs/CONTRIBUTING.md" (the law for contributors); .claude/skills/flag (the
-ritual); tools/sync_kit_repo.py (warns on RED / unflagged at publish);
+FLAGS.md (the ledger itself); CONTRIBUTING.md (the law for
+contributors); skills/flag (the ritual); reference tools/release_kit.py
+(prints the tally, RED and unflagged included, at every release);
 WORKFLOWS.md "Audit a kit thing's purpose (flag it)"; INTENT.md.
 """
 import contextlib
@@ -65,11 +72,24 @@ import _ledger
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ----------------------------------------------------------- CONFIG --
-KIT_DIR = os.path.join(ROOT, "Future Project MDs")
-# Kit-repo-only things (community/, .github/) live only in the public clone (the
-# same path tools/sync_kit_repo.py uses); --flag falls back to it (2026-10-13, the
-# phase 3 audit could not file the workflow yml or community/code/README.md).
-KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
+# Kit v1.63 (the CEO 2026-11-15: "Source of truth - This should be
+# rootstock-os"): the kit repo is its own source. Run from inside it (this
+# file then sits in "reference tools/"), ROOT is the kit and the kit checks
+# itself; in an install ROOT is the project and the kit, when the project
+# keeps a copy at all, is the folder named here.
+IN_KIT = (os.path.isfile(os.path.join(ROOT, "UPGRADES.md"))
+          and os.path.isfile(os.path.join(ROOT, "0 - READ ME FIRST.md")))
+# what lives only in the kit repo and is never a kit thing (its own README,
+# the license, the checksums, the contributors' inbox, the CI)
+KIT_ONLY = {"README.md", "README_FULL.md", "LICENSE", "SHA256SUMS", "community", ".github", ".gitignore"}
+KIT_DIR = ROOT if IN_KIT else os.path.join(ROOT, "Future Project MDs")
+# Kit-repo-only things (community/, .github/) live only in the public clone;
+# --flag falls back to it (2026-10-13, the phase 3 audit could not file the
+# workflow yml or community/code/README.md). Where the kit IS the repo (run
+# inside it, or a project whose KIT_DIR names its clone) they sit beside the
+# kit things and are items like the rest: a flag on the CI workflow or on a
+# contributed file counts in the tally and goes STALE when the file changes.
+KIT_REPO = ROOT if IN_KIT else os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
 if not os.path.isdir(KIT_REPO):     # a workstation that keeps the clone beside the project (2026-11-15)
     _beside = os.path.normpath(os.path.join(ROOT, "..", "rootstock-os"))
     if os.path.isdir(_beside):
@@ -77,13 +97,20 @@ if not os.path.isdir(KIT_REPO):     # a workstation that keeps the clone beside 
 FLAGS = os.path.join(KIT_DIR, "FLAGS.md")
 LEDGER = os.path.join(ROOT, "docs", "history", "purpose_audit_runs.txt")
 LOCK = os.path.join(ROOT, ".claude", "flags.lock")   # gitignored; held only while appending
+if IN_KIT:      # never a new folder inside the kit repo: the lock lives in the temp dir
+    import tempfile
+    LOCK = os.path.join(tempfile.gettempdir(), "rootstock_flags.lock")
 SKIP_DIRS = {"__pycache__", ".git"}
 # README.md (2026-10-05): a second install whose KIT_DIR is the public clone
 # itself (ClaudeBrain, the Art of War) saw the clone's README as a 79th
 # item and rewrote the clone's FLAGS.md on every loop run, so Everwood's
 # mirror check cried KIT UNSYNCED on every prompt - the README is the
 # clone's own, never a kit thing.
-SKIP_NAMES = {"FLAGS.md", "LICENSE", ".gitignore", "README.md"}
+SKIP_NAMES = {"FLAGS.md", "LICENSE", ".gitignore"}
+# the repo's own front matter, skipped at the kit's top level only (a README
+# deeper down, community/README.md, is a thing to audit)
+TOP_SKIP = KIT_ONLY - {"community", ".github"}
+TOP_SKIP_DIRS = {".claude", ".vscode", ".idea"}      # a session's or an editor's own folders in a clone
 COLORS = ("GREEN", "YELLOW", "RED")
 TALLY_START = "<!-- tally:start -->"
 TALLY_END = "<!-- tally:end -->"
@@ -113,6 +140,10 @@ def items(kit=None):
     out = []
     for base, dirs, files in os.walk(kit):
         dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+        if os.path.normpath(base) == os.path.normpath(kit):     # the repo's own front matter, top level only
+            if IN_KIT:
+                dirs[:] = [d for d in dirs if d not in TOP_SKIP_DIRS]
+            files = [f for f in files if f not in TOP_SKIP]
         for f in files:
             if f in SKIP_NAMES:
                 continue
@@ -351,6 +382,8 @@ def _add_flag(item, color, by, does, note, path=None, kit=None, now=None, repo=N
 
 
 def ledger(tally):
+    if IN_KIT:      # the kit repo keeps no docs/history: the release commit and its tag are the record
+        return "not ledgered (inside the kit repo)"
     os.makedirs(os.path.dirname(LEDGER), exist_ok=True)
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     line = "%s | %s | %d | %d | %d | %d | %d | %d\n" % (
@@ -372,6 +405,9 @@ def main(argv):
         entry = add_flag(opt("--flag"), opt("--color", ""), opt("--by", "unknown"),
                          opt("--does", ""), opt("--note", ""))
         print(entry)
+        return 0
+    if not os.path.isdir(KIT_DIR):
+        print("PURPOSE AUDIT: SKIP - no kit beside this project to audit (%s)" % KIT_DIR)
         return 0
     rows, tally = status()
     pending = "--pending" in argv

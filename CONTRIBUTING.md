@@ -46,8 +46,10 @@ Plus, by class:
 A placeholder ("(unfilled ...)") is scaffolding, not a header: it fails.
 
 How it is enforced (reference tools/format_lint.py, hooks/format_guard.py):
-- `python tools/format_lint.py` checks every kit thing and its original
-  and names each failure; the sync script refuses to publish on a FAIL.
+- `python tools/format_lint.py` checks every kit thing a project holds
+  and names each failure; inside this repo the same script runs as
+  `python "reference tools/format_lint.py"` and the release script
+  refuses to release on a FAIL.
 - The FORMAT GUARD hook blocks an edit that leaves a kit thing without
   its header (the reason names the file and the rewrite command), and
   REFUSES any edit of a settings file that would unwire, narrow or
@@ -129,10 +131,24 @@ Two doors, by what you bring:
   form, with HOW IT WORKS, WHY IT WORKS, WHAT IT MIGHT HURT and a LEDGER
   (before and after); the owner builds it inside the laws above and
   credits the proposer in UPGRADES.md.
-The owner's own batches arrive by the sync script and pass the lint
+The owner's own batches arrive by the release script and pass the lint
 untouched; their gates are the format lint, the README lint and the
 purpose audit below. Main takes pull requests only, reviewed by the
 owner, no force pushes, signed commits.
+
+How a release is made (kit v1.63): this repo is the kit's source of
+truth. A kit thing is edited here, its UPGRADES.md entry is appended and
+the version line bumped, the README is brought level, and
+`python "reference tools/release_kit.py"` does the rest from the repo's
+root: a fast-forward pull, the format lint and the README parity lint
+(a FAIL in either refuses the release), the purpose audit's tally
+(printed, never a refusal; an audit that fails to run does refuse),
+`SHA256SUMS` written from the staged bytes, the commit, the push and the
+version's one signed tag. `--check` runs the gates and writes nothing
+but the flag tally and a line in the clone's own exclude file, so anyone
+can run it on a clone before proposing a change. Until v1.62 the files here were copies made by a script in the
+origin project; that script is retired and no other project is needed
+for a release.
 See also: community/README.md and community/TEMPLATE.md (kit repo only);
 reference tools/contribution_lint.py; SECURITY.md; .github/ISSUE_TEMPLATE/
 (the five forms); 0 - READ ME FIRST.md STEP 0 item 6 (the opt-in).

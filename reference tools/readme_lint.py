@@ -3,6 +3,7 @@ the Readme from falling behind so far and missing information like that
 in the future?" - "Lets build it.")
 
     python tools/readme_lint.py            # check, ledger a line, exit 1 on FAIL
+    python "reference tools/readme_lint.py"   # the same, run inside the kit repo (kit v1.63; no ledger there)
     python tools/readme_lint.py --quiet    # one summary line only
     python tools/readme_lint.py --selftest # prove the checks bite
 
@@ -30,9 +31,10 @@ compares it with what the README says:
                 match and one that must not - extend it when an audit
                 finds a prose slip a count cannot express
 
-tools/sync_kit_repo.py runs this and REFUSES to push on any FAIL; run_all's
-check group runs it; each run appends to docs/history/readme_lint_runs.txt.
-A machine without the kit clone prints SKIP and exits 0 (a ledger line
+The kit's release script (reference tools/release_kit.py, kit v1.63) runs
+this and REFUSES to release on any FAIL; in an install run_all's check
+group runs it and each run appends to docs/history/readme_lint_runs.txt.
+A project without the kit beside it prints SKIP and exits 0 (a ledger line
 says so) - the lint is a publish gate, not a workstation requirement.
 
 PURPOSE: Derives every countable README fact (laws, skills, hooks, reference
@@ -47,7 +49,7 @@ INTENT: the CEO 2026-09-13: 'What can we do to prevent the Readme from
 
 Search keys: readme lint, readme parity, readme drift, kit readme, public
 readme, box table, count check, rootstock readme, README_FULL, long form.
-See also: tools/sync_kit_repo.py (the refusal); tools/readme_audit.py (the
+See also: reference tools/release_kit.py (the refusal); tools/readme_audit.py (the
 cadence for the unwritten-answer class); tools/ledger_trends.py (proposes
 an audit); WORKFLOWS.md "Edit the future-project kit (Rootstock)";
 docs/systems/tooling.md "The README parity lint and audit cadence".
@@ -62,8 +64,18 @@ import _ledger
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ----------------------------------------------------------- CONFIG --
-KIT_DIR = os.path.join(ROOT, "Future Project MDs")
-KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
+# Kit v1.63 (the CEO 2026-11-15: "Source of truth - This should be
+# rootstock-os"): the kit repo is its own source. Run from inside it (this
+# file then sits in "reference tools/"), ROOT is the kit and the kit checks
+# itself; in an install ROOT is the project and the kit, when the project
+# keeps a copy at all, is the folder named here.
+IN_KIT = (os.path.isfile(os.path.join(ROOT, "UPGRADES.md"))
+          and os.path.isfile(os.path.join(ROOT, "0 - READ ME FIRST.md")))
+# what lives only in the kit repo and is never a kit thing (its own README,
+# the license, the checksums, the contributors' inbox, the CI)
+KIT_ONLY = {"README.md", "README_FULL.md", "LICENSE", "SHA256SUMS", "community", ".github", ".gitignore"}
+KIT_DIR = ROOT if IN_KIT else os.path.join(ROOT, "Future Project MDs")
+KIT_REPO = ROOT if IN_KIT else os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
 if not os.path.isdir(KIT_REPO):     # a workstation that keeps the clone beside the project (2026-11-15)
     _beside = os.path.normpath(os.path.join(ROOT, "..", "rootstock-os"))
     if os.path.isdir(_beside):
@@ -78,7 +90,7 @@ HOOKS_DIR = os.path.join(KIT_DIR, "hooks")
 HOOK_LIB = {"_hooklib.py"}
 REF_DIR = os.path.join(KIT_DIR, "reference tools")
 BOX_HEADING = "## What is in the box"
-BOX_SKIP = {"__pycache__"}
+BOX_SKIP = {"__pycache__", ".git"} | KIT_ONLY
 LEDGER = os.path.join(ROOT, "docs", "history", "readme_lint_runs.txt")
 # Grep-able prose facts. (label, must_match, must_not_match) - regexes on
 # the README text, case-insensitive. Add a row whenever an audit finds a
@@ -259,7 +271,8 @@ def truths():
                         if f.endswith(".py") and f not in HOOK_LIB)
     t["reference"] = sorted(f for f in os.listdir(REF_DIR)
                             if f not in BOX_SKIP and not f.endswith(".pyc"))
-    t["box"] = sorted(n for n in os.listdir(KIT_DIR) if n not in BOX_SKIP)
+    t["box"] = sorted(n for n in os.listdir(KIT_DIR)      # a dot entry (.git, .github, a session's .claude) is never a box item
+                      if n not in BOX_SKIP and not n.startswith("."))
     up = read(UPGRADES)
     m = re.search(r"CURRENT KIT VERSION:\s*\**v(\d+\.\d+)", up)
     t["version"] = m.group(1) if m else None
@@ -336,6 +349,9 @@ def checks(readme, t):
 
 
 def ledger(status, t, fails, nchecks):
+    if IN_KIT:      # the kit repo keeps no docs/history: the release commit and its tag are the record
+        return
+    os.makedirs(os.path.dirname(LEDGER), exist_ok=True)
     new = not os.path.isfile(LEDGER)
     if new:
         with open(LEDGER, "w", encoding="utf-8") as fh:
@@ -352,9 +368,9 @@ def main(argv):
     quiet = "--quiet" in argv
     if "--selftest" in argv:
         return selftest()
-    if not os.path.isfile(README):
-        print("README LINT: SKIP - no kit clone at %s (a publish gate, not a "
-              "workstation requirement)" % KIT_REPO)
+    if not os.path.isfile(README) or not os.path.isfile(UPGRADES):
+        print("README LINT: SKIP - no kit clone at %s, or no kit beside this project to check "
+              "it against (a publish gate, not a workstation requirement)" % KIT_REPO)
         ledger("SKIP", None, [], 0)
         return 0
     t = truths()
@@ -376,11 +392,11 @@ def main(argv):
 
 def selftest():
     """Prove the checks bite: a README with the 09-13 slips must FAIL them."""
-    t = truths()
-    good = readme_text() if os.path.isfile(README) else None
-    if good is None:
-        print("SELFTEST: SKIP (no README at %s)" % README)
+    if not os.path.isfile(README) or not os.path.isfile(UPGRADES):
+        print("SELFTEST: SKIP (no kit clone at %s, or no kit beside this project to check it against)" % KIT_REPO)
         return 0
+    t = truths()
+    good = readme_text()
     base = front_page_checks(read(README)) + checks(good, t)
     n = 0
     fail = 0

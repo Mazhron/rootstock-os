@@ -15,6 +15,7 @@ INTENT: the CEO 2026-09-13: "Any updates, upgrades, hooks, scripts, etc
   overrides safety protocols."
 
     python tools/format_lint.py                  # every kit thing + originals; ledger line; exit 1 on FAIL
+    python "reference tools/format_lint.py"      # the same, run inside the kit repo (kit v1.63; no ledger there)
     python tools/format_lint.py --quiet          # one summary line
     python tools/format_lint.py --file <path>    # one file (what the format guard runs)
     python tools/format_lint.py --rewrite <path> --purpose "..." --intent "..." [--keys "..."] [--also "..."]
@@ -35,20 +36,21 @@ THE FORMAT (the whole law, also in the kit's CONTRIBUTING.md):
   A placeholder "(unfilled)" is scaffolding, not a header: it still FAILS,
   so a rewrite without the reviewer's words never passes by itself.
 
-Scope is DERIVED, never listed: every file in the kit folder, plus the
-repo original of each (tools/hooks/*.py, the tools/*.py that have a
-reference copy, .claude/skills/*/SKILL.md, the repo-root MDs the kit
-mirrors, .claude/settings.json). A file outside that scope is never
-touched by this lint or its hook.
+Scope is DERIVED, never listed. Inside the kit repo: every kit file (the
+repo's own README, license, checksums, community/ and .github/ are not
+kit things). In a project: its own copy of each kit thing (tools/hooks/
+*.py, .claude/skills/*/SKILL.md, .claude/settings.json; plus, where the
+project keeps a kit folder, that folder, the tools/*.py with a reference
+copy and the repo-root MDs it mirrors). A file outside that scope is
+never touched by this lint or its hook.
 
 Search keys: format lint, format law, purpose line, intent line, header
 format, kit format, safety wiring, settings.json check, rewrite scaffold,
 contributing.
 See also: tools/hooks/format_guard.py (the hook: refuses the unsafe
 settings edit, blocks the unformatted edit); tools/purpose_audit.py (the
-flag ledger the audit files into); tools/refresh_kit.py (originals ->
-kit copies); tools/sync_kit_repo.py (refuses to publish on FAIL);
-"Future Project MDs/CONTRIBUTING.md" (the law for contributors);
+flag ledger the audit files into); reference tools/release_kit.py (the
+kit's release: refuses on FAIL); CONTRIBUTING.md (the law for contributors);
 WORKFLOWS.md "Format-check and rewrite a kit thing"; INTENT.md.
 """
 import datetime
@@ -65,7 +67,17 @@ NL = chr(10)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ----------------------------------------------------------- CONFIG --
-KIT_DIR = os.path.join(ROOT, "Future Project MDs")
+# Kit v1.63 (the CEO 2026-11-15: "Source of truth - This should be
+# rootstock-os"): the kit repo is its own source. Run from inside it (this
+# file then sits in "reference tools/"), ROOT is the kit and the kit checks
+# itself; in an install ROOT is the project and the kit, when the project
+# keeps a copy at all, is the folder named here.
+IN_KIT = (os.path.isfile(os.path.join(ROOT, "UPGRADES.md"))
+          and os.path.isfile(os.path.join(ROOT, "0 - READ ME FIRST.md")))
+# what lives only in the kit repo and is never a kit thing (its own README,
+# the license, the checksums, the contributors' inbox, the CI)
+KIT_ONLY = {"README.md", "README_FULL.md", "LICENSE", "SHA256SUMS", "community", ".github", ".gitignore"}
+KIT_DIR = ROOT if IN_KIT else os.path.join(ROOT, "Future Project MDs")
 HOOKS_DIR = os.path.join(ROOT, "tools", "hooks")
 TOOLS_DIR = os.path.join(ROOT, "tools")
 SKILLS_DIR = os.path.join(ROOT, ".claude", "skills")
@@ -143,6 +155,8 @@ def classify(path):
         return None
     if under(p, KIT_DIR):
         rel = os.path.relpath(p, KIT_DIR).replace("\\", "/")
+        if rel.split("/")[0] in KIT_ONLY | {".claude", ".vscode", ".idea"}:    # the kit repo's own things and a session's own folders, when the kit is a clone of it
+            return None
         if name == "settings.json":
             return "settings"
         if name.endswith(".py"):
@@ -177,6 +191,8 @@ def scope():
             c = classify(p)
             if c:
                 items.append((p, c))
+    if IN_KIT:      # the kit repo holds no second copy of anything
+        return items
     originals = []
     if os.path.isdir(HOOKS_DIR):
         originals += [os.path.join(HOOKS_DIR, f) for f in sorted(os.listdir(HOOKS_DIR)) if f.endswith(".py")]
@@ -454,6 +470,8 @@ def rewrite(path, purpose=None, intent=None, keys=None, also=None, cls=None):
 
 # ------------------------------------------------------------ ledger --
 def ledger(items, fails):
+    if IN_KIT:      # the kit repo keeps no docs/history: the release commit and its tag are the record
+        return "not ledgered (inside the kit repo)"
     os.makedirs(os.path.dirname(LEDGER), exist_ok=True)
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     names = "; ".join(os.path.relpath(p, ROOT).replace("\\", "/") for p, _ in fails[:4])
@@ -556,10 +574,14 @@ def selftest():
                            {"matcher": "Bash|PowerShell|Write|Edit|MultiEdit", "hooks": [{"command": "python hooks/preserve_guard.py"}]},
                            {"matcher": "Read|Bash|PowerShell", "hooks": [{"command": "python hooks/diet_guard.py"}]},
                            {"hooks": [{"command": "python hooks/fanout_guard.py"}]},
-                           {"matcher": "Write|Edit|MultiEdit", "hooks": [{"command": "python hooks/format_guard.py"}]}],
+                           {"matcher": "Write|Edit|MultiEdit", "hooks": [{"command": "python hooks/format_guard.py"}]},
+                           {"matcher": "Agent|Task", "hooks": [{"command": "python hooks/brief_guard.py"}]}],
             "PostToolUse": [{"matcher": "Write|Edit|MultiEdit", "hooks": [{"command": "python hooks/hygiene_guard.py"},
-                                                                          {"command": "python hooks/format_guard.py"}]}],
-            "Stop": [{"hooks": [{"command": "python hooks/stop_tick.py"}]}]}}
+                                                                          {"command": "python hooks/format_guard.py"}]},
+                            {"matcher": "Agent|Task", "hooks": [{"command": "python hooks/delegation_auditor.py"}]}],
+            "SubagentStop": [{"hooks": [{"command": "python hooks/delegation_auditor.py"}]}],
+            "Stop": [{"hooks": [{"command": "python hooks/stop_tick.py"}, {"command": "python hooks/verify_advisor.py"}]}],
+            "SessionEnd": [{"hooks": [{"command": "python hooks/session_end.py"}]}]}}
         check("fully wired settings pass", check_settings_text(json.dumps(good), td) == [])
         bad = json.loads(json.dumps(good))
         bad["hooks"]["PreToolUse"] = [e for e in bad["hooks"]["PreToolUse"] if "preserve" not in json.dumps(e)]
@@ -613,11 +635,19 @@ def selftest():
         check("skill rewrite lands after the title, inside the body",
               txt.index("# /ship") < txt.index("PURPOSE:") < txt.index("body") and check_text(txt, "skill", sk) == [])
     check("classify: kit hook", classify(os.path.join(KIT_DIR, "hooks", "diet_guard.py")) == "hook")
-    check("classify: original hook", classify(os.path.join(HOOKS_DIR, "diet_guard.py")) == "hook")
+    if not IN_KIT:      # a project's own copies; inside the kit repo there are none
+        check("classify: original hook", classify(os.path.join(HOOKS_DIR, "diet_guard.py")) == "hook")
+        check("classify: non-kit tool is out of scope", classify(os.path.join(TOOLS_DIR, "run_tests.py")) is None)
+    else:
+        check("classify: the kit repo's own README is not a kit thing", classify(os.path.join(ROOT, "README.md")) is None)
+        check("classify: the contributors' inbox is not a kit thing",
+              classify(os.path.join(ROOT, "community", "README.md")) is None)
     check("classify: kit skill", classify(os.path.join(KIT_DIR, "skills", "ship", "SKILL.md")) == "skill")
-    check("classify: repo settings", classify(SETTINGS) == "settings")
+    if not IN_KIT:      # inside the kit repo a .claude/ folder is a session's own, never a kit thing
+        check("classify: repo settings", classify(SETTINGS) == "settings")
+    else:
+        check("classify: a session's .claude folder in the kit repo is out of scope", classify(SETTINGS) is None)
     check("classify: game script is out of scope", classify(os.path.join(ROOT, "scripts", "world", "main.gd")) is None)
-    check("classify: non-kit tool is out of scope", classify(os.path.join(TOOLS_DIR, "run_tests.py")) is None)
     print("format_lint selftest: %d failed" % len(fails))
     return 1 if fails else 0
 

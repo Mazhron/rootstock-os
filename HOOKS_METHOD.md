@@ -475,8 +475,12 @@ never a refusal - except the dash rule, which BLOCKS (PostToolUse
 Its CONFIG block at the top names the project's files; a kit install
 rewrites that block and nothing else.
 
-1. KIT REFRESH: the edited file is a portable original (a kit MD, a
-   skill's SKILL.md, a hook script, a tool that has a reference copy) ->
+1. KIT REFRESH (only in a project that publishes kit things from a kit
+   folder of its own; the hook's default CONFIG since kit v1.63 names no
+   kit folder, a RECEIVING project, and this rule is silent there: the
+   kit repo is its own source and a kit thing is edited in it): the
+   edited file is a portable original (a kit MD, a skill's SKILL.md, a
+   hook script, a tool that has a reference copy) ->
    one line naming the grab-copy to refresh, the graft-log entry + version
    bump if a concept changed, the public README if a pillar / skill /
    hook / box item changed, then the sync script. Editing a kit COPY
@@ -494,12 +498,14 @@ rewrites that block and nothing else.
 4. IMPORT: a new asset file landed under the assets folder -> "run the
    engine import before the next test".
 
-Companion, not a hook: the kit sync script REFUSES to push while the
-README's "Kit version:" line lags the graft log's CURRENT KIT VERSION -
-the README lives only in the public repo, so the sync is the one place a
-stale one can be caught mechanically.
+Companion, not a hook: the kit's release script (reference
+tools/release_kit.py, run inside the kit repo since v1.63) REFUSES to
+release while the README's "Kit version:" line lags the graft log's
+CURRENT KIT VERSION or the README parity lint fails - the release is the
+one place a stale README can be caught mechanically.
 
-`--selftest` runs 25 in-process checks (every rule, its scope edges, the
+`--selftest` runs 21 in-process checks in a receiving project, 26 in a
+publishing one (every rule, its scope edges, the
 outside-the-repo and empty-input cases).
 
 See also: WORKFLOWS.md "Edit the future-project kit (Rootstock)"; the
@@ -796,8 +802,9 @@ the ledgers argue for first.
    patterns, the assets folder + import hint), wire its
    Write|Edit|MultiEdit PostToolUse entry (the template settings.json
    has it), run `python tools/hooks/hygiene_guard.py --selftest`. No
-   state file. Give the public README (if the project publishes a kit)
-   a "Kit version: vX.Y" line so the sync script's check can hold.
+   state file. A receiving project (the default) leaves KIT_MDS empty
+   and KIT_DIR blank. Give the public README (if the project publishes a
+   kit) a "Kit version: vX.Y" line so the release script's check can hold.
 
 ## Change log
 

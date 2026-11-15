@@ -8,12 +8,17 @@ After every Write/Edit lands it looks at the file that changed and, when
 one of these applies, hands the manager one line of context (never a
 refusal, except the dash rule which BLOCKS so the line is fixed at once):
 
-  KIT REFRESH  - the file is a portable original (a kit MD, a skill, a
-                 hook, a reference tool): refresh its grab-copy in the kit
-                 folder, UPGRADES.md + version bump if a concept changed,
-                 the public README if a pillar/skill/hook/box item changed,
-                 then sync_kit_repo.py. Editing a kit COPY directly names
-                 the original instead. Editing the core instructions file
+  KIT REFRESH  - ONLY in a project that publishes kit things from a kit
+                 folder of its own (CONFIG names KIT_DIR): the file is a
+                 portable original (a kit MD, a skill, a hook, a reference
+                 tool): refresh its grab-copy in the kit folder, UPGRADES.md
+                 + version bump if a concept changed, the public README if
+                 a pillar/skill/hook/box item changed, then the project's
+                 own sync command. Editing a kit COPY directly names the
+                 original instead. The default (KIT_DIR = "") is a
+                 RECEIVING project and hears none of this: since kit v1.63
+                 the kit repo is its own source and a kit thing is edited
+                 there. Either way, editing the core instructions file
                  runs its lint at once and relays a FAIL.
   SEE-ALSO     - a touched section of a docs/systems wiki page carries no
                  "See also:" line (the link checker's hygiene rule, at the
@@ -42,8 +47,8 @@ Search keys: hygiene guard, PostToolUse, kit refresh reminder, see-also
 lint, dash guard, import reminder, Tier 3.
 See also: HOOKS_METHOD.md (Tier 3); docs/systems/tooling.md (The hooks);
 tools/check_wiki_links.py (the after-the-fact twin of the See-also rule);
-tools/sync_kit_repo.py (the README version check); WORKFLOWS.md "Edit the
-future-project kit (Rootstock)".
+UPGRADES.md v1.63 (the kit repo is its own source; why the default is a
+receiving project).
 """
 import json
 import os
@@ -54,14 +59,13 @@ import sys
 from _hooklib import ROOT, read_input, emit
 
 # ------------------------------------------------------------- CONFIG --
-# The portable originals (repo-root MDs that have a grab-copy in the kit).
-KIT_MDS = {
-    "GODOT_FIELD_NOTES.md", "CLICKER_DESIGN_NOTES.md", "WIKI_METHOD.md",
-    "SUBAGENT_METHOD.md", "REPORTING_METHOD.md", "WORKFLOW_METHOD.md",
-    "SKILLS.md", "HOOKS_METHOD.md", "WORKSTATION_METHOD.md", "INTENT_METHOD.md",
-    "LESSONS.md",
-}
-KIT_DIR = "Future Project MDs"           # the grab-copy folder (repo root)
+# A RECEIVING project (the default since kit v1.63: the kit repo is the
+# source and is edited there) names no portable originals and no kit folder,
+# and the KIT REFRESH lines stay silent. A project that publishes kit things
+# from a kit folder of its own lists its portable repo-root MDs in KIT_MDS,
+# names the folder in KIT_DIR and its publish command in KIT_SYNC.
+KIT_MDS = set()
+KIT_DIR = ""                             # "" = a receiving project: no kit folder in this repo
 KIT_ONLY = {"0 - READ ME FIRST.md", "UPGRADES.md",  # no repo-root original (front door renamed 2026-09-14: it is an install runbook, not a CLAUDE.md)
             "CONTRIBUTING.md", "FLAGS.md", "hooks/README.txt", "hooks/settings.json",
                  "hooks/settings.lean.json", "hooks/settings.standard.json"}
@@ -71,8 +75,8 @@ REF_TOOLS_DIR = KIT_DIR + "/reference tools"
 CORE_FILE = "CLAUDE.md"                  # its lint runs on edit
 CORE_CONTRACT = ("docs/index/MASTER_INDEX.md", ".claude/rules/")   # the one door + the path-scoped rules: same lint (the pointer core, 2026-09-14)
 CORE_LINT = ["python", "tools/check_claude_md.py"]
-KIT_SYNC = "python tools/sync_kit_repo.py"
-README_HINT = "the public README (rootstock-os/README.md) if a pillar, skill, hook or box item changed"
+KIT_SYNC = "none"                        # a publishing project: its own sync command
+README_HINT = "none"                     # a publishing project: which README to bring level, and when
 WIKI_DIRS = ("docs/systems/",)           # See-also lint scope (= check_wiki_links.py)
 PLAYER_TEXT = (                           # dash doctrine scope
     re.compile(r"^data/.*\.tres$"),
@@ -127,6 +131,8 @@ def kit_refresh(r, run_lint=True):
         if "FAIL" in out:
             return "CORE LINT: " + out.replace("\n", " | ")
         return None
+    if not KIT_DIR:
+        return None   # a receiving project: nothing to refresh
     if r in KIT_MDS:
         return ("KIT REFRESH: %s is a portable original - refresh '%s/%s' in this batch; "
                 "UPGRADES.md entry (WHAT/CARRIES/GRAFT/README) + version bump if a concept changed; %s; then %s"
@@ -262,25 +268,30 @@ def _selftest():
                          "cwd": ROOT}, run_lint=False, file_lines=lines)
 
     ap = lambda p: os.path.join(ROOT, p)  # noqa: E731
-    b, c = run("Edit", ap("WIKI_METHOD.md"), old_string="a", new_string="b")
-    check("portable MD -> kit refresh line naming the copy and the README",
-          b is None and len(c) == 1 and "KIT REFRESH" in c[0]
-          and "Future Project MDs/WIKI_METHOD.md" in c[0] and "README" in c[0])
-    b, c = run("Edit", ap(".claude/skills/ship/SKILL.md"), old_string="a", new_string="b")
-    check("skill -> kit refresh line naming skills/ship", c and "skills/ship/SKILL.md" in c[0])
-    b, c = run("Edit", ap("tools/hooks/diet_guard.py"), old_string="a", new_string="b")
-    check("hook -> kit refresh line naming hooks/ copy", c and "hooks/diet_guard.py" in c[0])
-    b, c = run("Edit", ap("tools/standup.py"), old_string="a", new_string="b")
-    check("reference tool -> refresh line", c and "reference tools/standup.py" in c[0])
-    b, c = run("Edit", ap("tools/run_tests.py"), old_string="a", new_string="b")
-    check("non-kit tool is silent", b is None and c == [])
-    b, c = run("Edit", ap("Future Project MDs/WIKI_METHOD.md"), old_string="a", new_string="b")
-    check("kit copy -> 'edit the original'", c and "KIT COPY" in c[0] and "WIKI_METHOD.md" in c[0])
-    b, c = run("Edit", ap("Future Project MDs/UPGRADES.md"), old_string="a", new_string="b")
-    check("UPGRADES.md -> version bump + README reminder", c and "CURRENT KIT VERSION" in c[0]
-          and "README" in c[0])
-    b, c = run("Edit", ap("Future Project MDs/hooks/README.txt"), old_string="a", new_string="b")
-    check("kit-only hooks/README.txt is not called a copy", c and "KIT:" in c[0] and "KIT COPY" not in c[0])
+    if KIT_DIR:   # the kit-publisher cases; a receiving project (the default) runs the else case
+        b, c = run("Edit", ap("WIKI_METHOD.md"), old_string="a", new_string="b")
+        check("portable MD -> kit refresh line naming the copy and the README",
+              b is None and len(c) == 1 and "KIT REFRESH" in c[0]
+              and (KIT_DIR + "/WIKI_METHOD.md") in c[0] and "README" in c[0])
+        b, c = run("Edit", ap(".claude/skills/ship/SKILL.md"), old_string="a", new_string="b")
+        check("skill -> kit refresh line naming skills/ship", c and "skills/ship/SKILL.md" in c[0])
+        b, c = run("Edit", ap("tools/hooks/diet_guard.py"), old_string="a", new_string="b")
+        check("hook -> kit refresh line naming hooks/ copy", c and "hooks/diet_guard.py" in c[0])
+        b, c = run("Edit", ap("tools/standup.py"), old_string="a", new_string="b")
+        check("reference tool -> refresh line", c and "reference tools/standup.py" in c[0])
+        b, c = run("Edit", ap("tools/run_tests.py"), old_string="a", new_string="b")
+        check("non-kit tool is silent", b is None and c == [])
+        b, c = run("Edit", ap(KIT_DIR + "/WIKI_METHOD.md"), old_string="a", new_string="b")
+        check("kit copy -> 'edit the original'", c and "KIT COPY" in c[0] and "WIKI_METHOD.md" in c[0])
+        b, c = run("Edit", ap(KIT_DIR + "/UPGRADES.md"), old_string="a", new_string="b")
+        check("UPGRADES.md -> version bump + README reminder", c and "CURRENT KIT VERSION" in c[0]
+              and "README" in c[0])
+        b, c = run("Edit", ap(KIT_DIR + "/hooks/README.txt"), old_string="a", new_string="b")
+        check("kit-only hooks/README.txt is not called a copy", c and "KIT:" in c[0] and "KIT COPY" not in c[0])
+    else:
+        for p in ("tools/hooks/diet_guard.py", "tools/standup.py", ".claude/skills/ship/SKILL.md"):
+            b, c = run("Edit", ap(p), old_string="a", new_string="b")
+            check("receiving project: %s edit names no kit copy" % p, b is None and c == [])
     b, c = run("Edit", ap("CLAUDE.md"), old_string="a", new_string="b")
     check("core file -> lint hook point", c and "CORE" in c[0])
     b, c = run("Edit", ap("scripts/world/main.gd"), old_string="a", new_string="b")

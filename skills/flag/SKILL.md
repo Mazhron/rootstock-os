@@ -51,13 +51,14 @@ INTENT: Mazhron 2026-09-13: "Claude MUST compare the purpose and intent of
    the script (`python tools/format_lint.py --rewrite <original path>
    --purpose ... --intent ...`) in a later step, never in the audit turn.
    A WRONG line that exists (a stale PURPOSE) the script cannot replace -
-   --rewrite only fills gaps - so it is edited in the ORIGINAL after the
-   flag is filed, then format_lint and refresh_kit run and the thing is
-   flagged again on its new version (2026-09-29, law_gaps.py). A RED goes
+   --rewrite only fills gaps - so it is edited where the thing lives (a
+   kit thing in the kit repo, its one original since kit v1.63) after the
+   flag is filed, then format_lint runs and the thing is flagged again
+   on its new version (2026-09-29, law_gaps.py). A RED goes
    to the owner as a question, with the entry quoted.
-7. Ship with the batch: FLAGS.md is kit content and syncs to the public
-   repo with everything else. A contributor files the same entry by pull
-   request.
+7. Ship with the batch: FLAGS.md is kit content and goes out with the
+   kit's next release like everything else. A contributor files the same
+   entry by pull request.
 
 RULES
 - Read-only means read-only: the audit turn changes nothing but FLAGS.md.
