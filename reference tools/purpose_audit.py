@@ -70,6 +70,10 @@ KIT_DIR = os.path.join(ROOT, "Future Project MDs")
 # same path tools/sync_kit_repo.py uses); --flag falls back to it (2026-10-13, the
 # phase 3 audit could not file the workflow yml or community/code/README.md).
 KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
+if not os.path.isdir(KIT_REPO):     # a workstation that keeps the clone beside the project (2026-11-15)
+    _beside = os.path.normpath(os.path.join(ROOT, "..", "rootstock-os"))
+    if os.path.isdir(_beside):
+        KIT_REPO = _beside
 FLAGS = os.path.join(KIT_DIR, "FLAGS.md")
 LEDGER = os.path.join(ROOT, "docs", "history", "purpose_audit_runs.txt")
 LOCK = os.path.join(ROOT, ".claude", "flags.lock")   # gitignored; held only while appending

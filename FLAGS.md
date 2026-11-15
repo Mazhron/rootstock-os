@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-11-06 15:00 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 | stale 15
+Updated 2026-11-15 10:22 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 | stale 27
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -41,27 +41,27 @@ Updated 2026-11-06 15:00 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | CONTRIBUTING.md | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
-| HOOKS_METHOD.md | GREEN | ok | fable | 2026-11-06 15:00 |
+| HOOKS_METHOD.md | GREEN | ok | fable | 2026-11-15 10:18 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | ok | fable | 2026-11-06 15:00 |
+| LESSONS.md | GREEN | STALE | fable | 2026-11-06 15:00 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable | 2026-10-13 14:13 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
 | SKILLS.md | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:47 |
 | SUBAGENT_METHOD.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| UPGRADES.md | GREEN | ok | fable | 2026-11-06 15:00 |
+| UPGRADES.md | GREEN | ok | fable | 2026-11-15 10:18 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
 | WORKFLOW_METHOD.md | GREEN | STALE | fable | 2026-10-06 11:21 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
 | agents/explore.md | GREEN | STALE | fable | 2026-10-22 09:10 |
 | agents/lookup.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| hooks/README.txt | GREEN | ok | fable | 2026-11-06 15:00 |
-| hooks/_hooklib.py | GREEN | ok | fable | 2026-11-06 15:00 |
+| hooks/README.txt | GREEN | ok | fable | 2026-11-15 10:18 |
+| hooks/_hooklib.py | GREEN | ok | fable | 2026-11-15 10:18 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/brief_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/delegation_auditor.py | GREEN | ok | fable | 2026-10-01 16:55 |
-| hooks/diet_guard.py | GREEN | STALE | fable | 2026-09-30 11:57 |
+| hooks/diet_guard.py | GREEN | ok | fable | 2026-11-15 10:22 |
 | hooks/fanout_guard.py | GREEN | ok | sonnet-fmt1 | 2026-09-13 11:51 |
 | hooks/format_guard.py | GREEN | ok | fable | 2026-09-13 11:57 |
 | hooks/hygiene_guard.py | GREEN | ok | fable | 2026-11-06 14:47 |
@@ -70,20 +70,20 @@ Updated 2026-11-06 15:00 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-10-30 13:05 |
-| hooks/rootstock_modes.json | GREEN | ok | fable | 2026-11-06 15:00 |
+| hooks/rootstock_modes.json | GREEN | ok | fable | 2026-11-15 10:18 |
 | hooks/session_end.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | hooks/session_start.py | GREEN | ok | fable | 2026-11-06 15:00 |
 | hooks/settings.json | GREEN | STALE | fable | 2026-10-01 16:55 |
 | hooks/settings.lean.json | GREEN | ok | fable | 2026-11-06 14:47 |
-| hooks/settings.standard.json | GREEN | ok | fable | 2026-11-06 14:47 |
+| hooks/settings.standard.json | GREEN | STALE | fable | 2026-11-06 14:47 |
 | hooks/stop_tick.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| knowledge/MANIFEST.md | GREEN | ok | fable | 2026-11-06 15:00 |
+| knowledge/MANIFEST.md | GREEN | STALE | fable | 2026-11-06 15:00 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
 | knowledge/lessons/godot.md | GREEN | STALE | fable | 2026-10-19 09:44 |
-| knowledge/lessons/harness.md | GREEN | ok | fable | 2026-11-06 15:00 |
+| knowledge/lessons/harness.md | GREEN | STALE | fable | 2026-11-06 15:00 |
 | reference tools/_ledger.py | GREEN | ok | fable | 2026-09-20 03:21 |
-| reference tools/backup_push.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
+| reference tools/backup_push.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/check_claude_md.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/check_wiki_links.py | GREEN | ok | Fable (WS2 manager) | 2026-09-22 17:37 |
@@ -95,22 +95,22 @@ Updated 2026-11-06 15:00 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/format_lint.py | GREEN | ok | fable | 2026-10-01 16:55 |
-| reference tools/guard_replay.py | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
+| reference tools/guard_replay.py | GREEN | STALE | sonnet-flag-1013d | 2026-10-13 14:09 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/keepwarm.py | GREEN | STALE | fable | 2026-10-31 19:43 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
-| reference tools/ledger_trends.py | GREEN | ok | fable | 2026-11-06 15:00 |
+| reference tools/ledger_trends.py | GREEN | STALE | fable | 2026-11-06 15:00 |
 | reference tools/lesson_ladder.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | reference tools/lesson_log.py | GREEN | ok | sonnet | 2026-11-06 14:25 |
 | reference tools/merge_ledgers.py | GREEN | ok | fable manager E-2026-11-03-28 follow-up | 2026-11-03 16:50 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/output_shape.py | GREEN | ok | fable | 2026-10-31 19:43 |
 | reference tools/plan_check.py | - | UNFLAGGED | - | - |
-| reference tools/purpose_audit.py | GREEN | ok | fable | 2026-10-13 14:14 |
+| reference tools/purpose_audit.py | GREEN | STALE | fable | 2026-10-13 14:14 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/readme_lint.py | GREEN | ok | fable | 2026-11-06 14:47 |
-| reference tools/refresh_kit.py | GREEN | ok | fable | 2026-11-06 14:47 |
+| reference tools/readme_lint.py | GREEN | STALE | fable | 2026-11-06 14:47 |
+| reference tools/refresh_kit.py | GREEN | STALE | fable | 2026-11-06 14:47 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/retrieval_eval.py | GREEN | STALE | fable | 2026-10-13 11:45 |
 | reference tools/rootstock_update_check.py | GREEN | ok | fable | 2026-10-13 14:13 |
@@ -118,13 +118,13 @@ Updated 2026-11-06 15:00 | items 99 | GREEN 95 | YELLOW 3 | RED 0 | unflagged 1 
 | reference tools/run_all.py | GREEN | STALE | sonnet-flag-1013c | 2026-10-13 13:32 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/split_knowledge.py | GREEN | ok | fable | 2026-10-13 13:33 |
-| reference tools/standup.py | GREEN | ok | fable | 2026-11-06 15:00 |
+| reference tools/standup.py | GREEN | STALE | fable | 2026-11-06 15:00 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/usage_report.py | GREEN | ok | fable | 2026-11-06 14:47 |
+| reference tools/usage_report.py | GREEN | STALE | fable | 2026-11-06 14:47 |
 | reference tools/usage_window.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | reference tools/version_hint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
-| reference tools/workstation_survey.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/workstation_survey.py | GREEN | STALE | sonnet-fmt3 | 2026-09-13 11:52 |
 | rules/wiki.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | skills/brief/EMPLOYEE_RULES.md | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
@@ -1942,3 +1942,38 @@ FLAG: GREEN: the entry states its measurement scope and how to re-measure
 SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
 DOES: one row per knowledge file; the harness row's count and size moved with the new entry
 FLAG: GREEN: derived
+
+### 2026-11-15 10:18 | hooks/diet_guard.py | GREEN | fable | WS? | 93f1127a
+SAYS: PreToolUse guard on Read, Bash and PowerShell enforcing the read diet and output diet: warns when a shell command shape (git log, git diff, recursive listing, install) has no limiter, and on the first whole read of a file over about 10k tokens in a session it denies once and returns the file's own section or function index instead; the same call repeated afterward passes with a warning only; a LATER whole read of that same file in the same session, fingerprint (mtime_ns+size) unchanged since the admitted read, is denied once more as RE-READ and passes on repeat; forget_session_reads() clears a session's RE-READ marks (not its INDEX FIRST marks) after a compaction empties the context; on Write (v1.57) it warns once per file per session when the content is past about 4k tokens of manager output, naming the employee or script route; on the third same-shaped call on a new target within the last six counted calls (Edit, MultiEdit, Write, Read by file; Bash, PowerShell by verb; Grep by pattern, one place per call) it notes TRIP DIET once per shape per session (2026-11-03, code mode): the rest of the trip as one script run once; with trip_diet_refuse = true (v1.62, off by default) that call is denied once instead and passes on repeat; it appends one line per note and per outcome (HEEDED, WALKED, MOVED-ON), and one MCP-RUN line per silent run of a single MCP tool, to docs/history/trip_diet_runs.txt; `--trips` prints that ledger's tally and writes nothing.
+DOES: PreToolUse guard: INDEX FIRST and RE-READ refusals, READ, OUTPUT and BIG WRITE notes, and the TRIP DIET note counted over a six call window for Edit, MultiEdit, Write, Read, shell verbs and one-pattern Greps; queues ledger lines that main appends to docs/history/trip_diet_runs.txt; --trips prints the tally read-only; trip_diet_refuse denies the third call once when switched on; MCP runs are counted silently
+FLAG: Matches PURPOSE after the v1.62 rewrite of the trip block; the only new write is the trip ledger, which PURPOSE names; selftest 64 checks, 0 failed; pipe-tested in a sandbox copy in both modes
+
+### 2026-11-15 10:18 | hooks/_hooklib.py | GREEN | fable | WS? | 434f06b5
+SAYS: Shared plumbing every hook imports: reads the harness's JSON from stdin, emits JSON back for deny, block or context decisions, and resolves the project version; import-only, no side effects on its own.
+DOES: Shared hook helpers: stdin read, emit, deny, context, and the modes file reader with defaults in code; v1.62 adds the trip_diet_refuse default (False)
+FLAG: One default key added and one comment reworded; no behaviour change for any other key
+
+### 2026-11-15 10:18 | hooks/rootstock_modes.json | GREEN | fable | WS? | 5df22d7c
+SAYS: (no PURPOSE line)
+DOES: The committed switches file: six behaviour keys plus trip_diet_refuse (false) and the _old_ways block naming each old value
+FLAG: trip_diet_refuse is the one key whose default is the old way; its _old_ways line says so
+
+### 2026-11-15 10:18 | HOOKS_METHOD.md | GREEN | fable | WS? | 470c56bb
+SAYS: Documents the harness hooks, session start, prompt, stop, compaction, and tool-call guards, that enforce CLAUDE.md's laws mechanically instead of relying on the manager's memory, plus the hook contract and the kit's hook roster.
+DOES: The hooks method file; Tier 2c now names the diet guard's wider matcher, the trip diet's window, outcome ledger and refuse switch; the modes list gains trip_diet_warn and trip_diet_refuse; Bootstrap step 7 names the wider matcher
+FLAG: Prose matches hooks/diet_guard.py and the settings templates as shipped in v1.62
+
+### 2026-11-15 10:18 | UPGRADES.md | GREEN | fable | WS? | d38154ce
+SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
+DOES: The append only graft log; v1.62 entry added and the version line bumped
+FLAG: The v1.62 entry also carries the trip diet itself, which shipped 2026-11-03 with no entry; append only held
+
+### 2026-11-15 10:18 | hooks/README.txt | GREEN | fable | WS? | 4c6cf825
+SAYS: Installation notes for the Rootstock hooks folder: what each hook file needs filled in or wired (bash_guard.py's PROJECT RULES and its BARE_DOORS tuple, fanout_guard.py's numbers via the runaway skill, hygiene_guard.py's CONFIG block) and the gitignore entries a new project needs.
+DOES: Per-hook setup notes; the diet guard paragraph names the wider matcher and the v1.62 trip diet behaviour
+FLAG: Matches the settings templates and the hook
+
+### 2026-11-15 10:22 | hooks/diet_guard.py | GREEN | fable | WS? | 3b313341
+SAYS: PreToolUse guard on Read, Bash and PowerShell enforcing the read diet and output diet: warns when a shell command shape (git log, git diff, recursive listing, install) has no limiter, and on the first whole read of a file over about 10k tokens in a session it denies once and returns the file's own section or function index instead; the same call repeated afterward passes with a warning only; a LATER whole read of that same file in the same session, fingerprint (mtime_ns+size) unchanged since the admitted read, is denied once more as RE-READ and passes on repeat; forget_session_reads() clears a session's RE-READ marks (not its INDEX FIRST marks) after a compaction empties the context; on Write (v1.57) it warns once per file per session when the content is past about 4k tokens of manager output, naming the employee or script route; on the third same-shaped call on a new target within the last six counted calls (Edit, MultiEdit, Write, Read by file; Bash, PowerShell by verb; Grep by pattern, one place per call) it notes TRIP DIET once per shape per session (2026-11-03, code mode): the rest of the trip as one script run once; with trip_diet_refuse = true (v1.62, off by default) that call is denied once instead and passes on repeat; it appends one line per note and per outcome (HEEDED, WALKED, MOVED-ON), and one MCP-RUN line per silent run of a single MCP tool, to docs/history/trip_diet_runs.txt; `--trips` prints that ledger's tally and writes nothing.
+DOES: PreToolUse guard: INDEX FIRST and RE-READ refusals, READ, OUTPUT and BIG WRITE notes, and the TRIP DIET note counted over a six call window for Edit, MultiEdit, Write, Read, shell verbs and one-pattern Greps; queues ledger lines that main appends to docs/history/trip_diet_runs.txt; --trips prints the tally read-only; trip_diet_refuse denies the third call once when switched on; MCP runs are counted silently
+FLAG: Matches PURPOSE after the v1.62 rewrite of the trip block; the only new write is the trip ledger, which PURPOSE names; the selftest (64 checks, 0 failed) now reads the code defaults instead of the project's modes file; pipe-tested in a sandbox copy in both modes

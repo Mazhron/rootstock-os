@@ -140,7 +140,7 @@
         ]
       },
       {
-        "matcher": "Read|Bash|PowerShell|Write|Edit",
+        "matcher": "Read|Bash|PowerShell|Write|Edit|MultiEdit|Grep|mcp__.*",
         "hooks": [
           {
             "type": "command",

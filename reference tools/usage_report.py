@@ -103,7 +103,10 @@ PURPOSE: Mines the Claude Code harness JSONL transcripts for real per model
   plus usage_by_arc.txt (checkpoint to checkpoint) and cache_misses.txt +
   cache_miss_runs.txt (every miss with its likely cause), and since kit
   v1.60 THE KIT'S OWN OVERHEAD block: what the hooks injected, metered from
-  the transcripts' hook attachments, per event, per month, with the cut count.
+  the transcripts' hook attachments, per event, per month, with the cut count;
+  since kit v1.62 one TRIP DIET line under the read diet: the diet guard's own
+  tally of its notes and what followed each (read from
+  docs/history/trip_diet_runs.txt through tools/hooks/diet_guard.py; no write).
 INTENT: the CEO's ask 2026-09-03: 'one aggregate sheet, totals per day,
   week, and month for every model and every tool, CSV for humans plus TXT
   twin, scripted.'
@@ -739,6 +742,7 @@ def write_txt(rows, emp_rows, ws):
         lines.append("")
     lines += pillar_lines(by)
     lines += diet_lines(ALL_DAYS, ws)
+    lines += trip_diet_lines()
     lines += overhead_lines(ALL_DAYS, ws)
     lines += breakdown_lines(by, emp_rows)
     lines += ["=" * 66, "AVERAGES (per active day)", "=" * 66]
@@ -901,6 +905,23 @@ def daily_lines(all_days, ws):
             reads_txt,
             verdict, partial))
     return L
+
+
+def trip_diet_lines():
+    """THE TRIP DIET'S OUTCOME (kit v1.62): one line from the diet guard's own
+    ledger - how many notes it gave and whether a script followed. Read-only;
+    a project without the hook, or an older one, prints nothing."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    for hooks in (os.path.join(here, "hooks"), os.path.join(ROOT, "hooks")):
+        if os.path.isfile(os.path.join(hooks, "diet_guard.py")):
+            try:
+                if hooks not in sys.path:
+                    sys.path.insert(0, hooks)
+                import diet_guard
+                return ["   " + diet_guard.trip_tally_line(), ""]
+            except Exception:
+                return []
+    return []
 
 
 def diet_lines(all_days, ws):

@@ -46,6 +46,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ----------------------------------------------------------- CONFIG --
 KIT_DIR = os.path.join(ROOT, "Future Project MDs")
 KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
+if not os.path.isdir(KIT_REPO):     # a workstation that keeps the clone beside the project (2026-11-15)
+    _beside = os.path.normpath(os.path.join(ROOT, "..", "rootstock-os"))
+    if os.path.isdir(_beside):
+        KIT_REPO = _beside
 HOOKS_DIR = os.path.join(ROOT, "tools", "hooks")
 TOOLS_DIR = os.path.join(ROOT, "tools")
 SKILLS_DIR = os.path.join(ROOT, ".claude", "skills")

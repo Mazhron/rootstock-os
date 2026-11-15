@@ -33,15 +33,24 @@ numbers through the /runaway skill (skills/runaway): `--limits` shows,
 `--set key=value` writes .claude/fanout_limits.json - COMMIT that file,
 it is the CEO's setting and travels with the repo.
 diet_guard.py (Tier 2c, kit v1.12; INDEX FIRST kit v1.15): nothing to
-fill in. Wire its Read|Bash|PowerShell|Write|Edit PreToolUse entry (settings.json
+fill in. Wire its Read|Bash|PowerShell|Write|Edit|MultiEdit|Grep|mcp__.*
+PreToolUse entry (settings.json
 has it) and run `python tools/hooks/diet_guard.py --selftest`. It refuses
 exactly once: the FIRST whole read of a file past ~10k tokens per session
 comes back as the file's own index; the same call repeated passes with a
 warning. Everything else is warn-only: a file's size before a later big
 read, the missing limiter on a chatty shell command, and TRIP DIET
-(2026-11-03): the third same-shaped call in a row on a new target gets
-one note per shape per session - the rest of the trip as one script that
-runs once and prints a verdict (LESSONS.md "The one-script trip").
+(2026-11-03): the third same-shaped call on a new target gets one note
+per shape per session - the rest of the trip as one script that runs
+once and prints a verdict (LESSONS.md "The one-script trip"). Since kit
+v1.62 the three are counted inside the last six counted calls (a
+read-then-edit trip alternates two shapes), MultiEdit and a Grep of one
+pattern across places count, every note is graded HEEDED, WALKED or
+MOVED-ON in docs/history/trip_diet_runs.txt (`python
+tools/hooks/diet_guard.py --trips` prints the tally; a run of one MCP
+tool is counted there silently), and trip_diet_refuse = true in
+.claude/rootstock_modes.json (off by default) refuses that third call
+once; the same call repeated passes.
 preserve_guard.py (Tier 2d, kit v1.14, a REFUSAL): nothing to fill in.
 Wire its Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit PreToolUse
 entry (settings.json has it), run `python tools/hooks/preserve_guard.py

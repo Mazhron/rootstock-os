@@ -300,23 +300,44 @@ than a cooldown.
   report.
 
 TIER 2c - THE DIET GUARD (`diet_guard.py`, PreToolUse on Read|Bash|
-PowerShell|Write; kit v1.12, the origin CEO's ruling 2026-09-10 after the
+PowerShell|Write|Edit|MultiEdit|Grep|mcp__.*; kit v1.12, the origin CEO's ruling 2026-09-10 after the
 weighted-usage insight: only the tokens that count against the plan
 matter, and under those weights the manager's context is written at
 1.25x and every tool result rides in it forever). Nothing to type; one
-refusal shape only (INDEX FIRST, kit v1.15), the rest warn-only:
+refusal shape only (INDEX FIRST, kit v1.15), the rest warn-only unless
+the CEO switches the trip diet's refusal on (v1.62, below):
 - TRIP DIET (2026-11-03, the CEO after reading Code Mode and
   programmatic tool calling - "the AI writes the whole trip as code ...
   runs once in a sandbox ... returns only the answer"): the third
-  same-shaped call in a row on a new target (Edit, Write, Read by file;
-  Bash, PowerShell by verb) gets one warn-only note per shape per
-  session naming the targets and the move - the rest of the trip as one
-  script run once that prints a verdict (LESSONS.md "The one-script
-  trip"). A repeat on the same target is a retry and does not count; a
-  shell call that is itself a script (a heredoc, `python -`, a .py run,
-  three or more chained steps) resets the run - it IS the move. Edit
-  joins the matcher for it. Off with trip_diet_warn = false in the modes
-  file.
+  same-shaped call on a new target (Edit, MultiEdit, Write, Read by
+  file; Bash, PowerShell by verb; Grep by pattern, one place per call)
+  gets one warn-only note per shape per session naming the targets and
+  the move - the rest of the trip as one script run once that prints a
+  verdict (LESSONS.md "The one-script trip"). A repeat on the same
+  target is a retry and does not count; a shell call that is itself a
+  script (a heredoc, `python -`, a .py run, three or more chained
+  steps) clears the view - it IS the move. Off with trip_diet_warn =
+  false in the modes file.
+  THE WIDER EYE (kit v1.62, 2026-11-15, the CEO: "Is there a way we can
+  solidify this to make it work better? ... Change it from a nudge to
+  a mechanism?"): the three calls are counted inside the last six
+  counted calls, not in an unbroken run, because the commonest trip
+  alternates two shapes (read a, edit a, read b, edit b) and never
+  made three in a row; one note is open at a time. THE OUTCOME LEDGER:
+  every note is graded by what follows it, one line each in
+  docs/history/trip_diet_runs.txt - HEEDED (a script came next), WALKED
+  (the same shape went on to a new target), MOVED-ON (neither within
+  four counted calls) - and `python tools/hooks/diet_guard.py --trips`
+  or the usage sheet's TRIP DIET line prints the tally, so "does the
+  note work" is a number. A run of one MCP tool is counted there as
+  MCP-RUN and says nothing: a shell script cannot reach an MCP tool,
+  and the count is what decides whether a door for them is worth
+  building. THE REFUSE SWITCH: trip_diet_refuse = true in the modes
+  file (off by default) turns the note into a refusal of that third
+  call, once, in the INDEX FIRST shape - the same call repeated
+  passes, so a trip where one result decides the next costs one
+  retry. The CEO flips it when the ledger shows the note walked past.
+  MultiEdit, Grep and mcp__.* join the matcher for it.
 - BIG WRITE (kit v1.57, the CEO's yes 2026-10-31): a Write whose content
   is past ~4k tokens gets one warn-only note per file per session - the
   manager's output is the 5x pillar, and on the origin two single Writes
@@ -705,6 +726,13 @@ hook. The keys and their old values:
 - effort_line: true (v1.57) | false (no EFFORT line).
 - digest_cap_split: true (v1.61) | false (the whole digest injected; the
   harness cuts it to a 2KB preview past 10,000 characters).
+- trip_diet_warn: true (2026-11-03) | false (the diet guard silent on
+  same-shaped calls).
+- trip_diet_refuse: false (the note only, the way since 2026-11-03) |
+  true (v1.62: the third same-shaped call refused once, the same call
+  repeated passes). The one key whose default IS the old way: a
+  refusal is switched on by the CEO after the trip ledger argues for
+  it, never shipped on.
 
 Switching back is one flip, no code edit, and no ledger changes shape:
 both route faces write ROUTE lines, both resume shapes write
@@ -746,8 +774,8 @@ the ledgers argue for first.
    hook" to the process registry and a "The hooks" section to the tooling
    doc (the table of event/script/does + the gotchas above).
 7. The diet guard needs nothing project-specific: wire its
-   Read|Bash|PowerShell PreToolUse entry (the template settings.json has
-   it), run `python tools/hooks/diet_guard.py --selftest`, gitignore
+   Read|Bash|PowerShell|Write|Edit|MultiEdit|Grep|mcp__.* PreToolUse
+   entry (the template settings.json has it), run `python tools/hooks/diet_guard.py --selftest`, gitignore
    `.claude/diet_state.json`. If the project's checkpoint script
    fingerprints the tree, exclude the usage sheet's outputs (the
    reference copy does) so standup's silent refresh never counts as work.

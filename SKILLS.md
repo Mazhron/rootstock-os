@@ -1,7 +1,7 @@
 # SKILLS.md - the skills shelf (PORTABLE, part of the future-project kit)
 
 PURPOSE: The skills shelf: catalogs each ritual, standup, checkpoint, ship,
-  brief, runaway, preserve, intent, correct, as an invocable Claude Code
+  brief, runaway, preserve, intent, correct, flag, as an invocable Claude Code
   skill in .claude/skills/, so a ritual runs from a script instead of from
   memory.
 INTENT: Mazhron's ruling 2026-09-03: rituals that live only as law text get
@@ -39,7 +39,8 @@ the skills operationalize).
   line until the /clear + standup (Mazhron 2026-10-12, THE DUE LINE); an
   open arc is checkpointed as open.
 - **/ship** - batch shipper. Player-readable commit, push, build zips
-  (never deleting old ones), counter tick. Runs after every completed
+  (never deleting old ones); the checkpoint counter ticks itself, never
+  by hand. Runs after every completed
   batch, unprompted.
 - **/brief** - delegation composer. Builds a sub-agent brief per the
   delegation laws (stamp, self-contained context, token budget line,

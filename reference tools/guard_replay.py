@@ -120,7 +120,7 @@ GUARDS = ("diet_guard", "bash_guard", "preserve_guard", "brief_guard")
 # Which tool_use names each guard's PreToolUse hook fires on (mirrors each
 # hook's own settings.json wiring, read from the four files this tool reads).
 GUARD_TOOLS = {
-    "diet_guard": ("Read", "Bash", "PowerShell"),
+    "diet_guard": ("Read", "Bash", "PowerShell", "Write", "Edit", "MultiEdit"),   # v1.62: the trip diet counts edits too
     "bash_guard": ("Bash", "PowerShell"),
     "preserve_guard": ("Bash", "PowerShell", "Write", "Edit", "MultiEdit"),
     "brief_guard": ("Agent", "Task"),
@@ -135,6 +135,7 @@ GUARD_TOOLS = {
 RULES = [
     ("diet_guard", "index_first", ("INDEX FIRST",)),
     ("diet_guard", "re_read", ("RE-READ",)),
+    ("diet_guard", "trip_diet", ("TRIP DIET (refused once)",)),   # v1.62, only with trip_diet_refuse on
     ("bash_guard", "build_zips", ("BUILD ZIPS ARE NEVER DELETED",)),
     ("bash_guard", "script_rule", ("THE SCRIPT RULE",)),
     ("bash_guard", "commit_dash", ("NO em or en dashes",)),

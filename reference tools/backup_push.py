@@ -62,6 +62,10 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
+if not os.path.isdir(KIT_REPO):     # a workstation that keeps the clone beside the project (2026-11-15)
+    _beside = os.path.normpath(os.path.join(ROOT, "..", "rootstock-os"))
+    if os.path.isdir(_beside):
+        KIT_REPO = _beside
 LEDGER = os.path.join(ROOT, "docs", "history", "backup_runs.txt")
 REMOTE = "backup"
 REPOS = [("Everwood", ROOT), ("rootstock-os", KIT_REPO)]

@@ -64,6 +64,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # ----------------------------------------------------------- CONFIG --
 KIT_DIR = os.path.join(ROOT, "Future Project MDs")
 KIT_REPO = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
+if not os.path.isdir(KIT_REPO):     # a workstation that keeps the clone beside the project (2026-11-15)
+    _beside = os.path.normpath(os.path.join(ROOT, "..", "rootstock-os"))
+    if os.path.isdir(_beside):
+        KIT_REPO = _beside
 README = os.path.join(KIT_REPO, "README.md")
 README_FULL = os.path.join(KIT_REPO, "README_FULL.md")  # the long form (kit v1.60)
 UPGRADES = os.path.join(KIT_DIR, "UPGRADES.md")
@@ -81,6 +85,16 @@ LEDGER = os.path.join(ROOT, "docs", "history", "readme_lint_runs.txt")
 # prose slip that no count expresses; never remove one (a slip that
 # happened once can happen again).
 CLAIMS = [
+    # the eighth audit, 2026-11-07 (T-1107-RA-A..D)
+    ("the context warning fires when less than 80% is LEFT, not spent",
+     r"less than 80% of the context is left",
+     r"the context is 80% spent"),
+    ("sixteen hooks are wired by three settings files, not one",
+     r"all\s+eighteen entries\) or its lean and standard subsets",
+     r"wired by one settings file"),
+    ("the definition of done is per level: Lean wires no hook",
+     r"Lean wires none",
+     r"every hook answers its `--selftest`, the first commit is in"),
     # the seventh audit, 2026-10-19 (T-1019-RA-1..4)
     ("the Stop tick, not the lesson advisor, carries the NAMED checks",
      r"The Stop tick holds the manager to its own words",

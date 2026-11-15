@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.61** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.62** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2559,3 +2559,79 @@ is over the cap, and the OVERHEAD block's SessionStart row shows no
 new CUT.
 README: README.md "What it costs you back" and README_FULL.md "The
 kit's own overhead" (the cap split sentence); the kit version line.
+
+### v1.62 - 2026-11-15 - The trip diet's wider eye, its outcome ledger and the refuse switch; the trip diet itself is entered here, having shipped on 2026-11-03 without an entry
+WHAT: THE TRIP DIET shipped in the kit's files on 2026-11-03 (the
+one-script trip: three or more same-shaped tool calls are one script
+run once that prints a verdict, the kit's take on Code Mode and
+programmatic tool calling; LESSONS.md "The one-script trip",
+SUBAGENT_METHOD law 1 "the sandbox is chosen by the work", the diet
+guard's TRIP DIET note, trip_diet_warn in the modes file) but no entry
+here carried it, so an install that updates by this log never received
+it: two installs at v1.54 and v1.58, checked on 2026-11-15, had none
+of it. This entry carries the whole concept and three changes to it,
+asked for by the CEO the same day ("Is there a way we can solidify
+this to make it work better? ... Change it from a nudge to a
+mechanism?"). THE WIDER EYE: the note needed three same-shaped calls in
+an unbroken run, so the commonest trip (read a, edit a, read b, edit
+b) alternated two shapes and never raised it; the three calls are now
+counted inside the last six counted calls (TRIP_WINDOW), one note open
+at a time; a MultiEdit counts as an Edit, and a Grep counts when one
+pattern is asked of a new place (a new pattern is an investigation and
+is not counted). THE OUTCOME LEDGER: the hook appends one line per
+note to docs/history/trip_diet_runs.txt and one line for what followed
+it: HEEDED (a script came next), WALKED (the same shape went on to a
+new target), MOVED-ON (neither within four counted calls); `python
+tools/hooks/diet_guard.py --trips` and one TRIP DIET line in the usage
+sheet print the tally, so whether the note works is a number. A run of
+one MCP tool is counted there as MCP-RUN and says nothing, because a
+shell script cannot reach an MCP tool; the count is the evidence for
+or against building a door for them. THE REFUSE SWITCH:
+trip_diet_refuse = true in the modes file turns the note into a
+refusal of that third call, once, in the INDEX FIRST shape (the same
+call repeated passes, so a trip where one result decides the next
+costs one retry). It ships OFF: the old way is the default and the CEO
+flips it when the ledger shows the note walked past. Also in this
+version: the scripts that look for the kit clone three folders up
+(../../../rootstock-os) now fall back to a clone beside the project
+(../rootstock-os), the layout the README's quick start uses.
+CARRIES: hooks/diet_guard.py (TRIP_WINDOW, TRIP_FOLLOW, TRIP_LEDGER,
+_trip_shape, _trip_line, _flush_trips, trip_tally, trip_tally_line,
+the trip block at the end of evaluate, `--trips`, twelve new selftest
+cases); hooks/_hooklib.py and hooks/rootstock_modes.json
+(trip_diet_refuse); hooks/settings.json and hooks/settings.standard.json
+(the diet guard's matcher gains MultiEdit, Grep and mcp__.*);
+reference tools/usage_report.py (trip_diet_lines); reference
+tools/guard_replay.py (the trip_diet rule row; Write, Edit and
+MultiEdit replayed through the diet guard); HOOKS_METHOD.md (Tier 2c,
+the modes list, Bootstrap step 7); hooks/README.txt;
+knowledge/lessons/harness.md ("The one-script trip" and its v1.62
+nuance); SUBAGENT_METHOD.md law 1 (unchanged since 2026-11-03, named
+here for the graft); reference tools/backup_push.py, ledger_trends.py,
+purpose_audit.py, readme_lint.py, refresh_kit.py and
+workstation_survey.py (the clone beside the project); the kit repo's
+README.md and README_FULL.md.
+GRAFT: an install WITHOUT the trip diet (no "TRIP DIET" in its diet
+guard) takes all of it: replace tools/hooks/diet_guard.py whole if
+taken unadapted (`--selftest` re-run), else graft by hand TRIP_N and
+the v1.62 constants, _SCRIPTY, _LEAD_CD, _trip_shape, the four ledger
+helpers above evaluate, the trip block before evaluate's `if not
+msgs`, and the `--trips` and _flush_trips lines in main; add
+trip_diet_warn and trip_diet_refuse to _hooklib's MODES_DEFAULT and to
+.claude/rootstock_modes.json (an install older than v1.57 has no modes
+file: graft modes() and mode() from hooks/_hooklib.py and copy
+hooks/rootstock_modes.json first); add the lesson "The one-script
+trip" to the project's book and the SANDBOX IS CHOSEN BY THE WORK
+paragraph to its delegation law 1. An install WITH the trip diet takes
+the same file whole, or the changed pieces: the constants, the three
+new branches of _trip_shape, the helpers, the trip block, main. Both:
+set the diet guard's PreToolUse matcher in .claude/settings.json to
+Read|Bash|PowerShell|Write|Edit|MultiEdit|Grep|mcp__.*, add
+trip_diet_lines and its one call to the usage sheet, and the rule row
+to guard_replay if the install carries it. The hook creates
+docs/history/trip_diet_runs.txt at the first note; commit it like the
+other ledgers. Verify: `python tools/hooks/diet_guard.py --selftest`
+0 failed; `--trips` prints one line; after a session that edits three
+files one call at a time the ledger holds a NOTE line and its grade.
+README: README.md "Glossary" (the diet) and README_FULL.md "The hooks"
+(the diet guard's bullet); the kit version line.

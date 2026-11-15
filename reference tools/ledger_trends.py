@@ -513,6 +513,8 @@ def proposals(th=None):
     # differs from the folder, the sync is scripted, so it is a DO.
     try:
         kit_repo = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
+        if not os.path.isdir(kit_repo):     # the clone beside the project (2026-11-15)
+            kit_repo = os.path.normpath(os.path.join(ROOT, "..", "rootstock-os"))
         kit_src = os.path.join(ROOT, "Future Project MDs")
         if os.path.isdir(os.path.join(kit_repo, ".git")):
             last = subprocess.run(["git", "-C", kit_repo, "log", "-1", "--format=%cs"],

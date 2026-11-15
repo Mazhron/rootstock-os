@@ -43,7 +43,14 @@ prints once, the shorter line collapsing to `name date =other`; a verdict
 older than the previous standup AND older than seven days collapses to
 `name date VERDICT` on the quiet lines - the verdict stays visible, the
 body is one `tail -1` away; and the session_start header lost the dated
-quotes it carried (they live in HOOKS_METHOD.md). The delivery itself is
+quotes it carried (they live in HOOKS_METHOD.md).
+THE NINTH TRIM (2026-11-07, the loss test on a 14.5k digest): the quiet
+ledger lines keep only the names that carry a word (a verdict, `ok`,
+`=other`); the plain `name date` and `^exchange` names collapse to a
+count, ls docs/history/ names them and `tail -1` dates them; the
+default commits shown drop 3 to 2 (the version line stays); a roadmap
+entry over 150 chars prints id + first clause + a short last clause
+(NEXT_STEPS.md has the rest). The delivery itself is
 the hook's: past the cap it parks whole sections in a named file (THE
 CAP SPLIT, tools/hooks/session_start.py); this script prints the whole
 digest and digest_size.txt measures the whole, as before.
@@ -552,6 +559,23 @@ def tails_plan(ledgers, since, window=None, today=None):
     return full, quiet
 
 
+def compact_quiet(quiet):
+    """THE NINTH TRIM: of the quiet entries keep those that carry a word after
+    the date (a verdict, ok, =other); a plain `name date` or `name date
+    ^exchange` is a name and a date - `ls docs/history/` has the name,
+    `tail -1` the date - so those collapse to a count.
+    Returns (kept, folded_count)."""
+    kept, folded = [], 0
+    for q in quiet:
+        parts = q.split(" ")
+        word = parts[2] if len(parts) > 2 else ""
+        if word and word != "^exchange":
+            kept.append(q)
+        else:
+            folded += 1
+    return kept, folded
+
+
 def wrap_names(names, width=96, indent="    "):
     out, cur = [], ""
     for n in names:
@@ -843,7 +867,7 @@ def main():
     if "--selftest" in sys.argv:
         sys.exit(selftest())
     ap = argparse.ArgumentParser(description="Post-pull standup digest")
-    ap.add_argument("--commits", type=int, default=3)  # THE DIGEST DIET: was 12
+    ap.add_argument("--commits", type=int, default=2)  # THE DIGEST DIET: was 12
     ap.add_argument("--no-usage", action="store_true",
                     help="skip the usage-sheet refresh + THE BUDGET block")
     args = ap.parse_args()
@@ -968,10 +992,10 @@ def main():
     for name, line in full:
         print("  %s: %s" % (name, cap_tail(name, line)))
     if quiet:
-        legend = ("; ^exchange = written by THE LAST EXCHANGE above"
-                  if any(q.endswith("^exchange") for q in quiet) else "")
-        print("  quiet (no verdict, unchanged; name + last date%s):" % legend)
-        for ln in wrap_names(quiet):
+        kept, folded = compact_quiet(quiet)
+        print("  quiet: %d more ledgers, no verdict, unchanged or written by THE LAST EXCHANGE (`ls docs/history/`, `tail -1 <ledger>`)%s"
+              % (folded, "; with a word:" if kept else ""))
+        for ln in wrap_names(kept):
             print(ln)
 
     print("== OPEN ROADMAP (NEXT_STEPS.md; a long entry prints first clause ... last clause)")
@@ -979,7 +1003,7 @@ def main():
         with open(os.path.join(ROOT, "NEXT_STEPS.md"), encoding="utf-8") as fh:
             for ln in fh:
                 if ln.startswith("- [NS-"):
-                    print("  " + roadmap_line(ln))
+                    print("  " + roadmap_line(ln, cap=150, head_cap=80, tail_cap=80))
     except OSError:
         print("  (no NEXT_STEPS.md)")
 
