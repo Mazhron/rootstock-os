@@ -5,7 +5,7 @@
 **Keep the context small, make clearing the chat lossless, let cheap
 sub-agents do the reading.**
 
-Kit version: **v1.61** (2026-11-06). The graft log `UPGRADES.md` is the
+Kit version: **v1.62** (2026-11-15). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every sync.
 
 Rootstock is a folder of method files, scripts, skills and hooks you hand
@@ -79,7 +79,8 @@ Claude asks the STEP 0 questions (project, engine, who manages, which
 models are employees, your update policy, the level), builds the operating
 system in order, and finishes with a definition of done you can check
 yourself: the standup script runs clean, the core lint passes, every hook
-answers its `--selftest`, the first commit is in. The front door is read
+the level wires answers its `--selftest` (Lean wires none), the first
+commit is in. The front door is read
 once (~2k tokens); it is not a CLAUDE.md and never loads per session.
 Installing into an existing project? Claude inventories what you have,
 proposes a mapping, and touches nothing without your yes.
@@ -106,7 +107,7 @@ The harness enforces the laws itself: sixteen hooks
 ([HOOKS_METHOD.md](HOOKS_METHOD.md)) that refuse a destructive shell verb,
 refuse the first whole read of a file past ~10k tokens, refuse an
 unstamped brief, hold the manager to a checkpoint it named, and say when
-the context is 80% spent.
+less than 80% of the context is left.
 
 ## Glossary (the private words, linked)
 
@@ -117,7 +118,11 @@ the context is 80% spent.
 - **Checkpoint, standup, day file**: the clear-and-resume ritual and the
   file it writes ([SKILLS.md](SKILLS.md), [REPORTING_METHOD.md](REPORTING_METHOD.md)).
 - **The diet**: read a section, not a file; say less; one script, not
-  many calls ([WIKI_METHOD.md](WIKI_METHOD.md) "The read diet").
+  many calls ([WIKI_METHOD.md](WIKI_METHOD.md) "The read diet"). The
+  last is the kit's take on Code Mode: at the third same-shaped tool
+  call the diet guard says to write the rest of the trip as one script,
+  and since v1.62 a ledger records whether that note was heeded
+  ([HOOKS_METHOD.md](HOOKS_METHOD.md) Tier 2c).
 - **Graft**: how an update lands on an installed project, by concept,
   never by overwriting your files ([UPGRADES.md](UPGRADES.md)).
 - **The one right way**: a lessons book read before the first try

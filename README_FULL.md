@@ -699,7 +699,8 @@ hookless machine ticks it with `checkpoint.py --tick`).
 
 A skill runs when invoked; a hook runs when the harness reaches a moment.
 Anything a law can enforce mechanically becomes a hook, not a longer
-reminder. Sixteen ship in `hooks/`, wired by one settings file:
+reminder. Sixteen ship in `hooks/`, wired by `hooks/settings.json` (all
+eighteen entries) or its lean and standard subsets:
 
 - **Session start** (startup, resume, /clear and after a compaction)
   injects the standup digest by itself - after a /clear
@@ -790,7 +791,15 @@ reminder. Sixteen ship in `hooks/`, wired by one settings file:
   is refused with the file's own index in the refusal, and the same call
   repeated passes; since v1.40 a later whole read of that file, unchanged
   since, is refused once more as already in context (the re-read rule,
-  cleared by compaction).
+  cleared by compaction). It also carries the trip diet, the kit's take
+  on Code Mode: at the third same-shaped tool call on a new target
+  (three edits, three reads, one grep asked of three places) it says to
+  write the rest of the trip as one script that runs once and prints a
+  verdict. Since v1.62 the three are counted inside the last six calls,
+  so a read-then-edit trip is seen; every note is graded in a ledger
+  (heeded, walked past, moved on) and the usage sheet prints the tally;
+  and one switch in the modes file, off by default, turns the note into
+  a refusal of that call, once.
 - **The preserve guard** refuses delete verbs (bare names, pipelines and
   the mirror verbs included), work-discarding git verbs (every force
   push included) and deletion calls written into scripts, and reads
