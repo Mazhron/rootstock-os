@@ -5,7 +5,7 @@
 **Keep the context small, make clearing the chat lossless, let cheap
 sub-agents do the reading.**
 
-Kit version: **v1.63** (2026-11-15). The graft log `UPGRADES.md` is the
+Kit version: **v1.64** (2026-11-15). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every release.
 
 Rootstock is a folder of method files, scripts, skills and hooks you hand
@@ -178,7 +178,9 @@ of this repo shaped v1.60 (the levels, this page, the overhead figure).
 Since v1.63 this repo is the kit's source of truth: it is edited here and
 released from here (`python "reference tools/release_kit.py"`: the gates,
 the checksums, the signed tag), and the origin project is one install
-among the others.
+among the others. Since v1.64 a clone of this repo may also carry a
+local install of the kit for working on it; that install is kept out of
+git, so what is published is the kit alone.
 
 ## License
 

@@ -1260,7 +1260,10 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   project takes its updates by graft like any other install. One thing
   still arrives from outside: the lessons under `knowledge/lessons/`
   are the origin project's book, split by domain and contributed by it,
-  which is why those files say not to edit them here.
+  which is why those files say not to edit them here. Since v1.64 a
+  clone of this repo may carry a local install of the kit on itself
+  (the kit is worked on with the kit); the release script keeps that
+  install's files out of git, so pulling this repo still runs nothing.
 - **You choose the noise level.** The stamp carries your update policy -
   `ask` (default: present the grafts, you pick), `auto` (apply everything,
   report after), `relevant` (only offer grafts that benefit your project;

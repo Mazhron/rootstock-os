@@ -45,8 +45,10 @@ THE ORDER, and why:
      from the working copy: 15 of their 115 lines never matched a
      downloaded file. Build junk (__pycache__, *.pyc, anywhere) and a
      session's or an editor's own folders (.claude/, .vscode/, .idea/,
-     at the repo's top level only) are named in the clone's own
-     .git/info/exclude before anything runs, and the gate scripts are
+     at the repo's top level only) and the files of a local install of
+     the kit on itself (CLAUDE.md, tools/, docs/ and the rest of
+     SELF_INSTALL) are named in the clone's own .git/info/exclude before
+     anything runs, and the gate scripts are
      run without bytecode, so a script run inside the repo can never
      publish its leftovers (one .pyc went out under v1.62 that way).
   4. the commit and the push, under the -m message (default "Kit release
@@ -93,6 +95,15 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RELEASE_BRANCH = "main"         # the only branch a version tag is made on
 JUNK = ("__pycache__", "*.pyc")  # build junk: never checksummed, never committed
 LOCAL = (".claude", ".vscode", ".idea")   # a session's or an editor's own folders at the repo's top level: never committed
+# A LOCAL INSTALL OF THE KIT ON ITSELF (kit v1.64, the CEO 2026-11-15: "I want
+# to be able to use Rootstock-os to make everything more efficient ... but I
+# want to able to push a clean version to git that others can take"): the
+# clone's owner may install the kit in the clone to work on it. These are the
+# top-level names such an install adds; they are named in the clone's own
+# exclude file before anything runs, so the public repo stays exactly the kit.
+SELF_INSTALL = ("CLAUDE.md", "tools/", "docs/", "WORKFLOWS.md", "WORKSTATION.md", "SUBAGENTS.md",
+                "NEXT_STEPS.md", "INTENT.md", "KNOWLEDGE_INDEX.md", "TOKEN_IDEAS.md", "FUTURE_FEATURES.md",
+                "CHANGELOG.md", ".env")
 SUMS_NAME = "SHA256SUMS"
 SIGN_WORDS = ("gpg", "signing", "failed to sign", "sign ")
 # -----------------------------------------------------------------------
@@ -130,7 +141,8 @@ def ensure_excludes(repo):
     except OSError:
         have = ""
     lines = set(have.splitlines())
-    want = [p + "/" if "*" not in p else p for p in JUNK] + ["/%s/" % p for p in LOCAL]
+    want = ([p + "/" if "*" not in p else p for p in JUNK] + ["/%s/" % p for p in LOCAL]
+            + ["/" + p for p in SELF_INSTALL])
     add = [w for w in want if w not in lines]
     if add:
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -367,7 +379,8 @@ def selftest():
         fails.append("signing failure not recognised")
     if is_signing_failure("fatal: tag 'v1' already exists"):
         fails.append("plain error taken for signing failure")
-    if ensure_excludes(d) != ["__pycache__/", "*.pyc", "/.claude/", "/.vscode/", "/.idea/"]:
+    if ensure_excludes(d)[:5] != ["__pycache__/", "*.pyc", "/.claude/", "/.vscode/", "/.idea/"] \
+            or "/CLAUDE.md" not in open(os.path.join(d, ".git", "info", "exclude"), encoding="utf-8").read():
         fails.append("excludes not added on the first run")
     if ensure_excludes(d):
         fails.append("excludes added twice")

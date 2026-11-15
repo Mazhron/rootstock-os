@@ -111,6 +111,23 @@ def read(path):
         return f.read().replace("\r\n", "\n")
 
 
+def _local_names(kit):
+    """Top-level names a kit clone keeps out of git: the root-anchored lines of
+    its own .git/info/exclude (written by release_kit.py). A local install of
+    the kit on itself (CLAUDE.md, tools/, docs/, .claude/ ...) and a session's
+    folders live there; they are the clone owner's, never kit things, never
+    published (kit v1.64). No clone, no such lines: an empty set."""
+    try:
+        with open(os.path.join(kit, ".git", "info", "exclude"), encoding="utf-8") as fh:
+            lines = fh.read().splitlines()
+    except OSError:
+        return set()
+    return {ln.strip().strip("/") for ln in lines if ln.startswith("/") and "*" not in ln}
+
+
+LOCAL_NAMES = _local_names(KIT_DIR)
+
+
 def write(path, text):
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
@@ -153,9 +170,11 @@ def classify(path):
     name = os.path.basename(p)
     if name in SKIP_NAMES or any(s in p.split(os.sep) for s in SKIP_DIRS):
         return None
+    if IN_KIT and p.lower() == norm(SETTINGS).lower():
+        return "settings"      # a local install of the kit on itself: its safety wiring is still guarded
     if under(p, KIT_DIR):
         rel = os.path.relpath(p, KIT_DIR).replace("\\", "/")
-        if rel.split("/")[0] in KIT_ONLY | {".claude", ".vscode", ".idea"}:    # the kit repo's own things and a session's own folders, when the kit is a clone of it
+        if rel.split("/")[0] in KIT_ONLY | {".claude", ".vscode", ".idea"} | LOCAL_NAMES:    # the kit repo's own things, a session's folders, a local install: never kit things
             return None
         if name == "settings.json":
             return "settings"
@@ -191,7 +210,7 @@ def scope():
             c = classify(p)
             if c:
                 items.append((p, c))
-    if IN_KIT:      # the kit repo holds no second copy of anything
+    if IN_KIT:      # the kit repo holds no second copy of anything (a local install's settings.json was met in the walk)
         return items
     originals = []
     if os.path.isdir(HOOKS_DIR):
@@ -253,7 +272,8 @@ def check_text(text, cls, path=""):
     probs = []
     name = os.path.basename(path)
     if cls == "settings":
-        return check_settings_text(text, os.path.dirname(path) if under(path, KIT_DIR) else HOOKS_DIR)
+        own = norm(path).lower() == norm(SETTINGS).lower()      # the project's (or a local install's) live wiring: its hooks sit in tools/hooks
+        return check_settings_text(text, os.path.dirname(path) if under(path, KIT_DIR) and not own else HOOKS_DIR)
     need = ["purpose", "intent"]
     if cls in ("py", "hook", "md"):
         need += ["keys", "also"]
@@ -643,10 +663,10 @@ def selftest():
         check("classify: the contributors' inbox is not a kit thing",
               classify(os.path.join(ROOT, "community", "README.md")) is None)
     check("classify: kit skill", classify(os.path.join(KIT_DIR, "skills", "ship", "SKILL.md")) == "skill")
-    if not IN_KIT:      # inside the kit repo a .claude/ folder is a session's own, never a kit thing
-        check("classify: repo settings", classify(SETTINGS) == "settings")
-    else:
-        check("classify: a session's .claude folder in the kit repo is out of scope", classify(SETTINGS) is None)
+    check("classify: repo settings", classify(SETTINGS) == "settings")
+    if IN_KIT:
+        check("classify: a session's .claude folder in the kit repo is out of scope",
+              classify(os.path.join(ROOT, ".claude", "agents", "x.md")) is None)
     check("classify: game script is out of scope", classify(os.path.join(ROOT, "scripts", "world", "main.gd")) is None)
     print("format_lint selftest: %d failed" % len(fails))
     return 1 if fails else 0

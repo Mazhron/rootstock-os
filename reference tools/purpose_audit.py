@@ -124,6 +124,21 @@ def read(path):
         return f.read().replace("\r\n", "\n")
 
 
+def _local_names(kit):
+    """Top-level names a kit clone keeps out of git: the root-anchored lines of
+    its own .git/info/exclude (written by release_kit.py). A local install of
+    the kit on itself (CLAUDE.md, tools/, docs/, .claude/ ...) and a session's
+    folders live there; they are the clone owner's, never kit things, never
+    published (kit v1.64). No clone, no such lines: an empty set."""
+    try:
+        with open(os.path.join(kit, ".git", "info", "exclude"), encoding="utf-8") as fh:
+            lines = fh.read().splitlines()
+    except OSError:
+        return set()
+    return {ln.strip().strip("/") for ln in lines if ln.startswith("/") and "*" not in ln}
+
+
+
 def write(path, text):
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
@@ -140,10 +155,12 @@ def items(kit=None):
     out = []
     for base, dirs, files in os.walk(kit):
         dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
-        if os.path.normpath(base) == os.path.normpath(kit):     # the repo's own front matter, top level only
+        if os.path.normpath(base) == os.path.normpath(kit):     # the repo's own front matter and a local install, top level only
+            local = _local_names(kit)
             if IN_KIT:
                 dirs[:] = [d for d in dirs if d not in TOP_SKIP_DIRS]
-            files = [f for f in files if f not in TOP_SKIP]
+            dirs[:] = [d for d in dirs if d not in local]
+            files = [f for f in files if f not in TOP_SKIP and f not in local]
         for f in files:
             if f in SKIP_NAMES:
                 continue

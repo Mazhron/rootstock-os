@@ -222,6 +222,21 @@ def read(path):
         return fh.read()
 
 
+def _local_names(kit):
+    """Top-level names a kit clone keeps out of git: the root-anchored lines of
+    its own .git/info/exclude (written by release_kit.py). A local install of
+    the kit on itself (CLAUDE.md, tools/, docs/, .claude/ ...) and a session's
+    folders live there; they are the clone owner's, never kit things, never
+    published (kit v1.64). No clone, no such lines: an empty set."""
+    try:
+        with open(os.path.join(kit, ".git", "info", "exclude"), encoding="utf-8") as fh:
+            lines = fh.read().splitlines()
+    except OSError:
+        return set()
+    return {ln.strip().strip("/") for ln in lines if ln.startswith("/") and "*" not in ln}
+
+
+
 def word(n):
     return NUMBER_WORDS[n] if 0 <= n < len(NUMBER_WORDS) else str(n)
 
@@ -272,7 +287,7 @@ def truths():
     t["reference"] = sorted(f for f in os.listdir(REF_DIR)
                             if f not in BOX_SKIP and not f.endswith(".pyc"))
     t["box"] = sorted(n for n in os.listdir(KIT_DIR)      # a dot entry (.git, .github, a session's .claude) is never a box item
-                      if n not in BOX_SKIP and not n.startswith("."))
+                      if n not in BOX_SKIP and not n.startswith(".") and n not in _local_names(KIT_DIR))
     up = read(UPGRADES)
     m = re.search(r"CURRENT KIT VERSION:\s*\**v(\d+\.\d+)", up)
     t["version"] = m.group(1) if m else None

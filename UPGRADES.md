@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.63** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.64** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2765,3 +2765,52 @@ tools/release_kit.py" --selftest` prints PASS and `--check` prints
 README: README.md (the version line, the box row for reference tools/,
 "Updating, taking part, origin"); README_FULL.md ("The format law and
 the purpose audit", "Updating an installed project").
+
+### v1.64 - 2026-11-15 - The kit repo can carry a local install of itself, and what is pushed stays the kit alone
+WHAT: Since v1.63 the kit is edited in its own repo, and a repo worked
+in without the kit has none of it: no context gauge, no lesson at the
+choice, no guards, no day file. The CEO, 2026-11-15: "The rootstock-os
+root should have rootstock-os installed for the greatest ability to
+function", and "I want to be able to use Rootstock-os to make
+everything more efficient, save tokens, create knowledge, learn
+lessons, etc, but I want to able to push a clean version to git that
+others can take and use for their own projects". THE LOCAL INSTALL:
+whoever owns a clone may install the kit in the clone itself (CLAUDE.md,
+tools/, docs/, .claude/, WORKFLOWS.md, WORKSTATION.md, SUBAGENTS.md,
+NEXT_STEPS.md, INTENT.md and the optional boards). It is that machine's
+own and is never published: the release script names those top-level
+paths (SELF_INSTALL) in the clone's .git/info/exclude before anything
+runs, so git never sees them, they are never staged, never checksummed
+and never in a release. This keeps SECURITY.md's promise whole: pulling
+the repo still runs nothing, because no settings file and no hook
+wiring is ever in it. THE CHECKS LOOK PAST IT: format_lint.py,
+readme_lint.py and purpose_audit.py read the root-anchored lines of
+that exclude file (_local_names) and treat those top-level names as
+the clone owner's, never kit things, so the box table, the header law
+and the flag tally count the kit alone. One file of the install IS
+still judged: its .claude/settings.json is checked for the safety
+wiring against tools/hooks/, so the format guard protects the wiring
+of a local install the way it does in any project.
+CARRIES: reference tools/release_kit.py (SELF_INSTALL, ensure_excludes,
+one selftest row); reference tools/format_lint.py (_local_names,
+LOCAL_NAMES, classify and the settings branch of check_text, one
+selftest row); reference tools/readme_lint.py and purpose_audit.py
+(_local_names in the box check and the item walk); the kit repo's
+README.md and README_FULL.md.
+GRAFT: an install takes nothing: the change acts only inside a clone of
+the kit repo. A project that keeps the three lints unadapted may take
+them whole (CONFIG re-applied, `--selftest` re-run) or record the skip.
+To make a local install in a clone of the kit: run
+`python "reference tools/release_kit.py" --check` once (it writes the
+exclude lines), then install by the front door with the clone as the
+project; copy hooks/ to tools/hooks/ and reference tools/ to tools/,
+point the three version readers at UPGRADES.md's CURRENT KIT VERSION
+line, set the lesson book to knowledge/lessons/harness.md, and keep
+format_lint.py, readme_lint.py, purpose_audit.py and release_kit.py as
+the kit's own copies. Verify: `git status --short` lists no install
+file; `python "reference tools/release_kit.py" --check` prints "gates
+passed" with the install in place. A local install has no first
+commit and the preserve guard's tracked-script selftest case cannot
+pass in it; both are the cost of keeping it out of git.
+README: README.md (the version line; "Updating, taking part, origin");
+README_FULL.md ("Updating an installed project").
