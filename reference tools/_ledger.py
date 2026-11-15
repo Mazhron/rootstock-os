@@ -161,6 +161,7 @@ def selftest():
     # deleting them (nothing here runs a delete) - a fresh temp subfolder per
     # run keeps that harmless.
     import tempfile
+    TODAY = datetime.datetime.now().strftime("%Y-%m-%d")   # the skip rule compares to today
     tmp = tempfile.mkdtemp(prefix="ledger_selftest_")
     ok = True
     ledger_path = os.path.join(tmp, "fake_runs.txt")
@@ -175,14 +176,14 @@ def selftest():
 
     # 1) first data line always appends.
     r1 = append_unless_identical(
-        ledger_path, "2026-09-14 10:00 | WS1 | 5 | PASS\n",
+        ledger_path, TODAY + " 10:00 | WS1 | 5 | PASS\n",
         payload_from_col=2, state_path=state_path, head_provider=provider)
     ok = ok and r1 is True
     print("append (first line):", "PASS" if r1 else "FAIL")
 
     # 2) identical payload, same day, unchanged HEAD/tree -> skip.
     r2 = append_unless_identical(
-        ledger_path, "2026-09-14 10:05 | WS1 | 5 | PASS\n",
+        ledger_path, TODAY + " 10:05 | WS1 | 5 | PASS\n",
         payload_from_col=2, state_path=state_path, head_provider=provider)
     ok = ok and r2 is False
     print("skip (identical, unchanged):", "PASS" if r2 is False else "FAIL")
@@ -190,14 +191,14 @@ def selftest():
     # 3) HEAD changes -> append again even though payload is identical.
     box["head"] = "def456"
     r3 = append_unless_identical(
-        ledger_path, "2026-09-14 10:10 | WS1 | 5 | PASS\n",
+        ledger_path, TODAY + " 10:10 | WS1 | 5 | PASS\n",
         payload_from_col=2, state_path=state_path, head_provider=provider)
     ok = ok and r3 is True
     print("append (after HEAD change):", "PASS" if r3 else "FAIL")
 
     # 4) different payload, same HEAD -> append.
     r4 = append_unless_identical(
-        ledger_path, "2026-09-14 10:15 | WS1 | 6 | FAIL\n",
+        ledger_path, TODAY + " 10:15 | WS1 | 6 | FAIL\n",
         payload_from_col=2, state_path=state_path, head_provider=provider)
     ok = ok and r4 is True
     print("append (payload changed):", "PASS" if r4 else "FAIL")
@@ -209,7 +210,7 @@ def selftest():
     entries["fake_runs.txt"] = (box["head"], box["dirty"], "2020-01-01 00:00")
     _write_state(state_path, entries)
     r5 = append_unless_identical(
-        ledger_path, "2026-09-14 10:20 | WS1 | 6 | FAIL\n",
+        ledger_path, TODAY + " 10:20 | WS1 | 6 | FAIL\n",
         payload_from_col=2, state_path=state_path, head_provider=provider)
     ok = ok and r5 is True
     print("append (last line stale, prior day):", "PASS" if r5 else "FAIL")
@@ -218,7 +219,7 @@ def selftest():
     def no_git():
         return None, None
     r6 = append_unless_identical(
-        ledger_path, "2026-09-14 10:20 | WS1 | 6 | FAIL\n",
+        ledger_path, TODAY + " 10:20 | WS1 | 6 | FAIL\n",
         payload_from_col=2, state_path=state_path, head_provider=no_git)
     ok = ok and r6 is True
     print("append (git unavailable):", "PASS" if r6 else "FAIL")
