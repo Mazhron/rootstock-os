@@ -717,7 +717,7 @@ eighteen entries) or its lean and standard subsets:
   the window is already most of the peak and ledgered when it speaks;
   **every reply** ticks the checkpoint counter when
   work actually happened. Both print CHECKPOINT DUE - DO IT at 8 tasks or
-  under 80% of the context budget (the context line on every prompt past
+  less than 80% of the context window left (the context line on every prompt past
   it, and the plain percent line on every prompt above it since v1.55),
   and print CHECKPOINT URGENT at 15 tasks or under 30%, where the
   Stop tick refuses to end the turn (once, then again every five tasks).
@@ -1113,7 +1113,8 @@ yes. It never restructures a live repo unasked.
    stays unindexed under `reference/`).
    Any capable model; one long session.
 2. Say: **read "0 - READ ME FIRST.md" and install the kit.**
-3. Answer its STEP 0 questions: project, engine and repo; who manages and
+3. Answer its STEP 0 questions: project, engine and repo; the install
+   level (lean, standard or full); who manages and
    which employee models are available; one workstation or several; which
    domain-notes files apply; your update policy (ask, auto, relevant
    or never); and whether you take part in the community, under what
@@ -1135,9 +1136,10 @@ yes. It never restructures a live repo unasked.
    standup script runs clean and prints the core's size, the core lint passes (CLAUDE.md under
    Anthropic's 200-line target and its token budget, every rule declared
    by path, the master index complete - the lint keeps all of it true),
-   the format lint passes, every hook answers its `--selftest`, FLAGS.md
+   the format lint passes, every hook the level wires answers its `--selftest`
+   (Lean wires none), FLAGS.md
    flags every kit thing,
-   the delegation ledger has one real line, the skills answer to their
+   the delegation ledger has one real line (Standard and Full), the skills answer to their
    slash commands, and the first commit is in, with the line `Rootstock vX.Y
    installed <date> | updates: <policy> | community: <name or no> | level: <lean|standard|full>`
    stamped into CLAUDE.md, which every
@@ -1219,7 +1221,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   days than the owner's thresholds allow since the last one; the trend
   script prints how far past those thresholds the kit sits.
 - Installing stamps a line into the project's CLAUDE.md:
-  `Rootstock vX.Y installed <date> | updates: <policy>`, with any skipped
+  `Rootstock vX.Y installed <date> | updates: <policy> | community: <name or no> | level: <lean|standard|full>`, with any skipped
   prerequisite (`| no-git`, `| no-skills`) and the community answer
   (`| community: <name>` or `| community: no`) recorded on the same
   line. An install that
@@ -1321,7 +1323,7 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 - **Does it work with models other than Claude?** The methods are model
   agnostic and the front door makes Claude ASK who manages rather than
   assume. The skills and hooks are Claude Code mechanisms.
-- **Is anything sent anywhere?** No. Everything is local files and git.
+- **Is anything sent anywhere?** Nothing without your hand. Everything is local files and git, and a community contribution is a pull request you push yourself.
   The only network calls are the optional two-day fetch of this repo's
   checksums and graft log at a signed tag and, when you run the
   security audit with `--url`, plain

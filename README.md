@@ -60,14 +60,18 @@ named file, nothing dropped.
 | Level | Time | What lands | Hooks |
 |---|---|---|---|
 | **Lean** | an afternoon | a CLAUDE.md pointer core with a token-budget lint, a master index, one path-scoped rule, a day file, and the checkpoint and standup skills: `/checkpoint` writes the day file so /clear loses nothing, `/standup` reads it back | none; `hooks/settings.lean.json` is a deny list only |
-| **Standard** | a day | lean + the reporting runner and ledgers, the delegation company (employees on the cheap tier, stamped briefs, verified reports), the skills shelf | `hooks/settings.standard.json`: the session loop, the three safety guards (shell, preserve, diet), the delegation pair; eleven entries |
+| **Standard** | a day | lean + the reporting runner and ledgers, the delegation company (employees on the cheap tier, stamped briefs, verified reports), the skills shelf | `hooks/settings.standard.json`: the session loop, the three safety guards (shell, preserve and the context-size diet), the delegation pair (brief guard, auditor); eleven settings entries |
 | **Full** | a long session | everything, including the loops that measure the loop: the lesson loop, the intent loop, the format law and the purpose audit | `hooks/settings.json`: all eighteen entries |
 
 Moving up is merging the next file's entries and running the front-door
-steps it adds; nothing is reinstalled. The install stamp in your CLAUDE.md
+steps it adds; nothing is reinstalled. The install stamp in your CLAUDE.md, a line like
+`Rootstock vX.Y installed <date> | updates: ask | community: no | level: standard`,
 records the level.
 
-## Quick start (three commands)
+## Quick start (clone, open, one sentence)
+
+Run the clone from the folder that contains your project, so
+`rootstock-os` sits beside it.
 
 ```
 git clone https://github.com/Mazhron/rootstock-os
@@ -91,13 +95,17 @@ the front door skips what it cannot do and records the skip.
 ## The four pillars, one line each
 
 1. **The knowledge wiki** ([WIKI_METHOD.md](WIKI_METHOD.md)): CLAUDE.md
-   points, the master index lists, topic files hold; a file's headings
-   are grepped and one section is read.
+   only points, one master index lists every file, topic files hold the
+   facts; Claude greps a file's headings and reads only the section it
+   needs.
 2. **The reporting discipline** ([REPORTING_METHOD.md](REPORTING_METHOD.md)):
-   every repeatable check is a script, every result a ledger line, and
-   the standup relays yesterday's verdicts.
+   every repeatable check is a script, every run appends one line to an
+   append-only ledger, and the next standup prints the last verdicts and
+   a budget line compared with the previous seven days.
 3. **The delegation company** ([SUBAGENT_METHOD.md](SUBAGENT_METHOD.md)):
-   seven laws; employees on the cheap tier read and search, the manager
+   seven laws (brief, stamp, verify cheap, ledger, escalate, fan-out cap,
+   preserve); cheap-tier employees run tests and searches, middle-tier
+   ones implement from a written spec, and the manager
    gets a stamped, metered report and verifies it against the diff.
 4. **Lossless sessions** ([SKILLS.md](SKILLS.md)): nine skills; a
    checkpoint writes both sides of the last exchange to the day file, the
