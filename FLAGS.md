@@ -33,17 +33,17 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-11-15 18:14 | items 112 | GREEN 96 | YELLOW 5 | RED 0 | unflagged 11 | stale 27
+Updated 2026-11-16 01:00 | items 112 | GREEN 87 | YELLOW 25 | RED 0 | unflagged 0 | stale 0
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
-| .github/ISSUE_TEMPLATE/bug.yml | - | UNFLAGGED | - | - |
-| .github/ISSUE_TEMPLATE/code_proposal.yml | - | UNFLAGGED | - | - |
-| .github/ISSUE_TEMPLATE/config.yml | - | UNFLAGGED | - | - |
-| .github/ISSUE_TEMPLATE/field_notes.yml | - | UNFLAGGED | - | - |
-| .github/ISSUE_TEMPLATE/gotcha.yml | - | UNFLAGGED | - | - |
-| .github/ISSUE_TEMPLATE/lesson.yml | - | UNFLAGGED | - | - |
-| .github/PULL_REQUEST_TEMPLATE.md | - | UNFLAGGED | - | - |
+| .github/ISSUE_TEMPLATE/bug.yml | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| .github/ISSUE_TEMPLATE/code_proposal.yml | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| .github/ISSUE_TEMPLATE/config.yml | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| .github/ISSUE_TEMPLATE/field_notes.yml | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| .github/ISSUE_TEMPLATE/gotcha.yml | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| .github/ISSUE_TEMPLATE/lesson.yml | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| .github/PULL_REQUEST_TEMPLATE.md | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | .github/workflows/contribution-lint.yml | YELLOW | ok | fable | 2026-10-13 14:13 |
 | 0 - READ ME FIRST.md | GREEN | ok | fable | 2026-11-06 14:47 |
 | CLICKER_DESIGN_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
@@ -51,23 +51,23 @@ Updated 2026-11-15 18:14 | items 112 | GREEN 96 | YELLOW 5 | RED 0 | unflagged 1
 | GODOT_FIELD_NOTES.md | GREEN | ok | sonnet-fmt4 | 2026-09-13 11:50 |
 | HOOKS_METHOD.md | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | INTENT_METHOD.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
-| LESSONS.md | GREEN | STALE | fable | 2026-11-06 15:00 |
+| LESSONS.md | GREEN | ok | fable-WS1-manager | 2026-11-16 01:00 |
 | REPORTING_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | SECURITY.md | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | SECURITY_METHOD.md | GREEN | ok | fable | 2026-09-29 14:23 |
-| SKILLS.md | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:47 |
-| SUBAGENT_METHOD.md | GREEN | STALE | fable | 2026-10-22 09:10 |
+| SKILLS.md | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
+| SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
 | UPGRADES.md | GREEN | ok | fable (author, v1.64; not read by a second Claude) | 2026-11-15 15:39 |
 | WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
-| WORKFLOW_METHOD.md | GREEN | STALE | fable | 2026-10-06 11:21 |
+| WORKFLOW_METHOD.md | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
-| agents/explore.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| agents/lookup.md | GREEN | STALE | fable | 2026-10-22 09:10 |
-| community/README.md | - | UNFLAGGED | - | - |
-| community/TEMPLATE.md | - | UNFLAGGED | - | - |
+| agents/explore.md | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
+| agents/lookup.md | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
+| community/README.md | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| community/TEMPLATE.md | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | community/code/README.md | GREEN | ok | fable | 2026-10-13 14:13 |
-| community/inbox/README.md | - | UNFLAGGED | - | - |
+| community/inbox/README.md | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | hooks/README.txt | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
 | hooks/_hooklib.py | GREEN | ok | fable | 2026-11-15 10:18 |
 | hooks/bash_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
@@ -81,25 +81,25 @@ Updated 2026-11-15 18:14 | items 112 | GREEN 96 | YELLOW 5 | RED 0 | unflagged 1
 | hooks/lesson_guard.py | GREEN | ok | fable | 2026-11-06 14:27 |
 | hooks/pre_compact.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | hooks/preserve_guard.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| hooks/prompt_gauge.py | GREEN | STALE | fable | 2026-10-30 13:05 |
+| hooks/prompt_gauge.py | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
 | hooks/rootstock_modes.json | GREEN | ok | fable | 2026-11-15 10:18 |
 | hooks/session_end.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | hooks/session_start.py | GREEN | ok | fable | 2026-11-06 15:00 |
-| hooks/settings.json | GREEN | STALE | fable | 2026-10-01 16:55 |
+| hooks/settings.json | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
 | hooks/settings.lean.json | GREEN | ok | fable | 2026-11-06 14:47 |
-| hooks/settings.standard.json | GREEN | STALE | fable | 2026-11-06 14:47 |
-| hooks/stop_tick.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
+| hooks/settings.standard.json | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
+| hooks/stop_tick.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
 | hooks/verify_advisor.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| knowledge/MANIFEST.md | GREEN | STALE | fable | 2026-11-06 15:00 |
+| knowledge/MANIFEST.md | GREEN | ok | fable-WS1-manager | 2026-11-16 01:00 |
 | knowledge/lessons/2d.md | GREEN | ok | fable | 2026-10-13 13:33 |
-| knowledge/lessons/godot.md | GREEN | STALE | fable | 2026-10-19 09:44 |
-| knowledge/lessons/harness.md | GREEN | STALE | fable | 2026-11-06 15:00 |
-| reference tools/_ledger.py | GREEN | STALE | fable | 2026-09-20 03:21 |
-| reference tools/backup_push.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
+| knowledge/lessons/godot.md | GREEN | ok | fable-WS1-manager | 2026-11-16 01:00 |
+| knowledge/lessons/harness.md | GREEN | ok | fable-WS1-manager | 2026-11-16 01:00 |
+| reference tools/_ledger.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| reference tools/backup_push.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/check_claude_md.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| reference tools/check_wiki_links.py | GREEN | STALE | Fable (WS2 manager) | 2026-09-22 17:37 |
-| reference tools/checkpoint.py | GREEN | STALE | sonnet-flag-1012 | 2026-10-12 11:48 |
+| reference tools/check_wiki_links.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| reference tools/checkpoint.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | reference tools/contribution_lint.py | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
 | reference tools/core_diet.py | GREEN | ok | sonnet-PC-FLAG-1 | 2026-09-14 16:32 |
@@ -107,37 +107,37 @@ Updated 2026-11-15 18:14 | items 112 | GREEN 96 | YELLOW 5 | RED 0 | unflagged 1
 | reference tools/delete_grant.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/export_tag_index.py | GREEN | ok | fable | 2026-09-14 15:42 |
 | reference tools/format_lint.py | GREEN | ok | fable (author, v1.64; not read by a second Claude) | 2026-11-15 15:39 |
-| reference tools/guard_replay.py | GREEN | STALE | sonnet-flag-1013d | 2026-10-13 14:09 |
+| reference tools/guard_replay.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | reference tools/intent_log.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
 | reference tools/intent_report.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:51 |
-| reference tools/keepwarm.py | GREEN | STALE | fable | 2026-10-31 19:43 |
+| reference tools/keepwarm.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | reference tools/law_gaps.py | GREEN | ok | fable-manager | 2026-09-29 16:36 |
-| reference tools/ledger_trends.py | GREEN | STALE | fable | 2026-11-06 15:00 |
+| reference tools/ledger_trends.py | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:57 |
 | reference tools/lesson_ladder.py | YELLOW | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | reference tools/lesson_log.py | GREEN | ok | sonnet | 2026-11-06 14:25 |
 | reference tools/merge_ledgers.py | GREEN | ok | fable manager E-2026-11-03-28 follow-up | 2026-11-03 16:50 |
 | reference tools/open_questions.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
 | reference tools/output_shape.py | GREEN | ok | fable | 2026-10-31 19:43 |
-| reference tools/plan_check.py | - | UNFLAGGED | - | - |
+| reference tools/plan_check.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | reference tools/purpose_audit.py | GREEN | ok | fable (author, v1.64; not read by a second Claude) | 2026-11-15 15:39 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
 | reference tools/readme_lint.py | GREEN | ok | fable (author, v1.64; not read by a second Claude) | 2026-11-15 15:39 |
-| reference tools/refresh_kit.py | GREEN | STALE | fable | 2026-11-06 14:47 |
+| reference tools/refresh_kit.py | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:57 |
 | reference tools/release_kit.py | YELLOW | ok | fable (author, v1.64; not read by a second Claude) | 2026-11-15 15:39 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |
-| reference tools/retrieval_eval.py | GREEN | STALE | fable | 2026-10-13 11:45 |
+| reference tools/retrieval_eval.py | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:57 |
 | reference tools/rootstock_update_check.py | GREEN | ok | fable (author, v1.63) | 2026-11-15 15:07 |
-| reference tools/route_index.py | GREEN | STALE | fable | 2026-09-28 23:37 |
-| reference tools/run_all.py | GREEN | STALE | sonnet-flag-1013c | 2026-10-13 13:32 |
+| reference tools/route_index.py | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:57 |
+| reference tools/run_all.py | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:57 |
 | reference tools/security_audit.py | GREEN | ok | fable | 2026-09-29 14:23 |
 | reference tools/split_knowledge.py | GREEN | ok | fable | 2026-10-13 13:33 |
-| reference tools/standup.py | GREEN | STALE | fable | 2026-11-06 15:00 |
+| reference tools/standup.py | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:57 |
 | reference tools/systems_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/usage_report.py | GREEN | STALE | fable | 2026-11-06 14:47 |
+| reference tools/usage_report.py | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:57 |
 | reference tools/usage_window.py | GREEN | ok | fable | 2026-09-30 11:57 |
 | reference tools/version_hint.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
 | reference tools/wiki_heat.py | GREEN | ok | fable | 2026-09-14 15:42 |
-| reference tools/workstation_survey.py | GREEN | STALE | sonnet-fmt3 | 2026-09-13 11:52 |
+| reference tools/workstation_survey.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:57 |
 | rules/wiki.md | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:47 |
 | skills/brief/EMPLOYEE_RULES.md | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
 | skills/brief/SKILL.md | GREEN | ok | sonnet E-2026-11-03-28 | 2026-11-03 16:49 |
@@ -2078,3 +2078,213 @@ FLAG: Matches its purpose; 112 items counted with a local install present. Autho
 SAYS: The append only graft log: every kit concept update, recorded as WHAT it is, which kit files CARRY it, how to GRAFT it onto an installed project's own files, and which README section it touched, so installs update by concept rather than by overwriting a project's customized files.
 DOES: The append-only graft log; the v1.64 entry records the local install, the exclude lines and how the checks look past them.
 FLAG: Matches its purpose; the entry carries WHAT, CARRIES, GRAFT and README and the version line reads v1.64.
+
+### 2026-11-16 00:55 | .github/ISSUE_TEMPLATE/code_proposal.yml | YELLOW | sonnet-flag-1116 | WS1 | c5554253
+SAYS: (no PURPOSE line)
+DOES: An issue form for proposing a hook, tool, skill or settings change: stamp, kind dropdown, HOW IT WORKS, WHY IT WORKS, WHAT IT MIGHT HURT, LEDGER and an optional fenced code block. Form data only.
+FLAG: Description says code is welcome as a proposal and never as a pull request, but community/README.md and PULL_REQUEST_TEMPLATE.md say that since kit v1.51 contributed Python may arrive by pull request under community/code/. The sentence is out of date or at least needs the qualifier: for a change to an existing kit file. Fix: reword the description to say a change to an existing kit file is a proposal here, and new standalone code goes through community/code/. Also no PURPOSE line (a form).
+
+### 2026-11-16 00:55 | .github/ISSUE_TEMPLATE/bug.yml | YELLOW | sonnet-flag-1116 | WS1 | 03d0c97d
+SAYS: (no PURPOSE line)
+DOES: A GitHub issue form for a bug in a kit script, hook, skill or method file: asks for the kit thing, version and platform, what its PURPOSE line says and what it did instead; points security problems to the private advisory page. Pure form data, no code, no network call of its own.
+FLAG: Body matches its name and description. Yellow only because there is no PURPOSE line (the script refuses green without one). Fix: a leading yaml comment block with PURPOSE and INTENT, as the contribution-lint workflow file carries.
+
+### 2026-11-16 00:55 | .github/ISSUE_TEMPLATE/config.yml | YELLOW | sonnet-flag-1116 | WS1 | 657f0177
+SAYS: (no PURPOSE line)
+DOES: Turns blank issues off and offers two contact links: GitHub Discussions for questions and ideas, and the private security advisory page for anything that could make a reader's Claude run unapproved code.
+FLAG: Behaves as described; both URLs are the project's own github.com pages, no other host. Yellow only for the missing PURPOSE line. Fix: a leading yaml comment with PURPOSE and INTENT.
+
+### 2026-11-16 00:55 | .github/ISSUE_TEMPLATE/field_notes.yml | YELLOW | sonnet-flag-1116 | WS1 | b1f302d4
+SAYS: (no PURPOSE line)
+DOES: An issue form to start a domain page of field notes: stamp, domain, a sections textarea (each section a search-key heading plus facts and a See also line) and tags; says no shell blocks and no links outside the lint allowlist.
+FLAG: Matches its description and the community README (kind field notes, inbox file name shape). Yellow only for the missing PURPOSE line. Fix: a leading yaml comment with PURPOSE and INTENT.
+
+### 2026-11-16 00:55 | .github/ISSUE_TEMPLATE/gotcha.yml | YELLOW | sonnet-flag-1116 | WS1 | b338b38c
+SAYS: (no PURPOSE line)
+DOES: An issue form for an engine or language trap: stamp, domain dropdown, optional engine version, the trap plus cause plus way around it, and tags. Text only.
+FLAG: Matches its description; domain list equals the lesson form. Yellow only for the missing PURPOSE line. Fix: a leading yaml comment with PURPOSE and INTENT.
+
+### 2026-11-16 00:55 | .github/ISSUE_TEMPLATE/lesson.yml | YELLOW | sonnet-flag-1116 | WS1 | 877d7869
+SAYS: (no PURPOSE line)
+DOES: An issue form for a lesson (the one right way): stamp, domain dropdown, THE ONE RIGHT WAY, TRIED / FAILED BECAUSE / DO INSTEAD and tags; points the pull request route to community/TEMPLATE.md and community/inbox/.
+FLAG: Fields match community/TEMPLATE.md. Yellow only for the missing PURPOSE line. Fix: a leading yaml comment with PURPOSE and INTENT.
+
+### 2026-11-16 00:55 | .github/PULL_REQUEST_TEMPLATE.md | YELLOW | sonnet-flag-1116 | WS1 | 69d5f8ab
+SAYS: (no PURPOSE line)
+DOES: The pull request description template: a stamp line, one-line what this adds, and a seven item checklist (one file in community/inbox/, stamp on line two, Tags/PURPOSE/INTENT, text only, code lane rules, general not project-specific, MIT offer).
+FLAG: Checklist agrees with community/README.md and contribution_lint rules (inbox name shape, code folder, header lines, selftest, no network module). No PURPOSE line; its html comment states the use but is not a PURPOSE line. Fix: add PURPOSE and INTENT inside the leading html comment.
+
+### 2026-11-16 00:55 | community/README.md | GREEN | sonnet-flag-1116 | WS1 | 74c1a1d9
+SAYS: the one place a contributor writes to, the shape every contribution takes, what the gate refuses and why, and what happens to a contribution after it is merged - so a stranger and their Claude can take part without reading the rest of the kit first.
+DOES: Explains how to contribute: the short version (one markdown file in community/inbox/, stamp on line two, pull request), why the gate refuses shell, fetch, install, deletion, off-list URLs and injection text, the code lane under community/code/, what happens after a merge (kept, grafted, credited, code never wired), opt-in from an installed project, and the MIT license.
+FLAG: none. Every claim checked against contribution_lint.py (inbox name shape, .md only, code lane file name rule) and the CI workflow (guard replay, selftest on the runner). All referenced files exist. One note for a later reader: the graft path names knowledge/<kind>/<domain>.md and one row in knowledge/MANIFEST.md, which now are edited in this repo by hand since v1.63, not by a split script.
+
+### 2026-11-16 00:55 | community/TEMPLATE.md | YELLOW | sonnet-flag-1116 | WS1 | a3da22cd
+SAYS: what this entry tells a reader, in one or two lines.
+DOES: A fill-in template for a contribution: heading, stamp line, Tags line, PURPOSE and INTENT placeholders, THE ONE RIGHT WAY, TRIED / FAILED BECAUSE / DO INSTEAD, Search keys, See also, and copy-and-fill instructions at the foot.
+FLAG: The shape matches what the lint checks (stamp on line two, Tags line, file name). The PURPOSE line in it is the contributor placeholder (what this entry tells a reader), not a statement of what the template itself is for, so the audit reads a placeholder as SAYS. Fix: keep the placeholder but add a one-line note above it, or have the audit skip the placeholder; low priority.
+
+### 2026-11-16 00:55 | community/inbox/README.md | YELLOW | sonnet-flag-1116 | WS1 | dab150a6
+SAYS: (no PURPOSE line)
+DOES: A short readme for the inbox folder: one contribution per file with the name shape, pointer to community/README.md and to the lint, and a note that this README is the maintainer's and an edit to it by pull request is refused.
+FLAG: Matches the lint (README.md is refused in the inbox from a non-owner; checked the rule that a non-markdown file or non-owner edit fails). No PURPOSE line. Fix: add PURPOSE and INTENT lines.
+
+### 2026-11-16 00:55 | reference tools/plan_check.py | GREEN | sonnet-flag-1116 | WS1 | 5b67c0f0
+SAYS: print, for each plan step given on the command line, a file or stdin, the LESSONS.md entries (with their DO INSTEAD), WORKFLOWS.md entries and loop scripts whose Keys hit the step's words, and ledger one PLAN line per run.
+DOES: Takes plan steps from args, a file or stdin (30 at most), runs each through lesson_log.match and route_index.match (3 hits per matcher), prints one block per step with DO INSTEAD text, and appends one PLAN line through lesson_log.record. Writes nothing else, no network, no deletion.
+FLAG: none. Read whole (154 lines) including its selftest. A failure to import the hook module or the ledger is swallowed on purpose. Needs lesson_log.py and route_index.py beside it (both ship in reference tools). Docstring usage says tools/plan_check.py, the installed path.
+
+### 2026-11-16 00:55 | reference tools/_ledger.py | GREEN | sonnet-flag-1116 | WS1 | 16e89507
+SAYS: One append_unless_identical() call site for the check-script ledgers (format_lint, purpose_audit, readme_lint, check_wiki_links and, since 2026-09-20, lesson_log's CHECK line) so a rerun at an unchanged tree does not grow duplicate rows.
+DOES: Library: append_unless_identical skips a ledger line only when payload, date, HEAD and a dirty-tree signature all match the last one, otherwise appends and rewrites the small sidecar docs/history/ledger_heads.txt; reads git rev-parse and status read-only. Selftest uses a temp folder and builds its dates from today.
+FLAG: none. Read whole (235 lines). Small mismatches for a later reader: INTENT says four call sites, PURPOSE lists five, and retrieval_eval and the route eval ledger also call it; the sidecar rewrite and the read-only git calls are in See also but not in PURPOSE. Harmless.
+
+### 2026-11-16 00:55 | reference tools/backup_push.py | GREEN | sonnet-flag-1116 | WS1 | a94c0214
+SAYS: Push every branch and tag of Everwood and rootstock-os to their bare `backup` remotes on the J: drive, then robocopy the Everwood working tree to a browsable folder beside the mirror (add/update only, never delete), one ledger line each, skipping (never failing) a repo whose remote or drive is absent.
+DOES: Pushes --all and --tags (never --mirror) of Everwood and the kit clone to their bare backup remotes, then robocopies the project working tree with /E (add and update only, skips .godot and .git) to a folder beside the mirror, and appends one ledger line per target. Skips, never fails, when the remote or drive is absent. --status only reads.
+FLAG: none. Read whole (207 lines). No network host: remotes are local-drive bare repos. No delete switch (/MIR and /PURGE absent). Project specific by design (names Everwood, the J: drive layout, WS names), so a receiving project must adapt REPOS and FOLDERS.
+
+### 2026-11-16 00:55 | reference tools/check_wiki_links.py | GREEN | sonnet-flag-1116 | WS1 | 837f0428
+SAYS: Warn-only link checker for the knowledge wiki: scan repo-root, docs/systems, docs/cold and docs/index markdown for the four cross-reference forms, resolve each against the repo, and report dead links plus See-also hygiene.
+DOES: Scans repo-root, docs/systems, docs/cold and docs/index markdown for four link forms (See also tokens, double-bracket links, markdown links, index mentions), resolves them by path then basename, prints dead links and See-also hygiene, rewrites docs/history/wiki_links.txt and appends one run line through _ledger. --strict exits 1 on dead links.
+FLAG: none. Read whole (353 lines). Writes only its two named outputs plus the _ledger sidecar. The 2026-11-15 SYNTAX_WORDS edit (a bracketed name or link word is prose, not a link) and the fenced-code skip behave as the comments say.
+
+### 2026-11-16 00:55 | reference tools/checkpoint.py | GREEN | sonnet-flag-1116 | WS1 | 583d0bd9
+SAYS: Track the checkpoint task counter and the live context gauge: tick, show status, or reset the count, warning at 8 tasks and dire at 15, and warning again when the session's live context nears the auto-compact budget.
+DOES: Counter for tasks since the last checkpoint (--tick, --status, --reset) kept per workstation in docs/history/checkpoint_state.txt, plus the work fingerprint and hook state in .claude/hooks_state.json that the Stop hook uses, plus a context gauge read from the newest harness transcript under the user's .claude/projects (read only). Prints the DUE and URGENT lines and the one shared CONTEXT phrase.
+FLAG: none. Read whole (257 lines). Transcript read is read-only and fails silent. Two things PURPOSE does not name but the docstring does: the fingerprint and hook-state write, and that --tick double counts next to the hook. Project specifics: the EVERWOOD_CTX_COMPACT variable and the workstation names.
+
+### 2026-11-16 00:55 | reference tools/guard_replay.py | GREEN | sonnet-flag-1116 | WS1 | 0257c510
+SAYS: Replays the four PreToolUse guards' pure judge functions (diet_guard.evaluate, bash_guard.verdict, preserve_guard.evaluate, brief_guard.missing_pieces) against the last N days of harness transcript traffic in a sandbox (a fresh in-memory diet_guard state per run, no grant, no ledger writes except its own), counts replayed / would-refuse / refused-live calls per guard per rule, and prints the NEW CATCH and LOST deltas with `--show <guard>` giving up to ten one-line examples each; never executes a command and never modifies a transcript, a hook, or a hook's state. FILE MODE (`--file <path> ...`, the code gate for contributed Python): judges each file as a synthetic Write plus every line as a Bash command, reads no transcript, writes no ledger, exits 1 on any refusal.
+DOES: Replays diet_guard.evaluate, bash_guard.verdict, preserve_guard.evaluate and brief_guard.missing_pieces over the last N days of local harness transcripts in a sandbox (fresh in-memory diet state, no grant), counts replayed, would-refuse, refused-live, NEW CATCH and LOST, and optionally appends one line to its own ledger (--record). File mode judges given files as text for CI and never touches a transcript or ledger.
+FLAG: none. Read whole (706 lines). Never runs a replayed command. One wording point: PURPOSE says no command is executed, but judge_preserve lets preserve_guard run read-only git ls-files and git diff for tracked scripts (the code names this as a GAP at its judge_preserve docstring). It also wraps preserve_guard._git in a cache for the process only. The temp files its selftest leaves are by the preservation law.
+
+### 2026-11-16 00:55 | reference tools/keepwarm.py | GREEN | sonnet-flag-1116 | WS1 | e412c168
+SAYS: Run and measure the cache keep-warm ping. `--ping` is what the scheduled ping turn calls: it appends one line to the ledger (time, ping N of 16, live context tokens, the trial id) and prints the exact reply the ping turn gives, or the stop line at the cap. `--report` reads the session's transcript and prices every ping turn from the harness's own usage records: cache read, cache write, output, the weighted cost, the context growth each ping left behind (the residue), hit or MISS, and the break-even against the one cache rewrite the pings exist to prevent, at both cache-read multipliers (0.025 on Fable 5.1, 0.1 on every other model), so the short-pause and the long-pause cases each get a number.
+DOES: --ping appends one PING line (time, n of cap, context tokens, trial id) to docs/history/keepwarm_runs.txt and prints the reply or the stop line at the cap (default 16). --report reads the newest transcript, prices each ping turn from usage records at both cache-read multipliers, prints residue, hits, misses and break-even, and with --record appends one REPORT line. --selftest feeds in-memory lines.
+FLAG: none. Read whole (341 lines). It schedules nothing and spawns nothing itself; the loop is armed by the WORKFLOWS entry (ScheduleWakeup) and capped by this script. Writes only ledger appends. The 0.025 read multiplier for Fable 5.1 is a hard-coded price and will go stale if prices change.
+
+### 2026-11-16 00:57 | reference tools/ledger_trends.py | YELLOW | sonnet-flag-1116 | WS1 | cdadaa9f
+SAYS: Reads the tails of the project's history ledgers (usage, tests, wiki links, wiki heat, employee corrections, compactions, README audit, intent claims, corrections, systems audit, open questions, digest size, the run_all loop, the lesson loop, the retrieval evaluation, the grain scan), plus one thing that is not a ledger: the kit clone three folders up (`git log -1` there, read-only, and a byte comparison of the kit folder against it, for the push schedule), compares them against tunable thresholds, and prints proposed rule changes, each tagged [DO] (a script, hook or employee carries it out in the reply that reads it) or [ASK] (only the owner can answer); it applies nothing itself.
+DOES: Reads the tails of about sixteen history ledgers (and SUBAGENTS.md, the readme and systems audit helpers, the kit clone via git log -1 and a byte compare of the Future Project MDs folder), compares them with tunable limits from .claude/trend_limits.json and prints PROPOSE lines tagged DO or ASK; main() also appends one line to docs/history/proposal_runs.txt when the set of proposals changed (skipped with --no-record). Applies nothing itself.
+FLAG: Read whole (594 lines). Matches in substance, three things off. (1) PURPOSE says it applies nothing, which is true of the proposals, but it does write proposal_runs.txt on every normal run (record(), line 557; named in the header text, not in PURPOSE); add that file to PURPOSE. (2) PURPOSE says the kit clone is three folders up; lines 515-517 also try the clone beside the project. (3) The push schedule proposal (lines 518-541) is the mirror model: it compares a Future Project MDs folder with the clone and tells the manager to run tools/sync_kit_repo.py; since kit v1.63 the kit repo is its own source released by release_kit.py, so in a project of the kit this proposal can never fire usefully. Fix: update PURPOSE for 1 and 2, mark rule 17 as origin-only or point it at the release script.
+
+### 2026-11-16 00:57 | reference tools/refresh_kit.py | YELLOW | sonnet-flag-1116 | WS1 | a6e35fa5
+SAYS: copy every portable ORIGINAL to its grab-copy in the kit folder (repo-root MDs, every .md in each .claude/skills/<name>/ dir (SKILL.md and its siblings, kit v1.58), .claude/agents/*.md (kit v1.54, the pinned searchers), tools/hooks/*.py, the tools/*.py that have a reference copy, and the .claude/rules/*.md files named in PORTABLE_RULES), with the one substitution the kit carries in scripts (the owner's name -> "the CEO"); report the hand-adapted files it must never overwrite; then derive the kit's LESSONS.md and knowledge/ tree through tools/split_knowledge.py (SPLIT; it writes those files and one knowledge_split_runs.txt line); `--check` only says what is out of step (the prompt hook's KIT UNSYNCED line).
+DOES: Copies each portable original (root MDs, skill MDs, agents, tools/hooks/*.py, tools/*.py that have a reference copy, wiki rule) into the Future Project MDs kit folder with the owner-name substitution for scripts, skips ADAPTED files, derives LESSONS.md and knowledge/ through split_knowledge.generate, --adopt adds a new reference tool, --check compares the kit folder with the public repo clone and prints the KIT UNSYNCED line. Never deletes.
+FLAG: Read whole (243 lines). Does what its PURPOSE says, nothing more, no delete, no network. Stale in framing: it is the origin project's mirror step (KIT_DIR is Future Project MDs inside the project, lines 47-52; the KIT UNSYNCED text at line 181 and See also at line 36 name sync_kit_repo.py), and kit v1.63 made this repo its own source (README line 186). Inside the kit repo it has nothing to copy from. Fix: say in PURPOSE that it runs in the origin project only (or retire it from the kit copy), and update the KIT UNSYNCED sentence when the origin moves to the release script. Side note: prompt_gauge calls check_line on every prompt, which compares the whole kit folder to the clone.
+
+### 2026-11-16 00:57 | reference tools/retrieval_eval.py | YELLOW | sonnet-flag-1116 | WS1 | 1e4c9844
+SAYS: Measure the lesson matcher's recall and precision against a hand-written query set and against the project's own replayed prompts; print the report, rewrite docs/history/retrieval_eval.txt and append one ledger line (the append goes through tools/_ledger.py, which also updates its sidecar docs/history/ledger_heads.txt). Reads LESSONS.md, the query file and this project's transcripts (every ~/.claude/projects folder whose name carries the repo name, top level only); writes nothing else.
+DOES: Measures the lesson matcher against tools/retrieval_queries.txt and against the newest N typed prompts replayed from this project's transcripts (four cells plus fire rates), prints the report, rewrites docs/history/retrieval_eval.txt and appends one line to retrieval_eval_runs.txt through _ledger. With --route it instead replays the route faces and appends to a second ledger, docs/history/route_eval_runs.txt.
+FLAG: Read whole (411 lines). PURPOSE says it writes nothing else apart from the report, one ledger line and the _ledger sidecar, but the --route mode (ROUTE_LEDGER at line 248, writes at lines 312-318) appends to route_eval_runs.txt and is not in PURPOSE. Reads only top-level transcripts of folders whose name carries the repo name; no network, no deletion. Fix: add --route and route_eval_runs.txt to PURPOSE.
+
+### 2026-11-16 00:57 | reference tools/route_index.py | YELLOW | sonnet-flag-1116 | WS1 | 2ed04886
+SAYS: Match a prompt against the headings and WHEN lines of WORKFLOWS.md, the Search keys of every tools/ and tools/hooks/ script, and (v1.57) the index files' entry lines and the repo's own file names, and print the ROUTE line or block the prompt hook relays, so an existing workflow, script, topic section or file is named before the manager re-derives it, with the index headings as the door when nothing hits.
+DOES: Matches a prompt against WORKFLOWS.md headings and WHEN lines and the Search keys of tools and hooks (classic), and in ladder mode also index lines, existing file names and an EFFORT line, or prints the index door once per session; prints the ROUTE line or block. Side effects: route_record appends a ROUTE line to the lesson ledger through lesson_log.record, the door writes .claude/route_state.json, and it walks up to 6000 repo files per process.
+FLAG: Read whole (522 lines). No network, no deletion, bounded walk (FILE_WALK_CAP). PURPOSE says only that it prints the line or block; the ledger line (route_record, line 427) and the session state file (ROUTE_STATE, line 102, written at line 362) are described only in the long header or not at all. The prompt_gauge header even says no ledger for the route line while its v1.57 paragraph says each face ledgers a ROUTE line. Fix: name both writes in PURPOSE.
+
+### 2026-11-16 00:57 | reference tools/run_all.py | YELLOW | sonnet-flag-1116 | WS1 | 6dc5eb52
+SAYS: Chain habitual scripts by named group (check/regen/tests/metrics/ probes/builds/session/standup) and ledger every group run so staleness is visible instead of silent.
+DOES: Runs named groups of project scripts in order as subprocesses (timeout 3600 each), prints each tail, stops on the first failure and appends one line per group run to docs/history/loop_runs.txt, composites counting as runs of their members; --stale and --list only read.
+FLAG: Read whole (194 lines). The runner itself is bounded and writes only its ledger. PURPOSE lists check, regen, tests, metrics, probes, builds, session and standup but not the backup group (line 91, a member of the session composite at line 94) which pushes every branch and tag and robocopies the project to the J: drive, and the metrics group includes fork_watch.py (line 86) which by its comment looks at forks of the public repo (a network call I could not verify, the script is not in the kit). The check group also runs core_diet.py --move (line 58) which moves CLAUDE.md sections. Line 171 adds a hard-coded portable node path of one workstation to PATH. Fix: add backup to PURPOSE and say the group scripts are the origin project's, to be adapted.
+
+### 2026-11-16 00:57 | reference tools/standup.py | YELLOW | sonnet-flag-1116 | WS1 | 3d99de54
+SAYS: Prints the post pull standup digest: the last exchange mined from harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget line, THE LOOP (each run_all group's age), ledger trend proposals, version and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a subprocess so the owner sees the core's size every session), WS notes from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN QUESTIONS TO MAZHRON.
+DOES: Prints the session-start digest: the last exchange (user prompt and final reply, each capped at 2000 chars) mined from the newest harness transcripts, the day file WHERE WE LEFT OFF, the usage budget tail, the loop ages, ledger trend proposals, version and commits, the core size line, WS notes, ledger tails, roadmap and open questions. To do so it runs usage_report.py --quiet (line 295, rewrites the usage sheet, csv, daily and cache files) and ledger_trends.py (line 925, which may append to proposal_runs.txt) and check_claude_md.py as subprocesses.
+FLAG: Read whole (1027 lines, selftest included). PURPOSE says it prints; the two subprocess writers (usage sheet refresh, up to 90 s, and the proposal ledger) are mentioned only in the long header (THE BUDGET paragraph) and PURPOSE should say so. It also hard-codes the owner name in the block title OPEN QUESTIONS TO MAZHRON (lines 336 and 339) and reads project.godot for the version (line 934, degrades to a question mark), so it needs adapting outside the origin. It replays the previous exchange verbatim into the new session by design, which PURPOSE does name. Selftest writes one fixture file to the OS temp dir and never deletes it.
+
+### 2026-11-16 00:57 | reference tools/usage_report.py | YELLOW | sonnet-flag-1116 | WS1 | 518d3581
+SAYS: Mines the Claude Code harness JSONL transcripts for real per model per tool token usage and writes an aggregate usage sheet (CSV, TXT, XLSX, employee runs, and the daily budget line) totaled by day, week and month, plus usage_by_arc.txt (checkpoint to checkpoint) and cache_misses.txt + cache_miss_runs.txt (every miss with its likely cause), and since kit v1.60 THE KIT'S OWN OVERHEAD block: what the hooks injected, metered from the transcripts' hook attachments, per event, per month, with the cut count; since kit v1.62 one TRIP DIET line under the read diet: the diet guard's own tally of its notes and what followed each (read from docs/history/trip_diet_runs.txt through tools/hooks/diet_guard.py; no write).
+DOES: Mines the local harness transcripts whose project folder name contains everwood (incrementally, with a byte-offset cache) and regenerates usage_metrics csv, txt and xlsx, usage_employees.csv, usage_daily.txt, usage_by_arc.txt and cache_misses.txt, appends one line to cache_miss_runs.txt, reads git log for the arc line and the diet guard's trip tally read-only. Also stores each session's first prompt line (90 chars) as a label in the cache and the employee csv.
+FLAG: Read whole (1500 lines). No network, no deletion, writes only under docs/history. Yellow for three small gaps: (1) PURPOSE omits the parse cache usage_cache.json (line 135, named in the header) and the git log subprocess (line 1213); (2) transcript_dirs filters on the literal text everwood (line 201), so in any other project it finds nothing and prints No transcripts found, which PURPOSE does not say; (3) the first user prompt of every session (90 chars) is kept in usage_cache.json and the employee csv, so those files can carry prompt text and should stay gitignored. Prices are hard coded in PRICING and will go stale. Fix: name the cache, the git call and the project filter in PURPOSE.
+
+### 2026-11-16 00:57 | reference tools/workstation_survey.py | GREEN | sonnet-flag-1116 | WS1 | 1ebbff96
+SAYS: Checks this machine against the CHECKS table (a mirror of WORKSTATION.md's requirements), prints a HAVE or MISSING table, and appends a summary line to docs/history/workstation_runs.txt; exits 1 if a required item is missing.
+DOES: Runs a fixed table of probes (Python version, pip show for Pillow, numpy, openpyxl, node, git, git user.name, Godot exe and templates, VS Code and extensions, settings file, kit clone, GIMP, Aseprite, Blender, 7-Zip, gh) as short subprocesses and path checks, prints a HAVE or MISSING table and appends one summary line to docs/history/workstation_runs.txt (skip with --no-ledger); exits 1 when a required item is missing.
+FLAG: none. Read whole (188 lines). Probes are fixed read-only commands with a 30 s timeout; the ledger line carries labels only, not the git user name that the table prints to the terminal. Origin specific by design: the table names Godot 4.4, Everwood paths, EVERWOOD_GODOT and the two workstation names, and the docstring points to WORKSTATION.md while the kit ships WORKSTATION_METHOD.md as the portable twin, so a receiving project edits CHECKS.
+
+### 2026-11-16 00:58 | hooks/prompt_gauge.py | YELLOW | sonnet-flag-1116 | WS1 | f11ecdba
+SAYS: UserPromptSubmit hook that stays silent on a normal turn and, when a threshold is crossed, prints the checkpoint counter line (8 tasks DUE, 15 dire) and the context-remaining line (DUE under 80%, on EVERY prompt; above 80% a plain "context gauge: N% remaining" line, relayed in the reply until the /clear - the CEO 2026-10-12: the hook orders the checkpoint, it does not advise one), plus since 2026-09-13 a KIT UNSYNCED line when a portable original is newer than its kit copy, and since 2026-09-20 the LESSONS line naming the LESSONS.md entries whose Keys match the prompt, so the one right way is read before the first tool call, and since 2026-09-28 the ROUTE line naming the WORKFLOWS.md entries and the reference tools whose heading, WHEN line or Search keys the prompt hits, and since 2026-09-30 a live USAGE WINDOW line (tools/usage_window.py) when the rolling five-hour spend is already most of the seven-day peak; since 2026-10-31 the ROUTE has a ladder face (index lines, existing files, the EFFORT line, the index door once per session) and a classic face, chosen by the modes file, both ledgered.
+DOES: UserPromptSubmit hook. Prints the checkpoint counter line (8 DUE, 15 urgent), the context line (a DUE order under 80 percent remaining on every prompt, urgent under 30, otherwise a plain gauge line on every prompt), a KIT UNSYNCED line from refresh_kit.check_line, the LESSONS line (matches, with a MATCHED ledger line), the ROUTE line or ladder block (with a ROUTE ledger line and the once-per-session door state), and the usage window line (usage_window.gauge_line, which records an ADVISED reading). Silent for a keep-warm ping prompt. All imports are wrapped so it never crashes a turn.
+FLAG: Read whole (294 lines). Matches in substance; no network, no deletion, no spend loop. Off: (1) the first lines of the header still say SILENT unless a threshold is crossed - zero tokens on a normal turn, but lines 129-134 print the gauge line on every prompt when a transcript load is readable (the 2026-11-02 percent line; PURPOSE itself says so); (2) the route paragraph near line 23 says No ledger while lines 177-183 ledger a ROUTE line on both faces; (3) PURPOSE does not name the writes it causes: lesson_runs.txt MATCHED and ROUTE lines, route_state.json, and the usage_window ADVISED record; (4) refresh_kit.check_line on every prompt compares the kit folder with the clone, an origin-only check (see refresh_kit flag). Fix: reword the first sentence of the header, delete the No ledger sentence, add the writes to PURPOSE.
+
+### 2026-11-16 00:58 | hooks/stop_tick.py | GREEN | sonnet-flag-1116 | WS1 | ab29f68a
+SAYS: Stop hook that ticks the checkpoint counter only when work actually happened (HEAD moved or the tree changed since the last Stop), shows an advised system message at 8 tasks or under 80% context, refuses to end the turn once at 15 tasks or under 30% context (re-blocking every 5 further tasks), refuses once when a safety hook has gone unwired in settings.json, warns once per unexported commit count when the changelog anchor has fallen behind HEAD, and since 2026-09-28 refuses once per prompt when the reply names a checkpoint as due without the safe-to-clear marker (the reply text read from the transcript), and since 2026-09-29 refuses once per prompt when the reply names a DO proposal that its ledger still raises (PROPOSAL NAMED).
+DOES: Stop hook. Ticks the checkpoint counter only when the work fingerprint changed, shows an advised system message at 8 tasks or under 80 percent context, refuses to end the turn once at 15 tasks or under 30 percent (again every 5 tasks), refuses once per fingerprint when format_lint finds a safety hook unwired, warns once per count about unexported changelog commits, and refuses once per prompt when the reply names a checkpoint as due without the safe-to-clear marker or names a DO proposal its ledger still raises. Writes checkpoint_state.txt and hooks_state.json.
+FLAG: none. Read whole (487 lines) including its selftest. Every refusal is once per prompt or fingerprint and stop_hook_active exits at once, so it cannot loop. Reads the transcript for the reply text (read only), runs git log read-only, imports ledger_trends.open_do without recording. The text it injects is what the header and PURPOSE describe. The selftest writes small temp anchor files (never deleted, by the preservation law) and expects a changelog: commit and a tracked tree to exist.
+
+### 2026-11-16 00:58 | hooks/settings.json | GREEN | sonnet-flag-1116 | WS1 | 96e95f7a
+SAYS: (no PURPOSE line)
+DOES: The full install level: the deny block (rm -rf shapes, filter-branch, reflog expire, force pushes, reads and edits of .env, secrets, credentials, keys) plus eighteen hook entries: SessionStart, UserPromptSubmit, SubagentStop, Stop (stop_tick, lesson_advisor, verify_advisor), PreCompact, SessionEnd, seven PreToolUse guards (bash, preserve, diet, fanout, brief, format, lesson) and three PostToolUse (delegation auditor, hygiene and format guard).
+FLAG: none. Read whole (220 lines). Counted the commands: 18, as hooks/README.txt and HOOKS_METHOD.md say. Every command points at a hook file that exists in hooks/. The deny list is identical to the standard and lean files. It wires every row of format_lint's SAFETY table. It is a settings file, so it has no PURPOSE line by nature. Paths assume the scripts sit in tools/hooks/ of the receiving project.
+
+### 2026-11-16 00:58 | hooks/settings.standard.json | YELLOW | sonnet-flag-1116 | WS1 | 0af6cd82
+SAYS: (no PURPOSE line)
+DOES: The standard install level: the same deny block plus eleven hook entries: the session loop (session_start, prompt_gauge, stop_tick, pre_compact, session_end), three PreToolUse safety guards (bash, preserve, diet), brief_guard and delegation_auditor (SubagentStop and PostToolUse).
+FLAG: Read whole (166 lines). Counts and contents match README.md, HOOKS_METHOD.md and STEP 0 item 7 (eleven entries; the deny list equals the full file). One thing to verify, not proven: format_lint.SAFETY (reference tools/format_lint.py lines 91-103) also requires fanout_guard, hygiene_guard, format_guard and verify_advisor to be wired whenever their files sit in the hooks folder, and HOOKS_METHOD step 1 says to copy the whole hooks folder, so a standard install that also has format_lint could see SAFETY WIRING BROKEN from stop_tick (once per fingerprint). Fix: say in the install text that the unwired hook files are left out of tools/hooks at this level, or have the SAFETY table skip hooks the level does not wire.
+
+### 2026-11-16 00:58 | LESSONS.md | YELLOW | sonnet-flag-1116 | WS1 | 7be0ae90
+SAYS: The lesson law and the entry shape of the one-right-way book, plus a pointer index: every one of the origin's 74 entries under the knowledge/lessons/<domain>.md file that holds it verbatim, so a project seeds its own LESSONS.md from the slices the manifest matched.
+DOES: Holds the lesson law, the entry shape and the lint note at the top, and since the knowledge split a pointer index at line 47: every one of 74 entries (harness 66, godot 6, 2d 2) listed by heading under the knowledge/lessons file that holds it. The entries are not in this file.
+FLAG: Read the first 46 lines and the whole index (139 lines); counted the three files (66, 6, 2, total 74, equal to PURPOSE). Yellow because the origin framing is out of date: PURPOSE says the origin's 74 entries and line 55 says GENERATED by tools/split_knowledge.py with the origin's LESSONS.md as the source and the index following on the next refresh, but since v1.63 this repo is its own source and commit d4b00f3 added five lessons to knowledge/lessons/harness.md and the index by hand. Fix: reword PURPOSE and line 55 to say the entries and the index are edited here.
+
+### 2026-11-16 00:58 | SKILLS.md | YELLOW | sonnet-flag-1116 | WS1 | dc876811
+SAYS: The skills shelf: catalogs each ritual, standup, checkpoint, ship, brief, runaway, preserve, intent, correct, flag, as an invocable Claude Code skill in .claude/skills/, so a ritual runs from a script instead of from memory.
+DOES: Catalogs the nine skills (standup, checkpoint, ship, brief, runaway, preserve, intent, correct, flag) with what each does, the SKILLS RULE, the new-project bootstrap and a dated change log. Descriptions only, no executable text.
+FLAG: Read the first 45 lines, lines 45-155 (shelf tail, rule, bootstrap, log). Nine entries equal the nine folders in skills/. Matches PURPOSE. Stale lines: the SKILLS RULE (about line 98-101) still tells the reader to REFRESH the skill copy in the future-project kit folder (Future Project MDs/skills/), a mirror step that ended in v1.63, and line 105 names the front door as 0 - READ ME FIRST, CLAUDE.md, a kit-folder-only file, while the kit ships 0 - READ ME FIRST.md. Fix: rewrite both sentences for the kit as its own source.
+
+### 2026-11-16 00:58 | SUBAGENT_METHOD.md | GREEN | sonnet-flag-1116 | WS1 | 406302fc
+SAYS: A portable architecture for delegating work to sub-agent employees: the org chart (CEO, manager, employees), why it saves money, the seven laws, the assignments table, the scorecard, and bootstrap steps for a new project.
+DOES: A portable method for delegating to sub-agent employees: the org chart, why delegation saves money, the seven laws (brief, stamp, verify cheap, ledger, escalation, fan-out law, preservation law), the assignments table, the scorecard with tool-usage tracking, attribution and trust, and bootstrap steps.
+FLAG: none. Read the header, headings, laws 2-7 and the scorecard through the end (lines 1-75, 76-141, 190-239); the assignments table (142-189) was not read. Body matches PURPOSE (the attribution section is extra but short and named in its own Tags). Instruction text only; it tells the reader to cap fan-out and never delete, with no side effects. Contains origin-project anecdotes (public incident, 821 sub-agents) that are labelled as such.
+
+### 2026-11-16 00:58 | WORKFLOW_METHOD.md | YELLOW | sonnet-flag-1116 | WS1 | 6496db95
+SAYS: A portable process registry method: every repeatable multi-step process gets one runbook entry, WHEN, STEPS, VERIFY, in a single registry file, so the choreography between scripts and ledgers is never lost to context clearing or memory.
+DOES: Describes the process registry method (WHEN, STEPS, VERIFY entries in one WORKFLOWS.md, the capture rule, who writes entries, what earns one, bootstrap) and, from line 144, ships two complete runnable entries: the seed entry Act on a prompt (the trial workflow with plan_check, the lesson at the choice and the ladder) and Keep the cache warm across a pause, whose steps arm a ScheduleWakeup loop of keep-warm ping turns (cap 25 on Fable, 9 elsewhere).
+FLAG: Read the first 40 lines, the heading index, the seed entry opening (lines 144-175) and the keep-warm entry (lines 245-287); the middle of the Act on a prompt entry (176-244) I did not read. Lines 1-143 match PURPOSE as far as the headings and opening go. Yellow because PURPOSE describes only a method, while the file also carries two entries a Claude is told to copy into WORKFLOWS.md, one of which schedules recurring ping turns that spend tokens (bounded by the cap, but a spend instruction not mentioned in PURPOSE). Fix: add one sentence to PURPOSE naming the two shipped entries and that the keep-warm entry arms a capped ping loop.
+
+### 2026-11-16 00:58 | agents/explore.md | GREEN | sonnet-flag-1116 | WS1 | 43ec5442
+SAYS: a read-only search employee for broad fan-out searches across the repo; it returns file:line pointers and a one-paragraph conclusion, never file dumps, on the cheapest model, so a search never runs on the manager's tier.
+DOES: A Claude Code agent definition: a read-only search employee pinned to haiku at low effort with tools Read, Grep, Glob, Bash; instructs one-turn parallel reads, file:line pointers, never whole files, write nothing, no delete, stop after about 15 tool calls, and end with a STAMP and TOOLS line.
+FLAG: none. Read whole (21 lines). Matches PURPOSE. Note for a later reader: read-only is enforced by instruction and by the preserve guard, not by the tool list, because Bash is granted; the footer is two lines (STAMP, TOOLS), shorter than the four-line footer of EMPLOYEE_RULES (whether the delegation auditor exempts explore from the four lines, I did not check).
+
+### 2026-11-16 00:58 | agents/lookup.md | GREEN | sonnet-flag-1116 | WS1 | 55e46f49
+SAYS: a read-only lookup employee that answers one question with the exact value or lines and their file:line pointer, in one turn of tool calls, on the cheapest model, so a lookup never runs on the manager's tier.
+DOES: A Claude Code agent definition: a read-only one-fact lookup employee pinned to haiku at low effort with tools Read, Grep, Glob, Bash; answers with the value and its file:line pointer in one turn, writes nothing, no delete, stops after about 5 tool calls, ends with a STAMP and TOOLS line.
+FLAG: none. Read whole (19 lines). Matches PURPOSE. Same note as explore.md: Bash is granted so read-only is by instruction plus the guards; lookup is in brief_guard's READONLY_TYPES.
+
+### 2026-11-16 00:58 | knowledge/MANIFEST.md | YELLOW | sonnet-flag-1116 | WS1 | b08f8354
+SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
+DOES: A table of the five knowledge files (path, kind, domain, approximate tokens, entries, one sentence) and five WANTED rows naming holes a contribution could fill, plus the taxonomy.
+FLAG: Read whole (43 lines) and checked the numbers: tokens (characters over four, line endings normalised) are 43525, 4228, 2969, 4147 and 3103 and the entry counts 66, 6, 2 match the files. Yellow because line 2 says GENERATED by tools/split_knowledge.py - edit the tables' sources, never this file, but the generator reads the origin's whole LESSONS.md, which the kit does not hold (its LESSONS.md is a pointer index), and commit d4b00f3 edited this file in the kit; the numbers are now maintained by hand. The last WANTED row also points at the origin's docs/history/retrieval_eval.txt. Fix: reword line 2 and the last wanted row for the kit as its own source.
+
+### 2026-11-16 00:58 | knowledge/lessons/godot.md | YELLOW | sonnet-flag-1116 | WS1 | 4ff26030
+SAYS: The godot slice of the one-right-way book, 6 entries whose Tags name creative mode, godot, gotchas, process and 2 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: The godot slice of the one-right-way book: six lessons (write engine resources from Python, style every Button at once, headless click tests, tool-gated labels, a rebuilt ScrollContainer, reproduce before theorising), each THE ONE RIGHT WAY then TRIED / FAILED BECAUSE / DO INSTEAD, with a generated-file header.
+FLAG: Read the header (lines 1-30), all six headings and a section; six entries as PURPOSE says. Entry text is advice, no commands that touch anything outside a project. Yellow for the header: line 2 says GENERATED from the origin's LESSONS.md (2026-11-03) - edit the origin's entry, never this copy, which is wrong advice since v1.63 made this repo the source (an edit here is now the right place). Last content change was a mirror commit, so the entries still equal the origin. Fix: reword line 2.
+
+### 2026-11-16 00:58 | knowledge/lessons/harness.md | YELLOW | sonnet-flag-1116 | WS1 | 8f99afbb
+SAYS: The harness slice of the one-right-way book, 66 entries whose Tags name balance, budget, checkpoint, communication and 39 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: The harness slice of the one-right-way book: 66 lessons on Claude Code and the process around it (hooks, ledgers, delegation, git, the kit), each THE ONE RIGHT WAY then TRIED / FAILED BECAUSE / DO INSTEAD, with a generated-file header.
+FLAG: Read the header, the heading index and the last two entries, counted 66 entries (equal to PURPOSE and MANIFEST), grepped for URLs (none) and skimmed for commands: the commands inside are quoted as advice or as what failed. 2469 lines, so most bodies were not read line by line. Yellow for the header: line 2 says GENERATED by split_knowledge from the origin's LESSONS.md and to edit the origin's entry, but commit d4b00f3 added five lessons (177 lines) directly to this file in the kit, so the header is untrue and misleads an editor. Fix: reword line 2 to say this file is edited here.
+
+### 2026-11-16 01:00 | LESSONS.md | GREEN | fable-WS1-manager | WS1 | 7be0ae90
+SAYS: The lesson law and the entry shape of the one-right-way book, plus a pointer index: every one of the origin's 74 entries under the knowledge/lessons/<domain>.md file that holds it verbatim, so a project seeds its own LESSONS.md from the slices the manifest matched.
+DOES: Holds the lesson law, the entry shape and the lint note (lines 1 to 46), then a pointer index that lists each of the 74 entries by heading under the knowledge/lessons file that holds it (harness 66, godot 6, 2d 2). No entry body is in this file.
+FLAG: none. Read lines 1 to 60 and counted the index (74 lines) against the three files (66, 6, 2). Corrects the yellow filed 2026-11-16 00:58 by sonnet-flag-1116 on this same version: its premise was that commit d4b00f3 edited the lesson files here by hand, so the generated-file header is wrong advice. It was not: the origin split ledger records split_knowledge runs at 2026-11-15 18:11 and 18:15, the minutes of the two kit commits, and UPGRADES.md v1.63 (WHAT DID NOT MOVE) keeps the lessons as the origin book, contributed by the origin and not edited here. The header is accurate.
+
+### 2026-11-16 01:00 | knowledge/MANIFEST.md | GREEN | fable-WS1-manager | WS1 | b08f8354
+SAYS: One row per knowledge file in the kit (path, kind, domain, size in tokens, entries, one sentence) and one row per wanted hole, so the front door's STEP 0 pulls only the rows whose domain matches the CEO's answers and a contributor sees where a page is missing.
+DOES: A generated table: one row per knowledge file (path, kind, domain, tokens, entries, one sentence) for the five files, five WANTED rows naming holes a contribution could fill, and the taxonomy of kinds and domains.
+FLAG: none. Read whole (43 lines); entry counts 66, 6 and 2 match the files, and sonnet-flag-1116 recomputed the token column and found it correct. Corrects the yellow filed 2026-11-16 00:58 by sonnet-flag-1116 on this same version: its premise was that commit d4b00f3 edited the lesson files here by hand, so the generated-file header is wrong advice. It was not: the origin split ledger records split_knowledge runs at 2026-11-15 18:11 and 18:15, the minutes of the two kit commits, and UPGRADES.md v1.63 (WHAT DID NOT MOVE) keeps the lessons as the origin book, contributed by the origin and not edited here. The header is accurate.
+
+### 2026-11-16 01:00 | knowledge/lessons/godot.md | GREEN | fable-WS1-manager | WS1 | 4ff26030
+SAYS: The godot slice of the one-right-way book, 6 entries whose Tags name creative mode, godot, gotchas, process and 2 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: The godot slice of the one-right-way book: six lessons, each THE ONE RIGHT WAY first and then TRIED, FAILED BECAUSE, DO INSTEAD, under a generated-file header that names the origin book as the source.
+FLAG: none. Read the header (lines 1 to 22) and all six headings; six entries as PURPOSE says. The body is advice text and runs nothing. Corrects the yellow filed 2026-11-16 00:58 by sonnet-flag-1116 on this same version: its premise was that commit d4b00f3 edited the lesson files here by hand, so the generated-file header is wrong advice. It was not: the origin split ledger records split_knowledge runs at 2026-11-15 18:11 and 18:15, the minutes of the two kit commits, and UPGRADES.md v1.63 (WHAT DID NOT MOVE) keeps the lessons as the origin book, contributed by the origin and not edited here. The header is accurate.
+
+### 2026-11-16 01:00 | knowledge/lessons/harness.md | GREEN | fable-WS1-manager | WS1 | 8f99afbb
+SAYS: The harness slice of the one-right-way book, 66 entries whose Tags name balance, budget, checkpoint, communication and 39 more: each is THE ONE RIGHT WAY first, then TRIED / FAILED BECAUSE / DO INSTEAD, verbatim from the origin, so a project in this domain reads only what applies to it.
+DOES: The harness slice of the one-right-way book: 66 lessons on Claude Code and the process around it, each THE ONE RIGHT WAY first and then TRIED, FAILED BECAUSE, DO INSTEAD, under a generated-file header that names the origin book as the source.
+FLAG: none. Read the header (lines 1 to 30) and the heading index, 66 entries as PURPOSE and the manifest say; the 2469 lines of entry bodies were not read line by line (sonnet-flag-1116 grepped them for URLs and found none). Corrects the yellow filed 2026-11-16 00:58 by sonnet-flag-1116 on this same version: its premise was that commit d4b00f3 edited the lesson files here by hand, so the generated-file header is wrong advice. It was not: the origin split ledger records split_knowledge runs at 2026-11-15 18:11 and 18:15, the minutes of the two kit commits, and UPGRADES.md v1.63 (WHAT DID NOT MOVE) keeps the lessons as the origin book, contributed by the origin and not edited here. The header is accurate.
