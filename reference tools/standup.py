@@ -6,7 +6,7 @@ a pull: prints a ~20-line digest - recent commits, the newest WS-note
 headlines, the tail of every history ledger, and the open roadmap index. The
 manager reads THIS, then opens full notes only where the digest points.
 
-Usage:  python tools/standup.py [--commits N] [--no-usage] [--selftest]   (default 5)
+Usage:  python tools/standup.py [--commits N] [--no-usage] [--selftest]   (default 2)
 
 THE DIGEST DIET (the CEO 2026-09-14, "the most important pieces are context
 and efficiency. As long as there is no loss there, I'm happy"): the digest
@@ -18,7 +18,7 @@ LEFT OFF are never cut. LEDGER TAILS prints a ledger's newest line in full
 only when it carries a verdict (CHECK, FAIL, RED, STALE, WARN, UNSYNCED,
 a cliff) or is newer than the previous standup (digest_size.txt's last
 line); the rest collapse to name + date on shared lines; ledgers another
-block already shows are skipped. Commits default to 5; RECENT DAYS prints
+block already shows are skipped. Commits default to 2; RECENT DAYS prints
 each day's first clause. THE FOURTH TRIM (2026-09-29, the proposal law):
 a no-verdict ledger line stamped inside THE LAST EXCHANGE's window was
 written by the exchange the digest already replays verbatim, so it
@@ -62,12 +62,19 @@ today's weighted spend judged against the previous 7 active days, with
 the verdict. --no-usage skips the refresh (no transcripts, no time).
 
 PURPOSE: Prints the post pull standup digest: the last exchange mined from
-  harness transcripts, the day file's WHERE WE LEFT OFF, the usage budget
+  harness transcripts (the folders named for the repo root or the folder
+  above it, and any carrying the repo name), the day file's WHERE WE LEFT
+  OFF, the usage budget
   line, THE LOOP (each run_all group's age), ledger trend proposals, version
   and recent commits, THE CORE (check_claude_md.py's OK/WARN line, run as a
   subprocess so the owner sees the core's size every session), WS notes
   from docs/index/notes.md, ledger tails, the open roadmap index, and OPEN
-  QUESTIONS TO MAZHRON.
+  QUESTIONS TO THE OWNER. Two of its blocks run a script that writes: the
+  budget line runs tools/usage_report.py --quiet (the usage sheet and its
+  cache are rewritten) and the proposals run tools/ledger_trends.py (one
+  line appended to docs/history/proposal_runs.txt when the proposals
+  changed). The version line reads project.godot until that block is
+  adapted to the project.
 INTENT: the CEO 2026-09-02: 'this goes along with my rules of creating a
   script for everything.'
 
@@ -333,10 +340,10 @@ def print_open_questions():
         import open_questions
         ages = open_questions.open_rows()
     except Exception:
-        print("== OPEN QUESTIONS TO MAZHRON (unavailable)")
+        print("== OPEN QUESTIONS TO THE OWNER (unavailable)")
         return
     oldest = ages[0][0] if ages else 0
-    print("== OPEN QUESTIONS TO MAZHRON (%d open, oldest %s d)" % (len(ages), oldest))
+    print("== OPEN QUESTIONS TO THE OWNER (%d open, oldest %s d)" % (len(ages), oldest))
     for age, r in ages:
         print("  %s | %sd | %s" % (r["id"], age if age >= 0 else "?", r["question"]))
 
@@ -638,6 +645,8 @@ def first_clause(summary, cap=150):
     return cut if len(cut) <= cap else cut[:cap].rstrip() + "..."
 
 
+# The first head is the shape the origin project's own day files carry; a
+# new project's checkpoint writes USER'S LAST PROMPT (skills/checkpoint).
 _EXCHANGE_QUOTE_HEADS = ("MAZHRON'S LAST PROMPT", "MANAGER'S LAST RESPONSE",
                          "USER'S LAST PROMPT")
 _LABEL = re.compile(r"^[A-Z][A-Z0-9 /'-]{3,}:")  # STATE:, OPEN QUEUE / NEXT LIKELY:

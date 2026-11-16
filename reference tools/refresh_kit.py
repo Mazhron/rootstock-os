@@ -1,7 +1,10 @@
 """THE KIT REFRESH (the CEO's ruling 2026-09-13, INTENT.md "Rootstock is
 updated and pushed whenever it is discussed").
 
-PURPOSE: copy every portable ORIGINAL to its grab-copy in the kit folder
+PURPOSE: for a project that publishes kit things from a kit folder of its
+  own (the Rootstock repo is its own source since kit v1.63 and never
+  runs this; in a receiving project, which has no kit folder, every mode
+  says so and stops): copy every portable ORIGINAL to its grab-copy in the kit folder
   (repo-root MDs, every .md in each .claude/skills/<name>/ dir (SKILL.md
   and its siblings, kit v1.58), .claude/agents/*.md (kit
   v1.54, the pinned searchers), tools/hooks/*.py, the tools/*.py that have
@@ -33,8 +36,10 @@ folder with the public repo clone so one line says both halves.
 
 Search keys: kit refresh, grab-copy, refresh copies, kit unsynced, portable
 originals, adopt a reference tool, CEO substitution, rootstock mirror.
-See also: tools/sync_kit_repo.py (kit folder -> public repo; runs this
-first); tools/hooks/prompt_gauge.py (the KIT UNSYNCED line); tools/hooks/
+See also: the project's own publish step (kit folder -> its public repo;
+KIT_SYNC in tools/hooks/hygiene_guard.py names it; the Rootstock repo
+itself is released by reference tools/release_kit.py);
+tools/hooks/prompt_gauge.py (the KIT UNSYNCED line); tools/hooks/
 hygiene_guard.py (the reminder at the edit); WORKFLOWS.md "Edit the
 future-project kit (Rootstock)"; INTENT.md.
 """
@@ -58,7 +63,7 @@ RULES_DIR = os.path.join(ROOT, ".claude", "rules")
 PORTABLE_RULES = {"wiki.md"}                # path-scoped rules that travel; game rules stay per project
 ADAPTED = {"hooks/bash_guard.py"}          # hand-tailored kit copies: never overwritten
 SPLIT = {"LESSONS.md"}                     # derived by tools/split_knowledge.py (NS-38 phase 2): the kit copy is a pointer index, the entries live in knowledge/
-SUBST = [("the CEO's", "the CEO's"), ("the CEO", "the CEO")]   # scripts only; prose stays verbatim
+SUBST = [("the CEO's", "the CEO's"), ("the CEO", "the CEO")]   # scripts only; prose stays verbatim. CONFIG: a publishing project puts its owner's name on the left of each pair (the kit copy arrives already substituted, so it changes nothing until then)
 JUNK = {"__pycache__", ".git"}
 KEEP = {"README.md", "README_FULL.md", "LICENSE", ".git"}    # kit-repo-only, never compared
 # -----------------------------------------------------------------------
@@ -160,6 +165,8 @@ def mirror_diff():
 
 def check_line():
     """One line for the prompt hook, or None when everything is in step."""
+    if not os.path.isdir(KIT_DIR):
+        return None     # a receiving project: no kit folder of its own, nothing to be out of step with (kit v1.65)
     parts = []
     st = stale_copies()
     if st:
@@ -178,7 +185,7 @@ def check_line():
     if not parts:
         return None
     return ("KIT UNSYNCED: " + "; ".join(parts) + " - `python tools/refresh_kit.py` then "
-            "`python tools/sync_kit_repo.py` before the arc closes (the CEO 2026-09-13: "
+            "the project's own publish step (KIT_SYNC in the hygiene guard) before the arc closes (the CEO 2026-09-13: "
             "whenever Rootstock is discussed, the kit and the public repo are updated)")
 
 
@@ -226,6 +233,10 @@ def adopt(path):
 
 
 def main(argv):
+    if not os.path.isdir(KIT_DIR):      # a receiving project (kit v1.65): say so in every mode, never a traceback and never "in step"
+        print("no kit folder here (%s): a receiving project has nothing to refresh or check"
+              % os.path.relpath(KIT_DIR, ROOT))
+        return 0
     if "--adopt" in argv:
         adopt(argv[argv.index("--adopt") + 1])
         return 0

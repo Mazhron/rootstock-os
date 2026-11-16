@@ -754,7 +754,14 @@ the ledgers argue for first.
 
 1. Copy the kit's hooks/ folder to the project's tools/hooks/ (or wherever
    its scripts live; the scripts locate the repo root from their own path
-   and import the checkpoint script from the folder above them).
+   and import the checkpoint script from the folder above them). Copy
+   only the scripts the install level wires (kit v1.65): Full takes the
+   whole folder, Standard takes _hooklib.py and the ten scripts
+   settings.standard.json names, Lean takes none. Presence is adoption:
+   a SAFETY hook whose script sits in tools/hooks/ but is not wired is
+   what the format lint fails and the Stop tick refuses as SAFETY WIRING
+   BROKEN, so a level leaves out the scripts it does not wire and copies
+   them on the day it moves up.
 2. Copy the install level's file to .claude/settings.json (MERGE if the
    project already has one - never replace its arrays). Validate with
    json.tool. THE INSTALL LEVELS (kit v1.60, after a reader's review:

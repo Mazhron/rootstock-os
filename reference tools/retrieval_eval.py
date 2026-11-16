@@ -46,8 +46,11 @@ PURPOSE: Measure the lesson matcher's recall and precision against a
   print the report, rewrite docs/history/retrieval_eval.txt and append one
   ledger line (the append goes through tools/_ledger.py, which also updates
   its sidecar docs/history/ledger_heads.txt). Reads LESSONS.md, the query
-  file and this project's transcripts (every ~/.claude/projects folder whose
-  name carries the repo name, top level only); writes nothing else.
+  file and this project's transcripts (the ~/.claude/projects folders
+  named for the repo root or the folder above it, and any whose name
+  carries the repo name; top level only). With --route it replays
+  the two ROUTE faces instead and appends one line to
+  docs/history/route_eval_runs.txt. It writes nothing else.
 INTENT: the CEO 2026-10-13: the one gap the industry's RAG checklist named
   that Rootstock actually had was an evaluation set - we logged what fired,
   never whether the right thing fired; a weak Keys line should be found by a

@@ -51,11 +51,15 @@ PURPOSE: Reads the tails of the project's history ledgers (usage, tests,
   intent claims, corrections, systems audit, open questions, digest size,
   the run_all loop, the lesson loop, the retrieval evaluation, the grain
   scan), plus one thing that is not a ledger: the kit clone three folders
-  up (`git log -1` there, read-only, and a byte comparison of the kit
-  folder against it, for the push schedule), compares them against
+  up or beside the project (`git log -1` there, read-only, and a byte
+  comparison of the project's own kit folder against it, for the push
+  schedule of a project that publishes from such a folder; a receiving
+  project has none and that rule is silent), compares them against
   tunable thresholds, and prints proposed rule changes, each tagged [DO]
   (a script, hook or employee carries it out in the reply that reads it)
-  or [ASK] (only the owner can answer); it applies nothing itself.
+  or [ASK] (only the owner can answer); it applies nothing itself and
+  writes one file: a line appended to docs/history/proposal_runs.txt when
+  the set of proposals changed (never with --no-record).
 INTENT: the CEO's ask 2026-09-10: 'Is Rootstock implementing learning
   loops?' Extended 2026-09-14: open questions get a nudge past N days, and
   the thresholds move to a data file the owner tunes (security and cost/
@@ -510,7 +514,10 @@ def proposals(th=None):
     # pulling from Rootstock once every week, strongly recommend once per day
     # or two from now on. As well as a push/commit schedule to add knowledge."):
     # when the kit repo's last commit is older than the limit AND a kit file
-    # differs from the folder, the sync is scripted, so it is a DO.
+    # differs from the folder, the sync is scripted, so it is a DO. Since kit
+    # v1.63 the Rootstock repo is its own source: this rule is for a project
+    # that publishes from a kit folder of its own, and a receiving project
+    # (no such folder) never hears it.
     try:
         kit_repo = os.path.normpath(os.path.join(ROOT, "..", "..", "..", "rootstock-os"))
         if not os.path.isdir(kit_repo):     # the clone beside the project (2026-11-15)
@@ -536,7 +543,7 @@ def proposals(th=None):
             if age is not None and age >= th["kit_push_days"] and differ:
                 out.append("PROPOSE [DO] (the push schedule): the kit repo was last pushed %d d ago "
                            "(limit %d) and %d kit file(s) differ from the folder - "
-                           "`python tools/sync_kit_repo.py` (NS-38 phase 1, the CEO 2026-10-13: "
+                           "run the project's own publish step (KIT_SYNC in the hygiene guard; NS-38 phase 1, the CEO 2026-10-13: "
                            "a push/commit schedule to add knowledge)." % (age, th["kit_push_days"], differ))
     except Exception:
         pass  # the kit clone is optional; never crash standup over it

@@ -1,5 +1,5 @@
 name: Code proposal (a hook, a tool, a skill or a change to one)
-description: Code is welcome as a proposal the maintainer builds inside the kit's laws, never as a pull request. Say how it works, why, what it might hurt, and show a before/after.
+description: A change to an existing kit file is welcome as a proposal the maintainer builds inside the kit's laws, never as a pull request against that file. A new standalone script may come as a pull request under community/code/ (community/code/README.md). Say how it works, why, what it might hurt, and show a before/after.
 title: "[proposal] <what it does, in one line>"
 labels: ["community", "proposal"]
 body:

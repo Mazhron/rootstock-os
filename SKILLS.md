@@ -96,14 +96,15 @@ the skills operationalize).
 ## THE SKILLS RULE (standing, Mazhron 2026-09-03)
 
 When a ritual or law is BORN or AMENDED, its skill is added or updated IN
-THE SAME BATCH - law text and skill never drift apart. And whenever a skill
-changes, REFRESH its copy in the future-project kit folder ("Future Project
-MDs/skills/" plus this file) in the same batch, like every other kit file.
+THE SAME BATCH - law text and skill never drift apart. Since kit v1.63 a
+kit skill is edited in the kit repo itself (skills/ plus this file) and
+goes out with the next release; a project that publishes kit things from
+a kit folder of its own refreshes its copy there in the same batch.
 
 ## New-project bootstrap (plug and play)
 
-THE MASTER SEQUENCE lives in the kit folder's front door: "0 - READ ME
-FIRST, CLAUDE.md" (kit-folder-only file; a new project's Claude reads it
+THE MASTER SEQUENCE lives in the kit's front door: "0 - READ ME
+FIRST.md" (a kit-only file; a new project's Claude reads it
 and installs the whole operating system in order: wiki -> reporting ->
 delegation -> skills). Skills go LAST because they call the tools the
 earlier steps build; each skill degrades gracefully by pointing at its

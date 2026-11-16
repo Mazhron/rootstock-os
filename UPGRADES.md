@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.64** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.65** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2814,3 +2814,108 @@ commit and the preserve guard's tracked-script selftest case cannot
 pass in it; both are the cost of keeping it out of git.
 README: README.md (the version line; "Updating, taking part, origin");
 README_FULL.md ("Updating an installed project").
+
+### v1.65 - 2026-11-16 - Six repairs from a flag pass run on a second machine: the Standard level's hook scripts, the origin's name out of two tools, the mirror's last sentences, five purpose lines that left out a write
+WHAT: On 2026-11-16 the 38 kit things that had changed since their last
+flag, or had never had one, were read by a Claude on a machine that had
+written none of them (FLAGS.md, the entries by sonnet-flag-1116). No
+RED. The CEO asked for six of the yellows to be repaired ("Please fix
+the 6 yellows"). THE STANDARD LEVEL'S SCRIPTS: the install text said to
+copy the whole hooks/ folder at every level, and the format lint's
+SAFETY table reads a hook script that is present and not wired as
+broken wiring (presence is adoption). A Standard install made by that
+text, once it also carried format_lint.py, failed the lint with five
+SAFETY lines (fanout_guard, hygiene_guard, format_guard twice,
+verify_advisor) and the Stop tick refused the turn end with SAFETY
+WIRING BROKEN at each new batch of work, over wiring that was whole for
+its level. The table is right and stays as it is: a table that asked
+the stamp for the level would let an edit of the stamp switch a guard
+off. The text is what changed: a level copies the scripts it wires
+(Full all of them, Standard _hooklib.py and the ten that
+settings.standard.json names, Lean none) and copies the rest on the day
+it moves up. THE ORIGIN'S NAME IN TWO TOOLS: usage_report.py picked
+transcript folders by the literal text "everwood", so in every other
+project the usage sheet, the standup's budget line and the overhead
+block found no transcripts at all; it now takes the folder named for
+the repo root and any folder carrying the repo's own folder name
+(TRANSCRIPT_MATCH in its CONFIG replaces a generic name). standup.py's
+block title read OPEN QUESTIONS TO MAZHRON and reads OPEN QUESTIONS TO
+THE OWNER, the title open_questions.py already writes at the head of
+its ledger. THE MIRROR'S LAST SENTENCES: refresh_kit.py,
+ledger_trends.py's push schedule and the SKILLS RULE still told the
+reader to run tools/sync_kit_repo.py or to refresh a copy in "Future
+Project MDs/", the shape v1.63 retired; they say what v1.63 says now
+(the kit repo is edited in place; a project that publishes from a kit
+folder of its own names its publish step in the hygiene guard's
+KIT_SYNC). One thing sat under the words: in a project with no kit
+folder refresh_kit.py stopped on a missing-folder error in `--check`
+and in a plain refresh (`--adopt` made the folder instead), and the
+prompt hook's KIT line was silent there only because the hook swallows
+the error; check_line() now returns nothing by design and every mode
+of the script says "no kit folder here" and stops. THE PROMPT GAUGE'S
+HEADER said silent on a normal turn and "No ledger" for the route; the
+body has printed a gauge line on every prompt since 2026-10-30 and
+ledgered a ROUTE line since v1.57, and the header says so. FIVE PURPOSE
+LINES now name what the body writes or runs: route_index.py (the ROUTE
+ledger line, the door's state file), retrieval_eval.py (--route and its
+second ledger), run_all.py (the backup group, and that the listed
+members are the origin's, to be rewritten), standup.py (the two scripts
+it runs that write) and usage_report.py (the parse cache, git log, the
+prompt label it keeps). run_all.py also carried one workstation's node
+folder on its PATH line; that is an empty CONFIG list (EXTRA_PATH) now,
+and no machine's path is in the kit. THE CODE PROPOSAL FORM said code
+comes "never as a pull request" while community/README.md has taken new
+standalone scripts by pull request under community/code/ since v1.51;
+the form says both. A second read-only pass over the repaired files
+(sonnet-flag-1116b) found the first draft of this entry wrong about
+refresh_kit.py, which it had said printed KIT UNSYNCED on every prompt
+in a receiving project, and five small things in the repairs (a
+`--check` that said "in step" where there was no kit folder, an INTENT
+still saying zero cost, two purpose lines that left out the folder
+above the repo, a header that said five commits where the code says
+two); all were corrected before the release. Left yellow on purpose:
+seven issue and pull
+request forms have no PURPOSE line, community/TEMPLATE.md carries the
+contributor's placeholder as its own, and WORKFLOW_METHOD.md ships two
+runnable entries its PURPOSE does not name.
+CARRIES: 0 - READ ME FIRST.md (STEP 0 item 7, STEP 4); HOOKS_METHOD.md
+(Bootstrap step 1); hooks/README.txt (the tools/hooks/ line); reference
+tools/usage_report.py (TRANSCRIPT_MATCH, _slug, transcript_dirs,
+PURPOSE); reference tools/standup.py (the block title, PURPOSE, the
+header's commit default);
+reference tools/open_questions.py (one pointer); reference
+tools/refresh_kit.py (PURPOSE, See also, the guard at the head of
+check_line and of main, the KIT UNSYNCED sentence, SUBST's comment);
+reference tools/ledger_trends.py
+(PURPOSE, rule 17's comment and sentence); SKILLS.md (THE SKILLS RULE,
+the front door's name); hooks/prompt_gauge.py (the header, PURPOSE and
+INTENT, no code); reference tools/route_index.py and retrieval_eval.py
+(PURPOSE); reference tools/run_all.py (PURPOSE, EXTRA_PATH);
+.github/ISSUE_TEMPLATE/code_proposal.yml (the description); the kit
+repo's README.md.
+GRAFT: A STANDARD install first: run `python tools/format_lint.py` if
+the project carries it. SAFETY lines that name fanout_guard,
+hygiene_guard, format_guard or verify_advisor mean the whole hooks
+folder was copied. Either move up (merge hooks/settings.json's entries;
+the scripts are already there) or move those four scripts out of
+tools/hooks/ with the project's mover (tools/retire.py, never a delete)
+and copy them back on the day the level moves up. A Full install and a
+Lean install change nothing. Every install that carries
+usage_report.py: replace transcript_dirs() with the kit's (and _slug
+and TRANSCRIPT_MATCH above it), then `python tools/usage_report.py` and
+read the first lines of docs/history/usage_metrics.txt; an install
+whose sheet was already full had adapted that line by hand and keeps
+its own. standup.py: the two print lines of the open-questions block,
+by hand. refresh_kit.py, if the project copied it and has no kit
+folder: add the guards at the head of check_line() and of main(), or retire
+the script (a receiving project never runs it). run_all.py: an install
+that needs a folder on PATH for its group scripts names it in
+EXTRA_PATH; the origin's line is gone from the kit copy and an adapted
+copy keeps what it has. The header and PURPOSE rewordings
+(prompt_gauge, route_index, retrieval_eval, ledger_trends, run_all,
+standup, usage_report, SKILLS.md) are taken with the file when it is
+unadapted and skipped, with the skip recorded, when it is not: no
+behaviour rides on them. Verify: `python tools/format_lint.py` passes
+at the install's level; the usage sheet names this project's sessions;
+a prompt in a project without a kit folder prints no KIT UNSYNCED.
+README: README.md (the version line).

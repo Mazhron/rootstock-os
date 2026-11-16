@@ -44,7 +44,11 @@ PURPOSE: Match a prompt against the headings and WHEN lines of WORKFLOWS.md,
   index files' entry lines and the repo's own file names, and print the
   ROUTE line or block the prompt hook relays, so an existing workflow,
   script, topic section or file is named before the manager re-derives it,
-  with the index headings as the door when nothing hits.
+  with the index headings as the door when nothing hits. Two writes: the
+  prompt hook's route_record() appends one ROUTE line to the lesson
+  ledger (docs/history/lesson_runs.txt, through tools/lesson_log.py),
+  and the door keeps its once-per-session mark in
+  .claude/route_state.json.
 INTENT: the CEO 2026-09-28, adopting the ZTA gate: "get done what you think
   should get done" - the check "does software already handle this" becomes a
   hook lookup at zero tokens instead of the manager's inference every turn;

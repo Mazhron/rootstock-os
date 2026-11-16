@@ -74,8 +74,9 @@ recorded in the install stamp (see MISSING PREREQUISITES).
    delegation_auditor), with reference tools/lesson_log.py copied
    beside them so the prompt gauge can name a lesson. FULL is every
    step and hooks/settings.json. The stamp records the level; moving
-   up later is the next file's entries merged into .claude/settings.json
-   and the steps it adds, never a reinstall. No preference: standard.
+   up later is the next file's entries merged into .claude/settings.json,
+   the hook scripts those entries name copied into tools/hooks/, and
+   the steps it adds, never a reinstall. No preference: standard.
 
 THE BROWNFIELD RULE (an existing project): inventory first, ADOPT what
 already plays each role under its own name, PROPOSE the install as a plan,
@@ -140,7 +141,11 @@ manager's model.
 Copy skills/ to .claude/skills/ and SKILLS.md to the root; the nine
 rituals call the tools from steps 1-3, so they go live last. THE SKILLS
 RULE: a ritual born or amended updates its skill in the same batch.
-Then the hooks: copy hooks/ to tools/hooks/, merge the level's settings
+Then the hooks: copy to tools/hooks/ the hook scripts the level wires
+(kit v1.65: Full takes all of hooks/; Standard takes _hooklib.py and the
+ten scripts settings.standard.json names; Lean takes none - a SAFETY
+hook whose script sits in tools/hooks/ unwired is read as broken wiring
+by the format lint and the Stop tick), merge the level's settings
 file (settings.lean.json, settings.standard.json or settings.json, STEP
 0 item 7) into .claude/settings.json, fill the bash guard's PROJECT RULES from the
 STEP 0 laws, run every --selftest, pipe-test one real call

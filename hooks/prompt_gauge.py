@@ -1,7 +1,9 @@
 """UserPromptSubmit hook: the context gauge + task counter, every prompt
-(Tier 1, #3). SILENT unless a threshold is crossed - zero tokens on a
-normal turn. When it speaks, the manager relays the line verbatim
-(the CEO's 80% rule 2026-09-04; the 8/15 task thresholds 2026-09-02).
+(Tier 1, #3). Until 2026-10-30 it was silent unless a threshold was
+crossed; since the percent line it prints one plain gauge line on a
+normal turn and an order (DUE, URGENT) past a threshold. The manager
+relays the line verbatim (the CEO's 80% rule 2026-09-04; the 8/15 task
+thresholds 2026-09-02).
 
 Since 2026-09-20 it also carries THE LESSON LINE (the CEO: "nothing surfaces
 a lesson before I start"): the prompt's words are matched against the Keys
@@ -12,7 +14,8 @@ docs/history/lesson_runs.txt. Silent on a prompt that hits nothing.
 
 Since 2026-09-13 it also carries THE KIT LINE: "KIT UNSYNCED" while a
 portable original is newer than its kit copy or the kit folder is ahead
-of the public mirror (tools/refresh_kit.py --check), silent otherwise.
+of the public mirror (tools/refresh_kit.py --check), silent otherwise and
+always silent in a project with no kit folder of its own.
 
 Since 2026-09-28 it also carries THE ROUTE LINE (kit v1.33, after Kelsey
 Hightower's Zero Token Architecture: the script rule exports the logic, but
@@ -20,8 +23,8 @@ WHICH workflow or script handles a prompt was still inferred every turn):
 the prompt's words are matched against every WORKFLOWS.md entry's heading
 and WHEN line and every reference tool's Search keys (tools/route_index.py,
 the lesson matcher) and the hits, at most two of each, are printed under
-ROUTE so the scripted way is checked before it is re-derived. No ledger: a
-route is a pointer; the tool it names keeps its own.
+ROUTE so the scripted way is checked before it is re-derived. (v1.33 kept
+no ledger for it; since kit v1.57 each face ledgers one ROUTE line, below.)
 
 Since 2026-09-30 it also carries THE USAGE WINDOW LINE (Rootstock
 T-0930-RS-2, the CEO's ask: the standup's budget line is retrospective, but
@@ -29,8 +32,7 @@ the plan's own limits are rolling five-hour and seven-day windows):
 tools/usage_window.py's gauge_line() (--advise --record, in-process) runs
 on every prompt and is printed only when the last 5 hours are already most
 of the last 7 days' worst 5-hour stretch; an ADVISED reading is also
-ledgered there. Silent otherwise, same zero-cost rule as the rest of this
-hook.
+ledgered there. Silent otherwise.
 
 Since 2026-10-31 (kit v1.57) THE ROUTE LINE has two faces, picked by the
 modes file (.claude/rootstock_modes.json, `route`): "ladder" prints
@@ -48,9 +50,9 @@ them against each other - the old way stays the baseline.
 Answers `--selftest` (house pattern: PASS/FAIL lines on the pure line
 builder, never stdin or a real prompt).
 
-PURPOSE: UserPromptSubmit hook that stays silent on a normal turn and, when
-  a threshold is crossed, prints the checkpoint counter line (8 tasks DUE,
-  15 dire) and the context-remaining line (DUE under 80%, on EVERY prompt;
+PURPOSE: UserPromptSubmit hook that prints the checkpoint counter line when
+  a task threshold is crossed (8 tasks DUE, 15 dire) and the
+  context-remaining line on EVERY prompt (a DUE order under 80%;
   above 80% a plain "context gauge: N% remaining" line, relayed in the reply
   until the /clear - the CEO 2026-10-12: the hook orders the checkpoint, it
   does not advise one), plus since 2026-09-13
@@ -63,10 +65,15 @@ PURPOSE: UserPromptSubmit hook that stays silent on a normal turn and, when
   when the rolling five-hour spend is already most of the seven-day peak;
   since 2026-10-31 the ROUTE has a ladder face (index lines, existing
   files, the EFFORT line, the index door once per session) and a classic
-  face, chosen by the modes file, both ledgered.
+  face, chosen by the modes file, both ledgered. What it writes: MATCHED
+  and ROUTE lines in docs/history/lesson_runs.txt (through
+  tools/lesson_log.py), the index door's once-per-session mark in
+  .claude/route_state.json (through tools/route_index.py) and an ADVISED
+  reading in the usage window's own ledger (tools/usage_window.py).
 INTENT: relays the checkpoint and context thresholds and the kit-sync check
-  at zero cost on a normal turn, so the manager checkpoints or refreshes the
-  kit only when the harness itself has detected the need.
+  for the price of one gauge line on a normal turn, so the manager
+  checkpoints or refreshes the kit only when the harness itself has
+  detected the need.
 
 Search keys: prompt hook, context gauge, 80 percent rule, task counter,
 kit unsynced, lessons line, lesson loop, route line, which script, usage

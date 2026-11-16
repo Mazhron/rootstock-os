@@ -34,8 +34,13 @@ Each child script keeps its own ledger (REPORTING_METHOD.md); this runner
 just chains them, prints each one's tail, and stops on the first failure.
 
 PURPOSE: Chain habitual scripts by named group (check/regen/tests/metrics/
-  probes/builds/session/standup) and ledger every group run so staleness is
-  visible instead of silent.
+  probes/builds/backup/session/standup) and ledger every group run so
+  staleness is visible instead of silent. The members listed in GROUPS
+  are the origin project's own (its exporters and probes, core_diet.py
+  --move at the head of check, a fork watch in metrics that reads the
+  public repo's forks, backup_push.py in backup and therefore in
+  session): a receiving project rewrites GROUPS with the scripts it has,
+  because a member whose script is missing stops its group.
 INTENT: any script that should be run multiple times must be called by the
   main looping script - never chained by hand a second time.
 
@@ -53,6 +58,7 @@ import time
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY = sys.executable
 LOOP_LEDGER = os.path.join(ROOT, "docs", "history", "loop_runs.txt")
+EXTRA_PATH = []     # CONFIG: folders appended to PATH for the group scripts (a portable node install, say); empty until a project needs one
 
 GROUPS = {
     "check":   [["tools/core_diet.py", "--move"],   # THE CORE DIET (2026-09-14): moves cold/over-budget routed CLAUDE.md sections BEFORE the lint judges the size
@@ -166,9 +172,8 @@ def main():
         if a not in GROUPS:
             sys.exit("Unknown group '%s' (see --list)." % a)
     env = dict(os.environ)
-    # node lives in the portable install on WS2; harmless elsewhere.
-    env["PATH"] = env.get("PATH", "") + os.pathsep + \
-        r"C:\Users\Travis\AppData\Local\Programs\node-portable\node-v22.14.0-win-x64"
+    if EXTRA_PATH:      # a tool the group scripts need that is not on PATH (kit v1.65: a CONFIG list, no machine's path in the kit)
+        env["PATH"] = env.get("PATH", "") + os.pathsep + os.pathsep.join(EXTRA_PATH)
     for group in args:
         t0 = time.time()
         failed_label = ""

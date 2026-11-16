@@ -5,7 +5,7 @@
 **Keep the context small, make clearing the chat lossless, let cheap
 sub-agents do the reading.**
 
-Kit version: **v1.64** (2026-11-15). The graft log `UPGRADES.md` is the
+Kit version: **v1.65** (2026-11-16). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every release.
 
 Rootstock is a folder of method files, scripts, skills and hooks you hand

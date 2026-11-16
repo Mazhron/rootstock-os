@@ -28,7 +28,7 @@ INTENT: the CEO's ruling 2026-09-14: open questions to the owner get a
 Search keys: open questions, ask mazhron, owner decision, design ruling,
 pillar question, nudge, waiting on the owner.
 See also: tools/ledger_trends.py rule 11 (the nudge); tools/standup.py
-(the OPEN QUESTIONS TO MAZHRON block); WORKFLOWS.md "Track an open
+(the OPEN QUESTIONS TO THE OWNER block); WORKFLOWS.md "Track an open
 question to the CEO"; tools/intent_log.py (the sibling ledger this one
 copies its shape from); CLAUDE.md "Cross-workstation notes".
 """

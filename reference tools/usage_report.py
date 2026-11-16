@@ -107,6 +107,11 @@ PURPOSE: Mines the Claude Code harness JSONL transcripts for real per model
   since kit v1.62 one TRIP DIET line under the read diet: the diet guard's own
   tally of its notes and what followed each (read from
   docs/history/trip_diet_runs.txt through tools/hooks/diet_guard.py; no write).
+  It reads this project's transcripts only (the ~/.claude/projects folder
+  named for the repo root and any carrying the repo's folder name, kit
+  v1.65) and `git log` for the per-arc line, and keeps a parse cache,
+  docs/history/usage_cache.json; the cache and usage_employees.csv carry
+  each session's first prompt line (90 characters) as its label.
 INTENT: the CEO's ask 2026-09-03: 'one aggregate sheet, totals per day,
   week, and month for every model and every tool, CSV for humans plus TXT
   twin, scripted.'
@@ -193,12 +198,31 @@ def workstation():
     return "WS2" if "travis" in home else ("WS1" if "owner" in home else "WS?")
 
 
-def transcript_dirs():
-    base = os.path.join(os.path.expanduser("~"), ".claude", "projects")
+TRANSCRIPT_MATCH = ""   # CONFIG: "" = this repo's own folder name; set a longer, distinctive text when that name is generic ("app", "game")
+
+
+def _slug(path):
+    """Claude Code names a project's transcript folder by slugging the launch
+    directory (every non-alphanumeric character becomes '-')."""
+    return re.sub(r"[^A-Za-z0-9]", "-", os.path.abspath(path)).lower()
+
+
+def transcript_dirs(base=None, root=None, match=None):
+    """The transcript folders of THIS project: the one named for the repo
+    root, and any whose name carries the repo's own folder name (a
+    worktree, a clone in another place, a launch from the folder above a
+    same-named one). Until kit v1.65 the test was the literal text
+    "everwood", the origin project's name, so in every other project the
+    sheet found no transcripts at all."""
+    base = base or os.path.join(os.path.expanduser("~"), ".claude", "projects")
+    root = root or ROOT
     if not os.path.isdir(base):
         return []
+    own = _slug(root)
+    name = (match if match is not None else TRANSCRIPT_MATCH) or os.path.basename(root)
+    name = re.sub(r"[^A-Za-z0-9]", "-", name).lower()
     return [os.path.join(base, d) for d in os.listdir(base)
-            if "everwood" in d.lower()
+            if (d.lower() == own or (name and name in d.lower()))
             and os.path.isdir(os.path.join(base, d))]
 
 
