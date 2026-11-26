@@ -63,8 +63,10 @@ named file, nothing dropped.
 | **Standard** | a day | lean + the reporting runner and ledgers, the delegation company (employees on the cheap tier, stamped briefs, verified reports), the skills shelf | `hooks/settings.standard.json`: the session loop, the three safety guards (shell, preserve and the context-size diet), the delegation pair (brief guard, auditor); eleven settings entries |
 | **Full** | a long session | everything, including the loops that measure the loop: the lesson loop, the intent loop, the format law and the purpose audit | `hooks/settings.json`: all eighteen entries |
 
-Moving up is merging the next file's entries and running the front-door
-steps it adds; nothing is reinstalled. The install stamp in your CLAUDE.md, a line like
+Moving up is copying the hook scripts the next level wires into
+`tools/hooks/`, merging the next file's entries and running the
+front-door steps it adds; nothing is reinstalled. Copy before you merge:
+a wired hook whose script is missing refuses every tool call. The install stamp in your CLAUDE.md, a line like
 `Rootstock vX.Y installed <date> | updates: ask | community: no | level: standard`,
 records the level.
 
@@ -80,7 +82,9 @@ cd your-project && claude
 ```
 
 Claude asks the STEP 0 questions (project, engine, who manages, which
-models are employees, your update policy, the level), builds the operating
+models are employees, one machine or several, which knowledge files
+apply, your update policy, whether to join the community, the level),
+builds the operating
 system in order, and finishes with a definition of done you can check
 yourself: the standup script runs clean, the core lint passes, every hook
 the level wires answers its `--selftest` (Lean wires none), the first
@@ -101,7 +105,8 @@ the front door skips what it cannot do and records the skip.
 2. **The reporting discipline** ([REPORTING_METHOD.md](REPORTING_METHOD.md)):
    every repeatable check is a script, every run appends one line to an
    append-only ledger, and the next standup prints the last verdicts and
-   a budget line compared with the previous seven days.
+   a budget line of weighted tokens compared with the previous seven
+   active days.
 3. **The delegation company** ([SUBAGENT_METHOD.md](SUBAGENT_METHOD.md)):
    seven laws (brief, stamp, verify cheap, ledger, escalate, fan-out cap,
    preserve); cheap-tier employees run tests and searches, middle-tier
@@ -111,7 +116,7 @@ the front door skips what it cannot do and records the skip.
    checkpoint writes both sides of the last exchange to the day file, the
    standup reads it back after /clear.
 
-The harness enforces the laws itself: sixteen hooks
+The harness enforces the laws itself: at the Full level, sixteen hooks
 ([HOOKS_METHOD.md](HOOKS_METHOD.md)) that refuse a destructive shell verb,
 refuse the first whole read of a file past ~10k tokens, refuse an
 unstamped brief, hold the manager to a checkpoint it named, and say when
@@ -126,7 +131,8 @@ less than 80% of the context is left.
 - **Checkpoint, standup, day file**: the clear-and-resume ritual and the
   file it writes ([SKILLS.md](SKILLS.md), [REPORTING_METHOD.md](REPORTING_METHOD.md)).
 - **The diet**: read a section, not a file; say less; one script, not
-  many calls ([WIKI_METHOD.md](WIKI_METHOD.md) "The read diet"). The
+  many calls ([WIKI_METHOD.md](WIKI_METHOD.md) "The read diet" and "The
+  output diet"). The
   last is the kit's take on Code Mode: at the third same-shaped tool
   call the diet guard says to write the rest of the trip as one script,
   and since v1.62 a ledger records whether that note was heeded
@@ -178,9 +184,11 @@ and genre-notes files grow into.
 
 Updates are grafts, never file copies: `UPGRADES.md` lists each newer
 concept and how it lands on your own files; the update checker pins to a
-signed tag and verifies `SHA256SUMS` first. Contributions go through
-`community/` (see `CONTRIBUTING.md`); nothing leaves your machine without
-your yes. The kit was grown by **Mazhron (Travis Rhoda)** with Claude in
+signed tag and verifies `SHA256SUMS` first. Say **update rootstock** to
+start one; the check itself is a fetch from this repo about every two
+days and sends nothing about your project. Contributions go through
+`community/` (see `CONTRIBUTING.md`); nothing of yours leaves your
+machine without your yes. The kit was grown by **Mazhron (Travis Rhoda)** with Claude in
 [Everwood](https://github.com/Mazhron/Everwood); a developer's own review
 of this repo shaped v1.60 (the levels, this page, the overhead figure).
 Since v1.63 this repo is the kit's source of truth: it is edited here and

@@ -97,6 +97,16 @@ LEDGER = os.path.join(ROOT, "docs", "history", "readme_lint_runs.txt")
 # prose slip that no count expresses; never remove one (a slip that
 # happened once can happen again).
 CLAIMS = [
+    # the ninth audit, 2026-11-25 (RA-1125-WS1-A..D)
+    ("the safety tier is the eleven; only a hook outside it may be unwired",
+     r"The safety tier holds eleven",
+     r"outside the safety tier \(eleven of them"),
+    ("the core diet moves a routed cold unit by script; only an unrouted one is proposed",
+     r"`--move` moves a cold unit",
+     r"the diet only PROPOSES a cold move"),
+    ("the box lists what a project installs from, not every file in the repo",
+     r"every file a project installs from",
+     r"The table of every file in the kit is on README\.md"),
     # the eighth audit, 2026-11-07 (T-1107-RA-A..D)
     ("the context warning fires when less than 80% is LEFT, not spent",
      r"less than 80% of the context is left",

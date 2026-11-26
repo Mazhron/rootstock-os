@@ -208,7 +208,9 @@ first whole read of a big file in a session is REFUSED and the refusal
 carries the file's own index (headings or function lines with line
 numbers, ~1-3% of the file), so the next call reads one section; the
 same call repeated passes with a warning only - the editing exception
-needs no words. The usage sheet's daily line then grades the day (heavy
+needs no words. A LATER whole read of that file, unchanged since the
+admitted one, is refused once more as RE-READ and passes on repeat (the
+mark clears when the file changes or on compaction). The usage sheet's daily line then grades the day (heavy
 whole-file reads, section-read share) against the previous seven, and
 the big-reads ledger (tools/big_reads.py) names WHICH files were read
 whole and the fix each needs (section it, index it, grep it). THE

@@ -33,7 +33,7 @@ tools/format_lint.py (the header the SAYS line comes from); skills/flag
 ## The tally (generated - never hand-edit this block)
 
 <!-- tally:start -->
-Updated 2026-11-16 01:18 | items 112 | GREEN 97 | YELLOW 15 | RED 0 | unflagged 0 | stale 0
+Updated 2026-11-25 21:33 | items 112 | GREEN 97 | YELLOW 15 | RED 0 | unflagged 0 | stale 3
 
 | item | flag | state | by | when |
 |---|---|---|---|---|
@@ -58,7 +58,7 @@ Updated 2026-11-16 01:18 | items 112 | GREEN 97 | YELLOW 15 | RED 0 | unflagged 
 | SKILLS.md | GREEN | ok | sonnet-flag-1116b | 2026-11-16 01:14 |
 | SUBAGENT_METHOD.md | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
 | UPGRADES.md | GREEN | ok | fable-WS1-manager (author of v1.65) | 2026-11-16 01:18 |
-| WIKI_METHOD.md | GREEN | ok | fable | 2026-10-06 11:21 |
+| WIKI_METHOD.md | GREEN | STALE | fable | 2026-10-06 11:21 |
 | WORKED_EXAMPLE.md | GREEN | ok | fable | 2026-10-15 22:06 |
 | WORKFLOW_METHOD.md | YELLOW | ok | sonnet-flag-1116 | 2026-11-16 00:58 |
 | WORKSTATION_METHOD.md | GREEN | ok | fable | 2026-09-28 23:13 |
@@ -98,7 +98,7 @@ Updated 2026-11-16 01:18 | items 112 | GREEN 97 | YELLOW 15 | RED 0 | unflagged 
 | reference tools/backup_push.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | reference tools/big_reads.py | GREEN | ok | sonnet-fmt2 | 2026-09-13 11:50 |
 | reference tools/check_claude_md.py | GREEN | ok | sonnet-flag-1012 | 2026-10-12 11:48 |
-| reference tools/check_wiki_links.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
+| reference tools/check_wiki_links.py | GREEN | STALE | sonnet-flag-1116 | 2026-11-16 00:55 |
 | reference tools/checkpoint.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | reference tools/cold_shelf.py | GREEN | ok | sonnet-cd1 | 2026-09-14 15:40 |
 | reference tools/contribution_lint.py | GREEN | ok | sonnet-flag-1013d | 2026-10-13 14:09 |
@@ -121,7 +121,7 @@ Updated 2026-11-16 01:18 | items 112 | GREEN 97 | YELLOW 15 | RED 0 | unflagged 
 | reference tools/plan_check.py | GREEN | ok | sonnet-flag-1116 | 2026-11-16 00:55 |
 | reference tools/purpose_audit.py | GREEN | ok | fable (author, v1.64; not read by a second Claude) | 2026-11-15 15:39 |
 | reference tools/readme_audit.py | GREEN | ok | sonnet-fmt3 | 2026-09-13 11:52 |
-| reference tools/readme_lint.py | GREEN | ok | fable (author, v1.64; not read by a second Claude) | 2026-11-15 15:39 |
+| reference tools/readme_lint.py | GREEN | STALE | fable (author, v1.64; not read by a second Claude) | 2026-11-15 15:39 |
 | reference tools/refresh_kit.py | GREEN | ok | sonnet-flag-1116c | 2026-11-16 01:17 |
 | reference tools/release_kit.py | YELLOW | ok | fable (author, v1.64; not read by a second Claude) | 2026-11-15 15:39 |
 | reference tools/retire.py | GREEN | ok | sonnet-flag1 | 2026-09-14 00:59 |

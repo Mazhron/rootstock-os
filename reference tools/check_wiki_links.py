@@ -3,6 +3,7 @@
     python tools/check_wiki_links.py             # scan + report + regen ledger
     python tools/check_wiki_links.py --strict     # exit 1 when dead > 0
     python tools/check_wiki_links.py --quiet      # print only the summary line
+    python tools/check_wiki_links.py --selftest   # the space-in-a-name cases
 
 THE WIKI: repo-root *.md (non-recursive) + docs/systems/*.md + docs/cold/*.md
 + docs/index/*.md (the core diet's sub-indexes, 2026-09-14)
@@ -21,7 +22,10 @@ RESOLUTION: repo-root-relative, then relative to the referencing file's own
 directory, then by BASENAME anywhere under the wiki's search roots (repo
 root *.md, docs/**, tools/**, scripts/**, shaders/**, data/**, scenes/**,
 .claude/**). A token resolved only by basename (its written path does not
-exist) is reported OK but counted separately, never as dead.
+exist) is reported OK but counted separately, never as dead. A See-also
+token that resolves nowhere is tried once more with the words to its left
+joined on, so a file name with spaces ("0 - READ ME FIRST.md", "reference
+tools/x.py") is found; only an exact file counts.
 
 Also tallies HYGIENE: per docs/systems/*.md file, how many "## " sections
 have no "See also:" line before the next heading (informational only).
@@ -142,6 +146,28 @@ def resolve(token, ref_dir, bmap):
     return "DEAD", None
 
 
+def widen(text, start, token, ref_dir, max_words=6):
+    """A file name with a space in it ("0 - READ ME FIRST.md", "reference
+    tools/x.py") is cut by the token pattern at its last space. Walk left one
+    word at a time and return the first wider name that is a real file, else
+    None. An exact file only, never a basename guess, so a dead link stays dead
+    (2026-11-25: three of an install's seven dead links were this)."""
+    left = text[:start]
+    if not left or not left[-1].isspace():
+        return None
+    parts = []
+    for word in reversed(left.split()[-max_words:]):
+        for head in (word, word.lstrip("\"'`([")):
+            if not head:
+                continue
+            cand = " ".join([head] + parts + [token])
+            for base in (ROOT, ref_dir):
+                if os.path.isfile(os.path.normpath(os.path.join(base, cand))):
+                    return cand
+        parts.insert(0, word)
+    return None
+
+
 def extract_seealso_blocks(lines):
     """Yield (start_line_1based, text) for each See also: paragraph."""
     blocks = []
@@ -200,7 +226,10 @@ def scan_file(path, bmap, wiki_basenames, is_claude_md):
             # locate which physical line this match falls on
             offset = m.start()
             lineno = start_line + block.count("\n", 0, offset)
-            record(lineno, m.group(0))
+            token = m.group(0)
+            if resolve(strip_punct(token), ref_dir, bmap)[0] == "DEAD":
+                token = widen(block, offset, strip_punct(token), ref_dir) or token
+            record(lineno, token)
 
     # fenced code blocks are quoted text (banked memories, samples), not
     # live links - collect their line numbers so (b) and (c) skip them
@@ -266,13 +295,51 @@ def scan_file(path, bmap, wiki_basenames, is_claude_md):
     return links_checked, dead, by_basename, sections_total, sections_without
 
 
+def selftest():
+    """widen() against a throwaway folder: names with spaces resolve, a name
+    that is not there stays unresolved. Touches nothing in the repo."""
+    import tempfile
+    global ROOT
+    keep = ROOT
+    fails = []
+    with tempfile.TemporaryDirectory() as tmp:
+        ROOT = tmp
+        os.makedirs(os.path.join(tmp, "reference tools"))
+        for name in ("0 - READ ME FIRST.md", os.path.join("reference tools", "x.py")):
+            open(os.path.join(tmp, name), "w", encoding="utf-8").close()
+        cases = [
+            ("See also: (the forms); 0 - READ ME FIRST.md STEP 0.", "FIRST.md",
+             "0 - READ ME FIRST.md"),
+            ("See also: \"How it is made\"; reference tools/x.py.", "tools/x.py",
+             "reference tools/x.py"),
+            ("See also: the script\nreference\ntools/x.py.", "tools/x.py",
+             "reference tools/x.py"),
+            ("See also: (reference tools/x.py).", "tools/x.py", "reference tools/x.py"),
+            ("See also: some other tools/gone.py.", "tools/gone.py", None),
+            ("See also: tools/x.py.", "tools/x.py", None),
+        ]
+        for text, token, want in cases:
+            got = widen(text, text.index(token), token, tmp)
+            if got != want:
+                fails.append("%r -> %r, wanted %r" % (text, got, want))
+    ROOT = keep
+    for f in fails:
+        print("FAIL " + f)
+    print("check_wiki_links selftest: %s (%d cases)" % ("FAIL" if fails else "PASS", len(cases)))
+    return 1 if fails else 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="Warn-only wiki link checker")
     ap.add_argument("--strict", action="store_true",
                      help="exit 1 when dead links are found")
     ap.add_argument("--quiet", action="store_true",
                      help="print only the summary line")
+    ap.add_argument("--selftest", action="store_true",
+                     help="check the space-in-a-name widening and exit")
     args = ap.parse_args()
+    if args.selftest:
+        sys.exit(selftest())
 
     files = wiki_files()
     bmap = build_basename_map()

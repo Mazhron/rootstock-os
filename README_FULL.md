@@ -436,8 +436,9 @@ A lint script guards the core's line and token budgets (200 lines,
 2,000 tokens, a warning at 1,500; the same numbers are under "What
 guards the shape" above) and keeps the index honest. A core section
 carries `Index: core` to stay pinned or `Index: <name>` to be movable;
-the diet only PROPOSES a cold move, and the manager's `--move-section`
-makes it.
+the diet's `--move` moves a cold unit that carries an `Index: <name>`
+line by script, a cold unit with no Index line is only PROPOSED, and
+`--move-section` is the manager's explicit call for one unit.
 
 The wiki's growth rule is deliberate: files and indexes are nearly free
 (disk for you, section-reads for Claude), so the manager's instinct is FIT
@@ -623,7 +624,7 @@ because context lives in files, not in the conversation.
   once, then again every five tasks) or once more than 20% of the
   context budget is used (urgent under 30% remaining). The owner never has to ask: since v1.45 THE
   DUE LINE (formerly ADVISED MEANS DO IT) has both hooks print CHECKPOINT
-  DUE - DO IT, the context line fires on every prompt past 80% (and
+  DUE - DO IT, the context line fires on every prompt once less than 80% remains (and
   since v1.55 a plain "context gauge: N% remaining" line on every prompt
   above it, so the owner sees the percent in every reply), and each
   such reply ends with the checkpoint (an open arc is checkpointed as
@@ -882,11 +883,11 @@ The contract, plainly, because a worried reader asks these first:
   refused live, the NEW catches and the LOST ones - read the LOST column
   before trusting a guard change.
 - **Turning one off** is removing its line from settings.json, for every
-  hook outside the safety tier (eleven of them, named by the format lint's
-  SAFETY table: the preserve, shell, fan-out, diet, hygiene, format and
-  brief guards, the delegation auditor, the verify advisor, the Stop tick
-  and the session-end net); unwiring a safety hook is exactly the
-  edit the format guard refuses.
+  hook outside the safety tier. The safety tier holds eleven, named by
+  the format lint's SAFETY table: the preserve, shell, fan-out, diet,
+  hygiene, format and brief guards, the delegation auditor, the verify
+  advisor, the Stop tick and the session-end net. Unwiring one of those
+  is exactly the edit the format guard refuses.
 - **Installing them** is the hooks README's short walk: copy the scripts,
   fill the shell guard's PROJECT RULES, merge `settings.json` into yours,
   gitignore the state files, run every `--selftest`. The safety wiring is
@@ -1421,8 +1422,9 @@ thing the system protects. So the kit updates CONCEPTS, not files:
 
 ## The box
 
-The table of every file in the kit is on README.md (the parity lint
-keeps it complete). The two domain files there double as templates for
+The table of every file a project installs from is on README.md (the
+parity lint keeps it complete; the repo's own housekeeping, LICENSE,
+`SHA256SUMS`, `community/` and `.github/`, is not in it). The two domain files there double as templates for
 what YOUR project's engine-notes and genre-notes files should grow into.
 
 ## Origin
