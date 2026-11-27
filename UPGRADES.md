@@ -8,7 +8,7 @@ INTENT: an installed Rootstock is an adaptation, not a copy, so the kit must
   never update a project by overwriting its files; this log is the one place
   updates travel as grafts instead.
 
-CURRENT KIT VERSION: **v1.65** (this file is the single source of truth for
+CURRENT KIT VERSION: **v1.66** (this file is the single source of truth for
 the kit's version; entries below are append-only, oldest first).
 
 Search keys: updates, upgrade, graft, version, pull changes, kit update.
@@ -2919,3 +2919,82 @@ behaviour rides on them. Verify: `python tools/format_lint.py` passes
 at the install's level; the usage sheet names this project's sessions;
 a prompt in a project without a kit folder prints no KIT UNSYNCED.
 README: README.md (the version line).
+
+### v1.66 - 2026-11-26 - The security knowledge base: a numbered list of what a program builds to be safe, carried from project to project; the link checker finds a file name with spaces
+WHAT: THE SECURITY KNOWLEDGE BASE. The CEO, 2026-11-26, on the day a
+scanner's visit showed two gaps in a live sign-in page of an install:
+"please begin keeping a specific knowledge base for security. I want to
+have a list of security things that I can take from project to project
+as I go". SECURITY_METHOD.md (v1.39) is the gate: a mirror held up to a
+deployment before it goes public. Nothing in the kit kept what a program
+should BUILD so that the mirror has nothing to show, and each project
+was learning its sign-in, its sessions and its limits from nothing.
+SECURITY_KNOWLEDGE.md is that list. It opens with THE KNOWLEDGE RULE
+(seven points: an entry is written the day the thing is learned; one
+entry is five lines, RULE, WHY, HOW, CHECK, GROWN; the status is honest,
+PROVEN, RULED or OPEN; no real address, host, person, client or key
+enters the file; entries are numbered K-1 on and never renumbered or
+removed; a design names the K entries it follows; an entry true beyond
+its project goes up to the kit by a release) and carries 32 entries in
+ten sections: sign-in and passwords, sessions and cookies, limits,
+blocks and probing, rights, the audit trail, secrets and config,
+browser headers, dependencies, backups and recovery, and the known
+gaps. The founding entries grew in one install, a multi-company
+business web program: 25 are PROVEN there. 19 were read in its code by a
+read-only employee and spot-checked by the manager the day the file was
+written; 6 were the owner's rulings of that day (wrong passwords per
+address, a made-up path, probing, the safe list, the record of odd
+addresses and open forms), built that night and raised from RULED the
+day their checks passed, each HOW brought level with what was built.
+None is RULED today and 7 are OPEN.
+A CHECK line says how to prove an entry in any project; it is not a
+claim that the test exists where the entry grew. The file ends with the
+workflow entry that keeps it alive ("Add to the security knowledge
+base") and a four-step bootstrap. ALSO IN THIS RELEASE, written in the
+kit's own clone on 2026-11-25, pushed by a session-end checkpoint and
+not tagged until now: THE LINK CHECKER AND A NAME WITH SPACES:
+check_wiki_links.py cut a See-also file name at its last space, so
+"0 - READ ME FIRST.md" and "reference tools/x.py" read as dead links
+(three of one install's seven dead links were this). A token that
+resolves nowhere is now tried once more with the words to its left
+joined on (widen(), six words at most, an exact file only, never a
+basename guess, so a dead link stays dead), and the script has a
+`--selftest` that runs in a throwaway folder. WIKI_METHOD.md's read
+diet says what the diet guard already does with a later whole read of a
+file unchanged since the admitted one (refused once more as RE-READ,
+passes on repeat, the mark clears when the file changes or on
+compaction). readme_lint.py carries three more CLAIMS rows from the
+ninth README audit (the safety tier is the eleven; the core diet moves
+a routed cold unit by script; the box lists what a project installs
+from), and README.md and README_FULL.md carry that audit's wording
+(moving up a level copies the hook scripts before the settings merge;
+what STEP 0 asks; the budget line is weighted tokens over active days;
+"update rootstock").
+CARRIES: SECURITY_KNOWLEDGE.md (new); SECURITY_METHOD.md (See also);
+0 - READ ME FIRST.md (STEP 5, the sentence after the audit's
+bootstrap); reference tools/check_wiki_links.py (widen, the call in the
+See-also scan, selftest, the header); reference tools/readme_lint.py
+(three CLAIMS rows); WIKI_METHOD.md (one sentence in the read diet);
+the kit repo's README.md and README_FULL.md.
+GRAFT: SECURITY_KNOWLEDGE.md is a new file: copy it to the project root
+whole (nothing is overwritten), paste its workflow entry into
+WORKFLOWS.md and add one master index line. A project with no backend,
+key or user data skips it and says so beside its SECURITY_METHOD
+exemption. An install that already
+keeps the file (the one it grew in) adds only the K numbers it lacks;
+where a number is taken by the project's own entry, the kit's entry
+takes the next free number and says which kit number it came from.
+SECURITY_METHOD.md: the See also line, by hand. check_wiki_links.py:
+take the file when it is unadapted; when it is adapted, add widen(),
+the three lines in the See-also scan that call it, and selftest() with
+its `--selftest` branch; then `python tools/check_wiki_links.py
+--selftest`. WIKI_METHOD.md: the one sentence, by hand, if the install
+carries the diet guard. readme_lint.py reads the kit's own README and
+is not carried by a receiving project. Verify: the project's link check
+passes with SECURITY_KNOWLEDGE.md in the tree; `grep -c "^### K-"
+SECURITY_KNOWLEDGE.md` prints 32; the selftest's last line reads
+PASS.
+README: README.md (the version line, the box row for
+SECURITY_KNOWLEDGE.md, the ninth audit's wording); README_FULL.md (the
+question on what a project carries over about security, the ninth
+audit's wording).

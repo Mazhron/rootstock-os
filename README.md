@@ -5,7 +5,7 @@
 **Keep the context small, make clearing the chat lossless, let cheap
 sub-agents do the reading.**
 
-Kit version: **v1.65** (2026-11-16). The graft log `UPGRADES.md` is the
+Kit version: **v1.66** (2026-11-26). The graft log `UPGRADES.md` is the
 single source of truth; this line is checked against it on every release.
 
 Rootstock is a folder of method files, scripts, skills and hooks you hand
@@ -169,6 +169,7 @@ less than 80% of the context is left.
 | `INTENT_METHOD.md` | The intent loop: the why file in the owner's words, the claim-and-verdict ledger, the correction ritual |
 | `SECURITY.md` | The security policy: what pulling the repo runs (nothing), what the community gate refuses, the private door for reporting |
 | `SECURITY_METHOD.md` | The pre-production security audit: the gate before anything with a backend, a key or user data goes public |
+| `SECURITY_KNOWLEDGE.md` | The security knowledge base: a numbered list of what a program builds to be safe, each entry with its why, how and check, carried from project to project |
 | `reference tools/` | 44 working scripts to adapt, not rewrite: standup, checkpoint, the core lint, the usage sheet (with the overhead block), the runner, the update check, the rest of the loops, and `release_kit.py`, the script that releases this repo (README_FULL.md "Updating an installed project") |
 | `UPGRADES.md` | The graft log: the kit version and how each update lands on an installed project |
 | `CONTRIBUTING.md` | The format law and the purpose audit: the header every thing carries, the read-only flag ritual |

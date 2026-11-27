@@ -173,7 +173,10 @@ env file, a database or user accounts: SECURITY_METHOD.md's bootstrap
 (the audit script, the workflow entry, the ship question) before the
 first public release (a URL, a store listing, a showcase post); if it
 said none, write the exemption in the systems
-index and move on.
+index and move on. Where the audit applies, so does
+SECURITY_KNOWLEDGE.md's bootstrap (the file whole at the root, its
+workflow entry, one master index line): it is read on demand, when a
+design touches sign-in, sessions, rights, uploads or a deploy.
 
 ## DEFINITION OF DONE
 

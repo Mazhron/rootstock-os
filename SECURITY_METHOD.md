@@ -37,7 +37,9 @@ See also: REPORTING_METHOD.md (the script and its ledger are a scripted
 run), WORKFLOW_METHOD.md (the registry entry that runs the audit),
 SUBAGENT_METHOD.md (the read-only employee that walks the checklist),
 CONTRIBUTING.md (the purpose audit of the kit's own things, which this
-is not), reference tools/security_audit.py.
+is not), SECURITY_KNOWLEDGE.md (the walls this gate stands in front
+of: what the program itself builds, entry by entry), reference
+tools/security_audit.py.
 
 ## THE SECURITY AUDIT RULE
 Tags: process, security, law | No app with a backend, a key, an env file or user data goes public before the audit passes; a key that was ever public is rotated, never merely removed

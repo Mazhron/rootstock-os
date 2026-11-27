@@ -1349,6 +1349,13 @@ thing the system protects. So the kit updates CONCEPTS, not files:
   or test runners, so it suits reading and planning, not building.
   `WORKSTATION_METHOD.md` "Drive a session from a phone" has the
   requirements and limits.
+- **Does a new project start with what the last one learned about
+  security?** Yes, since v1.66. `SECURITY_KNOWLEDGE.md` is a numbered
+  list of what a program builds to be safe (sign-in, sessions, limits
+  by address, rights, secrets, headers, backups), each entry with its
+  rule, its why, how it was built, how to check it and an honest
+  status: proven in a real program, ruled and not yet built, or an
+  open gap. A project copies the file whole and adds what it learns.
 - **Does it check the app I build, or only my process?** Both, since
   v1.39. Everything above audits the process. `SECURITY_METHOD.md`
   audits the app: before the first public release (a URL, a store
